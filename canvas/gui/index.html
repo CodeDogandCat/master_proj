@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Cooperation Board</title>
+    <link href="../_assets/literallycanvas.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <style type="text/css">
+.fs-container {
+    width: auto;
+    margin: auto;
+    max-width: 100%;
+}
+
+
+.literally {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+</style>
+  </head>
+
+  <body>
+    <div class="fs-container">
+      <div id="lc"></div>
+    </div>
+
+    <!-- you really ought to include react-dom, but for react 0.14 you don't strictly have to. -->
+    <script src="../_js_libs/jquery-1.8.2.js"></script>
+    <script src="../_js_libs/react-0.14.3.js"></script>
+    <script src="../_js_libs/literallycanvas.js"></script>
+
+    <script>
+    $(document).ready(function() {
+    //var watermarkImage = new Image();
+  //  watermarkImage.src = '../_static/watermark.jpg';
+
+    var lc = LC.init(document.getElementById("lc"), {
+        imageURLPrefix: '../_assets/lc-images',
+        toolbarPosition: 'top',
+        defaultStrokeWidth: 2,
+        strokeWidths: [1, 2, 3, 5, 10]
+       //  watermarkImage: watermarkImage,
+        //watermarkScale: 0.5  // you can scale it
+    });
+    var localStorageKey = 'drawing'
+    if (localStorage.getItem(localStorageKey)) {
+        lc.loadSnapshot(JSON.parse(localStorage.getItem(localStorageKey)));
+    }
+    lc.on('drawingChange', function() {
+        localStorage.setItem(localStorageKey, JSON.stringify(lc.getSnapshot()));
+    });
+//     var newImage = new Image()
+//     newImage.src = '../_static/aaa.jpg';
+//     lc.saveShape(LC.createShape('Image', {x: 10, y: 10, image: newImage}));
+   
+  
+ 
+
+  
+    });
+   </script>
+  </body>
+</html>

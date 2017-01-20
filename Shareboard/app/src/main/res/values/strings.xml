@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Shareboard</string>
+    <string name="tip_bg_welcome_background">bg_welcome_background</string>
+    <string name="tip_ic_welcome_logo">ic_welcome_logo</string>
+</resources>
