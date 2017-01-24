@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <!-- res/drawable/button_shape_pressed.xml -->
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="rectangle" >
+
+        <!-- rounded corner -->
+        <corners android:radius="5dp" />
+
+        <!-- fill with two colors, and the two colors change softly -->
+        <!--
+             <gradient
+            android:angle="270"
+            android:startColor="@color/orange_light"
+            android:endColor="@color/orange_normal"
+            android:useLevel="true" />
+        -->
+        <solid android:color="@color/deepyellow" />
+
+    </shape>

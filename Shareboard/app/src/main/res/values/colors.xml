@@ -3,4 +3,9 @@
     <color name="yellow">#EACB3C</color>
     <color name="black">#191919</color>
     <color name="white">#F9F9F9</color>
+    <color name="lightgray">#E5E5E5</color>
+    <color name="deepyellow">#e2bc0b</color>
+    <color name="transparent">#00000000</color>
+    <color name="deepgray">#292828</color>
+    <color name="barblack">#18191E</color>
 </resources>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context="cn.edu.hfut.lilei.shareboard.activity.RegisterActivity">
+    <RelativeLayout style="@style/actionbar">
+
+        <!--<LinearLayout-->
+        <!--style="@style/common_horizontal_division_line_style"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:background="@color/deepgray" />-->
+
+        <ImageView
+            android:id="@+id/img_register_goback"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_yellow_leftarrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/img_register_goback"
+            android:gravity="center"
+            android:text="@string/register"
+            android:textSize="@dimen/nav_title_size"
+            android:id="@+id/tv_register_register"/>
+
+        <!--<LinearLayout-->
+        <!--style="@style/common_horizontal_division_line_style"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="@color/deepgray" />-->
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin26"
+        android:paddingRight="@dimen/activity_horizontal_margin26">
+
+
+        <EditText
+            android:id="@+id/et_login_email"
+            style="@style/big_edittext"
+            android:layout_marginTop="20dp"
+            android:hint="@string/inputemail"
+            android:inputType="textEmailAddress" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_register_bottomlineofemail"
+            style="@style/common_horizontal_division_line_style"
+            android:background="@color/yellow" />
+
+
+        <Button
+            android:id="@+id/btn_register_nextstep"
+            style="@style/BigButton"
+            android:layout_marginTop="20dp"
+            android:text="@string/nextstep" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical" />
+
+</LinearLayout>

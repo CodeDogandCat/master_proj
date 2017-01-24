@@ -1,18 +1,57 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="FullScreenTheme" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen">
+    <style name="FullScreenTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
         <!-- Customize your theme here. -->
     </style>
-    <style name="NormalTheme" parent="android:Theme.Holo.Light">
+    <style name="NormalTheme" parent="android:Theme.Holo">
         <!-- Customize your theme here. -->
     </style>
-    <style name="WelcomeTheme" parent="@android:style/Theme">
+    <style name="NoActionBarTheme" parent="android:Theme.Holo.NoActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="WelcomeTheme" parent="@android:style/Theme.Holo">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
-
+    <style name="BigButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/btn_yellow</item>
+        <item name="android:textSize">@dimen/nav_title_size</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="TransparentBgButton">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="android:textColor">@color/yellow</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="common_horizontal_division_line_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <style name="common_vertical_division_line_style">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="actionbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/nav_height</item>
+        <item name="android:background">@color/barblack</item>
+    </style>
+    <style name="big_edittext">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textSize">@dimen/normal_text_size</item>
+        <item name="android:paddingLeft">5dp</item>
+    </style>
 
 </resources>
