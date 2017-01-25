@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <cn.edu.hfut.lilei.shareboard.view.ClearEditText
+        android:id="@+id/filter_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dip"
+        android:background="@drawable/et_yellow"
+        android:drawableLeft="@mipmap/search_bar_icon_normal"
+        android:hint="请输入关键字"
+        android:paddingLeft="5dp"
+        android:singleLine="true"
+        android:textSize="@dimen/small_text_size" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="1dp">
+
+        <ListView
+            android:id="@+id/country_lvcountry"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:divider="@null"
+            android:scrollbars="none" />
+
+        <TextView
+            android:id="@+id/title_layout_no_friends"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="right|top"
+            android:background="@color/deepgray"
+            android:gravity="center_vertical"
+            android:text="没有匹配的联系人"
+            android:textColor="@color/yellow"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/title_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="right|top"
+            android:background="@color/barblack"
+            android:orientation="vertical"
+           >
+
+            <TextView
+                android:id="@+id/title_layout_catalog"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/barblack"
+                android:paddingBottom="5dip"
+                android:paddingLeft="10dip"
+                android:textColor="@color/yellow" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/dialog"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:layout_gravity="center"
+            android:background="@color/yellow"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/big_tip_size"
+            android:visibility="invisible" />
+
+        <cn.edu.hfut.lilei.shareboard.activity.SideBar
+            android:id="@+id/sidrbar"
+            android:layout_width="20dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|center" />
+    </FrameLayout>
+
+</LinearLayout>

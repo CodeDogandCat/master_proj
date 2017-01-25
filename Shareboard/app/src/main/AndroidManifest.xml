@@ -22,6 +22,9 @@
         <activity android:name=".activity.ResetPasswordActivity" />
         <activity android:name=".activity.SetUserInfoActivity" />
         <activity android:name=".activity.MainActivity" />
+        <activity
+            android:name=".activity.ActivityAddFriends"
+            android:windowSoftInputMode="adjustPan" />
 
 
     </application>

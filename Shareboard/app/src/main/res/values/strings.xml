@@ -19,4 +19,5 @@
     <string name="join_meeting">加入会议</string>
     <string name="system_msg">系统消息</string>
     <string name="host_or_arrange_meeting">主持或安排会议</string>
+    <string name="menu_settings">Settings</string>
 </resources>

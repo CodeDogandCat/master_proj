@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_horizontal_margin26">26dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="big_tip_size">40sp</dimen>
     <dimen name="nav_title_size">18sp</dimen>
     <dimen name="small_text_size">16sp</dimen>
     <dimen name="normal_text_size">18sp</dimen>

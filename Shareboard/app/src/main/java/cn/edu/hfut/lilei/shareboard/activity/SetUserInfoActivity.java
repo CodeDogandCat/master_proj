@@ -16,7 +16,7 @@ public class SetUserInfoActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setuserinfo);
+        setContentView(R.layout.activity_set_userinfo);
         mBtnComplete= (Button) findViewById(R.id.btn_setuserinfo_complete);
         mBtnComplete.setOnClickListener(new View.OnClickListener() {
             @Override
