@@ -1,4 +1,4 @@
-package cn.edu.hfut.lilei.shareboard.activity;
+package cn.edu.hfut.lilei.shareboard.view;
 
 import android.content.Context;
 import android.graphics.Canvas;

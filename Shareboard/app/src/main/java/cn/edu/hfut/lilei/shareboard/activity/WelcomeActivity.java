@@ -43,12 +43,12 @@ public class WelcomeActivity extends Activity {
             @Override
             protected void onPostExecute(Integer result) {
                 Intent intent = new Intent();
-//                intent.setClass(WelcomeActivity.this, MainActivity.class);
+                intent.setClass(WelcomeActivity.this, MainActivity.class);
 //                intent.setClass(WelcomeActivity.this, LoginActivity.class);
 //                intent.setClass(WelcomeActivity.this, RegisterActivity.class);
 //                intent.setClass(WelcomeActivity.this, ResetPasswordActivity.class);
 //                intent.setClass(WelcomeActivity.this, SetUserInfoActivity.class);
-                intent.setClass(WelcomeActivity.this, ActivityAddFriends.class);
+//                intent.setClass(WelcomeActivity.this, ContactsFragment.class);
                 startActivity(intent);
                 finish();
                 //两个参数分别表示进入的动画,退出的动画

@@ -11,13 +11,13 @@ import android.widget.TextView;
 import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.activity.GroupMemberBean;
+import cn.edu.hfut.lilei.shareboard.data.GroupMemberInfo;
 
 public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexer {
-	private List<GroupMemberBean> list = null;
+	private List<GroupMemberInfo> list = null;
 	private Context mContext;
 
-	public SortGroupMemberAdapter(Context mContext, List<GroupMemberBean> list) {
+	public SortGroupMemberAdapter(Context mContext, List<GroupMemberInfo> list) {
 		this.mContext = mContext;
 		this.list = list;
 	}
@@ -26,7 +26,7 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
 	 *
 	 * @param list
 	 */
-	public void updateListView(List<GroupMemberBean> list) {
+	public void updateListView(List<GroupMemberInfo> list) {
 		this.list = list;
 		notifyDataSetChanged();
 	}
@@ -45,10 +45,10 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
 
 	public View getView(final int position, View view, ViewGroup arg2) {
 		ViewHolder viewHolder = null;
-		final GroupMemberBean mContent = list.get(position);
+		final GroupMemberInfo mContent = list.get(position);
 		if (view == null) {
 			viewHolder = new ViewHolder();
-			view = LayoutInflater.from(mContext).inflate(R.layout.activity_group_member_item, null);
+			view = LayoutInflater.from(mContext).inflate(R.layout.listitem_group_member, null);
 			viewHolder.tvTitle = (TextView) view.findViewById(R.id.title);
 			viewHolder.tvLetter = (TextView) view.findViewById(R.id.catalog);
 			view.setTag(viewHolder);

@@ -20,4 +20,6 @@
     <string name="system_msg">系统消息</string>
     <string name="host_or_arrange_meeting">主持或安排会议</string>
     <string name="menu_settings">Settings</string>
+    <string name="add_friend">添加好友</string>
+    <string name="search_contacts_by_email">通过电子邮箱找到联系人</string>
 </resources>

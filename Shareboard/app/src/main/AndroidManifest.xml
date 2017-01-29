@@ -21,9 +21,8 @@
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.ResetPasswordActivity" />
         <activity android:name=".activity.SetUserInfoActivity" />
-        <activity android:name=".activity.MainActivity" />
         <activity
-            android:name=".activity.ActivityAddFriends"
+            android:name=".activity.MainActivity"
             android:windowSoftInputMode="adjustPan" />
 
 

@@ -1,14 +1,16 @@
-package cn.edu.hfut.lilei.shareboard.activity;
+package cn.edu.hfut.lilei.shareboard.utils;
 
 import java.util.Comparator;
+
+import cn.edu.hfut.lilei.shareboard.data.GroupMemberInfo;
 
 /**
  * 
  *
  */
-public class PinyinComparator implements Comparator<GroupMemberBean> {
+public class PinyinComparator implements Comparator<GroupMemberInfo> {
 
-	public int compare(GroupMemberBean o1, GroupMemberBean o2) {
+	public int compare(GroupMemberInfo o1, GroupMemberInfo o2) {
 		if (o1.getSortLetters().equals("@")
 				|| o2.getSortLetters().equals("#")) {
 			return -1;

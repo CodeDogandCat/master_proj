@@ -1,6 +1,6 @@
-package cn.edu.hfut.lilei.shareboard.activity;
+package cn.edu.hfut.lilei.shareboard.data;
 
-public class GroupMemberBean {
+public class GroupMemberInfo {
 
 	private String name;   //
 	private String sortLetters;  //

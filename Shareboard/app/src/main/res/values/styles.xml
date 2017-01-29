@@ -64,5 +64,11 @@
         <item name="android:textSize">@dimen/normal_text_size</item>
         <item name="android:paddingLeft">5dp</item>
     </style>
+    <!-- Custom Alert Dialog -->
+    <style name="CustomAlertDialog" parent="android:Theme.Holo.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 
 </resources>
