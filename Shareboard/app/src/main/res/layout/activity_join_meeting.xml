@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+
+    tools:context="cn.edu.hfut.lilei.shareboard.activity.JoinMeetingActivity">
+    <RelativeLayout style="@style/actionbar">
+
+        <!--<LinearLayout-->
+        <!--style="@style/common_horizontal_division_line_style"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:background="@color/deepgray" />-->
+
+        <ImageView
+            android:id="@+id/img_setuserinfo_goback"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_yellow_leftarrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/img_setuserinfo_goback"
+            android:gravity="center"
+            android:text="@string/join_meeting"
+            android:textSize="@dimen/nav_title_size"
+            android:id="@+id/tv_joinmeeting_navtitle"/>
+
+        <!--<LinearLayout-->
+        <!--style="@style/common_horizontal_division_line_style"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="@color/deepgray" />-->
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin26"
+        android:paddingRight="@dimen/activity_horizontal_margin26">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingRight="10dp">
+
+            <EditText
+                android:id="@+id/et_meeting_number"
+                style="@style/big_edittext"
+                android:hint="@string/please_input_your_meeting_number"
+                android:inputType="textAutoCorrect"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_setuserinfo_bottomlineofname"
+            style="@style/common_horizontal_division_line_style"
+            android:background="@color/yellow" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingRight="10dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/tv_exchange_jointype"
+                style="@style/big_edittext"
+                android:text="@string/join_meeting_by_meeting_name"
+                android:inputType="textAutoCorrect"
+                android:gravity="center"
+                android:textSize="@dimen/super_small_text_size"
+                android:textColor="@color/yellow"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingRight="10dp">
+
+            <EditText
+                android:id="@+id/et_meeting_password"
+                style="@style/big_edittext"
+                android:hint="@string/please_input_your_meeting_password"
+                android:inputType="textPassword"
+                android:gravity="center"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_setuserinfo_bottomlineofpass"
+            style="@style/common_horizontal_division_line_style"
+            android:background="@color/yellow" />
+
+
+        <Button
+            android:id="@+id/btn_join_meeting"
+            style="@style/BigButton"
+            android:layout_marginTop="20dp"
+            android:text="@string/join_meeting" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical" />
+
+</LinearLayout>

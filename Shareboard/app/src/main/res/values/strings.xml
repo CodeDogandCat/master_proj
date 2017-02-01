@@ -22,4 +22,11 @@
     <string name="menu_settings">Settings</string>
     <string name="add_friend">添加好友</string>
     <string name="search_contacts_by_email">通过电子邮箱找到联系人</string>
+    <string name="meeting_number">会议号</string>
+    <string name="meeting_pasword">会议密码</string>
+    <string name="please_input_your_meeting_password">请输入会议密码</string>
+    <string name="please_input_your_meeting_number">请输入会议号</string>
+    <string name="join_meeting_by_meeting_name">使用会议名称加会</string>
+    <string name="join_meeting_by_meeting_number">使用会议号加会</string>
+    <string name="meeting_name">会议名称</string>
 </resources>
