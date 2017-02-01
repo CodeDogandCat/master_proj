@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -134,19 +133,23 @@ public class MainActivity extends FragmentActivity implements
 
         //联系人页面特定
         if (position == 1) {
-            mImgAddContact.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            new CustomAlertDialog.Builder(MainActivity.this)
-                                    .setTitle("请输入电子邮箱")
-                                    .setPositiveButton(MainActivity.this.getString(R.string.add_friend), null)
-                                    .show();
+
+            if (hasAddContactIcon == false) {
+                mImgAddContact.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                new CustomAlertDialog.Builder(MainActivity.this)
+                                        .setTitle(getString(R.string.inputemail))
+                                        .setPositiveButton(MainActivity.this.getString(R.string.add_friend), null)
+                                        .show();
+                            }
                         }
-                    }
-            );
-            mLlActionbarRight.addView(mImgAddContact, mlp);
-            hasAddContactIcon = true;
+                );
+                mLlActionbarRight.addView(mImgAddContact, mlp);
+                hasAddContactIcon = true;
+            }
+
 
         } else {
             if (hasAddContactIcon) {
@@ -175,17 +178,14 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.btn_main_meeting: //
+            case R.id.btn_main_meeting:
                 selectPage(0);
-                Log.i("main","$1");
                 break;
-            case R.id.btn_main_contacts: //
+            case R.id.btn_main_contacts:
                 selectPage(1);
-                Log.i("main","$2");
                 break;
-            case R.id.btn_main_settings: //
+            case R.id.btn_main_settings:
                 selectPage(2);
-                Log.i("main","$3");
                 break;
         }
     }

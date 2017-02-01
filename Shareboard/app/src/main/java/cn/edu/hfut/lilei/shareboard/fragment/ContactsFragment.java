@@ -56,12 +56,6 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
      */
     private PinyinComparator pinyinComparator;
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.fragment_contacts_index);
-//        initViews();
-//    }
 
 
     @Nullable
