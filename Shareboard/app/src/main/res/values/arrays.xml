@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
-    <string-array name="date">
+    <string-array name="account">
         <item>阿妹</item>
         <item>阿郎</item>
         <item>陈奕迅</item>

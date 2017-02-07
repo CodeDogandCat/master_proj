@@ -6,6 +6,7 @@
     <color name="lightgray">#E5E5E5</color>
     <color name="deepyellow">#e2bc0b</color>
     <color name="transparent">#00000000</color>
-    <color name="deepgray">#292828</color>
+    <color name="deepgray">#3d3e40</color>
     <color name="barblack">#18191E</color>
+    <color name="red">#cc0000</color>
 </resources>

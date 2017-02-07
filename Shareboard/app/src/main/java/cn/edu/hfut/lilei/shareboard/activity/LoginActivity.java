@@ -27,15 +27,19 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        init();
 
+    }
+
+    private void init() {
         mImgEmail = (ImageView) findViewById(R.id.img_login_email);
         mImgPassword = (ImageView) findViewById(R.id.img_login_password);
         mEtEmail = (EditText) findViewById(R.id.et_login_email);
         mEtPassword = (EditText) findViewById(R.id.et_login_password);
         mLlBottomlineofemail = (LinearLayout) findViewById(R.id.ll_login_bottomlineofemail);
         mLlBottomlineofpass = (LinearLayout) findViewById(R.id.ll_login_bottomlineofpass);
-        mBtnRegisteraccount=(Button)findViewById(R.id.btn_login_registeraccount);
-        mBtnResetpassword= (Button) findViewById(R.id.btn_login_resetpassword);
+        mBtnRegisteraccount = (Button) findViewById(R.id.btn_login_registeraccount);
+        mBtnResetpassword = (Button) findViewById(R.id.btn_login_resetpassword);
 
         mEtEmail.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
 
@@ -95,7 +99,6 @@ public class LoginActivity extends Activity {
                 startActivity(intent);
             }
         });
-
 
     }
 }

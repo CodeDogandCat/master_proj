@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:minWidth="280dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_dialog_settingmyinfo_title"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/normal_text_size" />
+
+    <View
+        android:id="@+id/vTitleLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/yellow"/>
+
+    <EditText
+        android:id="@+id/et_dialog_settingmyinfo_familyname"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/transparent"
+        android:gravity="center"
+        android:hint="@string/familyName"
+        android:textSize="@dimen/super_small_text_size"
+       />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/yellow" />
+
+    <EditText
+        android:id="@+id/et_dialog_settingmyinfo_givenname"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/transparent"
+        android:gravity="center"
+        android:hint="@string/givenname"
+        android:textSize="@dimen/super_small_text_size"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/yellow" />
+
+    <RelativeLayout
+        android:id="@+id/rl_dialog_settingmyinfo_buttons"
+        android:layout_width="270dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="2dp">
+
+        <Button
+            android:id="@+id/btn_dialog_settingmyinfo_negative"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_yellow"
+            android:gravity="center"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/btn_dialog_settingmyinfo_positive"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_yellow"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/nav_title_size" />
+    </RelativeLayout>
+
+</LinearLayout>

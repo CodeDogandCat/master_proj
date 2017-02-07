@@ -17,20 +17,24 @@ public class JoinMeetingActivity extends Activity {
     private TextView mTvExchangeType;
     private EditText mEtMeetingPassword;
     private Button mBtnJoinMeeting;
-    private Boolean mJoinByNumber=true;
+    private Boolean mJoinByNumber = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_meeting);
+        init();
+    }
+
+    private void init() {
         mBtnJoinMeeting = (Button) findViewById(R.id.btn_join_meeting);
-        mTvExchangeType= (TextView) findViewById(R.id.tv_exchange_jointype);
-        mEtMeetingNumber= (EditText) findViewById(R.id.et_meeting_number);
-        mEtMeetingPassword= (EditText) findViewById(R.id.et_meeting_password);
+        mTvExchangeType = (TextView) findViewById(R.id.tv_exchange_jointype);
+        mEtMeetingNumber = (EditText) findViewById(R.id.et_meeting_number);
+        mEtMeetingPassword = (EditText) findViewById(R.id.et_meeting_password);
         mBtnJoinMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(JoinMeetingActivity.this,"加入会议",Toast.LENGTH_SHORT).show();
+                Toast.makeText(JoinMeetingActivity.this, "加入会议", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.setClass(JoinMeetingActivity.this, MeetingActivity.class);
                 startActivity(intent);
@@ -39,20 +43,17 @@ public class JoinMeetingActivity extends Activity {
         mTvExchangeType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mJoinByNumber){
+                if (mJoinByNumber) {
                     mEtMeetingNumber.setHint(R.string.meeting_name);
                     mTvExchangeType.setText(R.string.join_meeting_by_meeting_number);
-                    mJoinByNumber=false;
-                }else{
+                    mJoinByNumber = false;
+                } else {
                     mEtMeetingNumber.setHint(R.string.meeting_number);
                     mTvExchangeType.setText(R.string.join_meeting_by_meeting_name);
-                    mJoinByNumber=true;
+                    mJoinByNumber = true;
                 }
 
             }
         });
-
-
-
     }
 }

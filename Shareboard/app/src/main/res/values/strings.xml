@@ -18,7 +18,7 @@
     <string name="settings">设置</string>
     <string name="join_meeting">加入会议</string>
     <string name="system_msg">系统消息</string>
-    <string name="host_or_arrange_meeting">主持或安排会议</string>
+    <string name="host_or_arrange_meeting">安排或主持会议</string>
     <string name="menu_settings">Settings</string>
     <string name="add_friend">添加好友</string>
     <string name="search_contacts_by_email">通过电子邮箱找到联系人</string>
@@ -29,4 +29,19 @@
     <string name="join_meeting_by_meeting_name">使用会议名称加会</string>
     <string name="join_meeting_by_meeting_number">使用会议号加会</string>
     <string name="meeting_name">会议名称</string>
+    <string name="host_meeting">召开会议</string>
+    <string name="personal_meeting_id">个人会议ID</string>
+    <string name="use_personal_meeting_id">使用个人会议ID</string>
+    <string name="arrange_meeting">安排会议</string>
+    <string name="my_meeting">我的会议</string>
+    <string name="free">空闲</string>
+    <string name="my_info">我的资料</string>
+    <string name="photo">头像</string>
+    <string name="name">姓名</string>
+    <string name="login_password">登录密码</string>
+    <string name="logout">注销</string>
+    <string name="familyName">姓</string>
+    <string name="givenname">名</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
 </resources>

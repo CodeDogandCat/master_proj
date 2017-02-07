@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -58,7 +57,7 @@ public class MainActivity extends FragmentActivity implements
 
     private List<Fragment> fragments = new ArrayList<Fragment>();
     private ImageView mImgAddContact;
-    private LayoutParams mlp;
+    private LinearLayout.LayoutParams mlp;
     private boolean hasAddContactIcon;
 
     @Override
@@ -66,7 +65,6 @@ public class MainActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        initView();
         selectPage(0); // 默认选中首页
     }
 
@@ -77,9 +75,8 @@ public class MainActivity extends FragmentActivity implements
         fragments.add(meetingFragment);
         fragments.add(contactsFragment);
         fragments.add(settingsFragment);
-    }
 
-    private void initView() {
+
         mLlActionbar = (LinearLayout) findViewById(R.id.ll_main_actionbar);
         mLlActionbarRight = (LinearLayout) findViewById(R.id.ll_main_actionbar_right);
         mTvTitle = (TextView) findViewById(R.id.tv_main_title);
@@ -91,14 +88,16 @@ public class MainActivity extends FragmentActivity implements
         mViewPager.setAdapter(tabPageAdapter);
         mViewPager.setOnPageChangeListener(this);
 
+
         //联系人页面actionbar右侧的添加联系人图标
-        Drawable mDrawableAddContact = getResources().getDrawable(R.drawable.ic_yellow_22);
+        Drawable mDrawableAddContact = getResources().getDrawable(R.drawable.ic_white_22);
         mImgAddContact = new ImageView(this);
         mImgAddContact.setImageDrawable(mDrawableAddContact);
-        mlp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        mlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         hasAddContactIcon = false;//标志着当前页面没有添加联系人图标
 
     }
+
 
     /**
      * 选择某页

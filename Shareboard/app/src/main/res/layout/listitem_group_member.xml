@@ -1,33 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/catalog"
+        android:id="@+id/tv_contacts_catalog"
         android:layout_width="fill_parent"
         android:layout_height="30dp"
         android:background="@color/barblack"
         android:paddingBottom="5dip"
         android:paddingLeft="10dip"
         android:paddingTop="5dip"
+        android:text="cccc"
         android:textColor="@color/yellow" />
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dip"
-        android:gravity="center_vertical"
-        android:paddingBottom="10dip"
-        android:paddingTop="10dip"
-        android:background="@color/transparent"
-        android:text="hhhh"
-        android:paddingRight="20dp"
-        android:textColor="@color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:paddingLeft="10dip">
+
+        <RelativeLayout
+            android:id="@+id/ll_contacts_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <cn.edu.hfut.lilei.shareboard.view.CircleImageView
+                android:id="@+id/img_contacts_photo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/er"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_contacts_account"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/ll_contacts_photo"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            >
+
+            <TextView
+                android:id="@+id/tv_contacts_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="2662083658@qq.com"
+                android:textSize="@dimen/small_text_size"
+                android:maxWidth="200dp"
+               />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_contacts_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:text="@string/free"
+            android:textSize="@dimen/super_small_text_size"
+           android:layout_centerVertical="true"
+            android:background="@color/transparent"
+           />
+    </RelativeLayout>
+
 
 </LinearLayout>

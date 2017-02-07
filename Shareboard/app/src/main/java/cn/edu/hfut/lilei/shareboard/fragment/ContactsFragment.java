@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,15 +61,15 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        Log.i("main","$1");
+//        Log.i("main","$1");
         View view = inflater.inflate(R.layout.fragment_contacts_index, container, false);
-        Log.i("main","$2");
-        initViews(view);
-        Log.i("main","$3");
+//        Log.i("main","$2");
+        init(view);
+//        Log.i("main","$3");
         return view;
     }
 
-    private void initViews(View view) {
+    private void init(View view) {
 
         titleLayout = (LinearLayout) view.findViewById(R.id.title_layout);
         title = (TextView) view.findViewById(R.id.title_layout_catalog);
@@ -95,7 +94,7 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
             }
         });
 
-        sortListView = (ListView) view.findViewById(R.id.country_lvcountry);
+        sortListView = (ListView) view.findViewById(R.id.lv_contacts_content);
         sortListView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -108,7 +107,7 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
             }
         });
 
-        SourceDateList = filledData(getResources().getStringArray(R.array.date));
+        SourceDateList = filledData(getResources().getStringArray(R.array.account));
         // 根据a-z进行排序源数据
         Collections.sort(SourceDateList, pinyinComparator);
         adapter = new SortGroupMemberAdapter(view.getContext(), SourceDateList);
@@ -183,16 +182,18 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
     }
 
     /**
-     * @param date
+     * @param contacts
      * @return
      */
-    private List<GroupMemberInfo> filledData(String[] date) {
+    private List<GroupMemberInfo> filledData(String[] contacts) {
         List<GroupMemberInfo> mSortList = new ArrayList<GroupMemberInfo>();
 
-        for (int i = 0; i < date.length; i++) {
+        for (int i = 0; i < contacts.length; i++) {
             GroupMemberInfo sortModel = new GroupMemberInfo();
-            sortModel.setName(date[i]);
-            String pinyin = characterParser.getSelling(date[i]);
+            sortModel.setPhoto(getResources().getDrawable(R.drawable.er));
+            sortModel.setName(contacts[i]);
+            sortModel.setStatus("空闲");
+            String pinyin = characterParser.getSelling(contacts[i]);
             String sortString = pinyin.substring(0, 1).toUpperCase();
 
             if (sortString.matches("[A-Z]")) {
@@ -202,7 +203,7 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
             }
 
             mSortList.add(sortModel);
-            Log.i("hi", sortModel.getSortLetters() + " " + sortModel.getName());
+//            Log.i("hi", sortModel.getSortLetters() + " " + sortModel.getName());
 
         }
         return mSortList;
