@@ -44,4 +44,11 @@
     <string name="givenname">名</string>
     <string name="cancel">取消</string>
     <string name="confirm">确认</string>
+    <string name="alterpassword">更改密码</string>
+    <string name="old_password">旧密码</string>
+    <string name="new_password">新密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="set_new_password">设置新密码</string>
+    <string name="check_your_password">核对您的密码</string>
+    <string name="save">保存</string>
 </resources>

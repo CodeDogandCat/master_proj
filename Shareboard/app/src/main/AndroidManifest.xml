@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.edu.hfut.lilei.shareboard">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/NoActionBarTheme"
-        android:hardwareAccelerated="true">
+        android:theme="@style/NoActionBarTheme">
 
         <activity
             android:name=".activity.WelcomeActivity"
@@ -27,6 +29,7 @@
         <activity android:name=".activity.MeetingActivity" />
         <activity android:name=".activity.ArrangeOrHostMeetingActivity" />
         <activity android:name=".activity.SettingsMyInfoActivity" />
+        <activity android:name=".activity.AlterPasswordActivity" />
         <activity
             android:name=".activity.MainActivity"
             android:windowSoftInputMode="adjustPan" />
