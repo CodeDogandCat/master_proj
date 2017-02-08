@@ -35,12 +35,12 @@ public class ResetPasswordActivity extends Activity {
                 if (hasFocus) {
 
                     // 获得焦点
-                    mLlBottomlineofemail.setBackgroundColor(getResources().getColor(R.color.yellow));
+                    mLlBottomlineofemail.setBackgroundColor(getResources().getColor(R.color.my_yellow));
                     mImgEmail.setImageDrawable(getResources().getDrawable(R.drawable.ic_yellow_34));
                 } else {
 
                     // 失去焦点
-                    mLlBottomlineofemail.setBackgroundColor(getResources().getColor(R.color.lightgray));
+                    mLlBottomlineofemail.setBackgroundColor(getResources().getColor(R.color.my_lightgray));
                     mImgEmail.setImageDrawable(getResources().getDrawable(R.drawable.ic_white_34));
                 }
 

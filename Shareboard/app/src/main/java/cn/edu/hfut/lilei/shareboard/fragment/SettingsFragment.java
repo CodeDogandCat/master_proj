@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.activity.SettingsMyInfoActivity;
 
 
 public class SettingsFragment extends Fragment{
 	private LinearLayout mLlAccount;
+	private AvatarImageView mPhoto;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -24,6 +26,9 @@ public class SettingsFragment extends Fragment{
 	}
 
 	private void initViews(View view) {
+		mPhoto = (AvatarImageView) view.findViewById(R.id.img_settings_photo);
+		mPhoto.setTextAndColor("磊", R.color.skyblue);
+
 		mLlAccount= (LinearLayout) view.findViewById(R.id.ll_settings_account);
 		mLlAccount.setOnClickListener(new View.OnClickListener() {
 			@Override

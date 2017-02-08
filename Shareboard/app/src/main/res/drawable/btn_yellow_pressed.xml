@@ -14,6 +14,6 @@
             android:endColor="@color/orange_normal"
             android:useLevel="true" />
         -->
-        <solid android:color="@color/deepyellow" />
+        <solid android:color="@color/my_deepyellow" />
 
     </shape>

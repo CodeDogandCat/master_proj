@@ -27,7 +27,7 @@
             android:layout_marginLeft="10dp"
             android:text="@string/meeting"
             android:textSize="@dimen/nav_title_size"
-            android:textColor="@color/white"/>
+            android:textColor="@color/my_white"/>
 
         <LinearLayout
             android:id="@+id/ll_main_actionbar_right"
@@ -65,7 +65,7 @@
             android:layout_height="0dp"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:background="@color/barblack"
+            android:background="@color/my_barblack"
             android:orientation="horizontal">
 
             <RadioButton
@@ -78,7 +78,7 @@
                 android:drawableTop="@drawable/ic_yellow_04"
                 android:gravity="center"
                 android:text="@string/meeting"
-                android:textColor="@color/white"
+                android:textColor="@color/my_white"
                 android:textSize="@dimen/super_small_text_size" />
 
 
@@ -91,7 +91,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/contacts"
-                android:textColor="@color/white"
+                android:textColor="@color/my_white"
                 android:textSize="@dimen/super_small_text_size" />
 
             <RadioButton
@@ -104,7 +104,7 @@
                 android:drawableTop="@drawable/ic_white_48"
                 android:gravity="center"
                 android:text="@string/settings"
-                android:textColor="@color/white"
+                android:textColor="@color/my_white"
                 android:textSize="@dimen/super_small_text_size" />
 
 

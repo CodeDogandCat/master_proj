@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/my_black"
     android:minWidth="280dp"
     android:orientation="vertical" >
 
@@ -10,7 +10,7 @@
         android:id="@+id/tvAlertDialogTitle"
         android:textSize="@dimen/normal_text_size"
         android:layout_width="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/my_white"
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:gravity="center" />
@@ -21,7 +21,7 @@
         android:layout_height="1dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@color/yellow" >
+        android:background="@color/my_yellow" >
     </View>
 
     <EditText
@@ -31,7 +31,7 @@
         android:layout_height="50dp"
         android:visibility="gone"
         android:hint="@string/search_contacts_by_email"
-        android:background="@color/transparent"
+        android:background="@color/my_transparent"
         android:gravity="center"/>
 
     <View
@@ -40,7 +40,7 @@
         android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/yellow"
+        android:background="@color/my_yellow"
         android:visibility="gone" >
     </View>
 
@@ -59,7 +59,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_margin="5dp"
-            android:textColor="@color/black"
+            android:textColor="@color/my_black"
             android:background="@drawable/btn_yellow"
             android:gravity="center" />
 
@@ -70,7 +70,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_margin="5dp"
-            android:textColor="@color/black"
+            android:textColor="@color/my_black"
             android:background="@drawable/btn_yellow"
             android:gravity="center"
             android:textSize="@dimen/nav_title_size"/>

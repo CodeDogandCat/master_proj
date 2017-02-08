@@ -37,10 +37,10 @@
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_gravity="right|top"
-            android:background="@color/deepgray"
+            android:background="@color/my_deepgray"
             android:gravity="center_vertical"
             android:text="没有匹配的联系人"
-            android:textColor="@color/yellow"
+            android:textColor="@color/my_yellow"
             android:visibility="gone" />
 
         <LinearLayout
@@ -48,7 +48,7 @@
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:layout_gravity="right|top"
-            android:background="@color/barblack"
+            android:background="@color/my_barblack"
             android:orientation="vertical"
            >
 
@@ -56,10 +56,10 @@
                 android:id="@+id/title_layout_catalog"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@color/barblack"
+                android:background="@color/my_barblack"
                 android:paddingBottom="5dip"
                 android:paddingLeft="10dip"
-                android:textColor="@color/yellow" />
+                android:textColor="@color/my_yellow" />
         </LinearLayout>
 
         <TextView
@@ -67,9 +67,9 @@
             android:layout_width="80.0dip"
             android:layout_height="80.0dip"
             android:layout_gravity="center"
-            android:background="@color/yellow"
+            android:background="@color/my_yellow"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@color/my_black"
             android:textSize="@dimen/big_tip_size"
             android:visibility="invisible" />
 

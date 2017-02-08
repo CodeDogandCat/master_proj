@@ -53,7 +53,7 @@
             style="@style/common_horizontal_division_line_style"
             android:layout_width="match_parent"
             android:layout_marginTop="18dp"
-            android:background="@color/deepgray" />
+            android:background="@color/my_deepgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,7 +61,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:background="@color/barblack">
+            android:background="@color/my_barblack">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -77,7 +77,7 @@
                     android:gravity="center"
                     android:text="@string/use_personal_meeting_id"
                     android:textSize="@dimen/small_text_size"
-                    android:textColor="@color/yellow" />
+                    android:textColor="@color/my_yellow" />
 
                 <ImageView
                     android:layout_width="8dp"
@@ -93,14 +93,14 @@
             <LinearLayout
                 style="@style/common_horizontal_division_line_style"
                 android:layout_width="match_parent"
-                android:background="@color/deepgray" />
+                android:background="@color/my_deepgray" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/barblack"
+            android:background="@color/my_barblack"
             >
 
             <Button
@@ -115,13 +115,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/barblack"
+            android:background="@color/my_barblack"
            >
 
             <LinearLayout
                 style="@style/common_horizontal_division_line_style"
                 android:layout_marginTop="10dp"
-                android:background="@color/deepgray" />
+                android:background="@color/my_deepgray" />
         </LinearLayout>
 
 
@@ -137,7 +137,7 @@
         <LinearLayout
             style="@style/common_horizontal_division_line_style"
             android:layout_width="match_parent"
-            android:background="@color/deepgray" />
+            android:background="@color/my_deepgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -145,7 +145,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:background="@color/barblack"
+            android:background="@color/my_barblack"
            >
 
             <RelativeLayout
@@ -161,7 +161,7 @@
                     android:gravity="center"
                     android:text="@string/my_meeting"
                     android:textSize="@dimen/small_text_size"
-                    android:textColor="@color/yellow" />
+                    android:textColor="@color/my_yellow" />
 
                 <ImageView
                     android:layout_width="8dp"
@@ -178,7 +178,7 @@
         <LinearLayout
             style="@style/common_horizontal_division_line_style"
             android:layout_width="match_parent"
-            android:background="@color/deepgray" />
+            android:background="@color/my_deepgray" />
     </LinearLayout>
 
 
@@ -192,7 +192,7 @@
         <LinearLayout
             style="@style/common_horizontal_division_line_style"
             android:layout_width="match_parent"
-            android:background="@color/deepgray" />
+            android:background="@color/my_deepgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -200,7 +200,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:background="@color/barblack"
+            android:background="@color/my_barblack"
            >
 
             <RelativeLayout
@@ -216,7 +216,7 @@
                     android:gravity="center"
                     android:text="@string/arrange_meeting"
                     android:textSize="@dimen/small_text_size"
-                    android:textColor="@color/yellow"
+                    android:textColor="@color/my_yellow"
                     />
 
                 <ImageView
@@ -234,7 +234,7 @@
         <LinearLayout
             style="@style/common_horizontal_division_line_style"
             android:layout_width="match_parent"
-            android:background="@color/deepgray" />
+            android:background="@color/my_deepgray" />
     </LinearLayout>
 
 

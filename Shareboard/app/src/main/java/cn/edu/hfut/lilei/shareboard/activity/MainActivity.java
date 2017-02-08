@@ -115,7 +115,7 @@ public class MainActivity extends FragmentActivity implements
             RadioButton child = (RadioButton) mRadioGroup.getChildAt(i);
             child.setCompoundDrawables(null, gray, null, null);
             child.setTextColor(getResources().getColor(
-                    R.color.white));
+                    R.color.my_white));
         }
         //切换页面标题
         mTvTitle.setText(pageTitles[position]);
@@ -128,7 +128,7 @@ public class MainActivity extends FragmentActivity implements
         RadioButton select = (RadioButton) mRadioGroup.getChildAt(position);
         select.setCompoundDrawables(null, yellow, null, null);
         select.setTextColor(getResources().getColor(
-                R.color.yellow));
+                R.color.my_yellow));
 
         //联系人页面特定
         if (position == 1) {

@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.view.NameInputDialog;
 
@@ -16,6 +17,7 @@ public class SettingsMyInfoActivity extends Activity {
     private Button mBtnComplete;
     private LinearLayout mLlAccount, mLlName, mLlLoginpassword, mLlLogout;
     private TextView mTvFamilyNameHint, mTvGivenNameHint;
+    private AvatarImageView mPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,11 @@ public class SettingsMyInfoActivity extends Activity {
     }
 
     private void init() {
+        mPhoto = (AvatarImageView) this.findViewById(R.id.img_settingmyinfo_photo);
+        mPhoto.setTextAndColor("磊", R.color.skyblue);
+
+
+
         mTvFamilyNameHint = (TextView) findViewById(R.id.tv_settingmyinfo_familyname);
         mTvGivenNameHint = (TextView) findViewById(R.id.tv_settingmyinfo_givenname);
 

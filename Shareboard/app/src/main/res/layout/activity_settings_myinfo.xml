@@ -49,13 +49,13 @@
         <LinearLayout
             style="@style/common_horizontal_division_line_style"
             android:layout_width="match_parent"
-            android:background="@color/deepgray" />
+            android:background="@color/my_deepgray" />
 
         <LinearLayout
             android:id="@+id/ll_settingmyinfo_account"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="@color/barblack"
+            android:background="@color/my_barblack"
             android:gravity="bottom"
             android:orientation="vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin">
@@ -78,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:text="@string/photo"
-                        android:textColor="@color/yellow"
+                        android:textColor="@color/my_yellow"
                         android:textSize="@dimen/small_text_size" />
 
 
@@ -92,14 +92,24 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="35dp">
 
-                    <cn.edu.hfut.lilei.shareboard.view.CircleImageView
+                    <!--<cn.edu.hfut.lilei.shareboard.view.CircleImageView-->
+                        <!--android:id="@+id/img_settingmyinfo_photo"-->
+                        <!--android:layout_width="60dp"-->
+                        <!--android:layout_height="60dp"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:src="@drawable/er"-->
+                        <!--app:civ_border_color="@color/white"-->
+                        <!--app:civ_border_width="2dp" />-->
+                    <cn.carbs.android.avatarimageview.library.AvatarImageView
                         android:id="@+id/img_settingmyinfo_photo"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        app:aiv_BoarderWidth="1dp"
+                        app:aiv_ShowBoarder="false"
+                        app:aiv_TextSizeRatio="0.4"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/er"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="2dp" />
+                        />
                 </RelativeLayout>
 
                 <ImageView
@@ -123,7 +133,7 @@
 
             <LinearLayout
                 style="@style/common_horizontal_division_line_style"
-                android:background="@color/deepgray" />
+                android:background="@color/my_deepgray" />
         </LinearLayout>
 
 
@@ -138,13 +148,13 @@
         <LinearLayout
             style="@style/common_horizontal_division_line_style"
             android:layout_width="match_parent"
-            android:background="@color/deepgray" />
+            android:background="@color/my_deepgray" />
 
         <LinearLayout
             android:id="@+id/ll_settingmyinfo_name"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:background="@color/barblack"
+            android:background="@color/my_barblack"
             android:gravity="center"
             android:orientation="vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin">
@@ -160,7 +170,7 @@
                     android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:text="@string/name"
-                    android:textColor="@color/yellow"
+                    android:textColor="@color/my_yellow"
                     android:textSize="@dimen/small_text_size" />
                 <ImageView
                     android:id="@+id/img_settingmyinfo_name_next"
@@ -170,7 +180,8 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="17dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_yellow_rightarrow" />
+                    android:src="@drawable/ic_yellow_rightarrow"
+                    />
                 <TextView
                     android:id="@+id/tv_settingmyinfo_givenname"
                     android:layout_width="wrap_content"
@@ -206,7 +217,7 @@
         <LinearLayout
             style="@style/common_horizontal_division_line_style"
             android:layout_width="match_parent"
-            android:background="@color/deepgray" />
+            android:background="@color/my_deepgray" />
     </LinearLayout>
 
 
@@ -219,13 +230,13 @@
         <LinearLayout
             style="@style/common_horizontal_division_line_style"
             android:layout_width="match_parent"
-            android:background="@color/deepgray" />
+            android:background="@color/my_deepgray" />
 
         <LinearLayout
             android:id="@+id/ll_settingmyinfo_loginpassword"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/barblack"
+            android:background="@color/my_barblack"
             android:gravity="center"
             android:orientation="vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin">
@@ -241,7 +252,7 @@
                     android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:text="@string/login_password"
-                    android:textColor="@color/yellow"
+                    android:textColor="@color/my_yellow"
                     android:textSize="@dimen/small_text_size" />
 
                 <ImageView
@@ -259,7 +270,7 @@
         <LinearLayout
             style="@style/common_horizontal_division_line_style"
             android:layout_width="match_parent"
-            android:background="@color/deepgray" />
+            android:background="@color/my_deepgray" />
     </LinearLayout>
 
     <LinearLayout
@@ -271,13 +282,13 @@
         <LinearLayout
             style="@style/common_horizontal_division_line_style"
             android:layout_width="match_parent"
-            android:background="@color/deepgray" />
+            android:background="@color/my_deepgray" />
 
         <LinearLayout
             android:id="@+id/ll_settingmyinfo_logout"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:background="@color/barblack"
+            android:background="@color/my_barblack"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -287,7 +298,7 @@
                 android:layout_height="40dp"
                 android:gravity="center"
                 android:text="@string/logout"
-                android:textColor="@color/red"
+                android:textColor="@color/my_red"
                 android:textSize="@dimen/nav_title_size" />
 
         </LinearLayout>
@@ -295,7 +306,7 @@
         <LinearLayout
             style="@style/common_horizontal_division_line_style"
             android:layout_width="match_parent"
-            android:background="@color/deepgray" />
+            android:background="@color/my_deepgray" />
     </LinearLayout>
 
 

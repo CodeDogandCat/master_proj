@@ -54,7 +54,7 @@
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:background="@color/yellow" />
+            android:background="@color/my_yellow" />
 
 
     </LinearLayout>
@@ -87,7 +87,7 @@
         <LinearLayout
             android:id="@+id/ll_setuserinfo_bottomlineofname"
             style="@style/common_horizontal_division_line_style"
-            android:background="@color/yellow" />
+            android:background="@color/my_yellow" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,7 +107,7 @@
         <LinearLayout
             android:id="@+id/ll_setuserinfo_bottomlineofpass"
             style="@style/common_horizontal_division_line_style"
-            android:background="@color/yellow" />
+            android:background="@color/my_yellow" />
 
 
         <Button

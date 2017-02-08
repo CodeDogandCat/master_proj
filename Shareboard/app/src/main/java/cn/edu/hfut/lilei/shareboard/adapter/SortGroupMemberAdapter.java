@@ -5,14 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import java.util.List;
 
+import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.data.GroupMemberInfo;
+import cn.edu.hfut.lilei.shareboard.utils.MyStringUtils;
 
 public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexer {
     private List<GroupMemberInfo> list = null;
@@ -50,7 +51,7 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
             viewHolder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.listitem_group_member, null);
             viewHolder.tvLetter = (TextView) view.findViewById(R.id.tv_contacts_catalog);
-            viewHolder.imgPhoto = (ImageView) view.findViewById(R.id.img_contacts_photo);
+            viewHolder.imgPhoto = (AvatarImageView) view.findViewById(R.id.img_contacts_photo);
             viewHolder.tvTitle = (TextView) view.findViewById(R.id.tv_contacts_account);
             viewHolder.tvStatus = (TextView) view.findViewById(R.id.tv_contacts_status);
             view.setTag(viewHolder);
@@ -66,17 +67,19 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
         } else {
             viewHolder.tvLetter.setVisibility(View.GONE);
         }
+        String name = this.list.get(position).getName();
+        int length = MyStringUtils.length(name);
+        viewHolder.imgPhoto.setTextAndColor(MyStringUtils.substring(name, length - 2, length, "", ""), R.color.mediumaquamarine);
 
-        viewHolder.imgPhoto.setImageDrawable(this.list.get(position).getPhoto());
         viewHolder.tvStatus.setText(this.list.get(position).getStatus());
-        viewHolder.tvTitle.setText(this.list.get(position).getName());
+        viewHolder.tvTitle.setText(name);
 
         return view;
 
     }
 
     final static class ViewHolder {
-        ImageView imgPhoto;
+        AvatarImageView imgPhoto;
         TextView tvLetter;
         TextView tvTitle;
         TextView tvStatus;

@@ -69,7 +69,7 @@
             style="@style/common_horizontal_division_line_style"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:background="@color/lightgray" />
+            android:background="@color/my_lightgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,7 +100,7 @@
             style="@style/common_horizontal_division_line_style"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:background="@color/lightgray" />
+            android:background="@color/my_lightgray" />
 
 
         <LinearLayout
@@ -141,7 +141,7 @@
             style="@style/common_vertical_division_line_style"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="@color/yellow" />
+            android:background="@color/my_yellow" />
 
         <Button
             android:id="@+id/btn_login_resetpassword"

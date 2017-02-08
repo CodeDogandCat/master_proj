@@ -32,14 +32,14 @@
         <item name="android:layout_height">40dp</item>
         <item name="android:background">@drawable/btn_yellow</item>
         <item name="android:textSize">@dimen/nav_title_size</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/my_black</item>
         <item name="android:gravity">center</item>
     </style>
     <style name="TransparentBgButton">
         <item name="android:layout_height">40dp</item>
-        <item name="android:background">@color/transparent</item>
+        <item name="android:background">@color/my_transparent</item>
         <item name="android:textSize">@dimen/small_text_size</item>
-        <item name="android:textColor">@color/yellow</item>
+        <item name="android:textColor">@color/my_yellow</item>
         <item name="android:gravity">center</item>
     </style>
     <style name="common_horizontal_division_line_style">
@@ -54,13 +54,13 @@
     <style name="actionbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/nav_height</item>
-        <item name="android:background">@color/barblack</item>
+        <item name="android:background">@color/my_barblack</item>
     </style>
     <style name="big_edittext">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_gravity">bottom</item>
-        <item name="android:background">@color/transparent</item>
+        <item name="android:background">@color/my_transparent</item>
         <item name="android:textSize">@dimen/normal_text_size</item>
         <item name="android:paddingLeft">5dp</item>
     </style>

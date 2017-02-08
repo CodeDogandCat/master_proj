@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent"
+        android:background="@color/my_transparent"
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:gravity="center_vertical">
@@ -22,7 +22,7 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/listitem_height"
-            android:textColor="@color/yellow"
+            android:textColor="@color/my_yellow"
             android:gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:textSize="@dimen/small_text_size"/>

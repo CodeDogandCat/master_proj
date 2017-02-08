@@ -69,7 +69,7 @@
         <LinearLayout
             android:id="@+id/ll_setuserinfo_bottomlineofname"
             style="@style/common_horizontal_division_line_style"
-            android:background="@color/yellow" />
+            android:background="@color/my_yellow" />
 
 
         <LinearLayout
@@ -87,7 +87,7 @@
                 android:inputType="textAutoCorrect"
                 android:gravity="center"
                 android:textSize="@dimen/super_small_text_size"
-                android:textColor="@color/yellow"
+                android:textColor="@color/my_yellow"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 />
@@ -115,7 +115,7 @@
         <LinearLayout
             android:id="@+id/ll_setuserinfo_bottomlineofpass"
             style="@style/common_horizontal_division_line_style"
-            android:background="@color/yellow" />
+            android:background="@color/my_yellow" />
 
 
         <Button

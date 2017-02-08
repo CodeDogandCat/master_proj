@@ -49,12 +49,12 @@ public class LoginActivity extends Activity {
                 if (hasFocus) {
 
                     // 获得焦点
-                    mLlBottomlineofemail.setBackgroundColor(getResources().getColor(R.color.yellow));
+                    mLlBottomlineofemail.setBackgroundColor(getResources().getColor(R.color.my_yellow));
                     mImgEmail.setImageDrawable(getResources().getDrawable(R.drawable.ic_yellow_34));
                 } else {
 
                     // 失去焦点
-                    mLlBottomlineofemail.setBackgroundColor(getResources().getColor(R.color.lightgray));
+                    mLlBottomlineofemail.setBackgroundColor(getResources().getColor(R.color.my_lightgray));
                     mImgEmail.setImageDrawable(getResources().getDrawable(R.drawable.ic_white_34));
                 }
 
@@ -70,12 +70,12 @@ public class LoginActivity extends Activity {
                 if (hasFocus) {
 
                     // 获得焦点
-                    mLlBottomlineofpass.setBackgroundColor(getResources().getColor(R.color.yellow));
+                    mLlBottomlineofpass.setBackgroundColor(getResources().getColor(R.color.my_yellow));
                     mImgPassword.setImageDrawable(getResources().getDrawable(R.drawable.ic_yellow_32));
                 } else {
 
                     // 失去焦点
-                    mLlBottomlineofpass.setBackgroundColor(getResources().getColor(R.color.lightgray));
+                    mLlBottomlineofpass.setBackgroundColor(getResources().getColor(R.color.my_lightgray));
                     mImgPassword.setImageDrawable(getResources().getDrawable(R.drawable.ic_white_32));
                 }
 
