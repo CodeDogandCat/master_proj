@@ -28,8 +28,13 @@
         <activity android:name=".activity.JoinMeetingActivity" />
         <activity android:name=".activity.MeetingActivity" />
         <activity android:name=".activity.ArrangeOrHostMeetingActivity" />
-        <activity android:name=".activity.SettingsMyInfoActivity" />
+        <activity
+            android:name=".activity.SettingsMyInfoActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activity.AlterPasswordActivity" />
+        <activity
+            android:name=".activity.ArrangeMeetingActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.MainActivity"
             android:windowSoftInputMode="adjustPan" />

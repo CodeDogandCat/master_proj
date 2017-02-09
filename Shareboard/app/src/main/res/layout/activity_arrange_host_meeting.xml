@@ -42,31 +42,30 @@
 
     </RelativeLayout>
 
+    <LinearLayout style="@style/content_vertical_space" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
+        android:background="@color/my_barblack"
         android:gravity="center_vertical"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             style="@style/common_horizontal_division_line_style"
-            android:layout_width="match_parent"
-            android:layout_marginTop="18dp"
             android:background="@color/my_deepgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="50dp"
+            android:background="@color/my_barblack"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:background="@color/my_barblack">
+            android:paddingLeft="@dimen/activity_horizontal_margin">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-              >
+                android:layout_height="50dp">
 
                 <TextView
                     android:id="@+id/tv_hostmeeting_id"
@@ -76,8 +75,8 @@
                     android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:text="@string/use_personal_meeting_id"
-                    android:textSize="@dimen/small_text_size"
-                    android:textColor="@color/my_yellow" />
+                    android:textColor="@color/my_yellow"
+                    android:textSize="@dimen/small_text_size" />
 
                 <ImageView
                     android:layout_width="8dp"
@@ -90,18 +89,17 @@
             </RelativeLayout>
 
 
-            <LinearLayout
-                style="@style/common_horizontal_division_line_style"
-                android:layout_width="match_parent"
-                android:background="@color/my_deepgray" />
-
         </LinearLayout>
+
+        <LinearLayout
+            style="@style/common_horizontal_division_line_style"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@color/my_deepgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/my_barblack"
-            >
+            android:background="@color/my_barblack">
 
             <Button
                 android:id="@+id/btn_join_meeting"
@@ -112,41 +110,37 @@
                 android:text="@string/host_meeting" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/my_barblack"
-           >
 
-            <LinearLayout
-                style="@style/common_horizontal_division_line_style"
-                android:layout_marginTop="10dp"
-                android:background="@color/my_deepgray" />
-        </LinearLayout>
+        <LinearLayout
+            style="@style/common_horizontal_division_line_style"
+            android:layout_marginTop="10dp"
+            android:background="@color/my_deepgray" />
 
 
     </LinearLayout>
 
+    <LinearLayout style="@style/content_vertical_space" />
+
+    <LinearLayout
+        style="@style/common_horizontal_division_line_style"
+        android:layout_width="match_parent"
+        android:background="@color/my_deepgray" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:background="@color/my_barblack"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <LinearLayout
-            style="@style/common_horizontal_division_line_style"
-            android:layout_width="match_parent"
-            android:background="@color/my_deepgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="50dp"
+            android:background="@color/my_barblack"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:background="@color/my_barblack"
-           >
+            android:paddingLeft="@dimen/activity_horizontal_margin">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -160,8 +154,8 @@
                     android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:text="@string/my_meeting"
-                    android:textSize="@dimen/small_text_size"
-                    android:textColor="@color/my_yellow" />
+                    android:textColor="@color/my_yellow"
+                    android:textSize="@dimen/small_text_size" />
 
                 <ImageView
                     android:layout_width="8dp"
@@ -175,33 +169,35 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            style="@style/common_horizontal_division_line_style"
-            android:layout_width="match_parent"
-            android:background="@color/my_deepgray" />
+
     </LinearLayout>
 
+    <LinearLayout
+        style="@style/common_horizontal_division_line_style"
+        android:background="@color/my_deepgray" />
+
+    <LinearLayout style="@style/content_vertical_space" />
+
+    <LinearLayout
+        style="@style/common_horizontal_division_line_style"
+        android:background="@color/my_deepgray" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="26dp"
+        android:layout_height="wrap_content"
+        android:background="@color/my_barblack"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <LinearLayout
-            style="@style/common_horizontal_division_line_style"
-            android:layout_width="match_parent"
-            android:background="@color/my_deepgray" />
 
         <LinearLayout
+            android:id="@+id/ll_arrange_meeting"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="50dp"
+            android:background="@color/my_barblack"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:background="@color/my_barblack"
-           >
+            android:paddingLeft="@dimen/activity_horizontal_margin">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -215,9 +211,8 @@
                     android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:text="@string/arrange_meeting"
-                    android:textSize="@dimen/small_text_size"
                     android:textColor="@color/my_yellow"
-                    />
+                    android:textSize="@dimen/small_text_size" />
 
                 <ImageView
                     android:layout_width="8dp"
@@ -231,11 +226,12 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            style="@style/common_horizontal_division_line_style"
-            android:layout_width="match_parent"
-            android:background="@color/my_deepgray" />
+
     </LinearLayout>
 
+    <LinearLayout
+        style="@style/common_horizontal_division_line_style"
+        android:layout_width="match_parent"
+        android:background="@color/my_deepgray" />
 
 </LinearLayout>

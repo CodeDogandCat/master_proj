@@ -1,4 +1,5 @@
 <resources>
+
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
@@ -15,18 +16,22 @@
     <style name="FullScreenTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
         <!-- Customize your theme here. -->
     </style>
+
     <style name="NormalTheme" parent="android:Theme.Holo">
         <!-- Customize your theme here. -->
     </style>
+
     <style name="NoActionBarTheme" parent="android:Theme.Holo.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
+
     <style name="WelcomeTheme" parent="@android:style/Theme.Holo">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
     <style name="BigButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>
@@ -35,6 +40,7 @@
         <item name="android:textColor">@color/my_black</item>
         <item name="android:gravity">center</item>
     </style>
+
     <style name="TransparentBgButton">
         <item name="android:layout_height">40dp</item>
         <item name="android:background">@color/my_transparent</item>
@@ -42,20 +48,24 @@
         <item name="android:textColor">@color/my_yellow</item>
         <item name="android:gravity">center</item>
     </style>
+
     <style name="common_horizontal_division_line_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.3dp</item>
         <item name="android:orientation">horizontal</item>
     </style>
+
     <style name="common_vertical_division_line_style">
         <item name="android:layout_width">0.3dp</item>
         <item name="android:layout_height">match_parent</item>
     </style>
+
     <style name="actionbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/nav_height</item>
         <item name="android:background">@color/my_barblack</item>
     </style>
+
     <style name="big_edittext">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>
@@ -71,4 +81,23 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <style name="SwitchButtonStyle">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <style name="SwitchButtonStyleMD" parent="SwitchButtonMD">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <style name="content_vertical_space">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/content_vertical_space_height</item>
+        <item name="android:orientation">vertical</item>
+    </style>
 </resources>

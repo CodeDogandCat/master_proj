@@ -7,6 +7,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
 
     tools:context="cn.edu.hfut.lilei.shareboard.activity.JoinMeetingActivity">
+
     <RelativeLayout style="@style/actionbar">
 
         <!--<LinearLayout-->
@@ -24,15 +25,15 @@
             android:src="@drawable/ic_yellow_leftarrow" />
 
         <TextView
+            android:id="@+id/tv_joinmeeting_navtitle"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/img_setuserinfo_goback"
             android:gravity="center"
             android:text="@string/join_meeting"
-            android:textSize="@dimen/nav_title_size"
-            android:id="@+id/tv_joinmeeting_navtitle"/>
+            android:textSize="@dimen/nav_title_size" />
 
         <!--<LinearLayout-->
         <!--style="@style/common_horizontal_division_line_style"-->
@@ -60,9 +61,10 @@
             <EditText
                 android:id="@+id/et_meeting_number"
                 style="@style/big_edittext"
+                android:gravity="center"
                 android:hint="@string/please_input_your_meeting_number"
                 android:inputType="textAutoCorrect"
-                android:gravity="center"/>
+                android:textSize="@dimen/small_text_size" />
 
         </LinearLayout>
 
@@ -75,25 +77,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingRight="10dp"
-            android:layout_marginTop="10dp">
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/tv_exchange_jointype"
                 style="@style/big_edittext"
-                android:text="@string/join_meeting_by_meeting_name"
-                android:inputType="textAutoCorrect"
-                android:gravity="center"
-                android:textSize="@dimen/super_small_text_size"
-                android:textColor="@color/my_yellow"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                />
+                android:gravity="center"
+                android:inputType="textAutoCorrect"
+                android:text="@string/join_meeting_by_meeting_name"
+                android:textColor="@color/my_yellow"
+                android:textSize="@dimen/super_small_text_size" />
 
         </LinearLayout>
-
 
 
         <LinearLayout
@@ -106,9 +106,10 @@
             <EditText
                 android:id="@+id/et_meeting_password"
                 style="@style/big_edittext"
+                android:gravity="center"
                 android:hint="@string/please_input_your_meeting_password"
                 android:inputType="textPassword"
-                android:gravity="center"/>
+                android:textSize="@dimen/small_text_size" />
         </LinearLayout>
 
 

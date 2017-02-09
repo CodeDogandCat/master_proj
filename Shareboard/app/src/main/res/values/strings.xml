@@ -51,4 +51,13 @@
     <string name="set_new_password">设置新密码</string>
     <string name="check_your_password">核对您的密码</string>
     <string name="save">保存</string>
+    <string name="meeting_theme">会议主题</string>
+    <string name="date">日期</string>
+    <string name="from">从</string>
+    <string name="to">到</string>
+    <string name="meeting_participate_able_to_draw">与会者默认可绘画</string>
+    <string name="meeting_participate_able_to_talk">与会者默认开发言</string>
+    <string name="use_pmi">使用PMI (%1$s)</string>
+    <string name="meeting_password_optional">会议密码(选填)</string>
+    <string name="add_to_canlendar">添加至日历项</string>
 </resources>
