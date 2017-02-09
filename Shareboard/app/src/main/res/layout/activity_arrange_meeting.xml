@@ -98,6 +98,7 @@
                     android:background="@color/my_deepgray" />
 
                 <LinearLayout
+                    android:id="@+id/ll_arrange_meeting_date"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/my_barblack"
@@ -115,15 +116,24 @@
                         android:textColor="@color/my_yellow"
                         android:textSize="@dimen/small_text_size" />
 
-                    <EditText
-                        android:id="@+id/et_arrangemeeting_date"
+                    <TextView
+                        android:id="@+id/tv_arrange_meeting_date"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/my_transparent"
                         android:gravity="center_vertical|right"
-                        android:hint="@string/check_your_password"
                         android:paddingRight="10dp"
+                        android:text="@string/meeting_date"
                         android:textSize="@dimen/small_text_size" />
+
+                    <!--<EditText-->
+                    <!--android:id="@+id/et_arrangemeeting_date"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@color/my_transparent"-->
+                    <!--android:gravity="center_vertical|right"-->
+                    <!--android:hint="@string/check_your_password"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--android:textSize="@dimen/small_text_size" />-->
 
 
                 </LinearLayout>
@@ -136,6 +146,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_arrange_meeting_start_time"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/my_barblack"
@@ -153,16 +164,23 @@
                         android:textColor="@color/my_yellow"
                         android:textSize="@dimen/small_text_size" />
 
-
-                    <EditText
-                        android:id="@+id/et_arrangemeeting_from"
+                    <TextView
+                        android:id="@+id/tv_arrange_meeting_start_time"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/my_transparent"
                         android:gravity="center_vertical|right"
-                        android:hint="@string/set_new_password"
                         android:paddingRight="10dp"
+                        android:text="@string/start_time"
                         android:textSize="@dimen/small_text_size" />
+                    <!--<EditText-->
+                    <!--android:id="@+id/et_arrangemeeting_from"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@color/my_transparent"-->
+                    <!--android:gravity="center_vertical|right"-->
+                    <!--android:hint="@string/set_new_password"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--android:textSize="@dimen/small_text_size" />-->
 
 
                 </LinearLayout>
@@ -174,6 +192,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_arrange_meeting_end_time"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/my_barblack"
@@ -191,15 +210,23 @@
                         android:textColor="@color/my_yellow"
                         android:textSize="@dimen/small_text_size" />
 
-                    <EditText
-                        android:id="@+id/et_arrangemeeting_to"
+                    <TextView
+                        android:id="@+id/tv_arrange_meeting_end_time"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/my_transparent"
                         android:gravity="center_vertical|right"
-                        android:hint="@string/confirm_password"
                         android:paddingRight="10dp"
+                        android:text="@string/end_time"
                         android:textSize="@dimen/small_text_size" />
+                    <!--<EditText-->
+                    <!--android:id="@+id/et_arrangemeeting_to"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@color/my_transparent"-->
+                    <!--android:gravity="center_vertical|right"-->
+                    <!--android:hint="@string/confirm_password"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--android:textSize="@dimen/small_text_size" />-->
 
                 </LinearLayout>
 

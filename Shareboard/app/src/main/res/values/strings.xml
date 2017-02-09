@@ -60,4 +60,9 @@
     <string name="use_pmi">使用PMI (%1$s)</string>
     <string name="meeting_password_optional">会议密码(选填)</string>
     <string name="add_to_canlendar">添加至日历项</string>
+    <string name="meeting_date">开会日期</string>
+    <string name="set_time">设置时间</string>
+    <string name="start_time">开始时间</string>
+    <string name="end_time">结束时间</string>
+    <string name="set_date">设置日期</string>
 </resources>
