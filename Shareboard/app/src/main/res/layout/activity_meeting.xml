@@ -6,39 +6,6 @@
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="cn.edu.hfut.lilei.shareboard.activity.MeetingActivity">
-    <!--<RelativeLayout style="@style/actionbar">-->
-
-        <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
-        <!--&lt;!&ndash;style="@style/common_horizontal_division_line_style"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_alignParentTop="true"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:background="@color/deepgray" />&ndash;&gt;-->
-
-        <!--<ImageView-->
-            <!--android:id="@+id/img_setuserinfo_goback"-->
-            <!--android:layout_width="10dp"-->
-            <!--android:layout_height="20dp"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_marginTop="15dp"-->
-            <!--android:scaleType="fitXY"-->
-            <!--android:src="@drawable/ic_yellow_leftarrow" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_toEndOf="@+id/img_setuserinfo_goback"-->
-            <!--android:gravity="center"-->
-            <!--android:text="@string/meeting_number"-->
-            <!--android:textSize="@dimen/nav_title_size"-->
-            <!--android:id="@+id/tv_meeting_navtitle"/>-->
-
-        <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
-        <!--&lt;!&ndash;style="@style/common_horizontal_division_line_style"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_alignParentBottom="true"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:background="@color/deepgray" />&ndash;&gt;-->
-
-    <!--</RelativeLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"

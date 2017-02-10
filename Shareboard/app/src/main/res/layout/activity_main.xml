@@ -6,12 +6,9 @@
     android:orientation="vertical"
     tools:context="cn.edu.hfut.lilei.shareboard.activity.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/ll_main_actionbar"
-        style="@style/actionbar"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+    <RelativeLayout
+        android:id="@+id/rl_main_actionbar"
+        style="@style/actionbar">
 
         <!--<LinearLayout-->
         <!--style="@style/common_horizontal_division_line_style"-->
@@ -21,29 +18,19 @@
 
         <TextView
             android:id="@+id/tv_main_title"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:text="@string/meeting"
-            android:textSize="@dimen/nav_title_size"
-            android:textColor="@color/my_white"/>
+            style="@style/navbar_title_textview_style"
+            android:text="@string/meeting" />
 
         <LinearLayout
             android:id="@+id/ll_main_actionbar_right"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:paddingRight="-20dp"
-            android:orientation="horizontal">
-        </LinearLayout>
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            android:paddingTop="6dp"></LinearLayout>
 
-        <!--<LinearLayout-->
-        <!--style="@style/common_horizontal_division_line_style"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:background="@color/deepgray" />-->
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -20,14 +20,8 @@
 
         <TextView
             android:id="@+id/tv_setuserinfo_setuserinfo"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/img_setmyinfo_goback"
-            android:gravity="center"
-            android:text="@string/my_info"
-            android:textSize="@dimen/nav_title_size" />
+            style="@style/navbar_title_textview_style"
+            android:text="@string/my_info" />
 
 
     </RelativeLayout>

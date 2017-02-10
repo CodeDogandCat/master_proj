@@ -23,14 +23,8 @@
             android:src="@drawable/ic_yellow_leftarrow" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/img_arrangemeeting_goback"
-            android:gravity="center"
-            android:text="@string/arrange_meeting"
-            android:textSize="@dimen/nav_title_size" />
+            style="@style/navbar_title_textview_style"
+            android:text="@string/arrange_meeting" />
 
         <Button
             android:id="@+id/btn_arrangemeeting_save"

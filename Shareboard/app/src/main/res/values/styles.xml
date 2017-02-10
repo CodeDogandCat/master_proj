@@ -100,4 +100,15 @@
         <item name="android:layout_height">@dimen/content_vertical_space_height</item>
         <item name="android:orientation">vertical</item>
     </style>
+
+    <style name="navbar_title_textview_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textColor">@color/my_white</item>
+        <item name="android:textSize">@dimen/nav_title_size</item>
+        <item name="android:textStyle">bold</item>
+
+
+    </style>
 </resources>

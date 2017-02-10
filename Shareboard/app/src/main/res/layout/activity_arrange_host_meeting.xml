@@ -26,14 +26,9 @@
 
         <TextView
             android:id="@+id/tv_hostmeeting_navtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/img_hostmeeting_goback"
-            android:gravity="center"
+            style="@style/navbar_title_textview_style"
             android:text="@string/host_or_arrange_meeting"
-            android:textSize="@dimen/nav_title_size" />
+           />
 
         <!--<LinearLayout-->
         <!--style="@style/common_horizontal_division_line_style"-->

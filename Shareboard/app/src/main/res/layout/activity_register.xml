@@ -6,6 +6,7 @@
     android:orientation="vertical"
 
     tools:context="cn.edu.hfut.lilei.shareboard.activity.RegisterActivity">
+
     <RelativeLayout style="@style/actionbar">
 
         <!--<LinearLayout-->
@@ -23,15 +24,9 @@
             android:src="@drawable/ic_yellow_leftarrow" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_toEndOf="@+id/img_register_goback"
-            android:gravity="center"
-            android:text="@string/register"
-            android:textSize="@dimen/nav_title_size"
-            android:id="@+id/tv_register_register"/>
+            android:id="@+id/tv_register_register"
+            style="@style/navbar_title_textview_style"
+            android:text="@string/register" />
 
         <!--<LinearLayout-->
         <!--style="@style/common_horizontal_division_line_style"-->

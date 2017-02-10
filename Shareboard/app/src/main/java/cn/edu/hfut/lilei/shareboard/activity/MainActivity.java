@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class MainActivity extends FragmentActivity implements
     private EditText mEtPassword;
     private LinearLayout mLlBottomlineofemail;
     private Button mBtnLogin;
-    private LinearLayout mLlActionbar;
+    private RelativeLayout mRlActionbar;
     private LinearLayout mLlActionbarRight;
     private ViewPager mViewPager;
     private RadioGroup mRadioGroup;
@@ -77,7 +78,7 @@ public class MainActivity extends FragmentActivity implements
         fragments.add(settingsFragment);
 
 
-        mLlActionbar = (LinearLayout) findViewById(R.id.ll_main_actionbar);
+        mRlActionbar = (RelativeLayout) findViewById(R.id.rl_main_actionbar);
         mLlActionbarRight = (LinearLayout) findViewById(R.id.ll_main_actionbar_right);
         mTvTitle = (TextView) findViewById(R.id.tv_main_title);
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
