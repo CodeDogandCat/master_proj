@@ -65,4 +65,20 @@
     <string name="start_time">开始时间</string>
     <string name="end_time">结束时间</string>
     <string name="set_date">设置日期</string>
+    <string name="meeting_info">会议信息</string>
+    <string name="edit">编辑</string>
+    <string name="when">何时</string>
+    <string name="meeting_id">会议ID</string>
+    <string name="meeting_length">会议时长</string>
+    <string name="start_meeting">开始会议</string>
+    <string name="minute">分钟</string>
+    <string name="delete_meeting">删除会议</string>
+    <string name="add_invite">添加受邀者</string>
+    <string name="invite_title">"白板会议邀请-%1$s"</string>
+    <string name="invite_describe">"你好!\n\t%1$s 正在邀请你加入白板会议。\n\t加入方式：打开安卓小喵白板客户端，点击进入“加入会议”界面，输入会议ID（名称）与密码（可选），即可加入。\n\t会议ID： %2$s \n\t密码：%3$s "</string>
+    <string name="invite_content">"你好!\n\t%1$s 正在邀请你加入白板会议。\n\t主题：%2$s\n\t时间：%3$s GMT+8加入方式：打开安卓小喵白板客户端，点击进入“加入会议”界面，输入会议ID（名称）与密码（可选），即可加入。\n\t会议ID： %4$s \n\t密码：%5$s "</string>
+    <string name="choose_invite_type">选择邀请方式</string>
+    <string name="alreday_copy_to_sheet">已经复制到剪贴板</string>
+    <string name="choose_sms">选择短信客户端</string>
+    <string name="choose_mail">选择邮箱客户端</string>
 </resources>

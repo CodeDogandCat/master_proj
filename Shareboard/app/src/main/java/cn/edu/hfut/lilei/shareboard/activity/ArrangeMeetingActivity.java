@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.utils.MyDateTimeUtils;
 
 
 public class ArrangeMeetingActivity extends Activity {
@@ -24,6 +26,7 @@ public class ArrangeMeetingActivity extends Activity {
     private TextView mTvMeetingDate, mTvMeetingStartTime, mTvMeetingEndTime;
     private int year, month, day, a_pm1, hour_24_1, hour_12_1, minite1, a_pm2, hour_24_2, hour_12_2, minite2;
     private String[] am_pm = {"上午", "下午"};
+    private long startMillis, endMillis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +37,64 @@ public class ArrangeMeetingActivity extends Activity {
 
     }
 
+    private void timeConvertForBundle() {
+        Calendar start = Calendar.getInstance();
+        start.set(year, month, day);
+        start.set(Calendar.HOUR_OF_DAY, hour_24_1);
+        start.set(Calendar.MINUTE, minite1);
+        startMillis = start.getTimeInMillis();
+        if (hour_24_2 < hour_24_1) {
+
+            //结束时间看起来比开始时间早,则假定是第二天结束
+            start.set(Calendar.HOUR_OF_DAY, 0);
+            start.set(Calendar.MINUTE, 0);
+            start.add(Calendar.HOUR, 24);//第二天
+
+        }
+
+        start.set(Calendar.HOUR_OF_DAY, hour_24_2);
+        start.set(Calendar.MINUTE, minite2);
+        endMillis = start.getTimeInMillis();
+
+    }
+
     private void updateDate() {
+
+        Calendar then = Calendar.getInstance();
+        then.set(year, month, day, 0, 0);
+        Calendar now = Calendar.getInstance();
+        now.set(Calendar.HOUR_OF_DAY, 0);
+        now.set(Calendar.MINUTE, 0);
+        if (then.before(now)) {
+            //如果选择的开始日期早于当前
+            mTvMeetingDate.setTextColor(getResources().getColor(R.color.my_red));
+            mBtnSave.setEnabled(false);
+        } else {
+            mTvMeetingDate.setTextColor(getResources().getColor(R.color.my_white));
+            mBtnSave.setEnabled(true);
+        }
+
         mTvMeetingDate.setText(year + "/" + (month + 1) + "/" + day);
     }
 
     private void updateStartTime() {
-        mTvMeetingStartTime.setText(am_pm[a_pm1] + " " + hour_12_1 + ":" + ((minite1 < 10) ? ("0" + minite1) : minite1));
+
+        Calendar then = Calendar.getInstance();
+        then.set(year, month, day, hour_24_1, minite1);
+        Calendar now = Calendar.getInstance();
+        if (then.before(now)) {
+            //如果选择的开始日期早于当前
+            mTvMeetingStartTime.setTextColor(getResources().getColor(R.color.my_red));
+            mBtnSave.setEnabled(false);
+        } else {
+            mTvMeetingStartTime.setTextColor(getResources().getColor(R.color.my_white));
+            mBtnSave.setEnabled(true);
+        }
+        mTvMeetingStartTime.setText(am_pm[a_pm1] + MyDateTimeUtils.zeroConvert(hour_12_1) + ":" + MyDateTimeUtils.addZero(minite1));
     }
 
     private void updateEndTime() {
-        mTvMeetingEndTime.setText(am_pm[a_pm2] + " " + hour_12_2 + ":" + ((minite2 < 10) ? ("0" + minite2) : minite2));
+        mTvMeetingEndTime.setText(am_pm[a_pm2] + MyDateTimeUtils.zeroConvert(hour_12_2) + ":" + MyDateTimeUtils.addZero(minite2));
     }
 
 
@@ -83,8 +134,8 @@ public class ArrangeMeetingActivity extends Activity {
         minite2 = 0;
 
         mTvMeetingDate.setText(year + "/" + (month + 1) + "/" + day);
-        mTvMeetingStartTime.setText(am_pm[a_pm1] + " " + hour_12_1 + ":00");
-        mTvMeetingEndTime.setText(am_pm[a_pm2] + " " + hour_12_2 + ":00");
+        mTvMeetingStartTime.setText(am_pm[a_pm1] + " " + MyDateTimeUtils.zeroConvert(hour_12_1) + ":00");
+        mTvMeetingEndTime.setText(am_pm[a_pm2] + " " + MyDateTimeUtils.zeroConvert(hour_12_2) + ":00");
 
 
         mLlMeetingDate.setOnClickListener(new View.OnClickListener()
@@ -171,7 +222,14 @@ public class ArrangeMeetingActivity extends Activity {
                                     {
                                         @Override
                                         public void onClick(View view) {
-                                            showToast("保存");
+                                            Intent intent = new Intent();
+                                            intent.setClass(ArrangeMeetingActivity.this, MeetingInfoActivity.class);
+                                            Bundle bundle = new Bundle();
+                                            timeConvertForBundle();
+                                            bundle.putLong("startMillis", startMillis);
+                                            bundle.putLong("endMillis", endMillis);
+                                            intent.putExtras(bundle);
+                                            startActivity(intent);
                                         }
                                     }
 

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout style="@style/actionbar">
+
+
+        <ImageView
+            android:id="@+id/img_meeting_info_goback"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_yellow_leftarrow" />
+
+        <TextView
+            style="@style/navbar_title_textview_style"
+            android:text="@string/meeting_info" />
+
+        <Button
+            android:id="@+id/btn_meeting_info_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@color/my_transparent"
+            android:text="@string/edit"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/my_barblack"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    style="@style/common_horizontal_division_line_style"
+                    android:background="@color/my_deepgray" />
+
+                <LinearLayout
+                    android:id="@+id/ll_meeting_info_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/my_barblack"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="10dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|left"
+                        android:text="@string/when"
+                        android:textColor="@color/my_yellow"
+                        android:textSize="@dimen/small_text_size" />
+
+                    <TextView
+                        android:id="@+id/tv_meeting_info_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="10dp"
+                        android:text="@string/meeting_date"
+                        android:textColor="@color/my_white"
+                        android:textSize="@dimen/small_text_size" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    style="@style/common_horizontal_division_line_style"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:background="@color/my_deepgray" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_meeting_info_theme"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/my_barblack"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="10dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|left"
+                        android:text="@string/meeting_theme"
+                        android:textColor="@color/my_yellow"
+                        android:textSize="@dimen/small_text_size" />
+
+                    <TextView
+                        android:id="@+id/tv_meeting_info_theme"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="10dp"
+                        android:text="主题"
+                        android:textColor="@color/my_white"
+                        android:textSize="@dimen/small_text_size" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/common_horizontal_division_line_style"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:background="@color/my_deepgray" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_meeting_info_meeting_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/my_barblack"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="10dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|left"
+                        android:text="@string/meeting_id"
+                        android:textColor="@color/my_yellow"
+                        android:textSize="@dimen/small_text_size" />
+
+                    <TextView
+                        android:id="@+id/tv_meeting_info_meeting_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="10dp"
+                        android:text="@string/end_time"
+                        android:textColor="@color/my_white"
+                        android:textSize="@dimen/small_text_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/common_horizontal_division_line_style"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:background="@color/my_deepgray" />
+
+                <LinearLayout
+                    android:id="@+id/ll_meeting_info_length"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/my_barblack"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="10dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|left"
+                        android:text="@string/meeting_length"
+                        android:textColor="@color/my_yellow"
+                        android:textSize="@dimen/small_text_size" />
+
+                    <TextView
+                        android:id="@+id/tv_meeting_info_length"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="10dp"
+                        android:text="@string/meeting_length"
+                        android:textColor="@color/my_white"
+                        android:textSize="@dimen/small_text_size" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/common_horizontal_division_line_style"
+                android:background="@color/my_deepgray" />
+
+
+            <LinearLayout style="@style/content_vertical_space2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin26"
+                android:paddingRight="@dimen/activity_horizontal_margin26">
+
+
+                <Button
+                    android:id="@+id/btn_meeting_info_start"
+                    style="@style/BigButton"
+                    android:layout_gravity="center"
+                    android:text="@string/start_meeting" />
+
+                <LinearLayout style="@style/content_vertical_space2" />
+
+                <Button
+                    android:id="@+id/btn_meeting_info_add_to_calendar"
+                    style="@style/BigButtonBlack"
+                    android:layout_gravity="center"
+                    android:text="@string/add_to_canlendar" />
+
+                <LinearLayout style="@style/content_vertical_space2" />
+
+                <Button
+                    android:id="@+id/btn_meeting_info_invite"
+                    style="@style/BigButtonBlack"
+                    android:layout_gravity="center"
+                    android:text="@string/add_invite" />
+
+                <LinearLayout style="@style/content_vertical_space2" />
+
+                <Button
+                    android:id="@+id/btn_meeting_info_delete"
+                    style="@style/BigButtonBlack"
+                    android:layout_gravity="center"
+                    android:text="@string/delete_meeting" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

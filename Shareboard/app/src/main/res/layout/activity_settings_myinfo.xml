@@ -162,7 +162,8 @@
                     android:gravity="center"
                     android:maxWidth="100dp"
                     android:text="磊"
-                    android:textSize="@dimen/super_small_text_size" />
+                    android:textSize="@dimen/super_small_text_size"
+                    android:textColor="@color/my_white"/>
 
 
                 <TextView
@@ -176,6 +177,7 @@
                     android:maxWidth="100dp"
                     android:text="李"
                     android:textSize="@dimen/super_small_text_size"
+                    android:textColor="@color/my_white"
 
                     />
 

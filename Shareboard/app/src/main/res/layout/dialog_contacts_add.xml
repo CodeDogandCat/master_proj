@@ -32,7 +32,8 @@
         android:visibility="gone"
         android:hint="@string/search_contacts_by_email"
         android:background="@color/my_transparent"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textColor="@color/my_white"/>
 
     <View
         android:id="@+id/vMessageLine"

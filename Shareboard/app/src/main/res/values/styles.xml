@@ -40,6 +40,14 @@
         <item name="android:textColor">@color/my_black</item>
         <item name="android:gravity">center</item>
     </style>
+    <style name="BigButtonBlack">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/btn_black</item>
+        <item name="android:textSize">@dimen/nav_title_size</item>
+        <item name="android:textColor">@color/my_yellow</item>
+        <item name="android:gravity">center</item>
+    </style>
 
     <style name="TransparentBgButton">
         <item name="android:layout_height">40dp</item>
@@ -98,6 +106,12 @@
     <style name="content_vertical_space">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/content_vertical_space_height</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="content_vertical_space2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/activity_horizontal_margin</item>
         <item name="android:orientation">vertical</item>
     </style>
 

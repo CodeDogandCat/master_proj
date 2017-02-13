@@ -74,7 +74,8 @@
                 android:id="@+id/et_setuserinfo_name"
                 style="@style/big_edittext"
                 android:hint="@string/please_input_your_name"
-                android:inputType="textAutoCorrect" />
+                android:inputType="textAutoCorrect"
+                android:textColor="@color/my_white" />
 
         </LinearLayout>
 
@@ -95,7 +96,8 @@
                 android:id="@+id/et_setuserinfo_password"
                 style="@style/big_edittext"
                 android:hint="@string/set_your_password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textColor="@color/my_white" />
         </LinearLayout>
 
 

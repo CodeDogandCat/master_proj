@@ -31,6 +31,7 @@
         android:gravity="center"
         android:hint="@string/familyName"
         android:textSize="@dimen/super_small_text_size"
+        android:textColor="@color/my_white"
        />
 
     <View
@@ -48,6 +49,7 @@
         android:gravity="center"
         android:hint="@string/givenname"
         android:textSize="@dimen/super_small_text_size"
+        android:textColor="@color/my_white"
         />
 
     <View

@@ -50,7 +50,8 @@
             style="@style/big_edittext"
             android:layout_marginTop="20dp"
             android:hint="@string/inputemail"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textColor="@color/my_white" />
 
 
         <LinearLayout
