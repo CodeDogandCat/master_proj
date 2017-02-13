@@ -1,6 +1,5 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,9 +8,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import cn.edu.hfut.lilei.shareboard.R;
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 
-public class ResetPasswordActivity extends Activity {
+public class ResetPasswordActivity extends SwipeBackActivity {
     private ImageView mImgEmail;
     private ImageView mImgPassword;
     private EditText mEtEmail;
@@ -19,14 +20,37 @@ public class ResetPasswordActivity extends Activity {
     private LinearLayout mLlBottomlineofemail;
     private LinearLayout mLlBottomlineofpass;
     private Button mBtnLogin;
+    private SwipeBackLayout mSwipeBackLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        init();
 
 
 
+
+    }
+
+    private void init() {
+        mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow), SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
+            @Override
+            public void onScrollStateChange(int state, float scrollPercent) {
+
+            }
+
+            @Override
+            public void onEdgeTouch(int edgeFlag) {
+            }
+
+            @Override
+            public void onScrollOverThreshold() {
+            }
+        });
         mEtEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
@@ -48,6 +72,5 @@ public class ResetPasswordActivity extends Activity {
 
 
         });
-
     }
 }

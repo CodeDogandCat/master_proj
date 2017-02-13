@@ -1,6 +1,5 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -18,15 +17,18 @@ import java.util.Calendar;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.utils.MyDateTimeUtils;
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 
-public class ArrangeMeetingActivity extends Activity {
+public class ArrangeMeetingActivity extends SwipeBackActivity {
     private Button mBtnSave;
     private LinearLayout mLlMeetingDate, mLlMeetingStartTime, mLlMeetingEndTime;
     private TextView mTvMeetingDate, mTvMeetingStartTime, mTvMeetingEndTime;
     private int year, month, day, a_pm1, hour_24_1, hour_12_1, minite1, a_pm2, hour_24_2, hour_12_2, minite2;
     private String[] am_pm = {"上午", "下午"};
     private long startMillis, endMillis;
+    private SwipeBackLayout mSwipeBackLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +101,23 @@ public class ArrangeMeetingActivity extends Activity {
 
 
     private void init() {
+        mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow), SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
+            @Override
+            public void onScrollStateChange(int state, float scrollPercent) {
+
+            }
+
+            @Override
+            public void onEdgeTouch(int edgeFlag) {
+            }
+
+            @Override
+            public void onScrollOverThreshold() {
+            }
+        });
         mLlMeetingDate = (LinearLayout) findViewById(R.id.ll_arrange_meeting_date);
         mLlMeetingStartTime = (LinearLayout) findViewById(R.id.ll_arrange_meeting_start_time);
         mLlMeetingEndTime = (LinearLayout) findViewById(R.id.ll_arrange_meeting_end_time);

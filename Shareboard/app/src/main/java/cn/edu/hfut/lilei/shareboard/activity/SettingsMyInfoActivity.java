@@ -1,6 +1,5 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,13 +10,16 @@ import android.widget.TextView;
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.view.NameInputDialog;
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 
-public class SettingsMyInfoActivity extends Activity {
+public class SettingsMyInfoActivity extends SwipeBackActivity {
     private Button mBtnComplete;
     private LinearLayout mLlAccount, mLlName, mLlLoginpassword, mLlLogout;
     private TextView mTvFamilyNameHint, mTvGivenNameHint;
     private AvatarImageView mPhoto;
+    private SwipeBackLayout mSwipeBackLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,23 @@ public class SettingsMyInfoActivity extends Activity {
     }
 
     private void init() {
+        mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow), SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
+            @Override
+            public void onScrollStateChange(int state, float scrollPercent) {
+
+            }
+
+            @Override
+            public void onEdgeTouch(int edgeFlag) {
+            }
+
+            @Override
+            public void onScrollOverThreshold() {
+            }
+        });
         mPhoto = (AvatarImageView) this.findViewById(R.id.img_settingmyinfo_photo);
         mPhoto.setTextAndColor("磊", R.color.skyblue);
 

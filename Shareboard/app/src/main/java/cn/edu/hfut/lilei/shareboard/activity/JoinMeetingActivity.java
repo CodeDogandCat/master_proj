@@ -1,6 +1,5 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,14 +9,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.edu.hfut.lilei.shareboard.R;
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 
-public class JoinMeetingActivity extends Activity {
+public class JoinMeetingActivity extends SwipeBackActivity {
     private EditText mEtMeetingNumber;
     private TextView mTvExchangeType;
     private EditText mEtMeetingPassword;
     private Button mBtnJoinMeeting;
     private Boolean mJoinByNumber = true;
+    private SwipeBackLayout mSwipeBackLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,23 @@ public class JoinMeetingActivity extends Activity {
     }
 
     private void init() {
+        mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow), SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
+            @Override
+            public void onScrollStateChange(int state, float scrollPercent) {
+
+            }
+
+            @Override
+            public void onEdgeTouch(int edgeFlag) {
+            }
+
+            @Override
+            public void onScrollOverThreshold() {
+            }
+        });
         mBtnJoinMeeting = (Button) findViewById(R.id.btn_join_meeting);
         mTvExchangeType = (TextView) findViewById(R.id.tv_exchange_jointype);
         mEtMeetingNumber = (EditText) findViewById(R.id.et_meeting_number);

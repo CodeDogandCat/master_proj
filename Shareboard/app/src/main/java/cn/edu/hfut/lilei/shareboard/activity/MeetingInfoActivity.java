@@ -1,7 +1,6 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -30,11 +29,13 @@ import cn.edu.hfut.lilei.shareboard.data.AppInfo;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyDateTimeUtils;
 import cn.edu.hfut.lilei.shareboard.view.InviteChooserDialog;
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyDateTimeUtils.getPreString;
 
 
-public class MeetingInfoActivity extends Activity {
+public class MeetingInfoActivity extends SwipeBackActivity {
 
     private TextView mTvMeetingDate, mTvMeetingTheme, mTvMeetingID, mTvMeetingLength;
     private int year, month, day, a_pm1, hour_24_1, hour_12_1, minite1, a_pm2, hour_24_2, hour_12_2, minite2;
@@ -47,6 +48,7 @@ public class MeetingInfoActivity extends Activity {
     private int queryAppInfoflag = 0;
     private ListView listContent = null;
     private View dialogView = null;//弹出窗口
+    private SwipeBackLayout mSwipeBackLayout;
 
     // Request code for READ_CALENDAR and WRITE_CALENDAR. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_WRITE_CALENDAR = 100;
@@ -111,6 +113,23 @@ public class MeetingInfoActivity extends Activity {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         dialogView = inflater.inflate(R.layout.dialog_invite_chooser, null);
         listContent = (ListView) dialogView.findViewById(R.id.lv_dialog_invite_chooser);
+        mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow), SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
+            @Override
+            public void onScrollStateChange(int state, float scrollPercent) {
+
+            }
+
+            @Override
+            public void onEdgeTouch(int edgeFlag) {
+            }
+
+            @Override
+            public void onScrollOverThreshold() {
+            }
+        });
 
     }
 

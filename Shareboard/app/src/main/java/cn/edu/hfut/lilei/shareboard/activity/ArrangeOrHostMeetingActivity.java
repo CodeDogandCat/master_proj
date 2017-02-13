@@ -1,20 +1,25 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import cn.edu.hfut.lilei.shareboard.R;
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 
-public class ArrangeOrHostMeetingActivity extends Activity {
+public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
     private EditText mEtEmail;
     private Button mBtnComplete;
     private LinearLayout mLlArrangeMeeting;
+    private static final int VIBRATE_DURATION = 20;
+    private SwipeBackLayout mSwipeBackLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,37 @@ public class ArrangeOrHostMeetingActivity extends Activity {
                 startActivity(intent);
             }
         });
+        mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow), SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
+            @Override
+            public void onScrollStateChange(int state, float scrollPercent) {
 
+            }
+
+            @Override
+            public void onEdgeTouch(int edgeFlag) {
+            }
+
+            @Override
+            public void onScrollOverThreshold() {
+            }
+        });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+    }
+
+    private void vibrate(long duration) {
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        long[] pattern = {
+                0, duration
+        };
+        vibrator.vibrate(pattern, -1);
+    }
+
 }
