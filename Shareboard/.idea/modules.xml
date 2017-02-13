@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AvatarImageViewLibrary/AvatarImageViewLibrary.iml" filepath="$PROJECT_DIR$/AvatarImageViewLibrary/AvatarImageViewLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/Shareboard.iml" filepath="$PROJECT_DIR$/Shareboard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SwipeBackLibrary/SwipeBackLibrary.iml" filepath="$PROJECT_DIR$/SwipeBackLibrary/SwipeBackLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/SwitchButtonLibrary/SwitchButtonLibrary.iml" filepath="$PROJECT_DIR$/SwitchButtonLibrary/SwitchButtonLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
