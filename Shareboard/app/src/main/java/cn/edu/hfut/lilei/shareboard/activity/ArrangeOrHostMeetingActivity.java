@@ -50,7 +50,8 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
             }
         });
         mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow), SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
+                SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override
@@ -71,7 +72,10 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
 //        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+
+
     }
 
     private void vibrate(long duration) {
