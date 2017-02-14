@@ -1,6 +1,9 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -27,6 +30,8 @@ import cn.edu.hfut.lilei.shareboard.fragment.MeetingFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.SettingsFragment;
 import cn.edu.hfut.lilei.shareboard.view.CustomAlertDialog;
 
+import static cn.edu.hfut.lilei.shareboard.data.Config.PERMISSIONS_REQUEST;
+
 
 public class MainActivity extends FragmentActivity implements
         OnPageChangeListener, OnCheckedChangeListener {
@@ -41,7 +46,6 @@ public class MainActivity extends FragmentActivity implements
     private ViewPager mViewPager;
     private RadioGroup mRadioGroup;
     private TextView mTvTitle;
-
     /**
      * 按钮的没选中显示的图标
      */
@@ -70,6 +74,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     protected void init() {
+        getPermission();
         Fragment meetingFragment = new MeetingFragment();
         Fragment contactsFragment = new ContactsFragment();
         Fragment settingsFragment = new SettingsFragment();
@@ -94,7 +99,8 @@ public class MainActivity extends FragmentActivity implements
         Drawable mDrawableAddContact = getResources().getDrawable(R.drawable.ic_white_22);
         mImgAddContact = new ImageView(this);
         mImgAddContact.setImageDrawable(mDrawableAddContact);
-        mlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         hasAddContactIcon = false;//标志着当前页面没有添加联系人图标
 
     }
@@ -141,7 +147,9 @@ public class MainActivity extends FragmentActivity implements
                             public void onClick(View view) {
                                 new CustomAlertDialog.Builder(MainActivity.this)
                                         .setTitle(getString(R.string.inputemail))
-                                        .setPositiveButton(MainActivity.this.getString(R.string.add_friend), null)
+                                        .setPositiveButton(
+                                                MainActivity.this.getString(R.string.add_friend),
+                                                null)
                                         .show();
                             }
                         }
@@ -187,6 +195,39 @@ public class MainActivity extends FragmentActivity implements
             case R.id.btn_main_settings:
                 selectPage(2);
                 break;
+        }
+    }
+
+    private void getPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                (checkSelfPermission(Manifest.permission.CAMERA) !=
+                        PackageManager.PERMISSION_GRANTED ||
+                        checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                                PackageManager.PERMISSION_GRANTED ||
+                        checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                                PackageManager.PERMISSION_GRANTED ||
+                        checkSelfPermission(Manifest.permission.WRITE_CALENDAR) !=
+                                PackageManager.PERMISSION_GRANTED ||
+                        checkSelfPermission(Manifest.permission.READ_CALENDAR) !=
+                                PackageManager.PERMISSION_GRANTED)) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST);
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST) {
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+            }
+            init();
         }
     }
 }

@@ -21,11 +21,11 @@ public class SettingsFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_settings_index, container, false);
-		initViews(view);
+		init(view);
 		return view;
 	}
 
-	private void initViews(View view) {
+	private void init(View view) {
 		mPhoto = (AvatarImageView) view.findViewById(R.id.img_settings_photo);
 		mPhoto.setTextAndColor("磊", R.color.skyblue);
 

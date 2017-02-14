@@ -39,17 +39,11 @@ public class InviteChooserDialog extends Dialog {
     public static class Builder {
         private Context mContext;
         private String mTitle;
-        private ListView listview = null;
         private List<AppInfo> mlistAppInfo = null;
         private int flag = -1;
-        private AdapterView.OnItemClickListener listener = null;
         private InviteChooserDialog dialog = null;
         private String subject, content;
 
-        public Builder setView(ListView listview) {
-            this.listview = listview;
-            return this;
-        }
 
         public Builder setSubject(String subject) {
             this.subject = subject;
@@ -66,10 +60,6 @@ public class InviteChooserDialog extends Dialog {
             return this;
         }
 
-        public Builder setOnItemClickListener(AdapterView.OnItemClickListener listener) {
-            this.listener = listener;
-            return this;
-        }
 
         public Builder(Context context) {
             mContext = context;
@@ -138,8 +128,8 @@ public class InviteChooserDialog extends Dialog {
                     appInfo.setAppIcon(icon);
 //                    appInfo.setIntent(launchIntent);
                     mlistAppInfo.add(appInfo); // 添加至列表中
-                    System.out.println(appLabel + " activityName---" + activityName
-                            + " pkgName---" + pkgName);
+//                    System.out.println(appLabel + " activityName---" + activityName
+//                            + " pkgName---" + pkgName);
                 }
                 // 创建一个AppInfo对象，用来 复制到剪贴板
                 AppInfo appInfo = new AppInfo();

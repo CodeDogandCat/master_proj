@@ -81,4 +81,7 @@
     <string name="alreday_copy_to_sheet">已经复制到剪贴板</string>
     <string name="choose_sms">选择短信客户端</string>
     <string name="choose_mail">选择邮箱客户端</string>
+    <string name="alter_head">更改头像</string>
+    <string name="camera">照相机</string>
+    <string name="gallery">相册</string>
 </resources>

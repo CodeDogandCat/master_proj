@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/my_black"
+    android:minWidth="280dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvAlertDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:text="@string/choose_invite_type"
+        android:textColor="@color/my_white"
+        android:textSize="@dimen/normal_text_size" />
+
+    <View
+        android:id="@+id/vTitleLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/my_yellow"></View>
+
+    <ListView
+        android:id="@+id/lv_dialog_alter_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/transparent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:scrollbars="none"
+        android:paddingTop="2dp"></ListView>
+
+
+</LinearLayout>

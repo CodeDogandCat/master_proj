@@ -38,7 +38,8 @@ import static cn.edu.hfut.lilei.shareboard.utils.MyDateTimeUtils.getPreString;
 public class MeetingInfoActivity extends SwipeBackActivity {
 
     private TextView mTvMeetingDate, mTvMeetingTheme, mTvMeetingID, mTvMeetingLength;
-    private int year, month, day, a_pm1, hour_24_1, hour_12_1, minite1, a_pm2, hour_24_2, hour_12_2, minite2;
+    private int year, month, day, a_pm1, hour_24_1, hour_12_1, minite1, a_pm2, hour_24_2, hour_12_2,
+            minite2;
     private String[] am_pm = {"上午", "下午"};
     private Button mBtnEdit, mBtnStart, mBtnAddToCalendar, mBtnAddInvite, mBtnDelete;
     private long mEventID, startMillis, endMillis, lenght;
@@ -65,7 +66,9 @@ public class MeetingInfoActivity extends SwipeBackActivity {
     }
 
     private void updateTvMeetingDate() {
-        mTvMeetingDate.setText(preStr + am_pm[a_pm1] + MyDateTimeUtils.zeroConvert(hour_12_1) + ":" + MyDateTimeUtils.addZero(minite1));
+        mTvMeetingDate.setText(
+                preStr + am_pm[a_pm1] + MyDateTimeUtils.zeroConvert(hour_12_1) + ":" +
+                        MyDateTimeUtils.addZero(minite1));
     }
 
     private void getBundle() {
@@ -114,7 +117,8 @@ public class MeetingInfoActivity extends SwipeBackActivity {
         dialogView = inflater.inflate(R.layout.dialog_invite_chooser, null);
         listContent = (ListView) dialogView.findViewById(R.id.lv_dialog_invite_chooser);
         mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow), SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
+                SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override
@@ -178,7 +182,8 @@ public class MeetingInfoActivity extends SwipeBackActivity {
         // 通过查询，获得所有ResolveInfo对象.
         List<ResolveInfo> resolveInfos = new ArrayList<>();
         if (pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY).size() != 0) {
-            resolveInfos.add(pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY).get(0));
+            resolveInfos.add(pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY)
+                    .get(0));
             queryAppInfoflag += 1;
         }
         //获取邮件应用
@@ -186,7 +191,8 @@ public class MeetingInfoActivity extends SwipeBackActivity {
         mainIntent = new Intent(Intent.ACTION_SENDTO, mailToUri);
         // 通过查询，获得所有ResolveInfo对象.
         if (pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY).size() != 0) {
-            resolveInfos.add(pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY).get(0));
+            resolveInfos.add(pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY)
+                    .get(0));
             queryAppInfoflag += 3;
         }
 
@@ -235,73 +241,23 @@ public class MeetingInfoActivity extends SwipeBackActivity {
 
     private void invite() {
 
-        final String subject = String.format(getResources().getString(R.string.invite_title), "李磊的白板会议");
-        final String content = (String.format(getResources().getString(R.string.invite_content), "李磊", "李磊的白板会议", preStr + am_pm[a_pm1] + MyDateTimeUtils.zeroConvert(hour_12_1) + ":" + MyDateTimeUtils.addZero(minite1), "123-4444-8888", "888666"));
+        final String subject =
+                String.format(getResources().getString(R.string.invite_title), "李磊的白板会议");
+        final String content =
+                (String.format(getResources().getString(R.string.invite_content), "李磊", "李磊的白板会议",
+                        preStr + am_pm[a_pm1] + MyDateTimeUtils.zeroConvert(hour_12_1) + ":" +
+                                MyDateTimeUtils.addZero(minite1), "123-4444-8888", "888666"));
 
 
-        final InviteChooserDialog.Builder dialog = new InviteChooserDialog.Builder(MeetingInfoActivity.this);
+        final InviteChooserDialog.Builder dialog =
+                new InviteChooserDialog.Builder(MeetingInfoActivity.this);
 
         dialog.setTitle(getString(R.string.choose_invite_type));
         dialog.setSubject(subject);
         dialog.setContent(content);
         dialog.setData(mlistAppInfo);
-        dialog.setView(listContent);
         dialog.show();
 
-//        listContent.setOnItemClickListener(
-//                new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                        switch (queryAppInfoflag) {
-//                            case 0:
-//                                dialog.cancle();
-//                                MyAppUtil.copy(content, mContext);
-//                                break;
-//                            case 1:
-//                                switch (position) {
-//                                    case 0:
-//                                        dialog.cancle();
-//                                        MyAppUtil.sendSMS(content, mContext);
-//                                        break;
-//                                    case 1:
-//                                        dialog.cancle();
-//                                        MyAppUtil.copy(content, mContext);
-//                                        break;
-//                                }
-//                                break;
-//                            case 3:
-//                                switch (position) {
-//                                    case 0:
-//                                        dialog.cancle();
-//                                        MyAppUtil.sendMail(subject, content, mContext);
-//                                        break;
-//                                    case 1:
-//                                        dialog.cancle();
-//                                        MyAppUtil.copy(content, mContext);
-//                                        break;
-//
-//                                }
-//                                break;
-//                            case 4:
-//                                switch (position) {
-//                                    case 0:
-//                                        dialog.cancle();
-//                                        MyAppUtil.sendSMS(content, mContext);
-//                                        break;
-//                                    case 1:
-//                                        dialog.cancle();
-//                                        MyAppUtil.sendMail(subject, content, mContext);
-//                                        break;
-//                                    case 2:
-//                                        dialog.cancle();
-//                                        MyAppUtil.copy(content, mContext);
-//                                        break;
-//
-//                                }
-//                                break;
-//                        }
-//                    }
-//                });
 
     }
 
@@ -312,9 +268,6 @@ public class MeetingInfoActivity extends SwipeBackActivity {
 
     private void viewEvent() {
         showToast("view " + mEventID);
-//        Uri uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, mEventID);
-//        Intent intent = new Intent(Intent.ACTION_VIEW)
-//                .setData(uri);
 
         Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
         builder.appendPath("time");
@@ -323,46 +276,34 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                 .setData(builder.build());
         startActivity(intent);
 
-//                Calendar beginTime = Calendar.getInstance();
-//                beginTime.set(2017, 2, 10, 7, 30);
-//                Calendar endTime = Calendar.getInstance();
-//                endTime.set(2017, 2, 10, 8, 30);
-//                Intent intent = new Intent(Intent.ACTION_INSERT)
-//                        .setData(CalendarContract.Events.CONTENT_URI)
-//                        .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
-//                        .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
-//                        .putExtra(CalendarContract.Events.TITLE, "Yoga")
-//                        .putExtra(CalendarContract.Events.DESCRIPTION, "Group class")
-//                        .putExtra(CalendarContract.Events.EVENT_LOCATION, "The gym")
-//                        .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_FREE)
-//                        .putExtra(Intent.EXTRA_EMAIL, "rowan@example.com,trevor@example.com");
-//                startActivity(intent);
     }
 
     private void insertEvent() {
         long calID = 1;
 
-//        Calendar beginTime = Calendar.getInstance();
-//        beginTime.set(2017, 1, 10, 20, 30);
-//        startMillis = beginTime.getTimeInMillis();
-//        Calendar endTime = Calendar.getInstance();
-//        endTime.set(2017, 1, 10, 21, 30);
-//        endMillis = endTime.getTimeInMillis();
 
         ContentResolver cr = getContentResolver();
         ContentValues values = new ContentValues();
         values.put(CalendarContract.Events.DTSTART, startMillis);
         values.put(CalendarContract.Events.DTEND, endMillis);
-        values.put(CalendarContract.Events.TITLE, String.format(getResources().getString(R.string.invite_title), "李磊的白板会议"));
+        values.put(CalendarContract.Events.TITLE,
+                String.format(getResources().getString(R.string.invite_title), "李磊的白板会议"));
         values.put(CalendarContract.Events.EVENT_LOCATION, "小喵白板-加入会议");
-        values.put(CalendarContract.Events.DESCRIPTION, String.format(getResources().getString(R.string.invite_describe), "李磊", "123-4444-8888", "888666"));
+        values.put(CalendarContract.Events.DESCRIPTION,
+                String.format(getResources().getString(R.string.invite_describe), "李磊",
+                        "123-4444-8888", "888666"));
         values.put(CalendarContract.Events.EVENT_TIMEZONE, "GMT+8");//时区
         values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
         values.put(CalendarContract.Events.CALENDAR_ID, calID);
         showToast("时间添加准备");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && (checkSelfPermission(Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED)) {
-            requestPermissions(new String[]{Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR}, PERMISSIONS_REQUEST_READ_WRITE_CALENDAR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                (checkSelfPermission(Manifest.permission.WRITE_CALENDAR) !=
+                        PackageManager.PERMISSION_GRANTED ||
+                        checkSelfPermission(Manifest.permission.READ_CALENDAR) !=
+                                PackageManager.PERMISSION_GRANTED)) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_CALENDAR,
+                    Manifest.permission.READ_CALENDAR}, PERMISSIONS_REQUEST_READ_WRITE_CALENDAR);
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
 
         } else {
@@ -386,7 +327,8 @@ public class MeetingInfoActivity extends SwipeBackActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_READ_WRITE_CALENDAR) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
                 insertEvent();
             } else {
