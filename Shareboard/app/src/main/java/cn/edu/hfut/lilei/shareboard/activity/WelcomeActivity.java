@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import cn.edu.hfut.lilei.shareboard.R;
 
@@ -17,6 +18,7 @@ public class WelcomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         setContentView(R.layout.activity_welcome);
         /**
          *
@@ -51,8 +53,6 @@ public class WelcomeActivity extends Activity {
 //                intent.setClass(WelcomeActivity.this, ContactsFragment.class);
                 startActivity(intent);
                 finish();
-                //两个参数分别表示进入的动画,退出的动画
-//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             };
         }.execute(new Void[]{});
     }
