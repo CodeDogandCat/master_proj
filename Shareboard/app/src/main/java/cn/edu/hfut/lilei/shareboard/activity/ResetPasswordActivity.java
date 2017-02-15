@@ -1,5 +1,6 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,14 +14,17 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 
 public class ResetPasswordActivity extends SwipeBackActivity {
+    //控件
+    private LinearLayout mLlBottomlineofemail;
+    private LinearLayout mLlBottomlineofpass;
     private ImageView mImgEmail;
     private ImageView mImgPassword;
     private EditText mEtEmail;
     private EditText mEtPassword;
-    private LinearLayout mLlBottomlineofemail;
-    private LinearLayout mLlBottomlineofpass;
     private Button mBtnLogin;
-    private SwipeBackLayout mSwipeBackLayout;
+
+    //上下文参数
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,8 @@ public class ResetPasswordActivity extends SwipeBackActivity {
     }
 
     private void init() {
-        mSwipeBackLayout = getSwipeBackLayout();
+        mContext=this;
+        SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow), SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {

@@ -1,5 +1,6 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,12 +15,15 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 
 public class JoinMeetingActivity extends SwipeBackActivity {
+    //控件
     private EditText mEtMeetingNumber;
     private TextView mTvExchangeType;
     private EditText mEtMeetingPassword;
     private Button mBtnJoinMeeting;
+    //数据
     private Boolean mJoinByNumber = true;
-    private SwipeBackLayout mSwipeBackLayout;
+    //上下文参数
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +33,10 @@ public class JoinMeetingActivity extends SwipeBackActivity {
     }
 
     private void init() {
-        mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow), SwipeBackLayout.EDGE_LEFT);
+        mContext=this;
+        SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
+                SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override
@@ -53,7 +59,8 @@ public class JoinMeetingActivity extends SwipeBackActivity {
         mBtnJoinMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(JoinMeetingActivity.this, "加入会议", Toast.LENGTH_SHORT).show();
+                Toast.makeText(JoinMeetingActivity.this, "加入会议", Toast.LENGTH_SHORT)
+                        .show();
                 Intent intent = new Intent();
                 intent.setClass(JoinMeetingActivity.this, MeetingActivity.class);
                 startActivity(intent);

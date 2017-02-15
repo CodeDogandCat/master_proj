@@ -1,5 +1,6 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,9 +13,12 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 
 public class RegisterActivity extends SwipeBackActivity {
+    //控件
     private EditText mEtEmail;
     private Button mBtnNextstep;
-    private SwipeBackLayout mSwipeBackLayout;
+
+    //上下文参数
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +27,13 @@ public class RegisterActivity extends SwipeBackActivity {
         setContentView(R.layout.activity_register);
 
 
-
     }
 
     private void init() {
-        mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow), SwipeBackLayout.EDGE_LEFT);
+        mContext = this;
+        SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
+                SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override
@@ -44,7 +49,7 @@ public class RegisterActivity extends SwipeBackActivity {
             public void onScrollOverThreshold() {
             }
         });
-        mBtnNextstep= (Button) findViewById(R.id.btn_register_nextstep);
+        mBtnNextstep = (Button) findViewById(R.id.btn_register_nextstep);
         mBtnNextstep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

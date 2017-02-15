@@ -134,6 +134,10 @@
         <item name="android:textSize">@dimen/nav_title_size</item>
         <item name="android:textStyle">bold</item>
 
-
+    </style>
+    <style name="NoDisplay" parent="Theme.AppCompat.NoActionBar" >
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>

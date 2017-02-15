@@ -84,4 +84,9 @@
     <string name="alter_head">更改头像</string>
     <string name="camera">照相机</string>
     <string name="gallery">相册</string>
+    <string name="copy_to_sheet">复制到剪贴板</string>
+    <string name="should_get_this_for_insert_event_to_calendar">应用需要该权限才能添加会议安排到日历提醒</string>
+    <string name="should_get_this_to_alter_head">应用需要该权限才能更改头像</string>
+    <string name="meeting_location">安卓小喵共享白板-加入会议</string>
+    <string name="meeting_event_already_add">会议的日历事件提醒添加成功</string>
 </resources>

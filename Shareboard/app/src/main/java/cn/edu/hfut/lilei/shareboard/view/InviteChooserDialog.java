@@ -21,7 +21,7 @@ import java.util.List;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ApplicationInfoAdapter;
 import cn.edu.hfut.lilei.shareboard.data.AppInfo;
-import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
+import cn.edu.hfut.lilei.shareboard.utils.MyAppUtils;
 
 
 public class InviteChooserDialog extends Dialog {
@@ -87,16 +87,22 @@ public class InviteChooserDialog extends Dialog {
 
             // 通过查询，获得所有ResolveInfo对象.
             List<ResolveInfo> resolveInfos = new ArrayList<>();
-            if (pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY).size() != 0) {
-                resolveInfos.add(pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY).get(0));
+            if (pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY)
+                    .size() != 0) {
+                resolveInfos.add(
+                        pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY)
+                                .get(0));
                 flag += 1;
             }
             //获取邮件应用
             Uri mailToUri = Uri.parse("mailto:");
             mainIntent = new Intent(Intent.ACTION_SENDTO, mailToUri);
             // 通过查询，获得所有ResolveInfo对象.
-            if (pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY).size() != 0) {
-                resolveInfos.add(pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY).get(0));
+            if (pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY)
+                    .size() != 0) {
+                resolveInfos.add(
+                        pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY)
+                                .get(0));
                 flag += 3;
             }
 
@@ -124,7 +130,9 @@ public class InviteChooserDialog extends Dialog {
                     AppInfo appInfo = new AppInfo();
                     appInfo.setAppLabel(appLabel);
                     appInfo.setPkgName(pkgName);
-                    appInfo.setAppName(MyAppUtil.getApplicationNameByPackageName(mContext, pkgName));
+                    appInfo.setAppName(
+                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.getApplicationNameByPackageName(
+                                    mContext, pkgName));
                     appInfo.setAppIcon(icon);
 //                    appInfo.setIntent(launchIntent);
                     mlistAppInfo.add(appInfo); // 添加至列表中
@@ -136,13 +144,17 @@ public class InviteChooserDialog extends Dialog {
                 appInfo.setAppLabel("");
                 appInfo.setPkgName("");
                 appInfo.setAppName("复制到剪贴板");
-                appInfo.setAppIcon(mContext.getResources().getDrawable(R.drawable.copy));
+                appInfo.setAppIcon(mContext.getResources()
+                        .getDrawable(R.drawable.copy));
                 appInfo.setIntent(null);
                 mlistAppInfo.add(appInfo); // 添加至列表中
             }
 
         }
 
+        /**
+         * 获取短信类和邮件类的应用信息（名称和图标），并添加一条“复制到剪贴板”
+         */
         public InviteChooserDialog create() {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             View view = inflater.inflate(R.layout.dialog_invite_chooser, null);
@@ -165,21 +177,24 @@ public class InviteChooserDialog extends Dialog {
             listContent.setOnItemClickListener(
                     new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                        public void onItemClick(AdapterView<?> adapterView, View view, int position,
+                                                long l) {
                             switch (flag) {
                                 case 0:
                                     dialog.dismiss();
-                                    MyAppUtil.copy(content, mContext);
+                                    cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.copy(mContext,
+                                            content);
                                     break;
                                 case 1:
                                     switch (position) {
                                         case 0:
                                             dialog.dismiss();
-                                            MyAppUtil.sendSMS(content, mContext);
+                                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.sendSMS
+                                                    (mContext, content);
                                             break;
                                         case 1:
                                             dialog.dismiss();
-                                            MyAppUtil.copy(content, mContext);
+                                            MyAppUtils.copy(mContext, content);
                                             break;
                                     }
                                     break;
@@ -187,11 +202,13 @@ public class InviteChooserDialog extends Dialog {
                                     switch (position) {
                                         case 0:
                                             dialog.dismiss();
-                                            MyAppUtil.sendMail(subject, content, mContext);
+                                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils
+                                                    .sendMail(mContext, subject, content);
                                             break;
                                         case 1:
                                             dialog.dismiss();
-                                            MyAppUtil.copy(content, mContext);
+                                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.copy(
+                                                    mContext, content);
                                             break;
 
                                     }
@@ -200,15 +217,18 @@ public class InviteChooserDialog extends Dialog {
                                     switch (position) {
                                         case 0:
                                             dialog.dismiss();
-                                            MyAppUtil.sendSMS(content, mContext);
+                                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.sendSMS(
+                                                    mContext, content);
                                             break;
                                         case 1:
                                             dialog.dismiss();
-                                            MyAppUtil.sendMail(subject, content, mContext);
+                                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.sendMail(
+                                                    mContext, subject, content);
                                             break;
                                         case 2:
                                             dialog.dismiss();
-                                            MyAppUtil.copy(content, mContext);
+                                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.copy(
+                                                    mContext, content);
                                             break;
 
                                     }

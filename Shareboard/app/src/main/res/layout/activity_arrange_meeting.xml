@@ -14,7 +14,7 @@
         <!--android:background="@color/deepgray" />-->
 
         <ImageView
-            android:id="@+id/img_arrangemeeting_goback"
+            android:id="@+id/img_arrange_meeting_goback"
             android:layout_width="10dp"
             android:layout_height="20dp"
             android:layout_marginLeft="10dp"
@@ -27,7 +27,7 @@
             android:text="@string/arrange_meeting" />
 
         <Button
-            android:id="@+id/btn_arrangemeeting_save"
+            android:id="@+id/btn_arrange_meeting_save"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
@@ -63,7 +63,7 @@
 
 
                 <EditText
-                    android:id="@+id/et_arrangemeeting_title"
+                    android:id="@+id/et_arrange_meeting_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/my_transparent"
@@ -121,15 +121,6 @@
                         android:textSize="@dimen/small_text_size"
                         android:textColor="@color/my_white"/>
 
-                    <!--<EditText-->
-                    <!--android:id="@+id/et_arrangemeeting_date"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:background="@color/my_transparent"-->
-                    <!--android:gravity="center_vertical|right"-->
-                    <!--android:hint="@string/check_your_password"-->
-                    <!--android:paddingRight="10dp"-->
-                    <!--android:textSize="@dimen/small_text_size" />-->
 
 
                 </LinearLayout>
@@ -169,15 +160,6 @@
                         android:text="@string/start_time"
                         android:textSize="@dimen/small_text_size"
                         android:textColor="@color/my_white"/>
-                    <!--<EditText-->
-                    <!--android:id="@+id/et_arrangemeeting_from"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:background="@color/my_transparent"-->
-                    <!--android:gravity="center_vertical|right"-->
-                    <!--android:hint="@string/set_new_password"-->
-                    <!--android:paddingRight="10dp"-->
-                    <!--android:textSize="@dimen/small_text_size" />-->
 
 
                 </LinearLayout>
@@ -216,15 +198,6 @@
                         android:text="@string/end_time"
                         android:textSize="@dimen/small_text_size"
                         android:textColor="@color/my_white"/>
-                    <!--<EditText-->
-                    <!--android:id="@+id/et_arrangemeeting_to"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:background="@color/my_transparent"-->
-                    <!--android:gravity="center_vertical|right"-->
-                    <!--android:hint="@string/confirm_password"-->
-                    <!--android:paddingRight="10dp"-->
-                    <!--android:textSize="@dimen/small_text_size" />-->
 
                 </LinearLayout>
 
@@ -271,7 +244,7 @@
                         android:gravity="center_vertical">
 
                         <com.kyleduo.switchbutton.SwitchButton
-                            android:id="@+id/btn_arrangemeeting_able_to_draw"
+                            android:id="@+id/btn_arrange_meeting_able_to_draw"
                             style="@style/SwitchButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -314,7 +287,7 @@
                         android:gravity="center_vertical">
 
                         <com.kyleduo.switchbutton.SwitchButton
-                            android:id="@+id/btn_arrangemeeting_able_to_talk"
+                            android:id="@+id/btn_arrange_meeting_able_to_talk"
                             style="@style/SwitchButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -351,7 +324,7 @@
 
 
                     <EditText
-                        android:id="@+id/et_arrangemeeting_meetingpassword"
+                        android:id="@+id/et_arrange_meeting_meetingpassword"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/transparent"
@@ -395,7 +368,7 @@
                         android:gravity="center_vertical">
 
                         <com.kyleduo.switchbutton.SwitchButton
-                            android:id="@+id/btn_arrangemeeting_use_pmi"
+                            android:id="@+id/btn_arrange_meeting_use_pmi"
                             style="@style/SwitchButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -445,12 +418,12 @@
                         android:gravity="center_vertical">
 
                         <com.kyleduo.switchbutton.SwitchButton
-                            android:id="@+id/btn_arrangemeeting_add_to_calendar"
+                            android:id="@+id/btn_arrange_meeting_add_to_calendar"
                             style="@style/SwitchButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:checked="true"
+                            android:checked="false"
                             app:kswTintColor="@color/my_yellow" />
                     </RelativeLayout>
 

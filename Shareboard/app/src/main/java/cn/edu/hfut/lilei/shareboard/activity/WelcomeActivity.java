@@ -7,13 +7,13 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.data.Config;
+
+import static cn.edu.hfut.lilei.shareboard.data.Config.SHOW_TIME_MIN;
 
 
 public class WelcomeActivity extends Activity {
-    private static final int FAILURE = 0; // 失败
-    private static final int SUCCESS = 1; // 成功
-    private static final int OFFLINE = 2; // 如果支持离线阅读，进入离线模式
-    private static final int SHOW_TIME_MIN = 800;//最短跳转时间
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,6 @@ public class WelcomeActivity extends Activity {
 //        if (BaseApplication.mNetWorkState == NetworkUtils.NETWORN_NONE) {
 //            return OFFLINE;
 //        }
-        return SUCCESS;
+        return Config.SUCCESS;
     }
 }

@@ -1,33 +1,24 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
 import android.Manifest;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.CalendarContract;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.data.AppInfo;
-import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
+import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
+import cn.edu.hfut.lilei.shareboard.utils.MyAppUtils;
 import cn.edu.hfut.lilei.shareboard.utils.MyDateTimeUtils;
+import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.view.InviteChooserDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
@@ -36,23 +27,21 @@ import static cn.edu.hfut.lilei.shareboard.utils.MyDateTimeUtils.getPreString;
 
 
 public class MeetingInfoActivity extends SwipeBackActivity {
-
-    private TextView mTvMeetingDate, mTvMeetingTheme, mTvMeetingID, mTvMeetingLength;
-    private int year, month, day, a_pm1, hour_24_1, hour_12_1, minite1, a_pm2, hour_24_2, hour_12_2,
-            minite2;
-    private String[] am_pm = {"上午", "下午"};
-    private Button mBtnEdit, mBtnStart, mBtnAddToCalendar, mBtnAddInvite, mBtnDelete;
-    private long mEventID, startMillis, endMillis, lenght;
-    private String preStr = "";
-    private Context mContext;
-    private List<AppInfo> mlistAppInfo;
-    private int queryAppInfoflag = 0;
-    private ListView listContent = null;
+    //控件
     private View dialogView = null;//弹出窗口
-    private SwipeBackLayout mSwipeBackLayout;
-
-    // Request code for READ_CALENDAR and WRITE_CALENDAR. It can be any number > 0.
-    private static final int PERMISSIONS_REQUEST_READ_WRITE_CALENDAR = 100;
+    private TextView mTvMeetingDate, mTvMeetingTheme, mTvMeetingID, mTvMeetingLength;
+    private Button mBtnEdit, mBtnStart, mBtnAddToCalendar, mBtnAddInvite, mBtnDelete;
+    private ListView listContent = null;
+    //数据
+    private int year, month, day, a_pm1, hour_12_1, minite1;
+    private int queryAppInfoflag = -1;
+    private long mEventID = -1, startMillis, endMillis, lenght;
+    private String title, description, mid, mpassword;
+    private String preStr = "";
+    private String[] am_pm = {"上午", "下午"};
+    private List<AppInfo> mlistAppInfo;
+    //上下文参数
+    private Context mContext;
 
 
     @Override
@@ -65,16 +54,20 @@ public class MeetingInfoActivity extends SwipeBackActivity {
 
     }
 
-    private void updateTvMeetingDate() {
-        mTvMeetingDate.setText(
-                preStr + am_pm[a_pm1] + MyDateTimeUtils.zeroConvert(hour_12_1) + ":" +
-                        MyDateTimeUtils.addZero(minite1));
-    }
 
+    /**
+     * 获取页面参数
+     */
     private void getBundle() {
-        Bundle bundle = this.getIntent().getExtras();
+        Bundle bundle = this.getIntent()
+                .getExtras();
         startMillis = bundle.getLong("startMillis");
         endMillis = bundle.getLong("endMillis");
+        mEventID = bundle.getLong("eventId");
+        title = bundle.getString("title");
+        description = bundle.getString("description");
+        mid = bundle.getString("mid");
+        mpassword = bundle.getString("mpassword");
 
         Calendar start = Calendar.getInstance();
         start.setTimeInMillis(startMillis);
@@ -90,8 +83,28 @@ public class MeetingInfoActivity extends SwipeBackActivity {
 
     }
 
+    /**
+     * 初始化
+     */
     private void init() {
         mContext = this;
+        SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
+                SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
+            @Override
+            public void onScrollStateChange(int state, float scrollPercent) {
+            }
+
+            @Override
+            public void onEdgeTouch(int edgeFlag) {
+            }
+
+            @Override
+            public void onScrollOverThreshold() {
+            }
+        });
         mBtnEdit = (Button) findViewById(R.id.btn_meeting_info_edit);
         mBtnStart = (Button) findViewById(R.id.btn_meeting_info_start);
         mBtnAddToCalendar = (Button) findViewById(R.id.btn_meeting_info_add_to_calendar);
@@ -108,34 +121,19 @@ public class MeetingInfoActivity extends SwipeBackActivity {
         mTvMeetingID = (TextView) findViewById(R.id.tv_meeting_info_meeting_id);
         mTvMeetingLength = (TextView) findViewById(R.id.tv_meeting_info_length);
         updateTvMeetingDate();
-        mTvMeetingTheme.setText("李磊的白板会议");
-        mTvMeetingID.setText("123-4444-8888");
+
+        mTvMeetingTheme.setText(title);
+        mTvMeetingID.setText(mid);
         mTvMeetingLength.setText(lenght + getResources().getString(R.string.minute));
 
-        //弹出窗内部的listview
+        //邀请方式弹出窗内部的listview
         LayoutInflater inflater = LayoutInflater.from(mContext);
         dialogView = inflater.inflate(R.layout.dialog_invite_chooser, null);
         listContent = (ListView) dialogView.findViewById(R.id.lv_dialog_invite_chooser);
-        mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
-                SwipeBackLayout.EDGE_LEFT);
-        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-        mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
-            @Override
-            public void onScrollStateChange(int state, float scrollPercent) {
 
-            }
-
-            @Override
-            public void onEdgeTouch(int edgeFlag) {
-            }
-
-            @Override
-            public void onScrollOverThreshold() {
-            }
-        });
 
     }
+
 
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
@@ -148,7 +146,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                     startMeeting();
                     break;
                 case R.id.btn_meeting_info_add_to_calendar:
-                    insertEvent();
+                    requestCalendar();
                     break;
                 case R.id.btn_meeting_info_invite:
                     invite();
@@ -161,6 +159,62 @@ public class MeetingInfoActivity extends SwipeBackActivity {
         }
     };
 
+    /**
+     * 获取权限
+     */
+    private void requestCalendar() {
+        PermissionsUtil.TipInfo tip =
+                new PermissionsUtil.TipInfo(null,
+                        getString(R.string.should_get_this_for_insert_event_to_calendar), null,
+                        null);
+
+        if (PermissionsUtil.hasPermission(this, Manifest.permission.WRITE_CALENDAR)) {
+            if (mEventID == -1) {
+                //插入日历事件提醒
+                mEventID = MyAppUtils.insertCalendarEvent(mContext, startMillis, endMillis, title,
+                        null,
+                        description, null);
+                MyAppUtils.viewCalendarEvent(mContext, startMillis);
+
+            } else {
+                //已经自动添加到了日历，当前只需要查看
+                MyAppUtils.viewCalendarEvent(mContext, startMillis);
+            }
+
+        } else {
+            PermissionsUtil.requestPermission(this, new PermissionListener() {
+                @Override
+                public void permissionGranted(@NonNull String[] permissions) {
+                    if (mEventID == -1) {
+                        //插入日历事件提醒
+                        mEventID = MyAppUtils.insertCalendarEvent(mContext, startMillis, endMillis,
+                                title,
+                                null,
+                                description, null);
+                        MyAppUtils.viewCalendarEvent(mContext, startMillis);
+                    } else {
+                        //已经自动添加到了日历，当前只需要查看
+                        MyAppUtils.viewCalendarEvent(mContext, startMillis);
+                    }
+                }
+
+                @Override
+                public void permissionDenied(@NonNull String[] permissions) {
+                }
+            }, new String[]{Manifest.permission.WRITE_CALENDAR}, true, tip);
+        }
+    }
+
+
+    /**
+     * 更新开会时间
+     */
+    private void updateTvMeetingDate() {
+        mTvMeetingDate.setText(
+                preStr + am_pm[a_pm1] + MyDateTimeUtils.zeroConvert(hour_12_1) + ":" +
+                        MyDateTimeUtils.addZero(minite1));
+    }
+
     private void edit() {
 
     }
@@ -169,85 +223,15 @@ public class MeetingInfoActivity extends SwipeBackActivity {
 
     }
 
-    // 获得所有启动Activity的信息，类似于Launch界面
-    public void queryAppInfo() {
-        mlistAppInfo = new ArrayList<AppInfo>();
-        queryAppInfoflag = 0;
-        PackageManager pm = mContext.getPackageManager(); // 获得PackageManager对象
 
-        //获取短信应用
-        Uri smsToUri = Uri.parse("smsto:");
-        Intent mainIntent = new Intent(Intent.ACTION_SENDTO, smsToUri);
-
-        // 通过查询，获得所有ResolveInfo对象.
-        List<ResolveInfo> resolveInfos = new ArrayList<>();
-        if (pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY).size() != 0) {
-            resolveInfos.add(pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY)
-                    .get(0));
-            queryAppInfoflag += 1;
-        }
-        //获取邮件应用
-        Uri mailToUri = Uri.parse("mailto:");
-        mainIntent = new Intent(Intent.ACTION_SENDTO, mailToUri);
-        // 通过查询，获得所有ResolveInfo对象.
-        if (pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY).size() != 0) {
-            resolveInfos.add(pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY)
-                    .get(0));
-            queryAppInfoflag += 3;
-        }
-
-        // 调用系统排序 ， 根据name排序
-        // 该排序很重要，否则只能显示系统应用，而不能列出第三方应用程序
-//            Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(pm));
-        if (mlistAppInfo != null) {
-            mlistAppInfo.clear();
-            for (ResolveInfo reInfo : resolveInfos) {
-                String activityName = reInfo.activityInfo.name; // 获得该应用程序的启动Activity的name
-                String pkgName = reInfo.activityInfo.packageName; // 获得应用程序的包名
-                String appLabel = (String) reInfo.loadLabel(pm); // 获得应用程序的Label
-                Drawable icon = reInfo.loadIcon(pm); // 获得应用程序图标
-                // 为应用程序的启动Activity 准备Intent
-//                    Intent launchIntent = new Intent();
-//                    launchIntent.setData(Uri.parse("mailto:"));
-//                    launchIntent.putExtra(Intent.EXTRA_SUBJECT, "报到");
-//                    launchIntent.putExtra(Intent.EXTRA_TEXT, "我来上班啦");
-//                    launchIntent.setType("text/plain");
-//                    launchIntent.putExtra("sms_body", "你好");
-//
-//                    launchIntent.setComponent(new ComponentName(pkgName,
-//                            activityName));
-                // 创建一个AppInfo对象，并赋值
-                AppInfo appInfo = new AppInfo();
-                appInfo.setAppLabel(appLabel);
-                appInfo.setPkgName(pkgName);
-                appInfo.setAppName(MyAppUtil.getApplicationNameByPackageName(mContext, pkgName));
-                appInfo.setAppIcon(icon);
-//                    appInfo.setIntent(launchIntent);
-                mlistAppInfo.add(appInfo); // 添加至列表中
-                System.out.println(appLabel + " activityName---" + activityName
-                        + " pkgName---" + pkgName);
-            }
-            // 创建一个AppInfo对象，用来 复制到剪贴板
-            AppInfo appInfo = new AppInfo();
-            appInfo.setAppLabel("");
-            appInfo.setPkgName("");
-            appInfo.setAppName("复制到剪贴板");
-            appInfo.setAppIcon(mContext.getResources().getDrawable(R.drawable.copy));
-            appInfo.setIntent(null);
-            mlistAppInfo.add(appInfo); // 添加至列表中
-        }
-
-    }
-
+    /**
+     * 选择邀请方式
+     */
     private void invite() {
 
         final String subject =
-                String.format(getResources().getString(R.string.invite_title), "李磊的白板会议");
-        final String content =
-                (String.format(getResources().getString(R.string.invite_content), "李磊", "李磊的白板会议",
-                        preStr + am_pm[a_pm1] + MyDateTimeUtils.zeroConvert(hour_12_1) + ":" +
-                                MyDateTimeUtils.addZero(minite1), "123-4444-8888", "888666"));
-
+                String.format(getResources().getString(R.string.invite_title), title);
+        final String content = description;
 
         final InviteChooserDialog.Builder dialog =
                 new InviteChooserDialog.Builder(MeetingInfoActivity.this);
@@ -266,79 +250,5 @@ public class MeetingInfoActivity extends SwipeBackActivity {
 
     }
 
-    private void viewEvent() {
-        showToast("view " + mEventID);
 
-        Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
-        builder.appendPath("time");
-        ContentUris.appendId(builder, startMillis);
-        Intent intent = new Intent(Intent.ACTION_VIEW)
-                .setData(builder.build());
-        startActivity(intent);
-
-    }
-
-    private void insertEvent() {
-        long calID = 1;
-
-
-        ContentResolver cr = getContentResolver();
-        ContentValues values = new ContentValues();
-        values.put(CalendarContract.Events.DTSTART, startMillis);
-        values.put(CalendarContract.Events.DTEND, endMillis);
-        values.put(CalendarContract.Events.TITLE,
-                String.format(getResources().getString(R.string.invite_title), "李磊的白板会议"));
-        values.put(CalendarContract.Events.EVENT_LOCATION, "小喵白板-加入会议");
-        values.put(CalendarContract.Events.DESCRIPTION,
-                String.format(getResources().getString(R.string.invite_describe), "李磊",
-                        "123-4444-8888", "888666"));
-        values.put(CalendarContract.Events.EVENT_TIMEZONE, "GMT+8");//时区
-        values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
-        values.put(CalendarContract.Events.CALENDAR_ID, calID);
-        showToast("时间添加准备");
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                (checkSelfPermission(Manifest.permission.WRITE_CALENDAR) !=
-                        PackageManager.PERMISSION_GRANTED ||
-                        checkSelfPermission(Manifest.permission.READ_CALENDAR) !=
-                                PackageManager.PERMISSION_GRANTED)) {
-            requestPermissions(new String[]{Manifest.permission.WRITE_CALENDAR,
-                    Manifest.permission.READ_CALENDAR}, PERMISSIONS_REQUEST_READ_WRITE_CALENDAR);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-
-        } else {
-            // Android version is lesser than 6.0 or the permission is already granted.
-
-            Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
-            mEventID = Long.parseLong(uri.getLastPathSegment());
-            ContentValues values2 = new ContentValues();
-            // 提前15分钟有提醒
-            values2.put(CalendarContract.Reminders.MINUTES, 15);
-            values2.put(CalendarContract.Reminders.EVENT_ID, mEventID);
-            values2.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
-            getContentResolver().insert(CalendarContract.Reminders.CONTENT_URI, values2);
-            showToast("时间添加完毕" + mEventID);
-            mTvMeetingDate.setText("事件ID:" + mEventID);
-            viewEvent();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST_READ_WRITE_CALENDAR) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                // Permission is granted
-                insertEvent();
-            } else {
-                showToast("直到您允许该权限，才能添加事件至日历项");
-            }
-        }
-    }
-
-
-    private void showToast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
 }

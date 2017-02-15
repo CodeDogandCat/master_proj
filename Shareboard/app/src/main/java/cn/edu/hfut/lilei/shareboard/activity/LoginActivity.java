@@ -1,6 +1,7 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,15 +14,20 @@ import cn.edu.hfut.lilei.shareboard.R;
 
 
 public class LoginActivity extends Activity {
+    //控件
+    private LinearLayout mLlBottomlineofemail;
+    private LinearLayout mLlBottomlineofpass;
     private ImageView mImgEmail;
     private ImageView mImgPassword;
     private EditText mEtEmail;
     private EditText mEtPassword;
-    private LinearLayout mLlBottomlineofemail;
-    private LinearLayout mLlBottomlineofpass;
     private Button mBtnLogin;
     private Button mBtnRegisteraccount;
     private Button mBtnResetpassword;
+    //数据
+
+    //上下文参数
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,7 @@ public class LoginActivity extends Activity {
     }
 
     private void init() {
+        mContext = this;
         mImgEmail = (ImageView) findViewById(R.id.img_login_email);
         mImgPassword = (ImageView) findViewById(R.id.img_login_password);
         mEtEmail = (EditText) findViewById(R.id.et_login_email);
@@ -49,12 +56,14 @@ public class LoginActivity extends Activity {
                 if (hasFocus) {
 
                     // 获得焦点
-                    mLlBottomlineofemail.setBackgroundColor(getResources().getColor(R.color.my_yellow));
+                    mLlBottomlineofemail.setBackgroundColor(
+                            getResources().getColor(R.color.my_yellow));
                     mImgEmail.setImageDrawable(getResources().getDrawable(R.drawable.ic_yellow_34));
                 } else {
 
                     // 失去焦点
-                    mLlBottomlineofemail.setBackgroundColor(getResources().getColor(R.color.my_lightgray));
+                    mLlBottomlineofemail.setBackgroundColor(
+                            getResources().getColor(R.color.my_lightgray));
                     mImgEmail.setImageDrawable(getResources().getDrawable(R.drawable.ic_white_34));
                 }
 
@@ -70,13 +79,17 @@ public class LoginActivity extends Activity {
                 if (hasFocus) {
 
                     // 获得焦点
-                    mLlBottomlineofpass.setBackgroundColor(getResources().getColor(R.color.my_yellow));
-                    mImgPassword.setImageDrawable(getResources().getDrawable(R.drawable.ic_yellow_32));
+                    mLlBottomlineofpass.setBackgroundColor(
+                            getResources().getColor(R.color.my_yellow));
+                    mImgPassword.setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_yellow_32));
                 } else {
 
                     // 失去焦点
-                    mLlBottomlineofpass.setBackgroundColor(getResources().getColor(R.color.my_lightgray));
-                    mImgPassword.setImageDrawable(getResources().getDrawable(R.drawable.ic_white_32));
+                    mLlBottomlineofpass.setBackgroundColor(
+                            getResources().getColor(R.color.my_lightgray));
+                    mImgPassword.setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_white_32));
                 }
 
             }

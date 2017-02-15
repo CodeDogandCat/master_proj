@@ -1,17 +1,13 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -30,40 +26,32 @@ import cn.edu.hfut.lilei.shareboard.fragment.MeetingFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.SettingsFragment;
 import cn.edu.hfut.lilei.shareboard.view.CustomAlertDialog;
 
-import static cn.edu.hfut.lilei.shareboard.data.Config.PERMISSIONS_REQUEST;
-
 
 public class MainActivity extends FragmentActivity implements
         OnPageChangeListener, OnCheckedChangeListener {
-    private ImageView mImgEmail;
-    private ImageView mImgPassword;
-    private EditText mEtEmail;
-    private EditText mEtPassword;
-    private LinearLayout mLlBottomlineofemail;
-    private Button mBtnLogin;
-    private RelativeLayout mRlActionbar;
+    //控件
     private LinearLayout mLlActionbarRight;
+    private LinearLayout.LayoutParams mlp;
+    private RelativeLayout mRlActionbar;
     private ViewPager mViewPager;
     private RadioGroup mRadioGroup;
     private TextView mTvTitle;
-    /**
-     * 按钮的没选中显示的图标
-     */
+    private ImageView mImgAddContact;
+
+    //数据
+    //按钮的没选中显示的图标
     private int[] unselectedIconIds = {R.drawable.ic_white_04,
             R.drawable.ic_white_39, R.drawable.ic_white_48
     };
-    /**
-     * 按钮的选中显示的图标
-     */
+    //按钮的选中显示的图标
     private int[] selectedIconIds = {R.drawable.ic_yellow_04,
             R.drawable.ic_yellow_39, R.drawable.ic_yellow_48
     };
     private int[] pageTitles = {R.string.meeting, R.string.contacts, R.string.settings};
-
     private List<Fragment> fragments = new ArrayList<Fragment>();
-    private ImageView mImgAddContact;
-    private LinearLayout.LayoutParams mlp;
     private boolean hasAddContactIcon;
+    //上下文参数
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +62,8 @@ public class MainActivity extends FragmentActivity implements
     }
 
     protected void init() {
-        getPermission();
+        mContext = this;
+//        getPermission();
         Fragment meetingFragment = new MeetingFragment();
         Fragment contactsFragment = new ContactsFragment();
         Fragment settingsFragment = new SettingsFragment();
@@ -198,36 +187,36 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    private void getPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                (checkSelfPermission(Manifest.permission.CAMERA) !=
-                        PackageManager.PERMISSION_GRANTED ||
-                        checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                                PackageManager.PERMISSION_GRANTED ||
-                        checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                                PackageManager.PERMISSION_GRANTED ||
-                        checkSelfPermission(Manifest.permission.WRITE_CALENDAR) !=
-                                PackageManager.PERMISSION_GRANTED ||
-                        checkSelfPermission(Manifest.permission.READ_CALENDAR) !=
-                                PackageManager.PERMISSION_GRANTED)) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+//    private void getPermission() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+//                (checkSelfPermission(Manifest.permission.CAMERA) !=
+//                        PackageManager.PERMISSION_GRANTED ||
+//                        checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+//                                PackageManager.PERMISSION_GRANTED ||
+//                        checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) !=
+//                                PackageManager.PERMISSION_GRANTED ||
+//                        checkSelfPermission(Manifest.permission.WRITE_CALENDAR) !=
+//                                PackageManager.PERMISSION_GRANTED ||
+//                        checkSelfPermission(Manifest.permission.READ_CALENDAR) !=
+//                                PackageManager.PERMISSION_GRANTED)) {
+//            requestPermissions(new String[]{Manifest.permission.CAMERA,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                    Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST);
+//            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+//
+//        }
+//    }
 
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST) {
-            for (int result : grantResults) {
-                if (result != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-            }
-            init();
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                                           int[] grantResults) {
+//        if (requestCode == PERMISSIONS_REQUEST) {
+//            for (int result : grantResults) {
+//                if (result != PackageManager.PERMISSION_GRANTED) {
+//                    return;
+//                }
+//            }
+//            init();
+//        }
+//    }
 }

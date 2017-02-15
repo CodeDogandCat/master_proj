@@ -12,9 +12,16 @@ import cn.edu.hfut.lilei.shareboard.R;
 
 
 public class MeetingActivity extends Activity {
-    private WebView mWvCanvas;
-    private PowerManager mPm;
+    //控件
     private PowerManager.WakeLock mWakeLock;
+    private PowerManager mPm;
+    private WebView mWvCanvas;
+
+    //数据
+
+    //上下文参数
+    private Context mContext;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +33,7 @@ public class MeetingActivity extends Activity {
     }
 
     private void init() {
+        mContext = this;
         mPm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         mWakeLock = mPm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "SCREEN_DIM_WAKE_LOCK");
         mWvCanvas = (WebView) findViewById(R.id.wv_meeting_canvas);
@@ -38,9 +46,7 @@ public class MeetingActivity extends Activity {
 
     @Override
     protected void onResume() {
-        /**
-         * 设置为横屏
-         */
+        //设置为横屏
         if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }

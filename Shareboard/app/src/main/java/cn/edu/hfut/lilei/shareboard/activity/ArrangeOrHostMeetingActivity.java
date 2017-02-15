@@ -15,31 +15,26 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 
 public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
+    //控件
+    private LinearLayout mLlArrangeMeeting;
     private EditText mEtEmail;
     private Button mBtnComplete;
-    private LinearLayout mLlArrangeMeeting;
-    private static final int VIBRATE_DURATION = 20;
-    private SwipeBackLayout mSwipeBackLayout;
+    //数据
+
+    //上下文参数
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrange_host_meeting);
         init();
-//        mBtnComplete= (Button) findViewById(R.id.btn_setuserinfo_complete);
-//        mBtnComplete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                Intent intent = new Intent();
-////                intent.setClass(SetUserInfoActivity.this, ResetPasswordActivity.class);
-////                startActivity(intent);
-//            }
-//        });
 
 
     }
 
     private void init() {
+        mContext = this;
         mLlArrangeMeeting = (LinearLayout) findViewById(R.id.ll_arrange_meeting);
         mLlArrangeMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +44,7 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                 startActivity(intent);
             }
         });
-        mSwipeBackLayout = getSwipeBackLayout();
+        SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
                 SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
