@@ -19,7 +19,6 @@ import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtils;
 import cn.edu.hfut.lilei.shareboard.utils.MyDateTimeUtils;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
-import cn.edu.hfut.lilei.shareboard.view.InviteChooserDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
@@ -149,7 +148,8 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                     requestCalendar();
                     break;
                 case R.id.btn_meeting_info_invite:
-                    invite();
+                    MyAppUtils.invite(mContext, String.format(getResources().getString(R.string
+                            .invite_title), title), description, mlistAppInfo);
                     break;
                 case R.id.btn_meeting_info_delete:
                     delete();
@@ -222,29 +222,6 @@ public class MeetingInfoActivity extends SwipeBackActivity {
     private void delete() {
 
     }
-
-
-    /**
-     * 选择邀请方式
-     */
-    private void invite() {
-
-        final String subject =
-                String.format(getResources().getString(R.string.invite_title), title);
-        final String content = description;
-
-        final InviteChooserDialog.Builder dialog =
-                new InviteChooserDialog.Builder(MeetingInfoActivity.this);
-
-        dialog.setTitle(getString(R.string.choose_invite_type));
-        dialog.setSubject(subject);
-        dialog.setContent(content);
-        dialog.setData(mlistAppInfo);
-        dialog.show();
-
-
-    }
-
 
     private void startMeeting() {
 

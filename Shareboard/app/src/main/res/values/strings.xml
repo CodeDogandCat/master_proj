@@ -89,4 +89,5 @@
     <string name="should_get_this_to_alter_head">应用需要该权限才能更改头像</string>
     <string name="meeting_location">安卓小喵共享白板-加入会议</string>
     <string name="meeting_event_already_add">会议的日历事件提醒添加成功</string>
+    <string name="arranging">安排中...</string>
 </resources>

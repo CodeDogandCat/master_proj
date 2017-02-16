@@ -35,4 +35,5 @@ dependencies {
     compile 'org.apache.directory.studio:org.apache.commons.lang:2.6'
     compile project(':SwitchButtonLibrary')
     compile project(':SwipeBackLibrary')
+    compile project(':LoadingAnimLibrary')
 }

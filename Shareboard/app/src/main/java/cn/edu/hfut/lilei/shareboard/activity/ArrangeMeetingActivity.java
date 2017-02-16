@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -27,8 +28,12 @@ import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtils;
 import cn.edu.hfut.lilei.shareboard.utils.MyDateTimeUtils;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
+import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+
+import static cn.edu.hfut.lilei.shareboard.data.Config.SHOW_TIME_MIN;
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.loding;
 
 
 public class ArrangeMeetingActivity extends SwipeBackActivity implements View.OnClickListener {
@@ -38,6 +43,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
     private TextView mTvMeetingDate, mTvMeetingStartTime, mTvMeetingEndTime;
     private SwitchButton mBtnAddToCalendar;
     private EditText mEtTitle;
+    private LodingDialog.Builder mlodingDialog;
     //数据
     private int year, month, day, a_pm1, hour_24_1, hour_12_1, minite1, a_pm2, hour_24_2, hour_12_2,
             minite2;
@@ -253,22 +259,49 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                                         null,
                                         description, null);
                     }
-
+                    //加载中
+                    mlodingDialog = loding(mContext, mContext.getResources()
+                            .getString(R.string.arranging));
                     //保存到数据库
+                    new AsyncTask<Void, Void, Integer>() {
 
-                    //保存到参数
-                    Intent intent = new Intent();
-                    intent.setClass(ArrangeMeetingActivity.this, MeetingInfoActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putLong("startMillis", startMillis);
-                    bundle.putLong("endMillis", endMillis);
-                    bundle.putLong("eventId", eventId);
-                    bundle.putString("title", title);
-                    bundle.putString("description", description);
-                    bundle.putString("mid", mid);
-                    bundle.putString("mpassword", mpassword);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                        @Override
+                        protected Integer doInBackground(Void... params) {
+
+                            //网络操作
+                            long startTime = System.currentTimeMillis();
+                            long loadingTime = System.currentTimeMillis() - startTime;
+                            if (loadingTime < SHOW_TIME_MIN) {
+                                try {
+                                    //线程休眠等待
+                                    Thread.sleep(SHOW_TIME_MIN - loadingTime);
+                                    mlodingDialog.cancle();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            return 1;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Integer result) {
+                            //保存到参数
+                            Intent intent = new Intent();
+                            intent.setClass(ArrangeMeetingActivity.this, MeetingInfoActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putLong("startMillis", startMillis);
+                            bundle.putLong("endMillis", endMillis);
+                            bundle.putLong("eventId", eventId);
+                            bundle.putString("title", title);
+                            bundle.putString("description", description);
+                            bundle.putString("mid", mid);
+                            bundle.putString("mpassword", mpassword);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+                    }.execute(new Void[]{});
+
+
                 } else {
                     Log.i(Config.TAG, "CCCCCCCCCCCC");
                 }

@@ -18,8 +18,12 @@ import android.util.DisplayMetrics;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.data.AppInfo;
+import cn.edu.hfut.lilei.shareboard.view.InviteChooserDialog;
+import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 
 import static cn.edu.hfut.lilei.shareboard.data.Config.ALBUM_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.data.Config.CAMERA_REQUEST_CODE;
@@ -312,6 +316,42 @@ public class MyAppUtils {
         } catch (SecurityException e) {
             return -1;
         }
+
+
+    }
+
+    /**
+     * 选择邀请方式
+     */
+    public static void invite(Context context, String title, String description,
+                              List<AppInfo> listAppInfo) {
+
+        final String subject =
+                String.format(context.getResources()
+                        .getString(R.string.invite_title), title);
+        final String content = description;
+
+        final InviteChooserDialog.Builder dialog =
+                new InviteChooserDialog.Builder(context);
+
+        dialog.setTitle(context.getString(R.string.choose_invite_type));
+        dialog.setSubject(subject);
+        dialog.setContent(content);
+        dialog.setData(listAppInfo);
+        dialog.show();
+
+
+    }
+
+    /**
+     * 加载中
+     */
+    public static LodingDialog.Builder loding(Context context, String title) {
+
+        LodingDialog.Builder dialog = new LodingDialog.Builder(context);
+        dialog.setTitle(title);
+        dialog.show();
+        return dialog;
 
 
     }

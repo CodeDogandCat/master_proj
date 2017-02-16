@@ -187,36 +187,4 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-//    private void getPermission() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-//                (checkSelfPermission(Manifest.permission.CAMERA) !=
-//                        PackageManager.PERMISSION_GRANTED ||
-//                        checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-//                                PackageManager.PERMISSION_GRANTED ||
-//                        checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) !=
-//                                PackageManager.PERMISSION_GRANTED ||
-//                        checkSelfPermission(Manifest.permission.WRITE_CALENDAR) !=
-//                                PackageManager.PERMISSION_GRANTED ||
-//                        checkSelfPermission(Manifest.permission.READ_CALENDAR) !=
-//                                PackageManager.PERMISSION_GRANTED)) {
-//            requestPermissions(new String[]{Manifest.permission.CAMERA,
-//                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                    Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST);
-//            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-//
-//        }
-//    }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                                           int[] grantResults) {
-//        if (requestCode == PERMISSIONS_REQUEST) {
-//            for (int result : grantResults) {
-//                if (result != PackageManager.PERMISSION_GRANTED) {
-//                    return;
-//                }
-//            }
-//            init();
-//        }
-//    }
 }
