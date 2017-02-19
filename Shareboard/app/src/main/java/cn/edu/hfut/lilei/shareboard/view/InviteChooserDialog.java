@@ -21,7 +21,7 @@ import java.util.List;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ApplicationInfoAdapter;
 import cn.edu.hfut.lilei.shareboard.data.AppInfo;
-import cn.edu.hfut.lilei.shareboard.utils.MyAppUtils;
+import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 
 
 public class InviteChooserDialog extends Dialog {
@@ -131,7 +131,7 @@ public class InviteChooserDialog extends Dialog {
                     appInfo.setAppLabel(appLabel);
                     appInfo.setPkgName(pkgName);
                     appInfo.setAppName(
-                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.getApplicationNameByPackageName(
+                            MyAppUtil.getApplicationNameByPackageName(
                                     mContext, pkgName));
                     appInfo.setAppIcon(icon);
 //                    appInfo.setIntent(launchIntent);
@@ -182,19 +182,19 @@ public class InviteChooserDialog extends Dialog {
                             switch (flag) {
                                 case 0:
                                     dialog.dismiss();
-                                    cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.copy(mContext,
+                                    MyAppUtil.copy(mContext,
                                             content);
                                     break;
                                 case 1:
                                     switch (position) {
                                         case 0:
                                             dialog.dismiss();
-                                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.sendSMS
+                                            MyAppUtil.sendSMS
                                                     (mContext, content);
                                             break;
                                         case 1:
                                             dialog.dismiss();
-                                            MyAppUtils.copy(mContext, content);
+                                            MyAppUtil.copy(mContext, content);
                                             break;
                                     }
                                     break;
@@ -202,12 +202,12 @@ public class InviteChooserDialog extends Dialog {
                                     switch (position) {
                                         case 0:
                                             dialog.dismiss();
-                                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils
+                                            MyAppUtil
                                                     .sendMail(mContext, subject, content);
                                             break;
                                         case 1:
                                             dialog.dismiss();
-                                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.copy(
+                                            MyAppUtil.copy(
                                                     mContext, content);
                                             break;
 
@@ -217,17 +217,17 @@ public class InviteChooserDialog extends Dialog {
                                     switch (position) {
                                         case 0:
                                             dialog.dismiss();
-                                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.sendSMS(
+                                            MyAppUtil.sendSMS(
                                                     mContext, content);
                                             break;
                                         case 1:
                                             dialog.dismiss();
-                                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.sendMail(
+                                            MyAppUtil.sendMail(
                                                     mContext, subject, content);
                                             break;
                                         case 2:
                                             dialog.dismiss();
-                                            cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.copy(
+                                            MyAppUtil.copy(
                                                     mContext, content);
                                             break;
 

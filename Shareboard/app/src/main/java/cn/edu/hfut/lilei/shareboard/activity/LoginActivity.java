@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 
 
 public class LoginActivity extends Activity {
@@ -58,13 +59,13 @@ public class LoginActivity extends Activity {
                     // 获得焦点
                     mLlBottomlineofemail.setBackgroundColor(
                             getResources().getColor(R.color.my_yellow));
-                    mImgEmail.setImageDrawable(getResources().getDrawable(R.drawable.ic_yellow_34));
+                    ImageUtil.load(mContext, R.drawable.ic_yellow_34, mImgEmail);
                 } else {
 
                     // 失去焦点
                     mLlBottomlineofemail.setBackgroundColor(
                             getResources().getColor(R.color.my_lightgray));
-                    mImgEmail.setImageDrawable(getResources().getDrawable(R.drawable.ic_white_34));
+                    ImageUtil.load(mContext, R.drawable.ic_white_34, mImgEmail);
                 }
 
             }
@@ -81,15 +82,13 @@ public class LoginActivity extends Activity {
                     // 获得焦点
                     mLlBottomlineofpass.setBackgroundColor(
                             getResources().getColor(R.color.my_yellow));
-                    mImgPassword.setImageDrawable(
-                            getResources().getDrawable(R.drawable.ic_yellow_32));
+                    ImageUtil.load(mContext, R.drawable.ic_yellow_32, mImgPassword);
                 } else {
 
                     // 失去焦点
                     mLlBottomlineofpass.setBackgroundColor(
                             getResources().getColor(R.color.my_lightgray));
-                    mImgPassword.setImageDrawable(
-                            getResources().getDrawable(R.drawable.ic_white_32));
+                    ImageUtil.load(mContext, R.drawable.ic_white_32, mImgPassword);
                 }
 
             }

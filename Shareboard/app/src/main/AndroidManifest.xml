@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -51,7 +52,6 @@
         <activity
             android:name=".activity.MainActivity"
             android:windowSoftInputMode="adjustPan"/>
-
 
 
     </application>

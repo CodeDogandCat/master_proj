@@ -13,7 +13,7 @@ import java.util.List;
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.data.GroupMemberInfo;
-import cn.edu.hfut.lilei.shareboard.utils.MyStringUtils;
+import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 
 public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexer {
     private List<GroupMemberInfo> list = null;
@@ -68,8 +68,8 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
             viewHolder.tvLetter.setVisibility(View.GONE);
         }
         String name = this.list.get(position).getName();
-        int length = MyStringUtils.length(name);
-        viewHolder.imgPhoto.setTextAndColor(MyStringUtils.substring(name, length - 2, length, "", ""), R.color.mediumaquamarine);
+        int length = StringUtil.length(name);
+        viewHolder.imgPhoto.setTextAndColor(StringUtil.substring(name, length - 2, length, "", ""), R.color.mediumaquamarine);
 
         viewHolder.tvStatus.setText(this.list.get(position).getStatus());
         viewHolder.tvTitle.setText(name);

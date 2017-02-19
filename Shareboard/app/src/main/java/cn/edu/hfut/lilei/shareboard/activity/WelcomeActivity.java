@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.data.Config;
+import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 
-import static cn.edu.hfut.lilei.shareboard.data.Config.SHOW_TIME_MIN;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SHOW_TIME_MIN;
 
 
 public class WelcomeActivity extends Activity {
@@ -65,6 +65,6 @@ public class WelcomeActivity extends Activity {
 //        if (BaseApplication.mNetWorkState == NetworkUtils.NETWORN_NONE) {
 //            return OFFLINE;
 //        }
-        return Config.SUCCESS;
+        return SettingUtil.SUCCESS;
     }
 }

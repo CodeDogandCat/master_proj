@@ -16,13 +16,13 @@ import java.util.List;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.data.AppInfo;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
-import cn.edu.hfut.lilei.shareboard.utils.MyAppUtils;
-import cn.edu.hfut.lilei.shareboard.utils.MyDateTimeUtils;
+import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
+import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
-import static cn.edu.hfut.lilei.shareboard.utils.MyDateTimeUtils.getPreString;
+import static cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil.getPreString;
 
 
 public class MeetingInfoActivity extends SwipeBackActivity {
@@ -77,7 +77,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
         hour_12_1 = start.get(Calendar.HOUR);
         minite1 = start.get(Calendar.MINUTE);
 
-        lenght = MyDateTimeUtils.minuteLength(startMillis, endMillis);
+        lenght = DateTimeUtil.minuteLength(startMillis, endMillis);
         preStr = getPreString(startMillis);
 
     }
@@ -148,7 +148,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                     requestCalendar();
                     break;
                 case R.id.btn_meeting_info_invite:
-                    MyAppUtils.invite(mContext, String.format(getResources().getString(R.string
+                    MyAppUtil.invite(mContext, String.format(getResources().getString(R.string
                             .invite_title), title), description, mlistAppInfo);
                     break;
                 case R.id.btn_meeting_info_delete:
@@ -171,14 +171,14 @@ public class MeetingInfoActivity extends SwipeBackActivity {
         if (PermissionsUtil.hasPermission(this, Manifest.permission.WRITE_CALENDAR)) {
             if (mEventID == -1) {
                 //插入日历事件提醒
-                mEventID = MyAppUtils.insertCalendarEvent(mContext, startMillis, endMillis, title,
+                mEventID = MyAppUtil.insertCalendarEvent(mContext, startMillis, endMillis, title,
                         null,
                         description, null);
-                MyAppUtils.viewCalendarEvent(mContext, startMillis);
+                MyAppUtil.viewCalendarEvent(mContext, startMillis);
 
             } else {
                 //已经自动添加到了日历，当前只需要查看
-                MyAppUtils.viewCalendarEvent(mContext, startMillis);
+                MyAppUtil.viewCalendarEvent(mContext, startMillis);
             }
 
         } else {
@@ -187,14 +187,14 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                 public void permissionGranted(@NonNull String[] permissions) {
                     if (mEventID == -1) {
                         //插入日历事件提醒
-                        mEventID = MyAppUtils.insertCalendarEvent(mContext, startMillis, endMillis,
+                        mEventID = MyAppUtil.insertCalendarEvent(mContext, startMillis, endMillis,
                                 title,
                                 null,
                                 description, null);
-                        MyAppUtils.viewCalendarEvent(mContext, startMillis);
+                        MyAppUtil.viewCalendarEvent(mContext, startMillis);
                     } else {
                         //已经自动添加到了日历，当前只需要查看
-                        MyAppUtils.viewCalendarEvent(mContext, startMillis);
+                        MyAppUtil.viewCalendarEvent(mContext, startMillis);
                     }
                 }
 
@@ -211,8 +211,8 @@ public class MeetingInfoActivity extends SwipeBackActivity {
      */
     private void updateTvMeetingDate() {
         mTvMeetingDate.setText(
-                preStr + am_pm[a_pm1] + MyDateTimeUtils.zeroConvert(hour_12_1) + ":" +
-                        MyDateTimeUtils.addZero(minite1));
+                preStr + am_pm[a_pm1] + DateTimeUtil.zeroConvert(hour_12_1) + ":" +
+                        DateTimeUtil.addZero(minite1));
     }
 
     private void edit() {

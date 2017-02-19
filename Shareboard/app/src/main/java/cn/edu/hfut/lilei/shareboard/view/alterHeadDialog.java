@@ -19,7 +19,7 @@ import java.util.List;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ApplicationInfoAdapter;
 import cn.edu.hfut.lilei.shareboard.data.AppInfo;
-import cn.edu.hfut.lilei.shareboard.utils.MyAppUtils;
+import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 
 
 public class AlterHeadDialog extends Dialog {
@@ -119,7 +119,7 @@ public class AlterHeadDialog extends Dialog {
 //                                    switch (position) {
 //                                        case 0:
 //                                            dialog.dismiss();
-//                                            MyAppUtils.startCamera((Activity) mContext);
+//                                            MyAppUtil.startCamera((Activity) mContext);
 //                                            break;
 //                                    }
 //                                    break;
@@ -127,11 +127,11 @@ public class AlterHeadDialog extends Dialog {
                             switch (position) {
                                 case 0:
                                     dialog.dismiss();
-                                    MyAppUtils.startCamera((Activity) mContext);
+                                    ImageUtil.startCamera((Activity) mContext);
                                     break;
                                 case 1:
                                     dialog.dismiss();
-                                    cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.startGallery((Activity) mContext);
+                                    ImageUtil.startGallery((Activity) mContext);
                                     break;
 
                             }

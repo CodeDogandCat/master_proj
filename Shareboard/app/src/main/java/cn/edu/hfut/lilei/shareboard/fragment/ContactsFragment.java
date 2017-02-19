@@ -26,8 +26,8 @@ import java.util.List;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.SortGroupMemberAdapter;
 import cn.edu.hfut.lilei.shareboard.data.GroupMemberInfo;
-import cn.edu.hfut.lilei.shareboard.utils.CharacterParser;
-import cn.edu.hfut.lilei.shareboard.utils.PinyinComparator;
+import cn.edu.hfut.lilei.shareboard.utils.CharacterUtil;
+import cn.edu.hfut.lilei.shareboard.utils.PinyinComparatorUtil;
 import cn.edu.hfut.lilei.shareboard.view.ClearEditText;
 import cn.edu.hfut.lilei.shareboard.view.SideBar;
 
@@ -48,12 +48,12 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
     private int lastFirstVisibleItem = -1;
     /**
      */
-    private CharacterParser characterParser;
+    private CharacterUtil characterUtil;
     private List<GroupMemberInfo> SourceDateList;
 
     /**
      */
-    private PinyinComparator pinyinComparator;
+    private PinyinComparatorUtil pinyinComparatorUtil;
 
 
 
@@ -74,9 +74,9 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
         titleLayout = (LinearLayout) view.findViewById(R.id.title_layout);
         title = (TextView) view.findViewById(R.id.title_layout_catalog);
         tvNofriends = (TextView) view.findViewById(R.id.title_layout_no_friends);
-        characterParser = CharacterParser.getInstance();
+        characterUtil = CharacterUtil.getInstance();
 
-        pinyinComparator = new PinyinComparator();
+        pinyinComparatorUtil = new PinyinComparatorUtil();
 
         sideBar = (SideBar) view.findViewById(R.id.sidrbar);
         dialog = (TextView) view.findViewById(R.id.dialog);
@@ -109,7 +109,7 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
 
         SourceDateList = filledData(getResources().getStringArray(R.array.account));
         // 根据a-z进行排序源数据
-        Collections.sort(SourceDateList, pinyinComparator);
+        Collections.sort(SourceDateList, pinyinComparatorUtil);
         adapter = new SortGroupMemberAdapter(view.getContext(), SourceDateList);
         sortListView.setAdapter(adapter);
         sortListView.setOnScrollListener(new OnScrollListener() {
@@ -193,7 +193,7 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
             sortModel.setPhoto(getResources().getDrawable(R.drawable.er));
             sortModel.setName(contacts[i]);
             sortModel.setStatus("空闲");
-            String pinyin = characterParser.getSelling(contacts[i]);
+            String pinyin = characterUtil.getSelling(contacts[i]);
             String sortString = pinyin.substring(0, 1).toUpperCase();
 
             if (sortString.matches("[A-Z]")) {
@@ -224,14 +224,14 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
             for (GroupMemberInfo sortModel : SourceDateList) {
                 String name = sortModel.getName();
                 if (name.indexOf(filterStr.toString()) != -1
-                        || characterParser.getSelling(name).startsWith(
+                        || characterUtil.getSelling(name).startsWith(
                         filterStr.toString())) {
                     filterDateList.add(sortModel);
                 }
             }
         }
 
-        Collections.sort(filterDateList, pinyinComparator);
+        Collections.sort(filterDateList, pinyinComparatorUtil);
         adapter.updateListView(filterDateList);
         if (filterDateList.size() == 0) {
             tvNofriends.setVisibility(View.VISIBLE);

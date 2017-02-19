@@ -23,17 +23,17 @@ import com.kyleduo.switchbutton.SwitchButton;
 import java.util.Calendar;
 
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.data.Config;
+import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
-import cn.edu.hfut.lilei.shareboard.utils.MyAppUtils;
-import cn.edu.hfut.lilei.shareboard.utils.MyDateTimeUtils;
+import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
+import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
-import static cn.edu.hfut.lilei.shareboard.data.Config.SHOW_TIME_MIN;
-import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtils.loding;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SHOW_TIME_MIN;
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 
 
 public class ArrangeMeetingActivity extends SwipeBackActivity implements View.OnClickListener {
@@ -155,9 +155,9 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
         //设置当前日期，会议开始时间，会议结束时间的初始值
         mTvMeetingDate.setText(year + "/" + (month + 1) + "/" + day);
         mTvMeetingStartTime.setText(
-                am_pm[a_pm1] + " " + MyDateTimeUtils.zeroConvert(hour_12_1) + ":00");
+                am_pm[a_pm1] + " " + DateTimeUtil.zeroConvert(hour_12_1) + ":00");
         mTvMeetingEndTime.setText(
-                am_pm[a_pm2] + " " + MyDateTimeUtils.zeroConvert(hour_12_2) + ":00");
+                am_pm[a_pm2] + " " + DateTimeUtil.zeroConvert(hour_12_2) + ":00");
     }
 
     //进行页面内容合法性检查
@@ -254,7 +254,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                     if (mBtnAddToCalendar.isChecked()) {
                         //插入日历事件提醒
                         eventId =
-                                MyAppUtils.insertCalendarEvent(mContext, startMillis, endMillis,
+                                MyAppUtil.insertCalendarEvent(mContext, startMillis, endMillis,
                                         title,
                                         null,
                                         description, null);
@@ -303,7 +303,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
 
 
                 } else {
-                    Log.i(Config.TAG, "CCCCCCCCCCCC");
+                    Log.i(SettingUtil.TAG, "CCCCCCCCCCCC");
                 }
 
                 break;
@@ -341,11 +341,11 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
         description =
                 String.format(getResources().getString(R.string.invite_content), "李磊",
                         "李磊的白板会议",
-                        MyDateTimeUtils.getPreString(startMillis) + am_pm[a_pm1] +
-                                MyDateTimeUtils.zeroConvert
+                        DateTimeUtil.getPreString(startMillis) + am_pm[a_pm1] +
+                                DateTimeUtil.zeroConvert
                                         (hour_12_1) +
                                 ":" +
-                                MyDateTimeUtils.addZero(minite1), mid, mpassword);
+                                DateTimeUtil.addZero(minite1), mid, mpassword);
 
     }
 
@@ -389,16 +389,16 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
             mTvMeetingStartTime.setTextColor(getResources().getColor(R.color.my_white));
             mBtnSave.setEnabled(true);
         }
-        mTvMeetingStartTime.setText(am_pm[a_pm1] + MyDateTimeUtils.zeroConvert(hour_12_1) + ":" +
-                MyDateTimeUtils.addZero(minite1));
+        mTvMeetingStartTime.setText(am_pm[a_pm1] + DateTimeUtil.zeroConvert(hour_12_1) + ":" +
+                DateTimeUtil.addZero(minite1));
     }
 
     /**
      * 更新会议结束时间
      */
     private void updateEndTime() {
-        mTvMeetingEndTime.setText(am_pm[a_pm2] + MyDateTimeUtils.zeroConvert(hour_12_2) + ":" +
-                MyDateTimeUtils.addZero(minite2));
+        mTvMeetingEndTime.setText(am_pm[a_pm2] + DateTimeUtil.zeroConvert(hour_12_2) + ":" +
+                DateTimeUtil.addZero(minite2));
     }
 
 

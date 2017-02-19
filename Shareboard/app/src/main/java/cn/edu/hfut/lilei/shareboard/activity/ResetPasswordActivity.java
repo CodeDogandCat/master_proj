@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
@@ -33,14 +34,13 @@ public class ResetPasswordActivity extends SwipeBackActivity {
         init();
 
 
-
-
     }
 
     private void init() {
-        mContext=this;
+        mContext = this;
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow), SwipeBackLayout.EDGE_LEFT);
+        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
+                SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override
@@ -64,13 +64,15 @@ public class ResetPasswordActivity extends SwipeBackActivity {
                 if (hasFocus) {
 
                     // 获得焦点
-                    mLlBottomlineofemail.setBackgroundColor(getResources().getColor(R.color.my_yellow));
-                    mImgEmail.setImageDrawable(getResources().getDrawable(R.drawable.ic_yellow_34));
+                    mLlBottomlineofemail.setBackgroundColor(
+                            getResources().getColor(R.color.my_yellow));
+                    ImageUtil.load(mContext, R.drawable.btn_black, mImgEmail);
                 } else {
 
                     // 失去焦点
-                    mLlBottomlineofemail.setBackgroundColor(getResources().getColor(R.color.my_lightgray));
-                    mImgEmail.setImageDrawable(getResources().getDrawable(R.drawable.ic_white_34));
+                    mLlBottomlineofemail.setBackgroundColor(
+                            getResources().getColor(R.color.my_lightgray));
+                    ImageUtil.load(mContext, R.drawable.ic_white_34, mImgEmail);
                 }
 
             }

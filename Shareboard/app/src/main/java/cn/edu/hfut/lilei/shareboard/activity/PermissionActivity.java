@@ -18,11 +18,11 @@ import java.io.Serializable;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 
-import static cn.edu.hfut.lilei.shareboard.data.Config.PERMISSION_REQUEST_CANCEL;
-import static cn.edu.hfut.lilei.shareboard.data.Config.PERMISSION_REQUEST_CODE;
-import static cn.edu.hfut.lilei.shareboard.data.Config.PERMISSION_REQUEST_CONTENT;
-import static cn.edu.hfut.lilei.shareboard.data.Config.PERMISSION_REQUEST_ENSURE;
-import static cn.edu.hfut.lilei.shareboard.data.Config.PERMISSION_REQUEST_TITLE;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.PERMISSION_REQUEST_CANCEL;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.PERMISSION_REQUEST_CODE;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.PERMISSION_REQUEST_CONTENT;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.PERMISSION_REQUEST_ENSURE;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.PERMISSION_REQUEST_TITLE;
 
 public class PermissionActivity extends Activity {
 

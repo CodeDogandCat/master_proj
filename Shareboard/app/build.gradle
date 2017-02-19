@@ -36,4 +36,6 @@ dependencies {
     compile project(':SwitchButtonLibrary')
     compile project(':SwipeBackLibrary')
     compile project(':LoadingAnimLibrary')
+    compile 'com.lzy.net:okgo:2.1.4'        //对okhttp的封装
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

@@ -24,6 +24,7 @@ import cn.edu.hfut.lilei.shareboard.adapter.TabPageAdapter;
 import cn.edu.hfut.lilei.shareboard.fragment.ContactsFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.MeetingFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.SettingsFragment;
+import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.view.CustomAlertDialog;
 
 
@@ -85,9 +86,8 @@ public class MainActivity extends FragmentActivity implements
 
 
         //联系人页面actionbar右侧的添加联系人图标
-        Drawable mDrawableAddContact = getResources().getDrawable(R.drawable.ic_white_22);
         mImgAddContact = new ImageView(this);
-        mImgAddContact.setImageDrawable(mDrawableAddContact);
+        ImageUtil.load(mContext, R.drawable.ic_white_22, mImgAddContact);
         mlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         hasAddContactIcon = false;//标志着当前页面没有添加联系人图标
