@@ -32,6 +32,8 @@
         android:hint="@string/familyName"
         android:textSize="@dimen/super_small_text_size"
         android:textColor="@color/my_white"
+        android:maxLines="1"
+        android:maxLength="15"
        />
 
     <View
@@ -50,6 +52,8 @@
         android:hint="@string/givenname"
         android:textSize="@dimen/super_small_text_size"
         android:textColor="@color/my_white"
+        android:maxLines="1"
+        android:maxLength="15"
         />
 
     <View

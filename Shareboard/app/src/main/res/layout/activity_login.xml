@@ -60,7 +60,9 @@
                 android:id="@+id/et_login_email"
                 style="@style/big_edittext"
                 android:hint="@string/email"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:maxLength="60"
+                />
 
         </LinearLayout>
 
@@ -91,7 +93,9 @@
                 android:id="@+id/et_login_password"
                 style="@style/big_edittext"
                 android:hint="@string/password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:maxLength="12"
+                />
 
         </LinearLayout>
 

@@ -38,8 +38,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.7"
+        android:layout_height="150dp"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin26"
@@ -56,8 +55,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin26"
@@ -71,17 +69,42 @@
             android:paddingRight="10dp">
 
             <EditText
-                android:id="@+id/et_setuserinfo_name"
+                android:id="@+id/et_setuserinfo_family_name"
                 style="@style/big_edittext"
-                android:hint="@string/please_input_your_name"
+                android:hint="@string/please_input_your_family_name"
                 android:inputType="textAutoCorrect"
-                android:textColor="@color/my_white" />
+                android:textColor="@color/my_white"
+                android:maxLength="15"
+               />
 
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/ll_setuserinfo_bottomlineofname"
+            android:id="@+id/ll_setuserinfo_bottomlineof_familyname"
+            style="@style/common_horizontal_division_line_style"
+            android:background="@color/my_yellow" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingRight="10dp">
+
+            <EditText
+                android:id="@+id/et_setuserinfo_given_name"
+                style="@style/big_edittext"
+                android:hint="@string/please_input_your_given_name"
+                android:inputType="textAutoCorrect"
+                android:textColor="@color/my_white"
+                android:maxLength="15"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_setuserinfo_bottomlineof_given_name"
             style="@style/common_horizontal_division_line_style"
             android:background="@color/my_yellow" />
 
@@ -97,7 +120,8 @@
                 style="@style/big_edittext"
                 android:hint="@string/set_your_password"
                 android:inputType="textPassword"
-                android:textColor="@color/my_white" />
+                android:textColor="@color/my_white"
+                android:maxLength="12"/>
         </LinearLayout>
 
 
@@ -116,11 +140,5 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical" />
 
 </LinearLayout>

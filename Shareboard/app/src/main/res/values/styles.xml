@@ -92,6 +92,7 @@
         <item name="android:background">@color/my_transparent</item>
         <item name="android:textSize">@dimen/normal_text_size</item>
         <item name="android:paddingLeft">5dp</item>
+        <item name="android:maxLines">1</item>
     </style>
     <!-- Custom Alert Dialog -->
     <style name="CustomAlertDialog" parent="android:Theme.Holo.Dialog">
