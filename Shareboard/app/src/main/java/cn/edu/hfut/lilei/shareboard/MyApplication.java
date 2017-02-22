@@ -19,12 +19,14 @@ import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 
 public class MyApplication extends Application {
     //上下文参数
-    private Context mContext;
+    private static Context mContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        //初始化数据库
+//        GreenDaoManager.getInstance();
         //请求权限
         requestSdcard();
         //全局异常捕获
@@ -97,6 +99,10 @@ public class MyApplication extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Context getContext() {
+        return mContext;
     }
 
     /**
