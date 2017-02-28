@@ -10,6 +10,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
+
 
 public class NetworkUtil {
 
@@ -34,6 +36,7 @@ public class NetworkUtil {
         return false;
 
     }
+
     /**
      * show dialog to choose whether go to the view of network setting
      *
@@ -76,11 +79,13 @@ public class NetworkUtil {
                                                     int which) {
                                     dialog.dismiss();
                                 }
-                            }).show();
+                            })
+                    .show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /**
      * 打开网络设置界面
      */
@@ -92,6 +97,7 @@ public class NetworkUtil {
         intent.setAction(Intent.ACTION_VIEW);
         activity.startActivityForResult(intent, requestCode);
     }
+
     /**
      * whether the network is connected
      *
@@ -100,6 +106,7 @@ public class NetworkUtil {
      */
     public static boolean isNetworkConnected(Context context) {
         if (null == context) {
+            Log.i(SettingUtil.TAG, "网络不可用");
             return false;
         }
         // 获取手机所有连接管理对象（包括wifi，net等连接的管理）
@@ -107,14 +114,12 @@ public class NetworkUtil {
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
             // 获取网络连接管理的对象
-            NetworkInfo info = connectivityManager.getActiveNetworkInfo();
-            if (info != null && info.isConnected()) {
-                // 判断当前网络是否已经连接
-                if (info.getState() == NetworkInfo.State.CONNECTED) {
-                    return true;
-                }
+            NetworkInfo mNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
             }
         }
+        Log.i(SettingUtil.TAG, "网络不可用");
         return false;
     }
 
@@ -148,18 +153,20 @@ public class NetworkUtil {
     public static int getNetWorkType(Context context) {
 
         int mNetWorkType = NETWORKTYPE_INVALID;
-        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager manager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             String type = networkInfo.getTypeName();
             if (type.equalsIgnoreCase("WIFI")) {
                 mNetWorkType = NETWORKTYPE_WIFI;
-            } else if (type.equalsIgnoreCase("MOBILE")) {
-                String proxyHost = android.net.Proxy.getDefaultHost();
-                mNetWorkType = TextUtils.isEmpty(proxyHost)
-                        ? (isFastMobileNetwork(context) ? NETWORKTYPE_3G : NETWORKTYPE_2G)
-                        : NETWORKTYPE_WAP;
-            }
+            } else
+                if (type.equalsIgnoreCase("MOBILE")) {
+                    String proxyHost = android.net.Proxy.getDefaultHost();
+                    mNetWorkType = TextUtils.isEmpty(proxyHost)
+                            ? (isFastMobileNetwork(context) ? NETWORKTYPE_3G : NETWORKTYPE_2G)
+                            : NETWORKTYPE_WAP;
+                }
         } else {
             mNetWorkType = NETWORKTYPE_INVALID;
         }
@@ -167,7 +174,8 @@ public class NetworkUtil {
     }
 
     private static boolean isFastMobileNetwork(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager =
+                (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         switch (telephonyManager.getNetworkType()) {
             case TelephonyManager.NETWORK_TYPE_1xRTT:
                 return false; // ~ 50-100 kbps
@@ -205,7 +213,6 @@ public class NetworkUtil {
                 return false;
         }
     }
-
 
 
 }

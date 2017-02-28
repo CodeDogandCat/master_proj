@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtil {
     /**
@@ -245,4 +247,77 @@ public class StringUtil {
     }
 
 
+    /**
+     * 判断email格式是否正确
+     *
+     * @param email
+     * @return
+     */
+    public static boolean isEmail(String email) {
+        String str =
+                "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
+        Pattern p = Pattern.compile(str);
+        Matcher m = p.matcher(email);
+
+        return m.matches();
+    }
+
+    /**
+     * 判断是否全是数字
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isNumeric(String str) {
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        if (!isNum.matches()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 判断姓 、名 是否符合
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isValidName(String str) {
+
+        if (isEmpty(str)) {
+            return false;
+        }
+        //可以包括汉字，英文字母，数字（不能数字开头）
+        String regex = "^[a-zA-Z\u4E00-\u9FA5][a-zA-Z0-9\u4E00-\u9FA5]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher isName = pattern.matcher(str);
+        if (!isName.matches()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 判断密码 是否符合
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isValidPassword(String str) {
+
+        if (isEmpty(str) || (length(str) != 12)) {
+            return false;
+        }
+        //可以字母开头，数字和下划线
+        String regex = "^[a-zA-Z][a-zA-Z0-9_]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher isPwd = pattern.matcher(str);
+        if (!isPwd.matches()) {
+            return false;
+        }
+        return true;
+    }
 }
+
+

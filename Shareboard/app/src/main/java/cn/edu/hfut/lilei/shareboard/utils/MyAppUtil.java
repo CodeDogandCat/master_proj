@@ -115,6 +115,11 @@ public class MyAppUtil {
                 .show();
     }
 
+    public static void showToast(Context context, int strid) {
+        Toast.makeText(context, context.getResources()
+                .getString(strid), Toast.LENGTH_SHORT)
+                .show();
+    }
 
 
     /**
@@ -242,6 +247,7 @@ public class MyAppUtil {
         }
         return false;
     }
+
     /**
      * get the package information of the context
      *
@@ -251,8 +257,9 @@ public class MyAppUtil {
     public static PackageInfo getPackageInfo(Context context) {
         PackageInfo info = null;
         try {
-            info = context.getPackageManager().getPackageInfo(
-                    context.getPackageName(), 0);
+            info = context.getPackageManager()
+                    .getPackageInfo(
+                            context.getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace(System.err);
         }
@@ -260,20 +267,20 @@ public class MyAppUtil {
             info = new PackageInfo();
         return info;
     }
+
     /**
      * whether the external storage (SDCard) exists
      *
      * @return
      */
     public static boolean isStorageExists() {
-        if (Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED)) {
+        if (Environment.getExternalStorageState()
+                .equals(
+                        Environment.MEDIA_MOUNTED)) {
             return true;
         }
         return false;
     }
-
-
 
 
     /**
@@ -310,7 +317,6 @@ public class MyAppUtil {
         }
         return versioncode;
     }
-
 
 
 }

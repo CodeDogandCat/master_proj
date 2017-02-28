@@ -1,3 +1,9 @@
+<?php
+require_once 'util/UrlUtil.php';
+use \Workerman\Worker;
+use \Workerman\WebServer;
+use \GatewayWorker\Lib\Gateway;
+?>
 <html><head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>canvas</title>
@@ -63,13 +69,17 @@
     // 连接建立时发送登录信息
     function onopen()
     {
-        if(!name)
-        {
-            show_prompt();
-        }
+//        name=<?php //UrlUtil::getUrlParam('user_email','') ?>//;
+        name='<?php echo isset($_GET['user_email']) ? $_GET['user_email'] : '2662083658@qq.com'?>';
+//        if(!name)
+//        {
+//            show_prompt();
+//        }
         // 登录
         var login_data = '{"type":"login","client_name":"'+name.replace(/"/g, '\\"')+'","room_id":"<?php echo isset($_GET['room_id']) ? $_GET['room_id'] : 1?>"}';
         console.log("websocket握手成功，发送登录数据:"+login_data);
+//        console.log("url:"+<?php //UrlUtil::request_url()?>//);
+        console.log("url:"+<?php $_SERVER['GATEWAY_ADDR']?>);
         ws.send(login_data);
     }
 
@@ -82,7 +92,7 @@
             // 服务端ping客户端
             case 'ping':
                 ws.send('{"type":"pong"}');
-                break;;
+                break;
             case 'getID':
                 if(data['client_id'])
                 {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
 
-    tools:context="cn.edu.hfut.lilei.shareboard.activity.RegisterActivity">
+              tools:context="cn.edu.hfut.lilei.shareboard.activity.RegisterActivity">
 
     <RelativeLayout style="@style/actionbar">
 
@@ -21,12 +21,12 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_yellow_leftarrow" />
+            android:src="@drawable/ic_yellow_leftarrow"/>
 
         <TextView
             android:id="@+id/tv_register_register"
             style="@style/navbar_title_textview_style"
-            android:text="@string/register" />
+            android:text="@string/register"/>
 
         <!--<LinearLayout-->
         <!--style="@style/common_horizontal_division_line_style"-->
@@ -46,26 +46,61 @@
 
 
         <EditText
-            android:id="@+id/et_login_email"
+            android:id="@+id/et_register_email"
             style="@style/big_edittext"
             android:layout_marginTop="20dp"
             android:hint="@string/inputemail"
             android:inputType="textEmailAddress"
-            android:textColor="@color/my_white"
-            android:maxLength="60"/>
+            android:maxLength="60"
+            android:textColor="@color/my_white"/>
 
 
         <LinearLayout
             android:id="@+id/ll_register_bottomlineofemail"
             style="@style/common_horizontal_division_line_style"
-            android:background="@color/my_yellow" />
+            android:background="@color/my_yellow"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_register_verify_code"
+                style="@style/big_edittext"
+                android:layout_width="150dp"
+                android:layout_gravity="left"
+                android:hint="@string/input_verify_code"
+                android:textColor="@color/my_white"/>
+
+            <TextView
+                android:id="@+id/tv_register_send_verify_code"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center_vertical|end"
+                android:background="@drawable/btn_yellow_default"
+                android:gravity="center"
+                android:maxLength="12"
+                android:padding="5dp"
+                android:text="@string/send_verify_code"
+                android:textColor="@color/my_black"
+                android:textSize="12sp"/>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_register_bottomlineof_verify_code"
+            style="@style/common_horizontal_division_line_style"
+            android:background="@color/my_yellow"/>
 
 
         <Button
             android:id="@+id/btn_register_nextstep"
             style="@style/BigButton"
             android:layout_marginTop="20dp"
-            android:text="@string/nextstep" />
+            android:text="@string/nextstep"/>
 
 
     </LinearLayout>
@@ -75,6 +110,6 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:gravity="center"
-        android:orientation="vertical" />
+        android:orientation="vertical"/>
 
 </LinearLayout>

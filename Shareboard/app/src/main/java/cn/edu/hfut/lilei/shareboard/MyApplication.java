@@ -14,8 +14,8 @@ import com.lzy.okgo.cookie.store.PersistentCookieStore;
 import java.util.logging.Level;
 
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
-import cn.edu.hfut.lilei.shareboard.utils.CrashHandler;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
+import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 
 public class MyApplication extends Application {
     //上下文参数
@@ -27,11 +27,13 @@ public class MyApplication extends Application {
         mContext = getApplicationContext();
         //初始化数据库
 //        GreenDaoManager.getInstance();
+        //初始化 sharepreference
+        SharedPrefUtil.init(mContext);
         //请求权限
         requestSdcard();
         //全局异常捕获
-        CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init(mContext);
+//        CrashHandler crashHandler = CrashHandler.getInstance();
+//        crashHandler.init(mContext);
 
         //---------这里给出的是示例代码,告诉你可以这么传,实际使用的时候,根据需要传,不需要就不传-------------//
 //        HttpHeaders headers = new HttpHeaders();
