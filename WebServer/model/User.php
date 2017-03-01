@@ -1,11 +1,27 @@
 <?php
 
 
-
 class User
 {
-   private  $id,$email,$family_name,$given_name,$register_time,
-       $login_recent_time,$status,$class,$password,$pmi;
+    private $id, $email, $family_name, $given_name, $register_time,
+        $login_recent_time, $status, $class, $password, $pmi, $token;
+
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+    }
+
 
     /**
      * User constructor.

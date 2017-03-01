@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 
 public class MeetingIndexAdapter extends BaseAdapter {
     private List<Map<String, Object>> data;
@@ -72,8 +73,10 @@ public class MeetingIndexAdapter extends BaseAdapter {
             zujian = (Zujian) convertView.getTag();
         }
         //绑定数据
-        zujian.image.setBackgroundResource((Integer) data.get(position).get("image"));
-        zujian.title.setText((String) data.get(position).get("title"));
+        ImageUtil.load(context, (Integer) data.get(position)
+                .get("image"), zujian.image);
+        zujian.title.setText((String) data.get(position)
+                .get("title"));
         return convertView;
     }
 }

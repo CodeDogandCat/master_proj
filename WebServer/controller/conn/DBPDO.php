@@ -51,9 +51,10 @@ class DBPDO
     }
 
     //插入数据
-    public function insert($sql)
+    public function insert($sql,$arr)
     {
-        if ($this->dbh->exec($sql)) {
+        $stmt = $this->dbh->prepare($sql);
+        if ($stmt->execute($arr)) {
             $this->getPDOError();
             return $this->dbh->lastInsertId();
         }

@@ -78,8 +78,8 @@ public class WelcomeActivity extends Activity {
                         break;
                     case SUCCESS:
                         Intent intent = new Intent();
-                        intent.setClass(WelcomeActivity.this, RegisterActivity.class);
-//                        intent.setClass(WelcomeActivity.this, MainActivity.class);
+//                        intent.setClass(WelcomeActivity.this, RegisterActivity.class);
+                        intent.setClass(WelcomeActivity.this, MainActivity.class);
 //                        intent.setClass(WelcomeActivity.this, LoginActivity.class);
 //                        intent.setClass(WelcomeActivity.this, ResetPasswordActivity.class);
 //                        intent.setClass(WelcomeActivity.this, SetUserInfoActivity.class);

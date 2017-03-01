@@ -5,6 +5,8 @@ public class SettingUtil {
     //server url 参数
     public static final String URL_SEND_VERIFY_CODE =
             "http://118.89.102.238/controller/register/send_verify_code.php";
+    public static final String URL_SAVE_USR_INFO =
+            "http://118.89.102.238/controller/register/save_user_info.php";
 
     //post name 参数
     public static final String post_check_verify_code = "300100";
@@ -12,9 +14,11 @@ public class SettingUtil {
     public static final String post_user_family_name = "300102";
     public static final String post_user_given_name = "300103";
     public static final String post_user_login_password = "300104";
+    public static final String post_user_client_key = "300105";
 
     //sharepreference name 参数
-    public static final String share_user_email = "300101";
+    public static final String share_user_email = "400101";
+    public static final String share_token = "400102";
 
 
     //系统调试参数

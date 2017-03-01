@@ -100,5 +100,6 @@
     <string name="can_not_recognize_family_name">不能识别的姓(只允许汉字、英文字母、数字,且不能以数字开头)</string>
     <string name="can_not_recognize_given_name">不能识别的名(只允许汉字、英文字母、数字,且不能以数字开头)</string>
     <string name="can_not_recognize_login_password">不能识别的登录密码(12位,只允许英文字母、数字、下划线)</string>
+    <string name="system_error">操作出现错误</string>
     <string name="click_to_set_avatar">点击设置头像</string>
 </resources>

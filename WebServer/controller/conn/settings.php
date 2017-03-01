@@ -20,6 +20,7 @@ define('post_user_email', '300101');
 define('post_user_family_name', '300102');
 define('post_user_given_name', '300103');
 define('post_user_login_password', '300104');
+define('post_user_client_key', '300105');
 
 /**
  * 状态参数

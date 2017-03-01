@@ -149,8 +149,10 @@ public class RegisterActivity extends SwipeBackActivity {
                                 //提示邮箱格式不对
                                 showToast(mContext, R.string.can_not_recognize_email);
                                 break;
-
+                            case -1:
+                                break;
                             default:
+                                showToast(mContext, R.string.system_error);
                                 break;
                         }
                     }

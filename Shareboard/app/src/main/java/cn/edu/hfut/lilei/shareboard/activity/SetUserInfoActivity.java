@@ -1,6 +1,7 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.lzy.okgo.OkGo;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.models.Common;
+import cn.edu.hfut.lilei.shareboard.utils.InstallationIdUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
@@ -20,17 +22,20 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_SEND_VERIFY_CODE;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_SAVE_USR_INFO;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO1;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO2;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO3;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_client_key;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_family_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_given_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_login_password;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
 
@@ -116,20 +121,43 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                         /**
                          * 3.上传用户数据
                          */
-                        OkGo.post(URL_SEND_VERIFY_CODE)
+                        showLog("加密前的密码：" + password);
+                        String passEncrypted = StringUtil.getMD5(password);
+                        if (passEncrypted == null) {
+                            return -1;
+                        }
+                        showLog("加密后的密码：" + passEncrypted);
+                        OkGo.post(URL_SAVE_USR_INFO)
                                 .tag(this)
                                 .params(post_user_email, (String) SharedPrefUtil.getInstance()
                                         .getData(share_user_email, ""))
                                 .params(post_user_family_name, familyName)
                                 .params(post_user_given_name, givenName)
-                                .params(post_user_login_password, password)
+                                .params(post_user_login_password, passEncrypted)
+                                .params(post_user_client_key, InstallationIdUtil.id(mContext))
                                 .execute(new JsonCallback<Common>() {
                                     @Override
                                     public void onSuccess(Common o, Call call,
                                                           Response response) {
                                         if (o.getCode() == SUCCESS) {
-                                            //验证码发送成功
+                                            /**
+                                             * 4.注册成功
+                                             */
+
                                             showToast(mContext, o.getMsg());
+                                            /**
+                                             * 5.保存token 到本地
+                                             */
+                                            SharedPrefUtil.getInstance()
+                                                    .saveData(share_token, o.getMsg());
+                                            /**
+                                             * 6.跳转
+                                             */
+                                            Intent intent = new Intent();
+                                            intent.setClass(SetUserInfoActivity.this,
+                                                    MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
 
 
                                         } else {
@@ -164,8 +192,11 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                 //提示登录密码格式不对
                                 showToast(mContext, R.string.can_not_recognize_login_password);
                                 break;
+                            case -1:
+                                break;
 
                             default:
+                                showToast(mContext, R.string.system_error);
                                 break;
                         }
                     }

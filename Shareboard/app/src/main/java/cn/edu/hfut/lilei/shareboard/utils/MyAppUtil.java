@@ -25,6 +25,7 @@ import cn.edu.hfut.lilei.shareboard.view.InviteChooserDialog;
 import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.TIMEZONE;
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 
 public class MyAppUtil {
@@ -119,6 +120,15 @@ public class MyAppUtil {
         Toast.makeText(context, context.getResources()
                 .getString(strid), Toast.LENGTH_SHORT)
                 .show();
+    }
+
+    /**
+     * 打印log
+     *
+     * @param msg
+     */
+    public static void showLog(String msg) {
+        Log.i(TAG, msg);
     }
 
 
