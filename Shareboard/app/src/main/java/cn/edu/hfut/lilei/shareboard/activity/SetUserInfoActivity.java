@@ -13,7 +13,6 @@ import com.lzy.okgo.OkGo;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.models.Common;
-import cn.edu.hfut.lilei.shareboard.utils.InstallationIdUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
@@ -22,7 +21,6 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
@@ -30,7 +28,6 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_SAVE_USR_INFO;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO1;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO2;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO3;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_client_key;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_family_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_given_name;
@@ -121,12 +118,12 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                         /**
                          * 3.上传用户数据
                          */
-                        showLog("加密前的密码：" + password);
+//                        showLog("加密前的密码：" + password);
                         String passEncrypted = StringUtil.getMD5(password);
                         if (passEncrypted == null) {
                             return -1;
                         }
-                        showLog("加密后的密码：" + passEncrypted);
+//                        showLog("加密后的密码：" + passEncrypted);
                         OkGo.post(URL_SAVE_USR_INFO)
                                 .tag(this)
                                 .params(post_user_email, (String) SharedPrefUtil.getInstance()
@@ -134,7 +131,6 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                 .params(post_user_family_name, familyName)
                                 .params(post_user_given_name, givenName)
                                 .params(post_user_login_password, passEncrypted)
-                                .params(post_user_client_key, InstallationIdUtil.id(mContext))
                                 .execute(new JsonCallback<Common>() {
                                     @Override
                                     public void onSuccess(Common o, Call call,

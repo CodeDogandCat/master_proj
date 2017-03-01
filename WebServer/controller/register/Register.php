@@ -1,4 +1,5 @@
 <?php
+session_start();
 header("Content-type: text/html; charset=utf-8");
 require_once $_SERVER['DOCUMENT_ROOT'] . '/util/SmtpUtil.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/model/User.php';
@@ -28,7 +29,7 @@ class Register
         $sql = 'SELECT user_id FROM bd_user WHERE user_email =?';
         $arr = array();
         $arr[0] = $this->user->getEmail();
-        if ($this->db->countItem($sql, $arr) >= 1) {
+        if ($this->db->countItem($sql, $arr) == 1) {
             return true;//存在
         }
         return false;//不存在

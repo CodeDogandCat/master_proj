@@ -45,17 +45,30 @@ public class ImageUtil {
         return urls[0];
     }
 
-
-    public static void load(@NonNull Context context, String path,
+    /**
+     * 加载网络图片
+     *
+     * @param context
+     * @param url
+     * @param target
+     */
+    public static void load(@NonNull Context context, String url,
                             @NonNull ImageView target) {
         Picasso.with(context)
-                .load(checkAndHandleUrl(path))
+                .load(url)
                 .config(Bitmap.Config.RGB_565)//没有大图
                 .placeholder(R.drawable.imageholder)
                 .error(R.drawable.imageholder)
                 .into(target);
     }
 
+    /**
+     * 加载本地图片
+     *
+     * @param context
+     * @param drawableid
+     * @param target
+     */
     public static void load(@NonNull Context context, @NonNull int drawableid,
                             @NonNull ImageView target) {
         Picasso.with(context)
@@ -63,6 +76,31 @@ public class ImageUtil {
                 .config(Bitmap.Config.RGB_565)//没有大图
                 .placeholder(R.drawable.imageholder)
                 .error(R.drawable.imageholder)
+                .into(target);
+    }
+
+    /**
+     * 加载用户头像
+     *
+     * @param context
+     * @param url
+     * @param target
+     */
+    public static void loadAvatar(@NonNull Context context, String url,
+                                  @NonNull ImageView target) {
+        //不要error和placeHolder ,为了显示默认的文字头像
+        Picasso.with(context)
+                .load(url)
+                .config(Bitmap.Config.RGB_565)//没有大图
+                .into(target);
+    }
+
+    public static void loadAvatar(@NonNull Context context, @NonNull int drawableid,
+                                  @NonNull ImageView target) {
+        //不要error和placeHolder ,为了显示默认的文字头像
+        Picasso.with(context)
+                .load(drawableid)
+                .config(Bitmap.Config.RGB_565)//没有大图
                 .into(target);
     }
 

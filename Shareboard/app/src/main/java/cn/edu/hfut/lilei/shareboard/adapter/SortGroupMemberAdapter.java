@@ -13,6 +13,7 @@ import java.util.List;
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.data.GroupMemberInfo;
+import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 
 public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexer {
@@ -48,17 +49,20 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
         ViewHolder viewHolder = null;
         final GroupMemberInfo mContent = list.get(position);
         if (view == null) {
+            //创建 viewholder
             viewHolder = new ViewHolder();
-            view = LayoutInflater.from(mContext).inflate(R.layout.listitem_group_member, null);
+            view = LayoutInflater.from(mContext)
+                    .inflate(R.layout.listitem_group_member, null);
             viewHolder.tvLetter = (TextView) view.findViewById(R.id.tv_contacts_catalog);
             viewHolder.imgPhoto = (AvatarImageView) view.findViewById(R.id.img_contacts_photo);
             viewHolder.tvTitle = (TextView) view.findViewById(R.id.tv_contacts_account);
             viewHolder.tvStatus = (TextView) view.findViewById(R.id.tv_contacts_status);
             view.setTag(viewHolder);
         } else {
+            //取出已有的viewholder
             viewHolder = (ViewHolder) view.getTag();
         }
-
+        //获取排序字母所在的位置
         int section = getSectionForPosition(position);
 
         if (position == getPositionForSection(section)) {
@@ -67,11 +71,31 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
         } else {
             viewHolder.tvLetter.setVisibility(View.GONE);
         }
-        String name = this.list.get(position).getName();
+        /**
+         * 1.加载头像
+         */
+        String name = this.list.get(position)
+                .getName();
         int length = StringUtil.length(name);
-        viewHolder.imgPhoto.setTextAndColor(StringUtil.substring(name, length - 2, length, "", ""), R.color.mediumaquamarine);
+        viewHolder.imgPhoto.setTextAndColor(StringUtil.substring(name, length - 2, length, "", ""),
+                R.color.mediumaquamarine);
+        String url;
+        if (position % 2 == 0) {
+            url = "http://img1.skqkw.cn:888/2014/12/06/14t/erha2fghuww-129662.png";
+        } else {
+            url = "http://img1.skqkw.cn:888/2014/12/06/14t/lileighuww-129662.png";
+        }
 
-        viewHolder.tvStatus.setText(this.list.get(position).getStatus());
+        ImageUtil.loadAvatar(mContext, url, viewHolder.imgPhoto);
+
+        /**
+         * 2.加载其他用户的状态
+         */
+        viewHolder.tvStatus.setText(this.list.get(position)
+                .getStatus());
+        /**
+         * 3.加载邮箱
+         */
         viewHolder.tvTitle.setText(name);
 
         return view;
@@ -88,15 +112,19 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
     /**
      */
     public int getSectionForPosition(int position) {
-        return list.get(position).getSortLetters().charAt(0);
+        return list.get(position)
+                .getSortLetters()
+                .charAt(0);
     }
 
     /**
      */
     public int getPositionForSection(int section) {
         for (int i = 0; i < getCount(); i++) {
-            String sortStr = list.get(i).getSortLetters();
-            char firstChar = sortStr.toUpperCase().charAt(0);
+            String sortStr = list.get(i)
+                    .getSortLetters();
+            char firstChar = sortStr.toUpperCase()
+                    .charAt(0);
             if (firstChar == section) {
                 return i;
             }
@@ -110,7 +138,9 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
      * @return
      */
     private String getAlpha(String str) {
-        String sortStr = str.trim().substring(0, 1).toUpperCase();
+        String sortStr = str.trim()
+                .substring(0, 1)
+                .toUpperCase();
         if (sortStr.matches("[A-Z]")) {
             return sortStr;
         } else {

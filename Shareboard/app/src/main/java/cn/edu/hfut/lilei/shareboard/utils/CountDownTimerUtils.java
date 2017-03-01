@@ -47,7 +47,6 @@ public class CountDownTimerUtils extends CountDownTimer {
          * 删除线 StrikethroughSpan
          * 下划线 UnderlineSpan
          * 图片 ImageSpan
-         * http://blog.csdn.net/ah200614435/article/details/7914459
          */
         SpannableString spannableString = new SpannableString(mTextView.getText()
                 .toString());  //获取按钮上的文字
@@ -57,7 +56,8 @@ public class CountDownTimerUtils extends CountDownTimer {
          * 主要是start跟end，start是起始位置,无论中英文，都算一个。
          * 从0开始计算起。end是结束位置，所以处理的文字，包含开始位置，但不包含结束位置。
          */
-        spannableString.setSpan(span, 0, 2, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);//将倒计时的时间设置为红色
+        spannableString.setSpan(span, 0, ((millisUntilFinished / 1000) + "").length(), Spannable
+                .SPAN_INCLUSIVE_EXCLUSIVE);//将倒计时的时间设置为红色
         mTextView.setText(spannableString);
     }
 

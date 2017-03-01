@@ -14,8 +14,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/Session.php';
 if (isset($_REQUEST[post_user_email]) &&
     isset($_REQUEST[post_user_family_name]) &&
     isset($_REQUEST[post_user_given_name]) &&
-    isset($_REQUEST[post_user_login_password]) &&
-    isset($_REQUEST[post_user_client_key])
+    isset($_REQUEST[post_user_login_password])
 ) {
     $user = new User($_REQUEST[post_user_email]);
     $user->setFamilyName($_REQUEST[post_user_family_name]);
@@ -24,12 +23,15 @@ if (isset($_REQUEST[post_user_email]) &&
     $dt = new DateTime();
     $user->setRegisterTime($dt->format('Y-m-d H:i:s'));
     $user->setLoginRecentTime($dt->format('Y-m-d H:i:s'));
-    $user->setPassword(EncryptUtil::hash($_REQUEST[post_user_login_password], $user->getRegisterTime()));
-    $user->setToken(EncryptUtil::hash($user->getEmail() . $user->getPassword() . $user->getRegisterTime() .
-        $_REQUEST[post_user_client_key], $user->getRegisterTime()));
+    //密码加密
+    $user->setPassword(EncryptUtil::hash($_REQUEST[post_user_login_password], $_REQUEST[post_user_email]));
+    //token构造
+    $user->setToken(EncryptUtil::hash($user->getEmail() . $user->getPassword() . $user->getRegisterTime(), $user->getRegisterTime()));
     $register = new Register($user);
 
     if ($register->saveUser()) {
+        //把token 放到session中
+        Session::set(SESSION_TOKEN, $this->user->getToken(), 2592000);//30天过期
         //返回token
         printResult(SUCCESS, $user->getToken(), -1);
 

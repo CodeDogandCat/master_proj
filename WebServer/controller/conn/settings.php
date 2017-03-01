@@ -10,6 +10,7 @@ define('SYS_NAME', '小喵白板');
  */
 
 define('SESSION_VERIFY_CODE', 'verifyCode');
+define('SESSION_TOKEN', 'token');
 
 /**
  * request name 信息
@@ -21,6 +22,7 @@ define('post_user_family_name', '300102');
 define('post_user_given_name', '300103');
 define('post_user_login_password', '300104');
 define('post_user_client_key', '300105');
+define('post_token', '300106');
 
 /**
  * 状态参数
@@ -34,6 +36,8 @@ define("SEND_VERIFY_CODE_FAILED", 4004);//发送验证码失败
 define("VERIFY_CODE_EXPIRE", 4005);//验证码超时
 define("VERIFY_CODE_NOT_MATCH", 4006);//验证码错误
 define("SAVE_USER_ERROR", 4007);//保存用户信息出错
+define("LOGIN_ERROR", 4008);//登录错误
+define("ACCESS_VOLATION", 4009);//未授权访问
 
 /**
  * 数据库连接信息

@@ -51,7 +51,7 @@ class DBPDO
     }
 
     //插入数据
-    public function insert($sql,$arr)
+    public function insert($sql, $arr)
     {
         $stmt = $this->dbh->prepare($sql);
         if ($stmt->execute($arr)) {
@@ -73,24 +73,36 @@ class DBPDO
     }
 
     //更改数据
-    public function update($sql)
+    public function update($sql, $arr)
     {
-        if (($rows = $this->dbh->exec($sql)) > 0) {
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute($arr);
+        $rows = $stmt->rowCount();
+        if ($rows > 0) {
+            //受影响的行数大于0
             $this->getPDOError();
             return $rows;
         }
+//        if (($rows = $this->dbh->exec($sql)) > 0) {
+//            $this->getPDOError();
+//            return $rows;
+//        }
         return false;
     }
 
     //获取数据
-    public function select($sql)
+    public function select($sql, $arr)
     {
-        $this->sth = $this->dbh->query($sql);
+//        $this->sth = $this->dbh->query($sql);
+//        $this->getPDOError();
+//        $this->sth->setFetchMode(PDO::FETCH_ASSOC);
+//        $result = $this->sth->fetchAll();
+//        $this->sth = null;
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute($arr);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->getPDOError();
-        $this->sth->setFetchMode(PDO::FETCH_ASSOC);
-        $result = $this->sth->fetchAll();
-        $this->sth = null;
-        return $result;
+        return $rows;
     }
 
     //获取数目

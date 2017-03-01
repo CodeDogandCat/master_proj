@@ -23,17 +23,17 @@ import com.kyleduo.switchbutton.SwitchButton;
 import java.util.Calendar;
 
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
-import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
+import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
+import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SHOW_TIME_MIN;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SHOW_TIME_MIN;
 
 
 public class ArrangeMeetingActivity extends SwipeBackActivity implements View.OnClickListener {
@@ -96,8 +96,6 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
         mContext = this;
         //右滑返回
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
-                SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override

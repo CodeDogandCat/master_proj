@@ -83,6 +83,7 @@ public class RegisterActivity extends SwipeBackActivity {
             public void onClick(View view) {
                 final String email = mEtEmail.getText()
                         .toString();
+
                 new AsyncTask<Void, Void, Integer>() {
 
                     @Override
@@ -102,6 +103,7 @@ public class RegisterActivity extends SwipeBackActivity {
                             //邮箱格式不对
                             return WRONG_FORMAT_INPUT;
                         }
+
                         /**
                          * 3.检查是否已经注册过,发送验证码
                          */
