@@ -23,16 +23,14 @@ import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static cn.edu.hfut.lilei.shareboard.R.string.familyName;
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_LOGIN;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO1;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO2;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_client_key;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_family_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_login_password;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 
@@ -82,13 +80,16 @@ public class LoginActivity extends Activity {
                     // 获得焦点
                     mLlBottomlineofemail.setBackgroundColor(
                             getResources().getColor(R.color.my_yellow));
-                    ImageUtil.load(mContext, R.drawable.ic_yellow_34, mImgEmail);
+                    ImageUtil.loadWithHolder(mContext, R.drawable.ic_yellow_34_small,
+                            R.drawable.ic_yellow_34_small,
+                            mImgEmail);
                 } else {
 
                     // 失去焦点
                     mLlBottomlineofemail.setBackgroundColor(
                             getResources().getColor(R.color.my_lightgray));
-                    ImageUtil.load(mContext, R.drawable.ic_white_34, mImgEmail);
+                    ImageUtil.loadWithHolder(mContext, R.drawable.ic_white_34,
+                            R.drawable.ic_white_34, mImgEmail);
                 }
 
             }
@@ -105,13 +106,15 @@ public class LoginActivity extends Activity {
                     // 获得焦点
                     mLlBottomlineofpass.setBackgroundColor(
                             getResources().getColor(R.color.my_yellow));
-                    ImageUtil.load(mContext, R.drawable.ic_yellow_32, mImgPassword);
+                    ImageUtil.loadWithHolder(mContext, R.drawable.ic_yellow_32, R.drawable
+                            .ic_yellow_32, mImgPassword);
                 } else {
 
                     // 失去焦点
                     mLlBottomlineofpass.setBackgroundColor(
                             getResources().getColor(R.color.my_lightgray));
-                    ImageUtil.load(mContext, R.drawable.ic_white_32, mImgPassword);
+                    ImageUtil.loadWithHolder(mContext, R.drawable.ic_white_32, R.drawable
+                            .ic_yellow_32, mImgPassword);
                 }
 
             }
@@ -141,9 +144,11 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 final String email = mEtEmail.getText()
-                        .toString();
+                        .toString()
+                        .trim();
                 final String password = mEtPassword.getText()
-                        .toString();
+                        .toString()
+                        .trim();
                 new AsyncTask<Void, Void, Integer>() {
 
                     @Override
@@ -179,40 +184,43 @@ public class LoginActivity extends Activity {
                         OkGo.post(URL_LOGIN)
                                 .tag(this)
                                 .params(post_user_email, email)
-                                .params(post_user_family_name, familyName)
                                 .params(post_user_login_password, passEncrypted)
-                                .params(post_user_client_key, InstallationIdUtil.id(mContext))
                                 .execute(new JsonCallback<Common>() {
-                                    @Override
-                                    public void onSuccess(Common o, Call call,
-                                                          Response response) {
-                                        if (o.getCode() == SUCCESS) {
-                                            /**
-                                             * 4.注册成功
-                                             */
-
-                                            showToast(mContext, o.getMsg());
-                                            /**
-                                             * 5.保存token 到本地
-                                             */
-                                            SharedPrefUtil.getInstance()
-                                                    .saveData(share_token, o.getMsg());
-                                            /**
-                                             * 6.跳转
-                                             */
-                                            Intent intent = new Intent();
-                                            intent.setClass(SetUserInfoActivity.this,
-                                                    MainActivity.class);
-                                            startActivity(intent);
-                                            finish();
+                                             @Override
+                                             public void onSuccess(Common o, Call call,
+                                                                   Response response) {
+                                                 if (o.getCode() == SUCCESS) {
+                                                     /**
+                                                      * 4.登陆成功,保存token 到本地
+                                                      */
+                                                     SharedPrefUtil.getInstance()
+                                                             .saveData(share_token, o.getMsg());
+                                                     /**
+                                                      * 5.跳转
+                                                      */
+                                                     Intent intent = new Intent();
+                                                     intent.setClass(LoginActivity.this,
+                                                             MainActivity.class);
+                                                     startActivity(intent);
+                                                     finish();
 
 
-                                        } else {
-                                            //提示所有错误
-                                            showToast(mContext, o.getMsg());
-                                        }
-                                    }
-                                });
+
+                                                 } else {
+                                                     //提示所有错误
+                                                     showLog(o.getMsg());
+                                                     showToast(mContext, o.getMsg());
+                                                 }
+                                             }
+
+                                             @Override
+                                             public void onError(Call call, Response response, Exception e) {
+                                                 super.onError(call, response, e);
+                                                 showToast(mContext, R.string.system_error);
+                                             }
+                                         }
+
+                                );
 
 
                         return -1;
@@ -235,11 +243,11 @@ public class LoginActivity extends Activity {
                                 //提示登录密码格式不对
                                 showToast(mContext, R.string.can_not_recognize_login_password);
                                 break;
-                            case -1:
-                                break;
+//                            case -1:
+//                                break;
 
                             default:
-                                showToast(mContext, R.string.system_error);
+//                                showToast(mContext, R.string.system_error);
                                 break;
                         }
                     }

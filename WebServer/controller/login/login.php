@@ -3,6 +3,7 @@ session_start();
 header("Content-type: text/html; charset=utf-8");
 require_once $_SERVER['DOCUMENT_ROOT'] . '/model/User.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/DBPDO.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/Session.php';
 
 class Login
 {
@@ -51,13 +52,12 @@ class Login
         $rows = $this->db->select($sql, $arr);
 
         if (count($rows) == 1) {//存在且只存在一个这样的用户
-            $user_id = $rows['user_id'];
-            $register_time = $rows['user_register_time'];
+            $user_id = $rows[0]['user_id'];
+            $register_time = $rows[0]['user_register_time'];
             //生成token
             $token = EncryptUtil::hash($this->user->getEmail() . $this->user->getPassword() . $register_time, $register_time);
             //并且放到数据库
-            if (updateToken($user_id, $token)) {
-
+            if ($this->updateToken($user_id, $token)) {
                 return $token;//存在,返回token给客户端
             }
 
@@ -89,19 +89,16 @@ class Login
      */
     function checkToken($tmpToken)
     {
-        $token = -1;
-        if (($token = Session::get(SESSION_TOKEN)) == false) {//可能从来都不存在或者过期啦
-
+        if (($token1 = Session::get(SESSION_TOKEN)) == false) {//可能从来都不存在或者过期啦
             //如果验证码过期,可以在数据库中找到
             if ($this->findTokenInDB($tmpToken)) {
-
                 return true;
             }
 
 
         } else {
             //比较token
-            if ($token == $tmpToken) {
+            if ($token1 == $tmpToken) {
                 return true;
             }
 

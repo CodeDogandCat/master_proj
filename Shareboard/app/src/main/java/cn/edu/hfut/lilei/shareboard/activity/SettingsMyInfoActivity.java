@@ -26,15 +26,18 @@ import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
+import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.view.AlterHeadDialog;
 import cn.edu.hfut.lilei.shareboard.view.NameInputDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.ALBUM_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CAMERA_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CROP_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CROP;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 
 
 public class SettingsMyInfoActivity extends SwipeBackActivity {
@@ -46,7 +49,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
     private Uri cropUri;
 
     //上下文参数
-    private Context context;
+    private Context mContext;
 
 
     @Override
@@ -89,7 +92,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
 
     private void init() {
 
-        context = this;
+        mContext = this;
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
@@ -153,6 +156,24 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                         Intent intent = new Intent();
                         intent.setClass(SettingsMyInfoActivity.this, AlterPasswordActivity.class);
                         startActivity(intent);
+
+                    }
+                }
+        );
+        mLlLogout = (LinearLayout) findViewById(R.id.ll_settingmyinfo_logout);
+        mLlLogout.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!SharedPrefUtil.getInstance()
+                                .deleteData(share_token)) {
+                            showToast(mContext, R.string.logout_failed);
+                        } else {
+                            Intent intent = new Intent();
+                            intent.setClass(SettingsMyInfoActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
 
                     }
                 }

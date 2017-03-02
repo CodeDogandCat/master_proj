@@ -34,60 +34,87 @@ class DBPDO
         try {
             $this->dbh = new PDO($this->dsn, $this->dbuser, $this->dbpwd);
         } catch (PDOException $e) {
-            printResult(DATABASE_CONN_FAILED);
-            exit('连接失败:' . $e->getMessage());
+            $this->dbh = null;
+            printResult(DATABASE_CONN_FAILED, '数据库连接失败', -1);
+            exit(0);
         }
     }
 
     //获取表字段
     public function getFields($table)
     {
-        $this->sth = $this->dbh->query("DESCRIBE $table");
-        $this->getPDOError();
-        $this->sth->setFetchMode(PDO::FETCH_ASSOC);
-        $result = $this->sth->fetchAll();
-        $this->sth = null;
-        return $result;
+        try {
+            $this->sth = $this->dbh->query("DESCRIBE $table");
+            $this->getPDOError();
+            $this->sth->setFetchMode(PDO::FETCH_ASSOC);
+            $result = $this->sth->fetchAll();
+            $this->sth = null;
+            return $result;
+        } catch (PDOException $e) {
+            $this->dbh = null;
+            printResult(DATABASE_OPERATE_FAILED, '数据库操作失败', -1);
+            exit(0);
+        }
+
     }
 
     //插入数据
     public function insert($sql, $arr)
     {
-        $stmt = $this->dbh->prepare($sql);
-        if ($stmt->execute($arr)) {
-            $this->getPDOError();
-            return $this->dbh->lastInsertId();
+        try {
+            $stmt = $this->dbh->prepare($sql);
+            if ($stmt->execute($arr)) {
+                $this->getPDOError();
+                return $this->dbh->lastInsertId();
+            }
+            return false;
+        } catch (PDOException $e) {
+            $this->dbh = null;
+            printResult(DATABASE_OPERATE_FAILED, '数据库操作失败', -1);
+            exit(0);
         }
-        return false;
     }
 
     //删除数据
     public function delete($sql)
     {
-        if (($rows = $this->dbh->exec($sql)) > 0) {
-            $this->getPDOError();
-            return $rows;
-        } else {
-            return false;
+        try {
+            if (($rows = $this->dbh->exec($sql)) > 0) {
+                $this->getPDOError();
+                return $rows;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            $this->dbh = null;
+            printResult(DATABASE_OPERATE_FAILED, '数据库操作失败', -1);
+            exit(0);
         }
     }
 
     //更改数据
     public function update($sql, $arr)
     {
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->execute($arr);
-        $rows = $stmt->rowCount();
-        if ($rows > 0) {
-            //受影响的行数大于0
-            $this->getPDOError();
-            return $rows;
-        }
+        try {
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute($arr);
+            $rows = $stmt->rowCount();
+
+            if ($rows >= 0) {
+                //受影响的行数大于0
+                $this->getPDOError();
+                return true;
+            }
 //        if (($rows = $this->dbh->exec($sql)) > 0) {
 //            $this->getPDOError();
 //            return $rows;
 //        }
-        return false;
+            return false;
+        } catch (PDOException $e) {
+            $this->dbh = null;
+            printResult(DATABASE_OPERATE_FAILED, '数据库操作失败', -1);
+            exit(0);
+        }
     }
 
     //获取数据
@@ -98,32 +125,50 @@ class DBPDO
 //        $this->sth->setFetchMode(PDO::FETCH_ASSOC);
 //        $result = $this->sth->fetchAll();
 //        $this->sth = null;
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->execute($arr);
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $this->getPDOError();
-        return $rows;
+        try {
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute($arr);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->getPDOError();
+            return $rows;
+        } catch (PDOException $e) {
+            $this->dbh = null;
+            printResult(DATABASE_OPERATE_FAILED, '数据库操作失败', -1);
+            exit(0);
+        }
     }
 
     //获取数目
     public function countItem($sql, $arr)
     {
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->execute($arr);
+        try {
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute($arr);
 
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 //        $count = $this->dbh->query($sql);
 
-        $this->getPDOError();
-        return count($rows);
+            $this->getPDOError();
+            return count($rows);
+        } catch (PDOException $e) {
+            $this->dbh = null;
+            printResult(DATABASE_OPERATE_FAILED, '数据库操作失败', -1);
+            exit(0);
+        }
     }
 
     //获取PDO错误信息
     private function getPDOError()
     {
-        if ($this->dbh->errorCode() != '00000') {
-            $error = $this->dbh->errorInfo();
-            exit($error[2]);
+        try {
+            if ($this->dbh->errorCode() != '00000') {
+                $error = $this->dbh->errorInfo();
+                exit($error[2]);
+            }
+        } catch (PDOException $e) {
+            $this->dbh = null;
+            printResult(DATABASE_OPERATE_FAILED, '数据库操作失败', -1);
+            exit(0);
         }
     }
 
@@ -133,7 +178,6 @@ class DBPDO
         $this->dbh = null;
     }
 }
-
 
 
 

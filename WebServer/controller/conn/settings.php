@@ -28,6 +28,7 @@ define('post_token', '300106');
  * 状态参数
  */
 
+define("FAILURE", 0);//失败
 define("SUCCESS", 100);//成功
 define("NO_PARAMS_RECEIVE", 4001);//没接受到参数
 define("USER_EXISTS", 4002);//存在相同用户
@@ -38,6 +39,7 @@ define("VERIFY_CODE_NOT_MATCH", 4006);//验证码错误
 define("SAVE_USER_ERROR", 4007);//保存用户信息出错
 define("LOGIN_ERROR", 4008);//登录错误
 define("ACCESS_VOLATION", 4009);//未授权访问
+define("DATABASE_OPERATE_FAILED", 4010);//数据库操作失败
 
 /**
  * 数据库连接信息

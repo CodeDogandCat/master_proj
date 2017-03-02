@@ -80,6 +80,22 @@ public class ImageUtil {
     }
 
     /**
+     * 加载本地图片
+     *
+     * @param context
+     * @param drawableid
+     * @param target
+     */
+    public static void loadWithHolder(@NonNull Context context, @NonNull int drawableid, @NonNull
+            int drawableid2, @NonNull ImageView target) {
+        Picasso.with(context)
+                .load(drawableid)
+                .config(Bitmap.Config.RGB_565)//没有大图
+                .placeholder(drawableid2)
+                .into(target);
+    }
+
+    /**
      * 加载用户头像
      *
      * @param context

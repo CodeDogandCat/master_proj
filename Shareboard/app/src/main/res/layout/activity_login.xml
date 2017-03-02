@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    tools:context="cn.edu.hfut.lilei.shareboard.activity.LoginActivity">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/activity_vertical_margin"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              tools:context="cn.edu.hfut.lilei.shareboard.activity.LoginActivity">
 
 
     <LinearLayout
@@ -15,21 +16,27 @@
         android:layout_height="0dp"
         android:layout_weight="0.6"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+
+        <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_weight="1"-->
+        <!--android:src="@mipmap/ic_login_logo" />-->
+        <cn.carbs.android.avatarimageview.library.AvatarImageView
+
+            android:id="@+id/img_login_logo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_gravity="center"
-            android:layout_weight="0.3" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@mipmap/ic_login_logo" />
-
+            android:src="@mipmap/ic_login_logo"
+            app:aiv_BoarderColor="@color/my_yellow"
+            app:aiv_BoarderWidth="1.5dp"
+            app:aiv_ShowBoarder="true"
+            app:aiv_TextSizeRatio="0.4"/>
 
     </LinearLayout>
 
@@ -54,7 +61,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="bottom"
-                android:src="@drawable/ic_white_34" />
+                android:src="@drawable/ic_white_34"/>
 
             <EditText
                 android:id="@+id/et_login_email"
@@ -71,7 +78,7 @@
             style="@style/common_horizontal_division_line_style"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:background="@color/my_lightgray" />
+            android:background="@color/my_lightgray"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,7 +94,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="bottom"
-                android:src="@drawable/ic_white_32" />
+                android:src="@drawable/ic_white_32"/>
 
             <EditText
                 android:id="@+id/et_login_password"
@@ -104,7 +111,7 @@
             style="@style/common_horizontal_division_line_style"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:background="@color/my_lightgray" />
+            android:background="@color/my_lightgray"/>
 
 
         <LinearLayout
@@ -120,7 +127,7 @@
                 android:id="@+id/btn_login_login"
                 style="@style/BigButton"
                 android:layout_gravity="center"
-                android:text="@string/login" />
+                android:text="@string/login"/>
 
         </LinearLayout>
 
@@ -139,20 +146,20 @@
             style="@style/TransparentBgButton"
             android:layout_width="0dp"
             android:layout_weight="5000"
-            android:text="@string/registerAnAccount" />
+            android:text="@string/registerAnAccount"/>
 
         <LinearLayout
             style="@style/common_vertical_division_line_style"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="@color/my_yellow" />
+            android:background="@color/my_yellow"/>
 
         <Button
             android:id="@+id/btn_login_resetpassword"
             style="@style/TransparentBgButton"
             android:layout_width="0dp"
             android:layout_weight="5000"
-            android:text="@string/resetpassword" />
+            android:text="@string/resetpassword"/>
 
     </LinearLayout>
 </LinearLayout>

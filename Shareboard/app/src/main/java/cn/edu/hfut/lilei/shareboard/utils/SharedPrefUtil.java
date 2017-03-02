@@ -106,7 +106,7 @@ public class SharedPrefUtil {
      * @param strName
      * @return
      */
-    public static Boolean deleteData(String strName) {
+    public Boolean deleteData(String strName) {
         return mSharedPreferences.edit()
                 .remove(strName)
                 .commit();
@@ -118,7 +118,7 @@ public class SharedPrefUtil {
      * @param strName
      * @return
      */
-    public static Boolean clearData(String strName) {
+    public Boolean clearData(String strName) {
         return mSharedPreferences.edit()
                 .clear()
                 .commit();

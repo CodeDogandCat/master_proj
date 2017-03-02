@@ -190,7 +190,7 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
 
         for (int i = 0; i < contacts.length; i++) {
             GroupMemberInfo sortModel = new GroupMemberInfo();
-            sortModel.setPhoto(getResources().getDrawable(R.drawable.er));
+//            sortModel.setPhoto(getResources().getDrawable(R.drawable.er));
             sortModel.setName(contacts[i]);
             sortModel.setStatus("空闲");
             String pinyin = characterUtil.getSelling(contacts[i]);

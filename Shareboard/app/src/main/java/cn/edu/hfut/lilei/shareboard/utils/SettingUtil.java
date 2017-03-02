@@ -3,12 +3,18 @@ package cn.edu.hfut.lilei.shareboard.utils;
 
 public class SettingUtil {
     //server url 参数
+    //核对邮箱是否已经注册，发送验证码
     public static final String URL_SEND_VERIFY_CODE =
             "http://118.89.102.238/controller/register/send_verify_code.php";
+    //保存用户注册信息
     public static final String URL_SAVE_USR_INFO =
             "http://118.89.102.238/controller/register/save_user_info.php";
+    //用户注销后登录
     public static final String URL_LOGIN =
-            "http://118.89.102.238/controller/register/user_login.php";
+            "http://118.89.102.238/controller/login/user_login.php";
+    //token拦截器
+    public static final String URL_CHECK_TOKEN =
+            "http://118.89.102.238/controller/conn/tokenInterceptor.php";
 
     //post name 参数
     public static final String post_check_verify_code = "300100";
@@ -35,6 +41,7 @@ public class SettingUtil {
     public static final int WRONG_FORMAT_INPUT_NO3 = 105; // 输入格式不正确
     public static final int WRONG_FORMAT_INPUT_NO4 = 106; // 输入格式不正确
     public static final int WRONG_FORMAT_INPUT_NO5 = 107; // 输入格式不正确
+    public static final int NO_TOKEN_FOUND = 108; // 本地没有找到可用token
     public static final int NET_DISCONNECT = 503; // 未联网
     public static final int SHOW_TIME_MIN = 800;//最短跳转时间
     public static final String TAG = "shareboard";//调试TAG

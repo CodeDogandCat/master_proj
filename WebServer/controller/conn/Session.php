@@ -15,10 +15,15 @@ class Session
      */
     public static function set($name, $data, $expire = 600)
     {
+        if (isset($_SESSION[$name])) {
+            unset($_SESSION[$name]);
+        }
         $session_data = array();
         $session_data['data'] = $data;
         $session_data['expire'] = time() + $expire;
         $_SESSION[$name] = $session_data;
+
+
     }
 
     /**

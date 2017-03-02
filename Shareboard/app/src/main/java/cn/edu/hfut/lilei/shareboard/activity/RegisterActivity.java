@@ -23,6 +23,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
@@ -111,28 +112,36 @@ public class RegisterActivity extends SwipeBackActivity {
                                 .tag(this)
                                 .params(post_user_email, email)
                                 .execute(new JsonCallback<Common>() {
-                                    @Override
-                                    public void onSuccess(Common o, Call call, Response response) {
-                                        if (o.getCode() == SUCCESS) {
-                                            //验证码发送成功
-                                            showToast(mContext, o.getMsg());
-                                            //把email 放到 sharepreference
-                                            SharedPrefUtil.getInstance()
-                                                    .saveData(share_user_email, email);
+                                             @Override
+                                             public void onSuccess(Common o, Call call, Response response) {
+                                                 if (o.getCode() == SUCCESS) {
+                                                     //验证码发送成功
+                                                     showToast(mContext, o.getMsg());
+                                                     //把email 放到 sharepreference
+                                                     SharedPrefUtil.getInstance()
+                                                             .saveData(share_user_email, email);
 
-                                            //2分钟后可以重新发送验证码
-                                            CountDownTimerUtils mCountDownTimerUtils = new
-                                                    CountDownTimerUtils(mContext, mTvSendVerifyCode,
-                                                    120000, 1000);
-                                            mCountDownTimerUtils.start();
+                                                     //2分钟后可以重新发送验证码
+                                                     CountDownTimerUtils mCountDownTimerUtils = new
+                                                             CountDownTimerUtils(mContext, mTvSendVerifyCode,
+                                                             120000, 1000);
+                                                     mCountDownTimerUtils.start();
 
 
-                                        } else {
-                                            //提示所有错误
-                                            showToast(mContext, o.getMsg());
-                                        }
-                                    }
-                                });
+                                                 } else {
+                                                     //提示所有错误
+                                                     showToast(mContext, o.getMsg());
+                                                 }
+
+                                             }
+
+                                             @Override
+                                             public void onError(Call call, Response response, Exception e) {
+                                                 super.onError(call, response, e);
+                                                 showToast(mContext, R.string.system_error);
+                                             }
+                                         }
+                                );
 
 
                         return -1;
@@ -209,9 +218,16 @@ public class RegisterActivity extends SwipeBackActivity {
 
 
                                         } else {
+                                            showLog(o.getMsg());
                                             //提示所有错误
                                             showToast(mContext, o.getMsg());
                                         }
+                                    }
+
+                                    @Override
+                                    public void onError(Call call, Response response, Exception e) {
+                                        super.onError(call, response, e);
+                                        showToast(mContext, R.string.system_error);
                                     }
                                 });
 

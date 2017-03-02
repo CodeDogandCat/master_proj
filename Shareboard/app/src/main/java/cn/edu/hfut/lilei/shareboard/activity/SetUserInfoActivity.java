@@ -21,6 +21,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
@@ -82,11 +83,14 @@ public class SetUserInfoActivity extends SwipeBackActivity {
             @Override
             public void onClick(View view) {
                 final String familyName = mEtFamilyName.getText()
-                        .toString();
+                        .toString()
+                        .trim();
                 final String givenName = mEtGivenName.getText()
-                        .toString();
+                        .toString()
+                        .trim();
                 final String password = mEtPassword.getText()
-                        .toString();
+                        .toString()
+                        .trim();
                 new AsyncTask<Void, Void, Integer>() {
 
                     @Override
@@ -137,17 +141,12 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                           Response response) {
                                         if (o.getCode() == SUCCESS) {
                                             /**
-                                             * 4.注册成功
-                                             */
-
-                                            showToast(mContext, o.getMsg());
-                                            /**
-                                             * 5.保存token 到本地
+                                             * 4.注册成功,保存token 到本地
                                              */
                                             SharedPrefUtil.getInstance()
                                                     .saveData(share_token, o.getMsg());
                                             /**
-                                             * 6.跳转
+                                             * 5.跳转
                                              */
                                             Intent intent = new Intent();
                                             intent.setClass(SetUserInfoActivity.this,
@@ -158,8 +157,15 @@ public class SetUserInfoActivity extends SwipeBackActivity {
 
                                         } else {
                                             //提示所有错误
+                                            showLog(o.getMsg());
                                             showToast(mContext, o.getMsg());
                                         }
+                                    }
+
+                                    @Override
+                                    public void onError(Call call, Response response, Exception e) {
+                                        super.onError(call, response, e);
+                                        showToast(mContext, R.string.system_error);
                                     }
                                 });
 
