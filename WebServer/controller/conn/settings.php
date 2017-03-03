@@ -23,6 +23,8 @@ define('post_user_given_name', '300103');
 define('post_user_login_password', '300104');
 define('post_user_client_key', '300105');
 define('post_token', '300106');
+define('post_user_avatar', '300107');
+
 
 /**
  * 状态参数
@@ -40,6 +42,7 @@ define("SAVE_USER_ERROR", 4007);//保存用户信息出错
 define("LOGIN_ERROR", 4008);//登录错误
 define("ACCESS_VOLATION", 4009);//未授权访问
 define("DATABASE_OPERATE_FAILED", 4010);//数据库操作失败
+define("UPLOAD_AVATAR_ERROR", 4011);//上传头像失败
 
 /**
  * 数据库连接信息
@@ -72,8 +75,9 @@ function printResult($code, $msg, $data)
     $obj->msg = $msg;
     $obj->data = $data;
     echo json_encode($obj, JSON_UNESCAPED_UNICODE);
-    return;
+    exit(0);//停止脚本
 }
+
 
 function createFolder($path)
 {

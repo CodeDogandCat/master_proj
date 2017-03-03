@@ -4,7 +4,7 @@
 class User
 {
     private $id, $email, $family_name, $given_name, $register_time,
-        $login_recent_time, $status, $class, $password, $pmi, $token;
+        $login_recent_time, $status, $class, $password, $pmi, $token,$avatar;
 
     /**
      * @return mixed
@@ -191,6 +191,22 @@ class User
     public function setPmi($pmi)
     {
         $this->pmi = $pmi;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param mixed $avatar
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
     }
 
 

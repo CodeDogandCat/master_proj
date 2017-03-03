@@ -41,8 +41,9 @@ class Register
      */
     public function saveUser()
     {
-        $sql = 'INSERT INTO bd_user (user_email,user_family_name,user_given_name,user_password,user_register_time,user_login_recent_time,user_token) 
-                VALUES (?,?,?,?,?,?,?)';
+        $sql = 'INSERT INTO bd_user (user_email,user_family_name,user_given_name,user_password,
+                user_register_time,user_login_recent_time,user_token,user_avatar) 
+                VALUES (?,?,?,?,?,?,?,?)';
         $arr = array();
         $arr[0] = $this->user->getEmail();
         $arr[1] = $this->user->getFamilyName();
@@ -51,6 +52,7 @@ class Register
         $arr[4] = $this->user->getRegisterTime();
         $arr[5] = $this->user->getLoginRecentTime();
         $arr[6] = $this->user->getToken();
+        $arr[7] = $this->user->getAvatar();
         if ($this->db->insert($sql, $arr)) {
             return true;//插入成功
         }

@@ -14,9 +14,11 @@ import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.models.Common;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
+import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
@@ -29,9 +31,32 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 
 public class WelcomeActivity extends Activity {
 
+    private LodingDialog.Builder mlodingDialog;
+
+    private boolean shouldCallUpdate;
+
     //上下文参数
     private Context mContext;
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        shouldCallUpdate = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        shouldCallUpdate = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (shouldCallUpdate) {
+            init();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +64,30 @@ public class WelcomeActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         setContentView(R.layout.activity_welcome);
+        shouldCallUpdate = false;
         init();
+//        String dataDirectory = Environment.getDataDirectory()
+//                .getAbsolutePath();
+//        showLog("dataDirectory::" + dataDirectory);
+//        String externalStorageDirectory = Environment.getExternalStorageDirectory()
+//                .getAbsolutePath();
+//        showLog("externalStorageDirectory::" + externalStorageDirectory);
+//        String filePath = getFilesDir().getAbsolutePath();
+//        showLog("filePath::" + filePath);
+//        String packageResourcePath = getPackageResourcePath();
+//        showLog("packageResourcePath::" + packageResourcePath);
+//        String cachePath = getCacheDir().getAbsolutePath();
+//        showLog("cachePath::" + cachePath);
     }
 
 
     private void init() {
         mContext = this;
+//        Intent intent = new Intent();
+//        intent.setClass(WelcomeActivity.this, SetUserInfoActivity.class);
+//        startActivity(intent);
+//        finish();
+        mlodingDialog = loding(mContext, R.string.loding);
         new AsyncTask<Void, Void, Integer>() {
 
             @Override
@@ -61,18 +104,14 @@ public class WelcomeActivity extends Activity {
                  * 2.加载token
                  */
                 String token = (String) SharedPrefUtil.getInstance()
-                        .getData(share_token, "");
+                        .getData(share_token, "空");
 
                 //如果没有token,跳转到登录界面
-                if (token.equals("")) {
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                if (token.equals("空")) {
                     return NO_TOKEN_FOUND;
                 }
                 //如果有,带着token去服务器比较
+
                 OkGo.post(URL_CHECK_TOKEN)
                         .tag(this)
                         .params(post_token, token)
@@ -86,6 +125,8 @@ public class WelcomeActivity extends Activity {
                                      */
                                     SharedPrefUtil.getInstance()
                                             .deleteData(share_token);
+
+                                    mlodingDialog.cancle();
                                     /**
                                      * 4.跳到登录界面
                                      */
@@ -97,6 +138,7 @@ public class WelcomeActivity extends Activity {
                                     /**
                                      * 5.自动登录成功,不会返回可打印信息,直接跳转
                                      */
+                                    mlodingDialog.cancle();
                                     showLog(o.getMsg());
                                     Intent intent = new Intent();
                                     intent.setClass(WelcomeActivity.this,
@@ -109,6 +151,7 @@ public class WelcomeActivity extends Activity {
                             @Override
                             public void onError(Call call, Response response, Exception e) {
                                 super.onError(call, response, e);
+                                mlodingDialog.cancle();
                                 showToast(mContext, R.string.system_error);
                             }
                         });
@@ -121,6 +164,7 @@ public class WelcomeActivity extends Activity {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
+                mlodingDialog.cancle();
                 switch (integer) {
                     case NET_DISCONNECT:
                         //弹出对话框，让用户开启网络

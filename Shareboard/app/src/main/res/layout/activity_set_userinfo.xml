@@ -38,7 +38,6 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/ll_set_user_info_avatar"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:gravity="center"
@@ -46,25 +45,36 @@
         android:paddingLeft="@dimen/activity_horizontal_margin26"
         android:paddingRight="@dimen/activity_horizontal_margin26">
 
-        <cn.carbs.android.avatarimageview.library.AvatarImageView
-            android:id="@+id/img_set_userinfo_photo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center"
-            android:src="@drawable/imageholder"
-            app:aiv_BoarderColor="@color/my_yellow"
-            app:aiv_BoarderWidth="1.5dp"
-            app:aiv_ShowBoarder="true"
-            app:aiv_TextSizeRatio="0.4"/>
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/ll_set_user_info_avatar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/click_to_set_avatar"
-            android:textSize="@dimen/small_text_size"/>
+            android:layout_height="160dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin26"
+            android:paddingRight="@dimen/activity_horizontal_margin26">
 
+            <cn.carbs.android.avatarimageview.library.AvatarImageView
+                android:id="@+id/img_set_user_info_avatar"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:src="@drawable/imageholder"
+                app:aiv_BoarderColor="@color/my_yellow"
+                app:aiv_BoarderWidth="1.5dp"
+                app:aiv_ShowBoarder="true"
+                app:aiv_TextSizeRatio="0.4"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/click_to_set_avatar"
+                android:textSize="@dimen/small_text_size"/>
+
+        </LinearLayout>
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

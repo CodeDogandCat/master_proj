@@ -258,8 +258,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                                         description, null);
                     }
                     //加载中
-                    mlodingDialog = loding(mContext, mContext.getResources()
-                            .getString(R.string.arranging));
+                    mlodingDialog = loding(mContext, R.string.arranging);
                     //保存到数据库
                     new AsyncTask<Void, Void, Integer>() {
 

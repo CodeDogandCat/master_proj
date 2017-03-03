@@ -21,10 +21,12 @@ import java.io.File;
 
 import cn.edu.hfut.lilei.shareboard.R;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.ALBUM_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CAMERA_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CROP_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CAMERA;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_avatar;
 
 public class ImageUtil {
 
@@ -116,6 +118,24 @@ public class ImageUtil {
         //不要error和placeHolder ,为了显示默认的文字头像
         Picasso.with(context)
                 .load(drawableid)
+                .config(Bitmap.Config.RGB_565)//没有大图
+                .into(target);
+    }
+
+    public static void loadAvatar(@NonNull Context context, @NonNull File imgfile,
+                                  @NonNull ImageView target) {
+        //不要error和placeHolder ,为了显示默认的文字头像
+        Picasso.with(context)
+                .load(imgfile)
+                .config(Bitmap.Config.RGB_565)//没有大图
+                .into(target);
+    }
+
+    public static void loadAvatar(@NonNull Context context, @NonNull Uri imgfile,
+                                  @NonNull ImageView target) {
+        //不要error和placeHolder ,为了显示默认的文字头像
+        Picasso.with(context)
+                .load(imgfile)
                 .config(Bitmap.Config.RGB_565)//没有大图
                 .into(target);
     }
@@ -299,4 +319,35 @@ public class ImageUtil {
 
     }
 
+
+    public static void loadMyAvatar(@NonNull Context context, String url,
+                                    @NonNull ImageView target) {
+
+        /**
+         * 1.检查安卓本地用户图片，如果有，显示
+         */
+        String uriStr = (String) SharedPrefUtil.getInstance()
+                .getData(share_avatar, "空");
+        if (!uriStr.equals("空")) {
+            showLog("查到的图片路径" + uriStr);
+            Picasso.with(context)
+                    .load(Uri.parse(uriStr))
+                    .config(Bitmap.Config.RGB_565)//没有大图
+                    .into(target);
+        }
+
+        //还没有加载成功
+        if (target.getDrawable() == null) {
+            /**
+             * 2.从网络加载显示
+             */
+            //从网络加载
+            Picasso.with(context)
+                    .load(url)
+                    .config(Bitmap.Config.RGB_565)//没有大图
+                    .into(target);
+        }
+
+
+    }
 }

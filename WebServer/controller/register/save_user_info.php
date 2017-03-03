@@ -8,6 +8,7 @@ try {
     require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/settings.php';
     require_once 'Register.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/util/UrlUtil.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/util/FileUtil.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/util/EncryptUtil.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/model/User.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/Session.php';
@@ -29,6 +30,19 @@ try {
         //token构造
         $user->setToken(EncryptUtil::hash($user->getEmail() . $user->getPassword() . $user->getRegisterTime(), $user->getRegisterTime()));
         $register = new Register($user);
+        if (isset($_FILES[post_user_avatar])) {
+            $create_folder_path = $_SERVER['DOCUMENT_ROOT'] . '/assets/avatar';
+            createFolder($create_folder_path);
+            $target_path = $create_folder_path . "/" . $user->getEmail() . '.' . FileUtil::get_extension(basename($_FILES [post_user_avatar] ['name']));
+            if (move_uploaded_file($_FILES [post_user_avatar] ['tmp_name'], $target_path) == false) {
+                printResult(UPLOAD_AVATAR_ERROR, '上传头像失败', -1);
+            } else {
+                $user->setAvatar($target_path);
+            }
+        } else {
+            $user->setAvatar("空");
+        }
+
 
         if ($register->saveUser()) {
             //把token 放到session中
@@ -37,6 +51,8 @@ try {
             printResult(SUCCESS, $user->getToken(), -1);
 
         } else {
+            //删除上传的头像文件
+            FileUtil::delFile($target_path);
             printResult(SAVE_USER_ERROR, '注册失败', -1);
         }
 

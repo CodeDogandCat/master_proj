@@ -14,7 +14,7 @@ try {
     require_once $_SERVER['DOCUMENT_ROOT'] . '/util/EncryptUtil.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/model/User.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/Session.php';
-
+    $data = array("token" => "", "familyName" => "", "givenName" => "");
     if (isset($_REQUEST[post_user_email]) &&
         isset($_REQUEST[post_user_login_password])
     ) {
@@ -25,21 +25,23 @@ try {
 
         $login = new Login($user);
 
-        if (($token = $login->checkUser()) != false) {
+        if (($tmp = $login->checkUser()) != false) {
+            $data = $tmp;
             //把token放到session中
-            Session::set(SESSION_TOKEN, $token, 2592000);//30天过期
+            Session::set(SESSION_TOKEN, $data['token'], 2592000);//30天过期
+
             //返回token
-            printResult(SUCCESS, $token, -1);
+            printResult(SUCCESS, '登陆成功', $data);
 
         } else {
-            printResult(LOGIN_ERROR, '用户名或密码错误', -1);
+            printResult(LOGIN_ERROR, '用户名或密码错误', $data);
         }
 
     } else {
-        printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
+        printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', $data);
     }
 } catch (Exception $exception) {
-    printResult(FAILURE, $exception->getMessage(), -1);
+    printResult(FAILURE, $exception->getMessage(), $data);
 
 }
 

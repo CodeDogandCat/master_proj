@@ -1,6 +1,5 @@
 package cn.edu.hfut.lilei.shareboard.utils;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -59,7 +58,7 @@ public class NetworkUtil {
                                     // 判断手机系统的版本 即API大于10 就是3.0或以上版本
                                     if (android.os.Build.VERSION.SDK_INT > 10) {
                                         intent = new Intent(
-                                                android.provider.Settings.ACTION_WIRELESS_SETTINGS);
+                                                android.provider.Settings.ACTION_SETTINGS);
                                     } else {
                                         intent = new Intent();
                                         ComponentName component = new ComponentName(
@@ -86,17 +85,6 @@ public class NetworkUtil {
         }
     }
 
-    /**
-     * 打开网络设置界面
-     */
-    public static void openSetting(Activity activity, int requestCode) {
-        Intent intent = new Intent("/");
-        ComponentName cm = new ComponentName("com.android.settings",
-                "com.android.settings.WirelessSettings");
-        intent.setComponent(cm);
-        intent.setAction(Intent.ACTION_VIEW);
-        activity.startActivityForResult(intent, requestCode);
-    }
 
     /**
      * whether the network is connected

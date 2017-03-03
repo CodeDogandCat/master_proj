@@ -15,14 +15,16 @@ import com.lzy.okgo.OkGo;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.models.Common;
+import cn.edu.hfut.lilei.shareboard.models.Login;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
+import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
@@ -32,7 +34,10 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO2;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_login_password;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
 
 public class LoginActivity extends Activity {
@@ -46,6 +51,7 @@ public class LoginActivity extends Activity {
     private Button mBtnLogin;
     private Button mBtnRegisteraccount;
     private Button mBtnResetpassword;
+    private LodingDialog.Builder mlodingDialog;
     //数据
 
     //上下文参数
@@ -143,6 +149,7 @@ public class LoginActivity extends Activity {
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mlodingDialog = loding(mContext, R.string.logingin);
                 final String email = mEtEmail.getText()
                         .toString()
                         .trim();
@@ -185,16 +192,30 @@ public class LoginActivity extends Activity {
                                 .tag(this)
                                 .params(post_user_email, email)
                                 .params(post_user_login_password, passEncrypted)
-                                .execute(new JsonCallback<Common>() {
+                                .execute(new JsonCallback<Login>() {
                                              @Override
-                                             public void onSuccess(Common o, Call call,
+                                             public void onSuccess(Login o, Call call,
                                                                    Response response) {
                                                  if (o.getCode() == SUCCESS) {
                                                      /**
-                                                      * 4.登陆成功,保存token 到本地
+                                                      * 4.登陆成功,缓存token,email,姓,名
                                                       */
                                                      SharedPrefUtil.getInstance()
-                                                             .saveData(share_token, o.getMsg());
+                                                             .saveData(share_token, o.getData()
+                                                                     .getToken()
+                                                             );
+                                                     SharedPrefUtil.getInstance()
+                                                             .saveData(share_user_email, email);
+                                                     SharedPrefUtil.getInstance()
+                                                             .saveData(share_family_name, o.getData()
+                                                                     .getFamilyName()
+                                                             );
+                                                     SharedPrefUtil.getInstance()
+                                                             .saveData(share_given_name, o.getData()
+                                                                     .getGivenName()
+                                                             );
+                                                     mlodingDialog.cancle();
+
                                                      /**
                                                       * 5.跳转
                                                       */
@@ -205,8 +226,8 @@ public class LoginActivity extends Activity {
                                                      finish();
 
 
-
                                                  } else {
+                                                     mlodingDialog.cancle();
                                                      //提示所有错误
                                                      showLog(o.getMsg());
                                                      showToast(mContext, o.getMsg());
@@ -216,6 +237,7 @@ public class LoginActivity extends Activity {
                                              @Override
                                              public void onError(Call call, Response response, Exception e) {
                                                  super.onError(call, response, e);
+                                                 mlodingDialog.cancle();
                                                  showToast(mContext, R.string.system_error);
                                              }
                                          }
@@ -230,6 +252,7 @@ public class LoginActivity extends Activity {
                     @Override
                     protected void onPostExecute(Integer integer) {
                         super.onPostExecute(integer);
+                        mlodingDialog.cancle();
                         switch (integer) {
                             case NET_DISCONNECT:
                                 //弹出对话框，让用户开启网络

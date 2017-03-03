@@ -25,10 +25,24 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-        //初始化数据库
-//        GreenDaoManager.getInstance();
         //初始化 sharepreference
         SharedPrefUtil.init(mContext);
+        //创建创建程序文件夹
+//        String installInfo = (String) SharedPrefUtil.getInstance()
+//                .getData(INSTALLED, "空");
+//        if (!installInfo.equals("installed")) {
+//            /**
+//             *创建系统文件夹
+//             */
+//            MyAppUtil.createSystemDir();
+//            SharedPrefUtil.getInstance()
+//                    .saveData(INSTALLED, "installed");
+//        }
+
+
+        //初始化数据库
+//        GreenDaoManager.getInstance();
+
         //请求权限
         requestSdcard();
         //全局异常捕获
@@ -102,6 +116,7 @@ public class MyApplication extends Application {
             e.printStackTrace();
         }
     }
+
 
     public static Context getContext() {
         return mContext;

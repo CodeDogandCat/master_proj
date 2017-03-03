@@ -15,6 +15,12 @@ public class SettingUtil {
     //token拦截器
     public static final String URL_CHECK_TOKEN =
             "http://118.89.102.238/controller/conn/tokenInterceptor.php";
+    //头像
+    public static final String URL_AVATAR =
+            "http://118.89.102.238/assets/avatar/";
+    //更新
+    public static final String URL_UPDATE_SETTINGS =
+            "http://118.89.102.238/controller/settings/update_info.php";
 
     //post name 参数
     public static final String post_check_verify_code = "300100";
@@ -24,10 +30,14 @@ public class SettingUtil {
     public static final String post_user_login_password = "300104";
     public static final String post_user_client_key = "300105";
     public static final String post_token = "300106";
+    public static final String post_user_avatar = "300107";
 
     //sharepreference name 参数
     public static final String share_user_email = "400101";
     public static final String share_token = "400102";
+    public static final String share_avatar = "400103";
+    public static final String share_family_name = "400104";
+    public static final String share_given_name = "400105";
 
 
     //系统调试参数
@@ -46,6 +56,8 @@ public class SettingUtil {
     public static final int SHOW_TIME_MIN = 800;//最短跳转时间
     public static final String TAG = "shareboard";//调试TAG
     public static final String PACKAGE_NAME = "cn.edu.hfut.lilei.shareboard";//包名
+    public static final String INSTALLED = "hasInstalled";//已经安装过
+//    public static final String SYSTEM_DIR = "/data/data/" + PACKAGE_NAME + " /info";//系统文件夹
 
     //权限请求参数
     public static final int PERMISSION_REQUEST_CODE = 10000;//权限请求代码
@@ -59,8 +71,8 @@ public class SettingUtil {
     public static final String PERMISSION_REQUEST_ENSURE = "设置";//权限请求提示框-允许
 
     //文件路径参数
-    public static final String IMG_PATH_FOR_CAMERA = "temp.jpg";
-    public static final String IMG_PATH_FOR_CROP = "crop_image.jpg";
+    public static final String IMG_PATH_FOR_CAMERA = "shareboard_camera_image.jpeg";
+    public static final String IMG_PATH_FOR_CROP = "shareboard_crop_image.jpeg";
 
     //字符串常量
     public static final String TIMEZONE = "GTM+8";

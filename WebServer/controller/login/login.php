@@ -45,7 +45,7 @@ class Login
      */
     public function checkUser()
     {
-        $sql = 'SELECT user_id,user_register_time FROM bd_user WHERE user_email =? AND user_password=?';
+        $sql = 'SELECT user_id,user_register_time,user_family_name,user_given_name FROM bd_user WHERE user_email =? AND user_password=?';
         $arr = array();
         $arr[0] = $this->user->getEmail();
         $arr[1] = $this->user->getPassword();
@@ -54,11 +54,17 @@ class Login
         if (count($rows) == 1) {//存在且只存在一个这样的用户
             $user_id = $rows[0]['user_id'];
             $register_time = $rows[0]['user_register_time'];
+            $family_name = $rows[0]['user_family_name'];
+            $given_name = $rows[0]['user_given_name'];
+
             //生成token
             $token = EncryptUtil::hash($this->user->getEmail() . $this->user->getPassword() . $register_time, $register_time);
             //并且放到数据库
             if ($this->updateToken($user_id, $token)) {
-                return $token;//存在,返回token给客户端
+
+                $data = array("token" => $token, "familyName" => $family_name, "givenName" => $given_name);
+
+                return $data;//存在,返回token给客户端
             }
 
 

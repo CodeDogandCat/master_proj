@@ -18,11 +18,13 @@ import cn.edu.hfut.lilei.shareboard.utils.CountDownTimerUtils;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
+import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
@@ -40,6 +42,7 @@ public class RegisterActivity extends SwipeBackActivity {
     private EditText mEtSendVerifyCode;
     private TextView mTvSendVerifyCode;
     private Button mBtnNextstep;
+    private LodingDialog.Builder mlodingDialog;
 
     //上下文参数
     private Context mContext;
@@ -83,8 +86,9 @@ public class RegisterActivity extends SwipeBackActivity {
             @Override
             public void onClick(View view) {
                 final String email = mEtEmail.getText()
-                        .toString();
-
+                        .toString()
+                        .trim();
+                mlodingDialog = loding(mContext, R.string.sending);
                 new AsyncTask<Void, Void, Integer>() {
 
                     @Override
@@ -108,6 +112,7 @@ public class RegisterActivity extends SwipeBackActivity {
                         /**
                          * 3.检查是否已经注册过,发送验证码
                          */
+
                         OkGo.post(URL_SEND_VERIFY_CODE)
                                 .tag(this)
                                 .params(post_user_email, email)
@@ -115,9 +120,11 @@ public class RegisterActivity extends SwipeBackActivity {
                                              @Override
                                              public void onSuccess(Common o, Call call, Response response) {
                                                  if (o.getCode() == SUCCESS) {
-                                                     //验证码发送成功
-                                                     showToast(mContext, o.getMsg());
-                                                     //把email 放到 sharepreference
+
+                                                     /**
+                                                      * 缓存 email
+                                                      */
+
                                                      SharedPrefUtil.getInstance()
                                                              .saveData(share_user_email, email);
 
@@ -126,10 +133,14 @@ public class RegisterActivity extends SwipeBackActivity {
                                                              CountDownTimerUtils(mContext, mTvSendVerifyCode,
                                                              120000, 1000);
                                                      mCountDownTimerUtils.start();
+                                                     mlodingDialog.cancle();
+                                                     //验证码发送成功
+                                                     showToast(mContext, o.getMsg());
 
 
                                                  } else {
                                                      //提示所有错误
+                                                     mlodingDialog.cancle();
                                                      showToast(mContext, o.getMsg());
                                                  }
 
@@ -138,6 +149,7 @@ public class RegisterActivity extends SwipeBackActivity {
                                              @Override
                                              public void onError(Call call, Response response, Exception e) {
                                                  super.onError(call, response, e);
+                                                 mlodingDialog.cancle();
                                                  showToast(mContext, R.string.system_error);
                                              }
                                          }
@@ -151,6 +163,7 @@ public class RegisterActivity extends SwipeBackActivity {
                     @Override
                     protected void onPostExecute(Integer integer) {
                         super.onPostExecute(integer);
+                        mlodingDialog.cancle();
                         switch (integer) {
                             case NET_DISCONNECT:
                                 //弹出对话框，让用户开启网络
@@ -177,6 +190,7 @@ public class RegisterActivity extends SwipeBackActivity {
         mBtnNextstep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mlodingDialog = loding(mContext, R.string.checking);
                 final String verifyCode = mEtSendVerifyCode.getText()
                         .toString();
                 new AsyncTask<Void, Void, Integer>() {
@@ -207,7 +221,7 @@ public class RegisterActivity extends SwipeBackActivity {
                                     public void onSuccess(Common o, Call call, Response response) {
                                         if (o.getCode() == SUCCESS) {
                                             //验证码发匹配正确
-
+                                            mlodingDialog.cancle();
                                             /**
                                              * 2.跳转
                                              */
@@ -218,6 +232,7 @@ public class RegisterActivity extends SwipeBackActivity {
 
 
                                         } else {
+                                            mlodingDialog.cancle();
                                             showLog(o.getMsg());
                                             //提示所有错误
                                             showToast(mContext, o.getMsg());
@@ -227,6 +242,7 @@ public class RegisterActivity extends SwipeBackActivity {
                                     @Override
                                     public void onError(Call call, Response response, Exception e) {
                                         super.onError(call, response, e);
+                                        mlodingDialog.cancle();
                                         showToast(mContext, R.string.system_error);
                                     }
                                 });
@@ -239,6 +255,7 @@ public class RegisterActivity extends SwipeBackActivity {
                     @Override
                     protected void onPostExecute(Integer integer) {
                         super.onPostExecute(integer);
+                        mlodingDialog.cancle();
                         switch (integer) {
                             case NET_DISCONNECT:
                                 //弹出对话框，让用户开启网络

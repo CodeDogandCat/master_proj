@@ -88,6 +88,7 @@
     <string name="choose_sms">选择短信客户端</string>
     <string name="choose_mail">选择邮箱客户端</string>
     <string name="alter_head">更改头像</string>
+    <string name="choose_head">选择头像</string>
     <string name="camera">照相机</string>
     <string name="gallery">相册</string>
     <string name="copy_to_sheet">复制到剪贴板</string>
@@ -95,12 +96,18 @@
     <string name="should_get_this_to_alter_head">应用需要该权限才能更改头像</string>
     <string name="meeting_location">安卓小喵共享白板-加入会议</string>
     <string name="meeting_event_already_add">会议的日历事件提醒添加成功</string>
-    <string name="arranging">安排中...</string>
     <string name="can_not_recognize_email">不能识别的邮箱</string>
     <string name="can_not_recognize_family_name">不能识别的姓(只允许汉字、英文字母、数字,且不能以数字开头)</string>
     <string name="can_not_recognize_given_name">不能识别的名(只允许汉字、英文字母、数字,且不能以数字开头)</string>
     <string name="can_not_recognize_login_password">不能识别的登录密码(12位,只允许英文字母、数字、下划线)</string>
     <string name="system_error">操作出现错误</string>
+    <string name="please_relogin">请重新登录来尝试解决问题</string>
     <string name="click_to_set_avatar">点击设置头像</string>
     <string name="logout_failed">注销失败</string>
+    <string name="saving">保存...</string>
+    <string name="sending">发送...</string>
+    <string name="checking">核对...</string>
+    <string name="arranging">安排...</string>
+    <string name="loding">加载...</string>
+    <string name="logingin">登录...</string>
 </resources>

@@ -3,9 +3,6 @@ package cn.edu.hfut.lilei.shareboard.data;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
-/**
- * Created by Bryant on 2017/2/13.
- */
 
 public class AppInfo {
     private String appLabel;    //应用程序标签

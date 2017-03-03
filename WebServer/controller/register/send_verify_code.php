@@ -51,8 +51,8 @@ try {
                     printResult(SEND_VERIFY_CODE_FAILED, '发送验证码失败', -1);
 
                 } else {
-                    printResult(SUCCESS, '验证码已经发送', $code);
                     Session::set(SESSION_VERIFY_CODE, $code, 180);//180秒 验证码失效
+                    printResult(SUCCESS, '验证码已经发送', $code);
                 }
 
             }

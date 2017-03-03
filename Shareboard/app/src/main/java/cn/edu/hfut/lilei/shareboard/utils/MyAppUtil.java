@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -229,10 +228,11 @@ public class MyAppUtil {
     /**
      * 加载中
      */
-    public static LodingDialog.Builder loding(Context context, String title) {
+    public static LodingDialog.Builder loding(Context context, int strid) {
 
         LodingDialog.Builder dialog = new LodingDialog.Builder(context);
-        dialog.setTitle(title);
+        dialog.setTitle(context.getResources()
+                .getString(strid));
         dialog.show();
         return dialog;
 
@@ -278,19 +278,6 @@ public class MyAppUtil {
         return info;
     }
 
-    /**
-     * whether the external storage (SDCard) exists
-     *
-     * @return
-     */
-    public static boolean isStorageExists() {
-        if (Environment.getExternalStorageState()
-                .equals(
-                        Environment.MEDIA_MOUNTED)) {
-            return true;
-        }
-        return false;
-    }
 
 
     /**
@@ -327,6 +314,10 @@ public class MyAppUtil {
         }
         return versioncode;
     }
+
+
+
+
 
 
 }
