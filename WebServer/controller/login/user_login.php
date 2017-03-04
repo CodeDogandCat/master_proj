@@ -29,7 +29,6 @@ try {
             $data = $tmp;
             //把token放到session中
             Session::set(SESSION_TOKEN, $data['token'], 2592000);//30天过期
-
             //返回token
             printResult(SUCCESS, '登陆成功', $data);
 

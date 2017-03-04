@@ -110,4 +110,9 @@
     <string name="arranging">安排...</string>
     <string name="loding">加载...</string>
     <string name="logingin">登录...</string>
+    <string name="can_not_recognize_old_pwd">不能识别的旧密码</string>
+    <string name="can_not_recognize_new_pwd">不能识别的新密码</string>
+    <string name="can_not_recognize_confirm_pwd">不能识别的确认密码</string>
+    <string name="new_pwd_diff_confirm_pwd">新密码和确认密码不一致</string>
+    <string name="new_pwd_equal_old_pwd">新密码和旧密码相同</string>
 </resources>

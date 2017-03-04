@@ -24,6 +24,12 @@ define('post_user_login_password', '300104');
 define('post_user_client_key', '300105');
 define('post_token', '300106');
 define('post_user_avatar', '300107');
+define('post_need_feature', '300108');//具体请求什么功能
+define('update_avatar', '300109');//请求更新头像
+define('update_name', '300110');//请求更新姓名
+define('update_password', '300111');//请求更新密码
+define('post_user_login_password_old', '300112');//旧密码
+define('post_user_login_password_new', '300113');//新密码
 
 
 /**
@@ -43,6 +49,9 @@ define("LOGIN_ERROR", 4008);//登录错误
 define("ACCESS_VOLATION", 4009);//未授权访问
 define("DATABASE_OPERATE_FAILED", 4010);//数据库操作失败
 define("UPLOAD_AVATAR_ERROR", 4011);//上传头像失败
+define("UPDATE_AVATAR_ERROR", 4012);//更新头像失败
+define("UPDATE_NAME_ERROR", 4013);//更新姓名失败
+define("UPDATE_PASSWORD_ERROR", 4014);//更新密码失败
 
 /**
  * 数据库连接信息

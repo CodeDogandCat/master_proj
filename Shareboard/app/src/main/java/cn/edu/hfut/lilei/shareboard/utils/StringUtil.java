@@ -1,5 +1,7 @@
 package cn.edu.hfut.lilei.shareboard.utils;
 
+import android.content.Context;
+
 import org.apache.commons.lang.StringUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -9,6 +11,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import cn.edu.hfut.lilei.shareboard.R;
+
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 
 public class StringUtil {
     /**
@@ -257,6 +263,9 @@ public class StringUtil {
      * @return
      */
     public static boolean isEmail(String email) {
+        if (isEmpty(email)) {
+            return false;
+        }
         String str =
                 "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
         Pattern p = Pattern.compile(str);
@@ -319,6 +328,65 @@ public class StringUtil {
         if (!isPwd.matches()) {
             return false;
         }
+        return true;
+    }
+
+    /**
+     * 判断更新密码操作是否符合要求
+     *
+     * @param context
+     * @param oldPwd
+     * @param newPwd1
+     * @param newPwd2
+     * @return
+     */
+    public static boolean isValidPasswordUpdate(Context context, String oldPwd, String newPwd1,
+                                                String newPwd2) {
+
+        if (!isValidPassword(oldPwd)) {
+            showToast(context, R.string.can_not_recognize_old_pwd);
+            return false;
+        }
+        if (!isValidPassword(newPwd1)) {
+            showToast(context, R.string.can_not_recognize_new_pwd);
+            return false;
+        }
+        if (!isValidPassword(newPwd2)) {
+            showToast(context, R.string.can_not_recognize_confirm_pwd);
+            return false;
+        }
+        if (!newPwd2.equals(newPwd1)) {
+            showToast(context, R.string.new_pwd_diff_confirm_pwd);
+            return false;
+        }
+        if (oldPwd.equals(newPwd1)) {
+            showToast(context, R.string.new_pwd_equal_old_pwd);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 判断更新姓名操作是否符合要求
+     *
+     * @param context
+     * @param familyName
+     * @param givenName
+     * @return
+     */
+    public static boolean isValidNameUpdate(Context context, String familyName, String givenName) {
+
+
+        if (!isValidName(familyName)) {
+            showToast(context, R.string.can_not_recognize_family_name);
+            return false;
+        }
+        if (!isValidName(givenName)) {
+            showToast(context, R.string.can_not_recognize_given_name);
+            return false;
+        }
+
         return true;
     }
 

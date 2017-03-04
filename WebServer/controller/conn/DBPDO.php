@@ -100,7 +100,7 @@ class DBPDO
             $stmt->execute($arr);
             $rows = $stmt->rowCount();
 
-            if ($rows >= 0) {
+            if ($rows > 0) {
                 //受影响的行数大于0
                 $this->getPDOError();
                 return true;

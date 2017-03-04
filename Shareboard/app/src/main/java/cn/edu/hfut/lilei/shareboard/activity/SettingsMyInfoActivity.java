@@ -14,12 +14,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+
 import java.io.File;
 import java.io.IOException;
 
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
+import cn.edu.hfut.lilei.shareboard.models.Common;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -31,8 +35,11 @@ import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 import cn.edu.hfut.lilei.shareboard.view.NameInputDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.ALBUM_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CAMERA_REQUEST_CODE;
@@ -40,11 +47,19 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CROP_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CAMERA;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CROP;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_UPDATE_SETTINGS;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_avatar;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_avatar;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.update_avatar;
 
 
 public class SettingsMyInfoActivity extends SwipeBackActivity {
@@ -325,44 +340,45 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                          */
 
 
-//                        OkGo.post(URL_UPDATE_SETTINGS)
-//                                .tag(this)
-//                                .isMultipart(true)
-//                                .params(post_user_email, email)
-//                                .params(post_token, token)
-//                                .params(post_user_avatar, new File(avatarPath))
-//                                .execute(new JsonCallback<Common>() {
-//                                    @Override
-//                                    public void onSuccess(Common o, Call call,
-//                                                          Response response) {
-//                                        if (o.getCode() == SUCCESS) {
-//                                            /**
-//                                             * 4.更新成功,显示
-//                                             */
-//                                            mlodingDialog.cancle();
-//                                            SharedPrefUtil.getInstance()
-//                                                    .saveData(share_avatar, avatarPath);
-//                                            showLog(avatarPath);
-//                                            ImageUtil.loadAvatar(mContext, new File(avatarPath),
-//                                                    mPhoto);
-//
-//
-//                                        } else {
-//                                            mlodingDialog.cancle();
-//                                            //提示所有错误
-//                                            showLog(o.getMsg());
-//                                            showToast(mContext, o.getMsg());
-//                                        }
-//                                    }
-//
-//                                    @Override
-//                                    public void onError(Call call, Response response,
-//                                                        Exception e) {
-//                                        super.onError(call, response, e);
-//                                        mlodingDialog.cancle();
-//                                        showToast(mContext, R.string.system_error);
-//                                    }
-//                                });
+                        OkGo.post(URL_UPDATE_SETTINGS)
+                                .tag(this)
+                                .isMultipart(true)
+                                .params(post_need_feature, update_avatar)
+                                .params(post_user_email, email)
+                                .params(post_token, token)
+                                .params(post_user_avatar, new File(avatarPath))
+                                .execute(new JsonCallback<Common>() {
+                                    @Override
+                                    public void onSuccess(Common o, Call call,
+                                                          Response response) {
+                                        if (o.getCode() == SUCCESS) {
+                                            /**
+                                             * 4.更新成功,显示
+                                             */
+                                            mlodingDialog.cancle();
+                                            SharedPrefUtil.getInstance()
+                                                    .saveData(share_avatar, avatarPath);
+                                            showLog(avatarPath);
+                                            ImageUtil.loadAvatar(mContext, new File(avatarPath),
+                                                    mPhoto);
+
+
+                                        } else {
+                                            mlodingDialog.cancle();
+                                            //提示所有错误
+                                            showLog(o.getMsg());
+                                            showToast(mContext, o.getMsg());
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Call call, Response response,
+                                                        Exception e) {
+                                        super.onError(call, response, e);
+                                        mlodingDialog.cancle();
+                                        showToast(mContext, R.string.system_error);
+                                    }
+                                });
 
                         return -1;
                     }
@@ -383,7 +399,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                 break;
 
                             default:
-                                showToast(mContext, R.string.system_error);
+//                                showToast(mContext, R.string.system_error);
                                 break;
                         }
                     }

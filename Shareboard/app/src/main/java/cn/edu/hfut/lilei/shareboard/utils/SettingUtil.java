@@ -31,6 +31,12 @@ public class SettingUtil {
     public static final String post_user_client_key = "300105";
     public static final String post_token = "300106";
     public static final String post_user_avatar = "300107";
+    public static final String post_need_feature = "'300108'";
+    public static final String update_avatar = "300109";
+    public static final String update_name = "300110";
+    public static final String update_password = "300111";
+    public static final String post_user_login_password_old = "300112";
+    public static final String post_user_login_password_new = "300113";
 
     //sharepreference name 参数
     public static final String share_user_email = "400101";

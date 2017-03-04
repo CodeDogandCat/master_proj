@@ -12,18 +12,36 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
+import cn.edu.hfut.lilei.shareboard.models.Common;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_UPDATE_SETTINGS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO1;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO2;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO3;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_family_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_given_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.update_name;
 
 public class NameInputDialog extends Dialog {
 
@@ -192,54 +210,63 @@ public class NameInputDialog extends Dialog {
                                             .getData
                                                     (share_token, "空");
                                     if (token.equals("空")) {
-                                        return -1;
+                                        return -2;
+                                    }
+                                    String email = (String) SharedPrefUtil.getInstance()
+                                            .getData(share_user_email, "空");
+
+                                    //如果没有email
+                                    if (token.equals("空")) {
+                                        return -2;
                                     }
                                     /**
                                      * 3.上传数据
                                      */
 
-//                                    OkGo.post(URL_SAVE_USR_INFO)
-//                                            .tag(this)
-//                                            .params(post_token, token)
-//                                            .params(post_user_family_name, familyName)
-//                                            .params(post_user_given_name, givenName)
-//                                            .execute(new JsonCallback<Common>() {
-//                                                @Override
-//                                                public void onSuccess(Common o, Call call,
-//                                                                      Response response) {
-//                                                    if (o.getCode() == SUCCESS) {
-//                                                        /**
-//                                                         * 4.更改成功,缓存姓,名
-//                                                         */
-//                                                        SharedPrefUtil.getInstance()
-//                                                                .saveData(share_family_name,
-//                                                                        familyName);
-//                                                        SharedPrefUtil.getInstance()
-//                                                                .saveData(share_given_name,
-//                                                                        givenName);
-//                                                        mlodingDialog.cancle();
-//                                                        /**
-//                                                         * 5.对话框消失,更新姓名
-//                                                         */
-//                                                        customAlertDialog.dismiss();
-//
-//
-//                                                    } else {
-//                                                        //提示所有错误
-//                                                        mlodingDialog.cancle();
-//                                                        showLog(o.getMsg());
-//                                                        showToast(mContext, o.getMsg());
-//                                                    }
-//                                                }
-//
-//                                                @Override
-//                                                public void onError(Call call, Response response,
-//                                                                    Exception e) {
-//                                                    super.onError(call, response, e);
-//                                                    mlodingDialog.cancle();
-//                                                    showToast(mContext, R.string.system_error);
-//                                                }
-//                                            });
+                                    OkGo.post(URL_UPDATE_SETTINGS)
+                                            .tag(this)
+                                            .params(post_need_feature, update_name)
+                                            .params(post_token, token)
+                                            .params(post_user_email, email)
+                                            .params(post_user_family_name, familyName)
+                                            .params(post_user_given_name, givenName)
+                                            .execute(new JsonCallback<Common>() {
+                                                @Override
+                                                public void onSuccess(Common o, Call call,
+                                                                      Response response) {
+                                                    if (o.getCode() == SUCCESS) {
+                                                        /**
+                                                         * 4.更改成功,缓存姓,名
+                                                         */
+                                                        SharedPrefUtil.getInstance()
+                                                                .saveData(share_family_name,
+                                                                        familyName);
+                                                        SharedPrefUtil.getInstance()
+                                                                .saveData(share_given_name,
+                                                                        givenName);
+                                                        mlodingDialog.cancle();
+                                                        /**
+                                                         * 5.对话框消失,更新姓名
+                                                         */
+                                                        customAlertDialog.dismiss();
+
+
+                                                    } else {
+                                                        //提示所有错误
+                                                        mlodingDialog.cancle();
+                                                        showLog(o.getMsg());
+                                                        showToast(mContext, o.getMsg());
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onError(Call call, Response response,
+                                                                    Exception e) {
+                                                    super.onError(call, response, e);
+                                                    mlodingDialog.cancle();
+                                                    showToast(mContext, R.string.system_error);
+                                                }
+                                            });
 
 
                                     return -1;
@@ -272,9 +299,12 @@ public class NameInputDialog extends Dialog {
                                             break;
                                         case -1:
                                             break;
+                                        case -2:
+                                            showToast(mContext, R.string.please_relogin);
+                                            break;
 
                                         default:
-                                            showToast(mContext, R.string.system_error);
+//                                            showToast(mContext, R.string.system_error);
                                             break;
                                     }
                                 }
