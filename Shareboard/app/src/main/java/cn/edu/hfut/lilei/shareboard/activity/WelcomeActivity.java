@@ -83,10 +83,6 @@ public class WelcomeActivity extends Activity {
 
     private void init() {
         mContext = this;
-//        Intent intent = new Intent();
-//        intent.setClass(WelcomeActivity.this, SetUserInfoActivity.class);
-//        startActivity(intent);
-//        finish();
         mlodingDialog = loding(mContext, R.string.loding);
         new AsyncTask<Void, Void, Integer>() {
 
@@ -189,6 +185,10 @@ public class WelcomeActivity extends Activity {
                 }
             }
         }.execute();
+//        Intent intent = new Intent();
+//        intent.setClass(WelcomeActivity.this, SetUserInfoActivity.class);
+//        startActivity(intent);
+//        finish();
 
 
     }

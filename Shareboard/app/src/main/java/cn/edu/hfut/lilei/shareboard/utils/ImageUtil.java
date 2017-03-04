@@ -272,11 +272,11 @@ public class ImageUtil {
      *
      * @param activity
      */
-    public static void startCamera(Activity activity) {
+    public static void startCamera(Activity activity, String baseDir) {
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.
-                getExternalStorageDirectory(), IMG_PATH_FOR_CAMERA)));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                Uri.fromFile(new File(baseDir, IMG_PATH_FOR_CAMERA)));
         activity.startActivityForResult(intent, CAMERA_REQUEST_CODE);
 
     }

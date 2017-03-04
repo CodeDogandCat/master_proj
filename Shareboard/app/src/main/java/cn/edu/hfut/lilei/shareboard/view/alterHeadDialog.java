@@ -19,6 +19,7 @@ import java.util.List;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ApplicationInfoAdapter;
 import cn.edu.hfut.lilei.shareboard.data.AppInfo;
+import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 
 
@@ -127,7 +128,15 @@ public class AlterHeadDialog extends Dialog {
                             switch (position) {
                                 case 0:
                                     dialog.dismiss();
-                                    ImageUtil.startCamera((Activity) mContext);
+                                    String baseDir = "";
+                                    if (FileUtil.isExternalStorageWritable()) {
+                                        baseDir = mContext.getExternalFilesDir("")
+                                                .getAbsolutePath();
+                                    } else {
+                                        baseDir = mContext.getFilesDir()
+                                                .getAbsolutePath();
+                                    }
+                                    ImageUtil.startCamera((Activity) mContext, baseDir);
                                     break;
                                 case 1:
                                     dialog.dismiss();
