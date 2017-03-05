@@ -3,7 +3,9 @@ package cn.edu.hfut.lilei.shareboard.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +21,6 @@ import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.models.Common;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
-import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -42,6 +43,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.update_name;
+import static cn.edu.hfut.lilei.shareboard.utils.StringUtil.isValidName;
 
 public class NameInputDialog extends Dialog {
 
@@ -60,6 +62,8 @@ public class NameInputDialog extends Dialog {
         private String mTitle;
         private String mFamilyName;
         private String mGivenName;
+        private TextView mTvGivenName;
+        private TextView mTvFamilyName;
         private String mPositiveButtonText, mNegativeButtonText;
 
         private OnClickListener mPositiveButtonClickListener,
@@ -112,6 +116,12 @@ public class NameInputDialog extends Dialog {
             return this;
         }
 
+        public Builder setTextView(TextView familyName, TextView givenName) {
+            mTvFamilyName = familyName;
+            mTvGivenName = givenName;
+            return this;
+        }
+
 
         public Builder setPositiveButton(int positiveButtonTextId,
                                          OnClickListener listener) {
@@ -144,27 +154,100 @@ public class NameInputDialog extends Dialog {
         }
 
         public NameInputDialog create() {
+
             LayoutInflater inflater = LayoutInflater.from(mContext);
             View view = inflater.inflate(R.layout.dialog_settingmyinfo_name, null);
             final NameInputDialog customAlertDialog = new NameInputDialog(
                     mContext, R.style.CustomAlertDialog);
+            final TextView tvAlertTitle = (TextView) view
+                    .findViewById(R.id.tv_dialog_settingmyinfo_title);
+            final Button btnPositive = (Button) view
+                    .findViewById(R.id.btn_dialog_settingmyinfo_positive);
+
+            final Button btnNegative = (Button) view
+                    .findViewById(R.id.btn_dialog_settingmyinfo_negative);
+            final EditText etDialogFamilyName = (EditText) view
+                    .findViewById(R.id.et_dialog_settingmyinfo_familyname);
+
+
             customAlertDialog.addContentView(view, new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            TextView tvAlertTitle = (TextView) view
-                    .findViewById(R.id.tv_dialog_settingmyinfo_title);
             tvAlertTitle.setText(mTitle);
-
-            EditText etDialogFamilyName = (EditText) view
-                    .findViewById(R.id.et_dialog_settingmyinfo_familyname);
             etDialogFamilyName.setText(mFamilyName);
+            etDialogFamilyName.addTextChangedListener(new TextWatcher() {
+                                                          @Override
+                                                          public void beforeTextChanged(
+                                                                  CharSequence s, int start,
+                                                                  int count, int after) {
+                                                          }
+
+                                                          @Override
+                                                          public void onTextChanged(
+                                                                  CharSequence s, int start,
+                                                                  int before, int count) {
+                                                              if (!"".equals(
+                                                                      s.toString())) {
+                                                                  btnPositive.setClickable(
+                                                                          true);//按钮可点击
+                                                                  btnPositive.setBackgroundResource(R
+                                                                          .drawable.btn_yellow);
+                                                                  //颜色变亮，提示用户能够点按
+                                                              } else {
+                                                                  btnPositive.setClickable(
+                                                                          false);//按钮不可点击
+                                                                  btnPositive.setBackgroundResource(R
+                                                                          .drawable.bg_identify_code_press);
+                                                              }
+                                                          }
+
+                                                          @Override
+                                                          public void afterTextChanged(
+                                                                  Editable s) {
+                                                              setFamilyName(s.toString()
+                                                                      .trim());
+                                                          }
+                                                      }
+
+            );
 
             EditText etDialogGivenName = (EditText) view
                     .findViewById(R.id.et_dialog_settingmyinfo_givenname);
             etDialogGivenName.setText(mGivenName);
-            Button btnPositive = (Button) view
-                    .findViewById(R.id.btn_dialog_settingmyinfo_positive);
+            etDialogGivenName.addTextChangedListener(new TextWatcher() {
+                                                         @Override
+                                                         public void beforeTextChanged(
+                                                                 CharSequence s, int start,
+                                                                 int count, int after) {
+                                                         }
+
+                                                         @Override
+                                                         public void onTextChanged(
+                                                                 CharSequence s, int start,
+                                                                 int before, int count) {
+                                                             if (!"".equals(s.toString())) {
+                                                                 btnPositive.setClickable(
+                                                                         true);//按钮可点击
+                                                                 btnPositive.setBackgroundResource(R
+                                                                         .drawable.btn_yellow);
+                                                             } else {
+                                                                 btnPositive.setClickable(
+                                                                         false);//按钮不可点击
+                                                                 btnPositive.setBackgroundResource(R
+                                                                         .drawable.bg_identify_code_press);
+                                                             }
+                                                         }
+
+                                                         @Override
+                                                         public void afterTextChanged(
+                                                                 Editable s) {
+                                                             setGivenName(s.toString()
+                                                                     .trim());
+                                                         }
+                                                     }
+
+            );
+
             if (!TextUtils.isEmpty(mPositiveButtonText)) {
                 btnPositive.setText(mPositiveButtonText);
                 if (mPositiveButtonClickListener != null) {
@@ -195,20 +278,8 @@ public class NameInputDialog extends Dialog {
                                     /**
                                      * 2.检查姓名格式
                                      */
-                                    final String familyName = getFamilyName().trim();
-                                    final String givenName = getFamilyName().trim();
-                                    if (!StringUtil.isValidName(familyName)) {
-                                        //姓格式不对
-                                        return WRONG_FORMAT_INPUT_NO1;
-                                    }
-
-                                    if (!StringUtil.isValidName(givenName)) {
-                                        //名格式不对
-                                        return WRONG_FORMAT_INPUT_NO2;
-                                    }
                                     String token = (String) SharedPrefUtil.getInstance()
-                                            .getData
-                                                    (share_token, "空");
+                                            .getData(share_token, "空");
                                     if (token.equals("空")) {
                                         return -2;
                                     }
@@ -219,6 +290,27 @@ public class NameInputDialog extends Dialog {
                                     if (token.equals("空")) {
                                         return -2;
                                     }
+                                    final String familyName = getFamilyName().trim();
+                                    final String givenName = getGivenName().trim();
+                                    String oldFamilyName = (String) SharedPrefUtil.getInstance()
+                                            .getData(share_family_name, "空");
+                                    String oldGivenName = (String) SharedPrefUtil.getInstance()
+                                            .getData(share_given_name, "空");
+                                    if (oldFamilyName.equals("空") || oldGivenName.equals("空")) {
+                                        return -2;
+                                    }
+
+                                    if (!isValidName(familyName)) {
+                                        return WRONG_FORMAT_INPUT_NO1;
+                                    }
+                                    if (!isValidName(givenName)) {
+                                        return WRONG_FORMAT_INPUT_NO2;
+                                    }
+                                    if (oldFamilyName.equals(familyName) &&
+                                            oldGivenName.equals(givenName)) {
+                                        return WRONG_FORMAT_INPUT_NO3;
+                                    }
+
                                     /**
                                      * 3.上传数据
                                      */
@@ -244,6 +336,10 @@ public class NameInputDialog extends Dialog {
                                                         SharedPrefUtil.getInstance()
                                                                 .saveData(share_given_name,
                                                                         givenName);
+                                                        //更新UI
+                                                        mTvFamilyName.setText(familyName);
+                                                        mTvGivenName.setText(givenName);
+
                                                         mlodingDialog.cancle();
                                                         /**
                                                          * 5.对话框消失,更新姓名
@@ -283,19 +379,15 @@ public class NameInputDialog extends Dialog {
                                             NetworkUtil.setNetworkMethod(mContext);
                                             break;
                                         case WRONG_FORMAT_INPUT_NO1:
-                                            //提示姓格式不对
                                             showToast(mContext,
                                                     R.string.can_not_recognize_family_name);
                                             break;
                                         case WRONG_FORMAT_INPUT_NO2:
-                                            //提示名格式不对
                                             showToast(mContext,
                                                     R.string.can_not_recognize_given_name);
                                             break;
                                         case WRONG_FORMAT_INPUT_NO3:
-                                            //提示登录密码格式不对
-                                            showToast(mContext,
-                                                    R.string.can_not_recognize_login_password);
+                                            showToast(mContext, R.string.no_change_alter);
                                             break;
                                         case -1:
                                             break;
@@ -317,8 +409,8 @@ public class NameInputDialog extends Dialog {
             } else {
                 btnPositive.setVisibility(View.GONE);
             }
-            Button btnNegative = (Button) view
-                    .findViewById(R.id.btn_dialog_settingmyinfo_negative);
+
+
             if (!TextUtils.isEmpty(mNegativeButtonText)) {
                 btnNegative.setText(mNegativeButtonText);
                 if (mNegativeButtonClickListener != null) {
@@ -342,11 +434,14 @@ public class NameInputDialog extends Dialog {
             }
             if (View.VISIBLE == btnPositive.getVisibility()
                     && View.GONE == btnNegative.getVisibility()) {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) btnPositive
-                        .getLayoutParams();
+                RelativeLayout.LayoutParams layoutParams =
+                        (RelativeLayout.LayoutParams) btnPositive
+                                .getLayoutParams();
                 layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
                 btnPositive.setLayoutParams(layoutParams);
             }
+
+
             return customAlertDialog;
         }
 
@@ -356,5 +451,4 @@ public class NameInputDialog extends Dialog {
             return dialog;
         }
     }
-
 }

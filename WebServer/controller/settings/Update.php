@@ -50,7 +50,7 @@ class Update
     public function updatePwdAndToken($newPwdEncrypted, $token)
     {
 
-        $sql = 'UPDATE  bd_user SET user_password = ? AND user_token = ? WHERE user_email = ?';
+        $sql = 'UPDATE  bd_user SET user_password = ?,user_token = ? WHERE user_email = ?';
         $arr = array();
         $arr[0] = $newPwdEncrypted;
         $arr[1] = $token;
@@ -113,7 +113,7 @@ class Update
     {
 
 
-        $sql = 'UPDATE  bd_user SET user_family_name = ? AND user_given_name = ? WHERE user_email = ?';
+        $sql = 'UPDATE  bd_user SET user_family_name = ?,user_given_name = ? WHERE user_email = ?';
         $arr = array();
         $arr[0] = $this->user->getFamilyName();
         $arr[1] = $this->user->getGivenName();

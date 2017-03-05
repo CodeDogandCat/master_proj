@@ -11,16 +11,14 @@ try {
         $login = new Login($user);
         if (($login->checkToken($_REQUEST[post_token])) == false) {
             printResult(ACCESS_VOLATION, '未授权访问', -1);
-            exit(0);
         } else {
             //再次把token放到session中，这样如果用户频繁使用就不会过期了
             Session::set(SESSION_TOKEN, $_REQUEST[post_token], 2592000);//30天过期
-            printResult(SUCCESS, '授权访问', -1);
+//            printResultNotExit(SUCCESS, '授权访问', -1);
 
         }
     } else {
         printResult(ACCESS_VOLATION, '未授权访问', -1);
-        exit(0);
     }
 } catch (Exception $exception) {
     printResult(FAILURE, $exception->getMessage(), -1);

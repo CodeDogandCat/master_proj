@@ -31,7 +31,7 @@ public class SettingUtil {
     public static final String post_user_client_key = "300105";
     public static final String post_token = "300106";
     public static final String post_user_avatar = "300107";
-    public static final String post_need_feature = "'300108'";
+    public static final String post_need_feature = "300108";
     public static final String update_avatar = "300109";
     public static final String update_name = "300110";
     public static final String update_password = "300111";
@@ -77,8 +77,8 @@ public class SettingUtil {
     public static final String PERMISSION_REQUEST_ENSURE = "设置";//权限请求提示框-允许
 
     //文件路径参数
-    public static final String IMG_PATH_FOR_CAMERA = "shareboard_camera_image.jpeg";
-    public static final String IMG_PATH_FOR_CROP = "shareboard_crop_image.jpeg";
+    public static final String IMG_PATH_FOR_CAMERA = "shareboard_image.jpeg";
+    public static final String IMG_PATH_FOR_CROP = "shareboard_image.jpeg";
 
     //字符串常量
     public static final String TIMEZONE = "GTM+8";

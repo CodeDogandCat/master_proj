@@ -207,6 +207,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                         .toString())
                                 .setGivenName(mTvGivenNameHint.getText()
                                         .toString())
+                                .setTextView(mTvFamilyNameHint, mTvGivenNameHint)
                                 .setPositiveButton(
                                         SettingsMyInfoActivity.this.getString(R.string.confirm),
                                         null)

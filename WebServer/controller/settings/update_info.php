@@ -11,9 +11,9 @@ try {
     require_once $_SERVER['DOCUMENT_ROOT'] . '/util/EncryptUtil.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/model/User.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/Session.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/settings/Update.php';
     //token 拦截 检验
     require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/tokenInterceptor.php';
-
     if (isset($_REQUEST[post_need_feature])) {
         if ($_REQUEST[post_need_feature] == update_avatar) {
             //更新头像
@@ -69,7 +69,7 @@ try {
                 $newPwd = $_REQUEST[post_user_login_password_new];
                 $update = new Update($user);
                 if ($update->updatePassword($oldPwd, $newPwd)) {
-                    printResult(SUCCESS, '更新密码成功', -1);
+                    printResult(SUCCESS, '更新密码成功,请重新登录', -1);
                 } else {
                     printResult(UPDATE_PASSWORD_ERROR, '更新密码失败', -1);
                 }

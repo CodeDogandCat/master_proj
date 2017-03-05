@@ -115,4 +115,5 @@
     <string name="can_not_recognize_confirm_pwd">不能识别的确认密码</string>
     <string name="new_pwd_diff_confirm_pwd">新密码和确认密码不一致</string>
     <string name="new_pwd_equal_old_pwd">新密码和旧密码相同</string>
+    <string name="no_change_alter">没有变化的修改</string>
 </resources>

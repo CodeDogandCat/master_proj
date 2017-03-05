@@ -87,6 +87,18 @@ function printResult($code, $msg, $data)
     exit(0);//停止脚本
 }
 
+/**
+ * @param $code
+ */
+function printResultNotExit($code, $msg, $data)
+{
+    $obj = null;
+    $obj->code = $code;
+    $obj->msg = $msg;
+    $obj->data = $data;
+    echo json_encode($obj, JSON_UNESCAPED_UNICODE);
+}
+
 
 function createFolder($path)
 {

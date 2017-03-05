@@ -19,11 +19,9 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
-import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NO_TOKEN_FOUND;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_CHECK_TOKEN;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
@@ -115,7 +113,7 @@ public class WelcomeActivity extends Activity {
                             @Override
                             public void onSuccess(Common o, Call call,
                                                   Response response) {
-                                if (o.getCode() != SUCCESS) {
+                                if (o != null) {
                                     /**
                                      * 3.本地token过期，删除
                                      */
@@ -135,7 +133,6 @@ public class WelcomeActivity extends Activity {
                                      * 5.自动登录成功,不会返回可打印信息,直接跳转
                                      */
                                     mlodingDialog.cancle();
-                                    showLog(o.getMsg());
                                     Intent intent = new Intent();
                                     intent.setClass(WelcomeActivity.this,
                                             MainActivity.class);
