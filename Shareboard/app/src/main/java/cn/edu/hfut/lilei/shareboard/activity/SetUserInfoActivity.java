@@ -25,6 +25,7 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.models.Common;
+import cn.edu.hfut.lilei.shareboard.models.Register;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -49,6 +50,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CAMERA
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CROP;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_SAVE_USR_INFO;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO1;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO2;
@@ -97,8 +99,6 @@ public class SetUserInfoActivity extends SwipeBackActivity {
     private void init() {
         mContext = this;
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
-                SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override
@@ -193,6 +193,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                         /**
                          * 4.上传
                          */
+                        File avatarFile = new File(avatarPath);
                         if (!avatarPath.equals("空")) {
 
 
@@ -203,23 +204,26 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                     .params(post_user_family_name, familyName)
                                     .params(post_user_given_name, givenName)
                                     .params(post_user_login_password, passEncrypted)
-                                    .params(post_user_avatar, new File(avatarPath))
-                                    .execute(new JsonCallback<Common>() {
+                                    .params(post_user_avatar, avatarFile)
+                                    .execute(new JsonCallback<Register>() {
                                         @Override
-                                        public void onSuccess(Common o, Call call,
+                                        public void onSuccess(Register o, Call call,
                                                               Response response) {
                                             if (o.getCode() == SUCCESS) {
                                                 /**
                                                  * 5.注册成功,缓存token ,姓,名
                                                  */
                                                 SharedPrefUtil.getInstance()
-                                                        .saveData(share_token, o.getMsg());
+                                                        .saveData(share_token, o.getData()
+                                                                .getToken());
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_family_name, familyName);
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_given_name, givenName);
                                                 SharedPrefUtil.getInstance()
-                                                        .saveData(share_avatar, cropUri.toString());
+                                                        .saveData(share_avatar, URL_AVATAR + o
+                                                                .getData()
+                                                                .getAvatar());
                                                 mlodingDialog.cancle();
                                                 /**
                                                  * 6.跳转
@@ -433,7 +437,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                     avatarPath = ImageUtil.getImageAbsolutePath19(mContext,
                             cropUri);
                     showLog(avatarPath);
-                    ImageUtil.loadAvatar(mContext, cropUri, mPhoto);
+                    ImageUtil.loadAvatarNoCache(mContext, cropUri, mPhoto);
 
 
                 } catch (Exception e) {

@@ -16,7 +16,6 @@ import cn.edu.hfut.lilei.shareboard.activity.SettingsMyInfoActivity;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
@@ -68,11 +67,10 @@ public class SettingsFragment extends Fragment {
         mEmail.setText((String) SharedPrefUtil.getInstance()
                 .getData(share_user_email,
                         "未设置"));
-        mPhoto.setTextAndColor("磊", R.color.skyblue);
-        ImageUtil.loadMyAvatar(mContext,
-                URL_AVATAR + SharedPrefUtil.getInstance()
-                        .getData(share_user_email, "未设置") + ".jpeg",
-                mPhoto);
+        mPhoto.setTextAndColor((String) SharedPrefUtil.getInstance()
+                .getData(share_given_name,
+                        "未设置"), R.color.skyblue);
+        ImageUtil.loadMyAvatar(mContext, mPhoto);
     }
 
     private void init(View view) {

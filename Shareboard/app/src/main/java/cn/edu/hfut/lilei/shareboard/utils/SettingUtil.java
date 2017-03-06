@@ -17,7 +17,7 @@ public class SettingUtil {
             "http://118.89.102.238/controller/conn/tokenInterceptor.php";
     //头像
     public static final String URL_AVATAR =
-            "http://118.89.102.238/assets/avatar/";
+            "http://118.89.102.238/assets/avatar";
     //更新
     public static final String URL_UPDATE_SETTINGS =
             "http://118.89.102.238/controller/settings/update_info.php";

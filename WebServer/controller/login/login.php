@@ -40,12 +40,12 @@ class Login
 
 
     /**
-     * 核对用户登录信息（登录用）,返回给用户token(注册时候生成，或者更换密码时候生成，早已存在数据库中)
+     * 核对用户登录信息（登录用）,返回给用户token(注册时候生成，或者更换密码时候生成，早已存在数据库中),avatar,姓名
      * @return bool
      */
     public function checkUser()
     {
-        $sql = 'SELECT user_family_name,user_given_name,user_token FROM bd_user WHERE user_email =? AND user_password=?';
+        $sql = 'SELECT user_family_name,user_given_name,user_token,user_avatar FROM bd_user WHERE user_email =? AND user_password=?';
         $arr = array();
         $arr[0] = $this->user->getEmail();
         $arr[1] = $this->user->getPassword();
@@ -55,7 +55,8 @@ class Login
             $family_name = $rows[0]['user_family_name'];
             $given_name = $rows[0]['user_given_name'];
             $token = $rows[0]['user_token'];
-            $data = array("token" => $token, "familyName" => $family_name, "givenName" => $given_name);
+            $avatar = $rows[0]['user_avatar'];
+            $data = array("token" => $token, "familyName" => $family_name, "givenName" => $given_name, "avatar" => $avatar);
             return $data;//存在,返回token给客户端
         }
 

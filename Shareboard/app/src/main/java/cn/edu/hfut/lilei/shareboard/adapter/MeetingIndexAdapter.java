@@ -74,6 +74,7 @@ public class MeetingIndexAdapter extends BaseAdapter {
         }
         //绑定数据
         ImageUtil.load(context, (Integer) data.get(position)
+                .get("image"), (Integer) data.get(position)
                 .get("image"), zujian.image);
         zujian.title.setText((String) data.get(position)
                 .get("title"));

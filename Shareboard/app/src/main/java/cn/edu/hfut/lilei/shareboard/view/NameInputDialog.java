@@ -18,7 +18,7 @@ import com.lzy.okgo.OkGo;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.models.Common;
+import cn.edu.hfut.lilei.shareboard.models.Register;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import okhttp3.Call;
@@ -322,9 +322,9 @@ public class NameInputDialog extends Dialog {
                                             .params(post_user_email, email)
                                             .params(post_user_family_name, familyName)
                                             .params(post_user_given_name, givenName)
-                                            .execute(new JsonCallback<Common>() {
+                                            .execute(new JsonCallback<Register>() {
                                                 @Override
-                                                public void onSuccess(Common o, Call call,
+                                                public void onSuccess(Register o, Call call,
                                                                       Response response) {
                                                     if (o.getCode() == SUCCESS) {
                                                         /**

@@ -64,6 +64,7 @@ public class AlterHeadDialog extends Dialog {
             return this;
         }
 
+
         // 获得所有启动Activity的信息，类似于Launch界面
         public void queryAppInfo() {
             mlistAppInfo = new ArrayList<AppInfo>();

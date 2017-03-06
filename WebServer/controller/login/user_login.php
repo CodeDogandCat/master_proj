@@ -14,7 +14,7 @@ try {
     require_once $_SERVER['DOCUMENT_ROOT'] . '/util/EncryptUtil.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/model/User.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/Session.php';
-    $data = array("token" => "", "familyName" => "", "givenName" => "");
+    $data = array("token" => "", "familyName" => "", "givenName" => "", "avatar" => "");
     if (isset($_REQUEST[post_user_email]) &&
         isset($_REQUEST[post_user_login_password])
     ) {

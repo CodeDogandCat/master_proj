@@ -87,7 +87,7 @@ public class MainActivity extends FragmentActivity implements
 
         //联系人页面actionbar右侧的添加联系人图标
         mImgAddContact = new ImageView(this);
-        ImageUtil.load(mContext, R.drawable.ic_white_22, mImgAddContact);
+        ImageUtil.load(mContext, R.drawable.ic_white_22, R.drawable.ic_white_22, mImgAddContact);
         mlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         hasAddContactIcon = false;//标志着当前页面没有添加联系人图标

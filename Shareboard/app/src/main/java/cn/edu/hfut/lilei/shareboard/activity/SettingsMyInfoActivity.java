@@ -23,7 +23,7 @@ import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
-import cn.edu.hfut.lilei.shareboard.models.Common;
+import cn.edu.hfut.lilei.shareboard.models.Register;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -70,7 +70,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
     private LodingDialog.Builder mlodingDialog;
     //数据
     private Uri cropUri;
-    private boolean shouldCallUpdate;
+    private boolean shouldCallUpdate = false;
     private String baseDir = "";
 
     //上下文参数
@@ -81,35 +81,40 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_myinfo);
+        showLog("create...");
         shouldCallUpdate = false;
         init();
 
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (shouldCallUpdate) {
-            update();
-        }
-
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        shouldCallUpdate = true;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        shouldCallUpdate = true;
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        showLog("resume...");
+//        if (shouldCallUpdate) {
+//            update();
+//        }
+//
+//
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        showLog("stop...");
+//        shouldCallUpdate = true;
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        showLog("pause...");
+//        shouldCallUpdate = true;
+//    }
 
     private void update() {
+        showLog("update ..................");
         /**
          * 重新读取缓存，更新姓名
          */
@@ -119,11 +124,10 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
         mTvGivenNameHint.setText((String) SharedPrefUtil.getInstance()
                 .getData(share_given_name,
                         "未设置"));
-        mPhoto.setTextAndColor("磊", R.color.skyblue);
-        ImageUtil.loadMyAvatar(mContext,
-                URL_AVATAR + SharedPrefUtil.getInstance()
-                        .getData(share_user_email, "未设置") + ".jpeg",
-                mPhoto);
+        mPhoto.setTextAndColor((String) SharedPrefUtil.getInstance()
+                .getData(share_given_name,
+                        "未设置"), R.color.skyblue);
+        ImageUtil.loadMyAvatar(mContext, mPhoto);
     }
 
     /**
@@ -293,7 +297,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                 if (data == null) {
                     return;
                 }
-                ImageUtil.startCrop(this, data.getData(), cropUri, 120, 120);
+                ImageUtil.startCrop(this, data.getData(), cropUri, 200, 200);
                 break;
             case CAMERA_REQUEST_CODE:
                 Log.i(SettingUtil.TAG, "相机, 开始裁剪");
@@ -339,29 +343,30 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                         /**
                          *3.上传
                          */
-
-
+                        showLog("ready...");
+                        File avatarFile = new File(avatarPath);
                         OkGo.post(URL_UPDATE_SETTINGS)
                                 .tag(this)
                                 .isMultipart(true)
                                 .params(post_need_feature, update_avatar)
                                 .params(post_user_email, email)
                                 .params(post_token, token)
-                                .params(post_user_avatar, new File(avatarPath))
-                                .execute(new JsonCallback<Common>() {
+                                .params(post_user_avatar, avatarFile)
+                                .execute(new JsonCallback<Register>() {
                                     @Override
-                                    public void onSuccess(Common o, Call call,
+                                    public void onSuccess(Register o, Call call,
                                                           Response response) {
                                         if (o.getCode() == SUCCESS) {
                                             /**
                                              * 4.更新成功,显示
                                              */
-                                            mlodingDialog.cancle();
                                             SharedPrefUtil.getInstance()
-                                                    .saveData(share_avatar, avatarPath);
-                                            showLog(avatarPath);
-                                            ImageUtil.loadAvatar(mContext, new File(avatarPath),
-                                                    mPhoto);
+                                                    .saveData(share_avatar, URL_AVATAR + o
+                                                            .getData()
+                                                            .getAvatar());
+                                            mlodingDialog.cancle();
+                                            update();
+                                            showToast(mContext, o.getMsg());
 
 
                                         } else {
@@ -416,7 +421,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
 //                } catch (Exception e) {
 //                    e.printStackTrace();
 //                }
-                };
+                }.execute();
             default:
                 break;
         }

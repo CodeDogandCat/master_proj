@@ -66,13 +66,15 @@ public class ResetPasswordActivity extends SwipeBackActivity {
                     // 获得焦点
                     mLlBottomlineofemail.setBackgroundColor(
                             getResources().getColor(R.color.my_yellow));
-                    ImageUtil.load(mContext, R.drawable.btn_black, mImgEmail);
+                    ImageUtil.load(mContext, R.drawable.btn_black, R.drawable.ic_white_34,
+                            mImgEmail);
                 } else {
 
                     // 失去焦点
                     mLlBottomlineofemail.setBackgroundColor(
                             getResources().getColor(R.color.my_lightgray));
-                    ImageUtil.load(mContext, R.drawable.ic_white_34, mImgEmail);
+                    ImageUtil.load(mContext, R.drawable.ic_white_34, R.drawable.ic_white_34,
+                            mImgEmail);
                 }
 
             }

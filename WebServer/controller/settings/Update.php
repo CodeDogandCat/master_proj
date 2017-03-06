@@ -63,6 +63,23 @@ class Update
         Session::set(SESSION_TOKEN, $token, 2592000);//30天过期
         return true;//更新成功
     }
+    /**
+     * 更新 avatar
+     * @return bool
+     */
+    public function updateAvatar()
+    {
+
+        $sql = 'UPDATE  bd_user SET user_avatar = ? WHERE user_email = ?';
+        $arr = array();
+        $arr[0] = $this->user->getAvatar();
+        $arr[1] = $this->user->getEmail();
+        if ($this->db->update($sql, $arr) == false) {
+
+            return false;//更新失败
+        }
+        return true;//更新成功
+    }
 
     /**
      * 更新密码
