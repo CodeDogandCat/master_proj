@@ -1,10 +1,9 @@
 {
-    "name"  : "workerman/workerman-chat",
+    "name"  : "ShareBoard",
     "type"  : "project",
-    "keywords": ["chat"],
-    "homepage": "http://www.workerman.net",
-    "license" : "MIT",
+    "keywords": ["board"],
     "require": {
-        "workerman/gateway-worker" : ">=3.0.0"
+        "workerman/gateway-worker" : ">=3.0.0",
+		"workerman/gatewayclient"  : "3.0.0"
     }
 }

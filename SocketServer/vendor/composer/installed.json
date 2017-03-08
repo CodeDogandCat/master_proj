@@ -1,17 +1,17 @@
 [
     {
         "name": "workerman/workerman",
-        "version": "v3.3.6",
-        "version_normalized": "3.3.6.0",
+        "version": "v3.3.9",
+        "version_normalized": "3.3.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/walkor/Workerman.git",
-            "reference": "c2e66e75a8c461a52a738ba004ef845397ce64ff"
+            "reference": "02e71eef4714bd251e1b456cb047d3c0d6732192"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/walkor/Workerman/zipball/c2e66e75a8c461a52a738ba004ef845397ce64ff",
-            "reference": "c2e66e75a8c461a52a738ba004ef845397ce64ff",
+            "url": "https://api.github.com/repos/walkor/Workerman/zipball/02e71eef4714bd251e1b456cb047d3c0d6732192",
+            "reference": "02e71eef4714bd251e1b456cb047d3c0d6732192",
             "shasum": ""
         },
         "require": {
@@ -20,7 +20,7 @@
         "suggest": {
             "ext-event": "For better performance."
         },
-        "time": "2016-11-27 08:23:04",
+        "time": "2017-02-14T12:29:56+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -49,23 +49,23 @@
     },
     {
         "name": "workerman/gateway-worker",
-        "version": "v3.0.0",
-        "version_normalized": "3.0.0.0",
+        "version": "v3.0.2",
+        "version_normalized": "3.0.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/walkor/GatewayWorker.git",
-            "reference": "54f36ebe07f58c0ec18deb02fbaaf1a4893910d5"
+            "reference": "bc6513534d12bc6891a2e7dd00f0b8fa450c44dc"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/walkor/GatewayWorker/zipball/54f36ebe07f58c0ec18deb02fbaaf1a4893910d5",
-            "reference": "54f36ebe07f58c0ec18deb02fbaaf1a4893910d5",
+            "url": "https://api.github.com/repos/walkor/GatewayWorker/zipball/bc6513534d12bc6891a2e7dd00f0b8fa450c44dc",
+            "reference": "bc6513534d12bc6891a2e7dd00f0b8fa450c44dc",
             "shasum": ""
         },
         "require": {
             "workerman/workerman": ">=3.1.8"
         },
-        "time": "2016-11-13 13:01:54",
+        "time": "2017-03-04T10:06:20+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -82,5 +82,34 @@
             "communication",
             "distributed"
         ]
+    },
+    {
+        "name": "workerman/gatewayclient",
+        "version": "v3.0.0",
+        "version_normalized": "3.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/walkor/GatewayClient.git",
+            "reference": "e58edc1f5eee7465c24fc97d8adff1f59b1b8455"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/walkor/GatewayClient/zipball/e58edc1f5eee7465c24fc97d8adff1f59b1b8455",
+            "reference": "e58edc1f5eee7465c24fc97d8adff1f59b1b8455",
+            "shasum": ""
+        },
+        "time": "2016-12-07T09:06:11+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "GatewayClient\\": "./"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "homepage": "http://www.workerman.net"
     }
 ]

@@ -26,6 +26,16 @@ class React implements LoopInterface
     protected $_loop = null;
 
     /**
+     * @var array
+     */
+    protected $_timerIdMap = array();
+
+    /**
+     * @var int
+     */
+    protected $_timerIdIndex = 0;
+
+    /**
      * React constructor.
      */
     public function __construct() {
@@ -49,6 +59,7 @@ class React implements LoopInterface
      */
     public function add($fd, $flag, $func, $args = array())
     {
+        $args = (array)$args;
         switch ($flag) {
             case EventInterface::EV_READ:
                 return $this->_loop->addReadStream($fd, $func);
@@ -57,9 +68,17 @@ class React implements LoopInterface
             case EventInterface::EV_SIGNAL:
                 return $this->_loop->addSignal($fd, $func);
             case EventInterface::EV_TIMER:
-                return $this->_loop->addPeriodicTimer($fd, $func);
+                $timer_obj = $this->_loop->addPeriodicTimer($fd, function() use ($func, $args) {
+                    call_user_func_array($func, $args);
+                });
+                $this->_timerIdMap[++$this->_timerIdIndex] = $timer_obj;
+                return $this->_timerIdIndex;
             case EventInterface::EV_TIMER_ONCE:
-                return $this->_loop->addTimer($fd, $func);
+                $timer_obj = $this->_loop->addTimer($fd, function() use ($func, $args) {
+                    call_user_func_array($func, $args);
+                });
+                $this->_timerIdMap[++$this->_timerIdIndex] = $timer_obj;
+                return $this->_timerIdIndex;
         }
         return false;
     }
@@ -82,7 +101,12 @@ class React implements LoopInterface
                 return $this->_loop->removeSignal($fd);
             case EventInterface::EV_TIMER:
             case EventInterface::EV_TIMER_ONCE;
-                return  $this->_loop->cancelTimer($fd);
+                if (isset($this->_timerIdMap[$fd])){
+                    $timer_obj = $this->_timerIdMap[$fd];
+                    unset($this->_timerIdMap[$fd]);
+                    $this->_loop->cancelTimer($timer_obj);
+                    return true;
+                }
         }
         return false;
     }

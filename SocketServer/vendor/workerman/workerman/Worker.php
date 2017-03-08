@@ -33,7 +33,7 @@ class Worker
      *
      * @var string
      */
-    const VERSION = '3.3.6';
+    const VERSION = '3.3.9';
 
     /**
      * Status starting.
@@ -76,7 +76,7 @@ class Worker
      *
      * @var int
      */
-    const DEFAULT_BACKLOG = 1024;
+    const DEFAULT_BACKLOG = 102400;
     /**
      * Max udp package size.
      *
@@ -190,13 +190,6 @@ class Worker
     public $onWorkerStop = null;
 
     /**
-     * Emitted when the master process get reload signal.
-     *
-     * @var callback
-     */
-    public static $onMasterReload = null;
-
-    /**
      * Emitted when worker processes get reload signal.
      *
      * @var callback
@@ -265,6 +258,20 @@ class Worker
      * @var Events\EventInterface
      */
     public static $globalEvent = null;
+
+    /**
+     * Emitted when the master process get reload signal.
+     *
+     * @var callback
+     */
+    public static $onMasterReload = null;
+
+    /**
+     * Emitted when the master process terminated.
+     *
+     * @var callback
+     */
+    public static $onMasterStop = null;
 
     /**
      * The PID of master process.
@@ -404,10 +411,7 @@ class Worker
         'tcp'   => 'tcp',
         'udp'   => 'udp',
         'unix'  => 'unix',
-        'ssl'   => 'tcp',
-        'sslv2' => 'tcp',
-        'sslv3' => 'tcp',
-        'tls'   => 'tcp'
+        'ssl'   => 'tcp'
     );
 
     /**
@@ -930,6 +934,8 @@ class Worker
             $worker->setUserAndGroup();
             $worker->id = $id;
             $worker->run();
+            $err = new Exception('event-loop exited');
+            self::log($err);
             exit(250);
         } else {
             throw new Exception("forkOneWorker fail");
@@ -1080,6 +1086,9 @@ class Worker
         }
         @unlink(self::$pidFile);
         self::log("Workerman[" . basename(self::$_startFile) . "] has been stopped");
+        if (self::$onMasterStop) {
+            call_user_func(self::$onMasterStop);
+        }
         exit(0);
     }
 
@@ -1398,7 +1407,6 @@ class Worker
         // Autoload.
         Autoloader::setRootPath($this->_autoloadRootPath);
 
-        $local_socket = $this->_socketName;
         // Get the application layer communication protocol and listening address.
         list($scheme, $address) = explode(':', $this->_socketName, 2);
         // Check application layer protocol class.
@@ -1415,10 +1423,14 @@ class Worker
                     }
                 }
             }
-            $local_socket = $this->transport . ":" . $address;
+            if (!isset(self::$_builtinTransports[$this->transport])) {
+                throw new \Exception('Bad worker->transport ' . var_export($this->transport, true));
+            }
         } else {
-            $this->transport = self::$_builtinTransports[$scheme];
+            $this->transport = $scheme;
         }
+
+        $local_socket = self::$_builtinTransports[$this->transport] . ":" . $address;
 
         // Flag.
         $flags  = $this->transport === 'udp' ? STREAM_SERVER_BIND : STREAM_SERVER_BIND | STREAM_SERVER_LISTEN;
@@ -1435,8 +1447,12 @@ class Worker
             throw new Exception($errmsg);
         }
 
+        if ($this->transport === 'ssl') {
+            stream_socket_enable_crypto($this->_mainSocket, false);
+        }
+
         // Try to open keepalive for tcp and disable Nagle algorithm.
-        if (function_exists('socket_import_stream') && $this->transport === 'tcp') {
+        if (function_exists('socket_import_stream') && self::$_builtinTransports[$this->transport] === 'tcp') {
             $socket = socket_import_stream($this->_mainSocket);
             @socket_set_option($socket, SOL_SOCKET, SO_KEEPALIVE, 1);
             @socket_set_option($socket, SOL_TCP, TCP_NODELAY, 1);
@@ -1565,6 +1581,7 @@ class Worker
         $this->connections[$connection->id] = $connection;
         $connection->worker                 = $this;
         $connection->protocol               = $this->protocol;
+        $connection->transport              = $this->transport;
         $connection->onMessage              = $this->onMessage;
         $connection->onClose                = $this->onClose;
         $connection->onError                = $this->onError;

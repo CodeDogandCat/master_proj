@@ -1036,6 +1036,18 @@ class DbConnection
         return $this->addOrderBy($cols);
     }
 
+    /**
+     * order by DESC
+     *
+     * @param array $cols
+     * @return self
+     */
+    public function orderByDESC(array $cols)
+    {
+        $this->order_asc = false;
+        return $this->addOrderBy($cols);
+    }
+
     // -------------abstractquery----------
     /**
      * 返回逗号分隔的字符串
@@ -1914,7 +1926,7 @@ class DbConnection
     }
 
     /**
-     * 返回最后一条直行的 sql
+     * 返回最后一条执行的 sql
      *
      * @return  string
      */
@@ -1928,7 +1940,16 @@ class DbConnection
      */
     public function beginTrans()
     {
-        $this->pdo->beginTransaction();
+        try {
+            $this->pdo->beginTransaction();
+        } catch (PDOException $e) {
+            // 服务端断开时重连一次
+            if ($e->errorInfo[1] == 2006 || $e->errorInfo[1] == 2013) {
+                $this->pdo->beginTransaction();
+            } else {
+                throw $e;
+            }
+        }
     }
 
     /**
