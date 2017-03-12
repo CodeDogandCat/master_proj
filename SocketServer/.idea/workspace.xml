@@ -1,13 +1,188 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="41c2adf1-296d-4232-8e3b-9240f73589bc" name="Default" comment="" />
+    <list default="true" id="41c2adf1-296d-4232-8e3b-9240f73589bc" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../vendor/literallycanvas-0.4.14 .tar.gz" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../vendor/literallycanvas-demos-master.zip" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../vendor/literallycanvas-master.zip" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../WebServer/composer.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../WebServer/controller/meeting/bind.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../WebServer/controller/meeting/enter_meeting.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../WebServer/controller/meeting/host_meeting.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../WebServer/controller/meeting/send.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../WebServer/model/Meeting.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../WebServer/util/Particle.php" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Config/Db.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_js_libs/literallycanvas-core.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_static/aaa.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_static/watermark.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/gui/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/util/UrlUtil.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/start_web.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/LICENSE" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/PHPMailerAutoload.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/VERSION" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/class.phpmailer.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/class.phpmaileroauth.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/class.phpmaileroauthgoogle.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/class.pop3.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/class.smtp.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/composer.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/composer.lock" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/DKIM.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/code_generator.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/contactform.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/contents.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/contentsutf8.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/exceptions.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/gmail.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/gmail_xoauth.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/images/phpmailer.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/images/phpmailer_mini.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/mail.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/mailing_list.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/pop_before_smtp.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/scripts/XRegExp.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/scripts/shAutoloader.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/scripts/shBrushPhp.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/scripts/shCore.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/scripts/shLegacy.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/send_file_upload.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/send_multiple_file_upload.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/sendmail.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/signed-mail.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/smtp.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/smtp_check.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/smtp_no_auth.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/ssl_options.phps" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shCore.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shCoreDefault.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shCoreDjango.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shCoreEclipse.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shCoreEmacs.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shCoreFadeToGrey.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shCoreMDUltra.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shCoreMidnight.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shCoreRDark.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shThemeAppleScript.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shThemeDefault.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shThemeDjango.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shThemeEclipse.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shThemeEmacs.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shThemeFadeToGrey.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shThemeMDUltra.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shThemeMidnight.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shThemeRDark.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/shThemeVisualStudio.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/examples/styles/wrapping.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/extras/EasyPeasyICS.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/extras/README.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/extras/htmlfilter.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/extras/ntlm_sasl_client.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/get_oauth_token.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-am.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-ar.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-az.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-be.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-bg.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-ca.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-ch.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-cs.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-da.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-de.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-el.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-eo.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-es.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-et.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-fa.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-fi.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-fo.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-fr.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-gl.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-he.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-hr.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-hu.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-id.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-it.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-ja.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-ka.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-ko.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-lt.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-lv.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-ms.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-nb.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-nl.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-pl.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-pt.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-pt_br.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-ro.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-ru.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-sk.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-sl.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-sr.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-sv.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-tr.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-uk.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-vi.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-zh.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../WebServer/vendor/PHPMailer/language/phpmailer.lang-zh_cn.php" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workerman-chat.iml" afterPath="$PROJECT_DIR$/.idea/workerman-chat.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Events.php" afterPath="$PROJECT_DIR$/Applications/ShareBoard/Events.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../WebServer/controller/conn/DBPDO.php" afterPath="$PROJECT_DIR$/../WebServer/controller/conn/DBPDO.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../WebServer/controller/conn/settings.php" afterPath="$PROJECT_DIR$/../WebServer/controller/conn/settings.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../WebServer/model/User.php" afterPath="$PROJECT_DIR$/../WebServer/model/User.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../WebServer/util/SmtpUtil.php" afterPath="$PROJECT_DIR$/../WebServer/util/SmtpUtil.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/alpha.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/alpha.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/checkerboard-8x8.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/checkerboard-8x8.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/dashed-line.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/dashed-line.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/ellipse.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/ellipse.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/eraser.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/eraser.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/eyedropper.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/eyedropper.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/hue.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/hue.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/line-with-arrow.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/line-with-arrow.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/line.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/line.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/pan.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/pan.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/pencil.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/pencil.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/polygon-cancel.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/polygon-cancel.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/polygon-closed.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/polygon-closed.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/polygon-open.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/polygon-open.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/polygon.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/polygon.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/rectangle.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/rectangle.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/redo.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/redo.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/saturation.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/saturation.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/screenshot.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/screenshot.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/text.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/text.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/undo.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/undo.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/zoom-in.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/zoom-in.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/lc-images/zoom-out.png" afterPath="$PROJECT_DIR$/../WebServer/view/images/zoom-out.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_assets/literallycanvas.css" afterPath="$PROJECT_DIR$/../WebServer/view/css/boardcanvas.css" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_js_libs/jquery-1.8.2.js" afterPath="$PROJECT_DIR$/../WebServer/view/js/jquery-1.8.2.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_js_libs/literallycanvas.js" afterPath="$PROJECT_DIR$/../WebServer/view/js/boardcanvas.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/_js_libs/react-0.14.3.js" afterPath="$PROJECT_DIR$/../WebServer/view/js/react-0.14.3.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/css/bootstrap-theme.css" afterPath="$PROJECT_DIR$/../WebServer/view/css/bootstrap-theme.css" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/css/bootstrap-theme.min.css" afterPath="$PROJECT_DIR$/../WebServer/view/css/bootstrap-theme.min.css" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/css/bootstrap.css" afterPath="$PROJECT_DIR$/../WebServer/view/css/bootstrap.css" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/css/bootstrap.min.css" afterPath="$PROJECT_DIR$/../WebServer/view/css/bootstrap.min.css" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/css/style.css" afterPath="$PROJECT_DIR$/../WebServer/view/css/style.css" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/index.php" afterPath="$PROJECT_DIR$/../WebServer/view/index.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/js/jquery.min.js" afterPath="$PROJECT_DIR$/../WebServer/view/js/jquery.min.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/js/swfobject.js" afterPath="$PROJECT_DIR$/../WebServer/view/js/swfobject.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Applications/ShareBoard/Web/js/web_socket.js" afterPath="$PROJECT_DIR$/../WebServer/view/js/web_socket.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../WebServer/controller/meeting/Meeting.php" afterPath="$PROJECT_DIR$/../WebServer/controller/meeting/MeetingOp.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../WebServer/index.php" afterPath="$PROJECT_DIR$/../WebServer/controller/meeting/leave_meeting.php" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" phpInterpreterId="a9252fe3-b6a9-4210-8c23-9798eede8629">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <pharPath>C:\ProgramData\ComposerSetup\bin\composer.phar</pharPath>
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -25,70 +200,42 @@
     <favorites_list name="workerman-chat" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="Db.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Applications/Chat/Config/Db.php">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="start_register.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/start_register.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="6" lean-forward="false" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
+            <state relative-caret-position="119">
+              <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="start_businessworker.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/start_businessworker.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="start_gateway.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/start_gateway.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="25" column="41" lean-forward="false" selection-start-line="25" selection-start-column="41" selection-end-line="25" selection-end-column="41" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="Events.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Applications/Chat/Events.php">
+        <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/Events.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="206">
-              <caret line="19" column="19" lean-forward="true" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
-              <folding>
-                <element signature="e#6#427#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/index.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="95" column="23" lean-forward="false" selection-start-line="95" selection-start-column="18" selection-end-line="95" selection-end-column="23" />
-              <folding>
-                <element signature="e#39#61#0#PHP" expanded="true" />
-                <marker date="1487915662038" expanded="true" signature="1242:1588" ph="..." />
-                <marker date="1487915662038" expanded="true" signature="1247:1516" ph="//..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="start_web.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Applications/Chat/start_web.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="20" column="20" lean-forward="false" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="20" />
-              <folding>
-                <element signature="e#428#450#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Gateway.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vendor/workerman/gateway-worker/src/Lib/Gateway.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="13" column="27" lean-forward="true" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UrlUtil.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/util/UrlUtil.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="33" column="67" lean-forward="false" selection-start-line="33" selection-start-column="45" selection-end-line="33" selection-end-column="67" />
+            <state relative-caret-position="313">
+              <caret line="49" column="24" lean-forward="true" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -108,12 +255,16 @@
       <replace>UrlUtil::request_url()</replace>
     </replaceStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Applications/Chat/Config/Db.php" />
         <option value="$PROJECT_DIR$/Applications/Chat/Web/util/UrlUtil.php" />
         <option value="$PROJECT_DIR$/Applications/Chat/Web/index.php" />
+        <option value="$PROJECT_DIR$/Applications/ShareBoard/Events.php" />
       </list>
     </option>
   </component>
@@ -126,11 +277,19 @@
   <component name="PhpServers">
     <servers />
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP" />
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/workerman/workerman" />
+      <path value="$PROJECT_DIR$/vendor/workerman/gatewayclient" />
+      <path value="$PROJECT_DIR$/vendor/workerman/gateway-worker" />
+    </include_path>
+  </component>
   <component name="ProjectFrameBounds">
     <option name="width" value="1366" />
     <option name="height" value="738" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -146,145 +305,27 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
+              <option name="myItemId" value="SocketServer" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.jetbrains.php.config.library.PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
+              <option name="myItemId" value="SocketServer" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
+              <option name="myItemId" value="SocketServer" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gateway-worker" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gateway-worker" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gateway-worker" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lib" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
+              <option name="myItemId" value="SocketServer" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -292,84 +333,12 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Chat" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Applications" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Chat" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Web" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Applications" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Chat" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Web" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="workerman-chat" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Applications" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Chat" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Config" />
+              <option name="myItemId" value="ShareBoard" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -377,8 +346,8 @@
     <property name="nodejs_interpreter_path" value="E:/Program Files/nodejs/node" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="js-jscs-nodeInterpreter" value="E:\Program Files\nodejs\node.exe" />
-    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../WebServer" />
+    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php.composer" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunManager" selected="JavaScript Debug.UrlUtil.php">
     <configuration default="false" name="UrlUtil.php" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/workerman-chat/Applications/Chat/Web/util/UrlUtil.php">
@@ -412,6 +381,12 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -454,34 +429,36 @@
       <option name="presentableId" value="Default" />
       <updated>1487830014753</updated>
       <workItem from="1487830016263" duration="14861000" />
+      <workItem from="1488961744851" duration="4023000" />
+      <workItem from="1489294523533" duration="657000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14861000" />
+    <option name="totallyTimeSpent" value="19541000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1366" height="738" extended-state="0" />
+    <frame x="0" y="0" width="1366" height="738" extended-state="1" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20980091" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16998468" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="PHP-CGI Server" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.081125826" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32874617" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24770643" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="PHP-CGI Server" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -495,9 +472,41 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/start.php">
+    <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/start_register.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-204">
+        <state relative-caret-position="119">
+          <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/start_businessworker.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/start_gateway.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="25" column="41" lean-forward="true" selection-start-line="25" selection-start-column="41" selection-end-line="25" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/Events.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/workerman/gateway-worker/src/Lib/Gateway.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
@@ -507,7 +516,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-14374">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -515,7 +523,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-743">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -523,7 +530,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="21" column="1" lean-forward="true" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -531,161 +537,94 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="14" column="13" lean-forward="true" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/alpha.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/dashed-line.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/ellipse.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/pan.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/polygon-cancel.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/undo.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/redo.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/polygon.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Config/Db.php">
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/alpha.png" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/dashed-line.png" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/ellipse.png" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/pan.png" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/polygon-cancel.png" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/undo.png" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/redo.png" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_assets/lc-images/polygon.png" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Config/Db.php" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_static/watermark.jpg" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_static/aaa.jpg" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/start_register.php" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/start_gateway.php" />
+    <entry file="file://$PROJECT_DIR$/vendor/workerman/workerman/WebServer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
+        <state relative-caret-position="-3969">
           <caret line="21" column="6" lean-forward="false" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/start_businessworker.php" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/util/UrlUtil.php" />
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/standard/_superglobals.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="173" column="0" lean-forward="false" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/start_web.php" />
+    <entry file="file://$PROJECT_DIR$/vendor/workerman/gateway-worker/src/Lib/Gateway.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1513">
+          <caret line="150" column="0" lean-forward="true" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_static/watermark.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/_static/aaa.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/start_register.php">
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/index.php" />
+    <entry file="file://$PROJECT_DIR$/Applications/Chat/Events.php" />
+    <entry file="file://$PROJECT_DIR$/vendor/workerman/workerman/Worker.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="21" column="1" lean-forward="true" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
+        <state relative-caret-position="680">
+          <caret line="495" column="30" lean-forward="false" selection-start-line="495" selection-start-column="30" selection-end-line="495" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/start.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="33" column="28" lean-forward="false" selection-start-line="33" selection-start-column="17" selection-end-line="33" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/start_gateway.php">
+    <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/start_register.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-153">
+        <state relative-caret-position="119">
+          <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/start_web.php" />
+    <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/start_businessworker.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/workerman/workerman/WebServer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3969">
-          <caret line="21" column="6" lean-forward="false" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/workerman/workerman/Worker.php">
+    <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/start_gateway.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
-          <caret line="28" column="6" lean-forward="false" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="6" />
+          <caret line="25" column="41" lean-forward="false" selection-start-line="25" selection-start-column="41" selection-end-line="25" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/start_businessworker.php">
+    <entry file="file://$PROJECT_DIR$/Applications/ShareBoard/Events.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="12" column="3" lean-forward="true" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="3" />
+        <state relative-caret-position="313">
+          <caret line="49" column="24" lean-forward="true" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/util/UrlUtil.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="33" column="67" lean-forward="false" selection-start-line="33" selection-start-column="45" selection-end-line="33" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/standard/_superglobals.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="173" column="0" lean-forward="false" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/start_web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="20" column="20" lean-forward="false" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="20" />
-          <folding>
-            <element signature="e#428#450#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/workerman/gateway-worker/src/Lib/Gateway.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="13" column="27" lean-forward="true" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Web/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="95" column="23" lean-forward="false" selection-start-line="95" selection-start-column="18" selection-end-line="95" selection-end-column="23" />
-          <folding>
-            <element signature="e#39#61#0#PHP" expanded="true" />
-            <marker date="1487915662038" expanded="true" signature="1242:1588" ph="..." />
-            <marker date="1487915662038" expanded="true" signature="1247:1516" ph="//..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Applications/Chat/Events.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="19" column="19" lean-forward="true" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
-          <folding>
-            <element signature="e#6#427#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>

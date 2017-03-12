@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/workerman/gateway-worker" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/workerman/gatewayclient" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/workerman/workerman" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
@@ -11,6 +16,22 @@
         </CLASSES>
         <SOURCES>
           <root url="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/standard" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="PHP" type="php">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/vendor/composer" />
+          <root url="file://$MODULE_DIR$/vendor/workerman/gateway-worker" />
+          <root url="file://$MODULE_DIR$/vendor/workerman/gatewayclient" />
+          <root url="file://$MODULE_DIR$/vendor/workerman/workerman" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/vendor/composer" />
+          <root url="file://$MODULE_DIR$/vendor/workerman/gateway-worker" />
+          <root url="file://$MODULE_DIR$/vendor/workerman/gatewayclient" />
+          <root url="file://$MODULE_DIR$/vendor/workerman/workerman" />
         </SOURCES>
       </library>
     </orderEntry>

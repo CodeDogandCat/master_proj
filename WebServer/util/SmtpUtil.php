@@ -1,7 +1,7 @@
 <?php
 header("Content-type: text/html; charset=utf-8");
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/settings.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/PHPMailer/PHPMailerAutoload.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
 
 class SmtpUtil
 {

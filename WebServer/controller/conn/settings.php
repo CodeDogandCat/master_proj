@@ -11,6 +11,9 @@ define('SYS_NAME', '小喵白板');
 
 define('SESSION_VERIFY_CODE', 'verifyCode');
 define('SESSION_TOKEN', 'token');
+define('SESSION_EMAIL', 'user_email');
+define('SESSION_MEETING_URL', 'meeting_url');
+define('SESSION_USER_AND_MEETING_ID', 'user_and_meeting_id');
 
 /**
  * request name 信息
@@ -30,6 +33,23 @@ define('update_name', '300110');//请求更新姓名
 define('update_password', '300111');//请求更新密码
 define('post_user_login_password_old', '300112');//旧密码
 define('post_user_login_password_new', '300113');//新密码
+define('post_to_user_email', '300114');//消息的目标用户
+define('post_to_meeting_url', '300115');//消息的目标会议群组
+define('post_meeting_message', '300116');//聊天消息
+define('post_board_data', '300117');//白板内容
+define('post_meeting_url', '300118');//会议url
+define('post_meeting_theme', '300119');//会议主题
+define('post_meeting_host_user_id', '300120');//会议主持人id
+define('post_meeting_is_drawable', '300121');//参加者默认可画
+define('post_meeting_is_talkable', '300122');//参加者默认可聊
+define('post_meeting_is_add_to_calendar', '300124');//会议是否添加到日历提醒
+define('post_meeting_start_time', '300125');//会议开始时间
+define('post_meeting_end_time', '300126');//会议结束时间
+define('post_meeting_password', '300127');//会议密码
+define('post_meeting_status', '300128');//会议状态
+define('post_is_enter_meeting', '300129');//是否进入会议
+define('post_meeting_check_in_type', '300130');//进会类型（参加/主持）
+define('post_meeting_id', '300131');//进会类型（参加/主持）
 
 
 /**
@@ -52,6 +72,10 @@ define("UPLOAD_AVATAR_ERROR", 4011);//上传头像失败
 define("UPDATE_AVATAR_ERROR", 4012);//更新头像失败
 define("UPDATE_NAME_ERROR", 4013);//更新姓名失败
 define("UPDATE_PASSWORD_ERROR", 4014);//更新密码失败
+define("HOST_MEETING_ERROR", 4015);//开会失败
+define("ADD_MEETING_ERROR", 4016);//加会失败
+define("ARRANGE_MEETING_ERROR", 4017);//安排会议失败
+define("DELETE_MEETING_ERROR", 4018);//删除会议失败
 
 /**
  * 数据库连接信息

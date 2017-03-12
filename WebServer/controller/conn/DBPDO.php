@@ -76,12 +76,17 @@ class DBPDO
     }
 
     //删除数据
-    public function delete($sql)
+    public function delete($sql, $arr)
     {
         try {
-            if (($rows = $this->dbh->exec($sql)) > 0) {
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute($arr);
+            $rows = $stmt->rowCount();
+
+            if ($rows > 0) {
+                //受影响的行数大于0
                 $this->getPDOError();
-                return $rows;
+                return true;
             } else {
                 return false;
             }

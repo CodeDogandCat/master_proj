@@ -4,7 +4,7 @@
 class User
 {
     private $id, $email, $family_name, $given_name, $register_time,
-        $login_recent_time, $status, $class, $password, $pmi, $token,$avatar;
+        $login_recent_time, $status, $class, $password, $pmi, $token, $avatar;
 
     /**
      * @return mixed
@@ -31,6 +31,7 @@ class User
     {
         $this->email = $email;
     }
+
 
 
     /**

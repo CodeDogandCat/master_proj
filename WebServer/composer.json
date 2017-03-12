@@ -1,0 +1,10 @@
+{
+    "name"  : "ShareBoard",
+    "type"  : "project",
+    "keywords": ["board"],
+    "require": {
+        "phpmailer/phpmailer": "~5.2",
+        "workerman/gateway-worker" : ">=3.0.0",
+		"workerman/gatewayclient"  : "3.0.0"
+    }
+}
