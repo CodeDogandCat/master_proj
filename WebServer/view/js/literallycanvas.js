@@ -5436,7 +5436,7 @@
             var React = require('./React-shim');
             var ReactDOM = require('./ReactDOM-shim');
             var LiterallyCanvasModel = require('../core/LiterallyCanvas');
-            var LiterallyCanvasReactComponent = require('./boardcanvas');
+            var LiterallyCanvasReactComponent = require('./LiterallyCanvas');
             function init(el, opts) {
                 var originalClassName = el.className;
                 var lc = new LiterallyCanvasModel(opts);

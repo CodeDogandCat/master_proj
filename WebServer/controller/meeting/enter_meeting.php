@@ -23,17 +23,24 @@ try {
         if ($type == 2) {//主持
 
             if (isset($_REQUEST[post_user_email]) &&
-                isset($_REQUEST[post_meeting_id])
+                isset($_REQUEST[post_meeting_id]) &&
+                isset($_REQUEST[post_meeting_url])
             ) {
                 $user = new User($_REQUEST[post_user_email]);
 
                 $meeting = new Meeting(null, null, null, null, null, null, null, null, null);
                 $meeting->setId($_REQUEST[post_meeting_id]);
+                $meeting->setUrl($_REQUEST[post_meeting_url]);
                 $meetingOp = new MeetingOp($user, $meeting);
 
                 if (($user_and_meeting_id = $meetingOp->enterMeeting($type)) != false) {
 
+                    //放入session  (进会id ,会议 id ,会议url ,用户 email)
                     Session::set(SESSION_USER_AND_MEETING_ID, $user_and_meeting_id, 2592000);//30天过期
+                    Session::set(SESSION_MEETING_ID, $_REQUEST[post_meeting_id], 2592000);//30天过期
+                    Session::set(SESSION_MEETING_URL, $_REQUEST[post_meeting_url], 2592000);//30天过期
+                    Session::set(SESSION_EMAIL, $_REQUEST[post_user_email], 2592000);//30天过期
+
                     printResult(SUCCESS, '主持人进会成功', $data);
 
                 } else {
@@ -54,7 +61,12 @@ try {
 
                 if (($user_and_meeting_id = $meetingOp->enterMeeting($type)) != false) {
 
+                    //放入session  (进会id  ,会议url ,用户 email)
                     Session::set(SESSION_USER_AND_MEETING_ID, $user_and_meeting_id, 2592000);//30天过期
+                    Session::set(SESSION_MEETING_URL, $_REQUEST[post_meeting_url], 2592000);//30天过期
+                    Session::set(SESSION_EMAIL, $_REQUEST[post_user_email], 2592000);//30天过期
+
+
                     printResult(SUCCESS, '与会者加会成功', $data);
 
                 } else {

@@ -425,5 +425,104 @@ class MeetingOp
         return false;
     }
 
+    /**
+     * 获取指定状态的会议的行数
+     * @param $status
+     * @return int
+     */
+    public function getMeetingPagesByStatus($status)
+    {
+        $sql = 'SELECT * FROM bd_meeting WHERE meeting_host_user_id = ? AND
+                meeting_status = ? ';
+        $arr = array();
+        $arr[0] = $this->user->getId();
+        $arr[1] = $status;
+        $rows = $this->db->select($sql, $arr);
+
+        return count($rows);
+
+    }
+
+    /**
+     * 获取我的会议的页数
+     * @return bool|float|int
+     */
+    public function getPages()
+    {
+        /**
+         * 获取email对应的 user_id
+         */
+        if (($user_id = $this->getUserIdFromEmail()) != false) {
+            $this->user->setId($user_id);
+            /**
+             * 获取指定 user_id 主持的会议, 且状态为 1 （1 ：未开始并且未到期 2：未开始并且过期了 3：正在进行 4：开会结束）
+             */
+            $numberPage = $this->getMeetingPagesByStatus(1);
+
+            $pageSize = 8;
+            $page = ceil($numberPage / $pageSize);
+            return $page;
+
+
+        }
+        return false;
+    }
+
+    /**
+     * 获取指定状态的会议,从 $fromPage 开始的 $size 条数据
+     * @param $status
+     * @param $fromPage
+     * @param $size
+     * @return bool
+     */
+    public function getMeetingByStatusAndPage($status, $fromPage, $size)
+    {
+        $sql = 'SELECT meeting_id,meeting_url,meeting_theme,meeting_is_drawable,meeting_is_talkable,
+                meeting_is_add_to_calendar,meeting_password,meeting_start_time,meeting_end_time
+                FROM bd_meeting  
+                WHERE meeting_host_user_id = ? AND meeting_status = ? 
+                ORDER BY meeting_id DESC limit ?,?';
+
+        $arr = array();
+        $arr[0] = $this->user->getId();
+        $arr[1] = $status;
+        $arr[2] = $fromPage;
+        $arr[3] = $size;
+
+        $rows = $this->db->select($sql, $arr);
+        return $rows;
+
+
+    }
+
+    /**
+     * 获取会议信息
+     * @param $post_meeting_page
+     * @return bool|int
+     */
+    public function getMeetingInfo($post_meeting_page)
+    {
+        /**
+         * 获取email对应的 user_id
+         */
+        if (($user_id = $this->getUserIdFromEmail()) != false) {
+            $this->user->setId($user_id);
+            //获取分页参数
+            $page = (int)($post_meeting_page);//andriod传的是string类型，所以要进行强制类型转换
+            $pageSize = 8;
+            $pageFrom = $page * $pageSize;
+            /**
+             * 获取指定 user_id 主持的会议, 且状态为 1 ,从 $pageFrom 开始的 $pageSize 条
+             */
+
+            $rows = $this->getMeetingByStatusAndPage(1, $pageFrom, $pageSize);
+
+            return $rows;
+
+
+        }
+        return false;
+    }
+
 
 }

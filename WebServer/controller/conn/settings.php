@@ -14,6 +14,7 @@ define('SESSION_TOKEN', 'token');
 define('SESSION_EMAIL', 'user_email');
 define('SESSION_MEETING_URL', 'meeting_url');
 define('SESSION_USER_AND_MEETING_ID', 'user_and_meeting_id');
+define('SESSION_MEETING_ID', 'meeting_id');
 
 /**
  * request name 信息
@@ -49,7 +50,8 @@ define('post_meeting_password', '300127');//会议密码
 define('post_meeting_status', '300128');//会议状态
 define('post_is_enter_meeting', '300129');//是否进入会议
 define('post_meeting_check_in_type', '300130');//进会类型（参加/主持）
-define('post_meeting_id', '300131');//进会类型（参加/主持）
+define('post_meeting_id', '300131');//会议ID
+define('post_meeting_page', '300132');//请求的会议列表的页码
 
 
 /**
@@ -76,6 +78,9 @@ define("HOST_MEETING_ERROR", 4015);//开会失败
 define("ADD_MEETING_ERROR", 4016);//加会失败
 define("ARRANGE_MEETING_ERROR", 4017);//安排会议失败
 define("DELETE_MEETING_ERROR", 4018);//删除会议失败
+define("GET_PAGES_ERROR", 4019);//获取页数失败
+define("GET_MEETING_LIST_ERROR", 4020);//获取会议列表失败
+define("BINDING_ERROR", 4021);//绑定失败
 
 /**
  * 数据库连接信息

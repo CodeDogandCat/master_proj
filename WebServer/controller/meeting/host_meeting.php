@@ -3,7 +3,6 @@ session_start();
 header("Content-type: text/html; charset=utf-8");
 //error_reporting(0);
 
-$data = array("token" => "", "avatar" => "");
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/settings.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/model/User.php';
@@ -23,16 +22,68 @@ if (isset($_REQUEST[post_need_feature])) {
     $feature = $_REQUEST[post_need_feature];
 
     switch ($feature) {
+        case 'getPages':
+            /**
+             * 获取页数
+             */
+            if (isset($_REQUEST[post_user_email])) {
+                $user = new User($_REQUEST[post_user_email]);
+                $meeting = new Meeting(null, null, null, null, null, null, null, null, null);
+                $meetingOp = new MeetingOp($user, $meeting);
+                if (($result = $meetingOp->getPages()) != false) {
+
+                    printResult(SUCCESS, '获取页数成功', $result);
+
+                } else {
+                    printResult(GET_PAGES_ERROR, '获取页数失败', -1);
+                }
+            } else {
+                printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
+            }
+
+
+            break;
 
         case 'get':
+            $data = array(
+                array(
+                    "meeting_id" => -1, "meeting_url" => "",
+                    "meeting_theme" => "", "meeting_is_drawable" => -1,
+                    "meeting_is_talkable" => -1, "meeting_is_add_to_calendar" => -1,
+                    "meeting_password" => "", "meeting_start_time" => "",
+                    "meeting_end_time" => "")
+
+            );
             /**
-             * 获取我的会议，分页加载， 每页5条
+             * 获取我的会议，分页加载， 每页8条
              */
-            
+            if (isset($_REQUEST[post_user_email]) && isset($_REQUEST[post_meeting_page])) {
+                $user = new User($_REQUEST[post_user_email]);
+                $meeting = new Meeting(null, null, null, null, null, null, null, null, null);
+                $meetingOp = new MeetingOp($user, $meeting);
+                if (($result_arr = $meetingOp->getMeetingInfo(post_meeting_page)) != false) {
+
+                    $data = $result_arr;
+                    printResult(SUCCESS, '获取会议列表成功', $data);
+
+                } else {
+                    printResult(GET_MEETING_LIST_ERROR, '获取会议列表失败', $data);
+                }
+            } else {
+                printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', $data);
+            }
             break;
 
 
         case 'add':
+            $data = array(
+                "meeting_id" => -1, "meeting_url" => "",
+                "meeting_theme" => "", "meeting_is_drawable" => -1,
+                "meeting_is_talkable" => -1, "meeting_is_add_to_calendar" => -1,
+                "meeting_password" => "", "meeting_start_time" => "",
+                "meeting_end_time" => ""
+
+            );
             /**
              * 检验参数
              */
@@ -60,6 +111,8 @@ if (isset($_REQUEST[post_need_feature])) {
                 $meetingOp = new MeetingOp($user, $meeting);
 
                 if (($result_arr = $meetingOp->addMeeting()) != false) {
+                    $data['meeting_id'] = $result_arr[0];
+                    $data['meeting_url'] = $result_arr[1];
 
                     if (isset($_REQUEST[post_is_enter_meeting])) {
                         if ($_REQUEST[post_is_enter_meeting] == true) {
@@ -73,7 +126,12 @@ if (isset($_REQUEST[post_need_feature])) {
                             {
                                 printResult(HOST_MEETING_ERROR, '召开会议失败', $data);
                             } else {
+                                //放入session  (进会id ,会议 id ,会议url ,用户 email)
                                 Session::set(SESSION_USER_AND_MEETING_ID, $user_and_meeting_id, 2592000);//30天过期
+                                Session::set(SESSION_MEETING_ID, $result_arr[0], 2592000);//30天过期
+                                Session::set(SESSION_MEETING_URL, $result_arr[1], 2592000);//30天过期
+                                Session::set(SESSION_EMAIL, $_REQUEST[post_user_email], 2592000);//30天过期
+
                                 printResult(SUCCESS, '召开会议成功', $data);
                             }
                         }
@@ -123,13 +181,13 @@ if (isset($_REQUEST[post_need_feature])) {
 
                 if (($result_arr = $meetingOp->updateMeeting()) != false) {
 
-                    printResult(SUCCESS, '更改会议安排成功', $data);
+                    printResult(SUCCESS, '更改会议安排成功', -1);
 
                 } else {
-                    printResult(ARRANGE_MEETING_ERROR, '更改会议安排失败', $data);
+                    printResult(ARRANGE_MEETING_ERROR, '更改会议安排失败', -1);
                 }
             } else {
-                printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', $data);
+                printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
             }
             break;
 
@@ -144,25 +202,25 @@ if (isset($_REQUEST[post_need_feature])) {
                 $meetingOp = new MeetingOp($user, $meeting);
                 if (($result_arr = $meetingOp->deleteMeeting()) != false) {
 
-                    printResult(SUCCESS, '删除会议成功', $data);
+                    printResult(SUCCESS, '删除会议成功', -1);
 
                 } else {
-                    printResult(DELETE_MEETING_ERROR, '删除失败', $data);
+                    printResult(DELETE_MEETING_ERROR, '删除失败', -1);
                 }
             } else {
-                printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', $data);
+                printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
             }
             break;
 
 
         default:
-            printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', $data);
+            printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
             break;
 
 
     }
 } else {
-    printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', $data);
+    printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
 }
 
 /**

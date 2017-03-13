@@ -1,16 +1,16 @@
 <?php
-require_once 'util/UrlUtil.php';
 use \Workerman\Worker;
 use \Workerman\WebServer;
 use \GatewayWorker\Lib\Gateway;
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/settings.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/Session.php';
 ?>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>canvas</title>
-    <!--    add -->
-    <link href="/view/css/boardcanvas.css" rel="stylesheet">
+
     <meta charset="UTF-8">
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
 
@@ -22,91 +22,90 @@ use \GatewayWorker\Lib\Gateway;
         }
 
     </style>
-    <!--    add end-->
-    <link href="/view/css/bootstrap.min.css" rel="stylesheet">
-    view/js
-    <link href="/view/css/style.css" rel="stylesheet">
-
-    <script type="text/javascript" src="/view/js/swfobject.js"></script>
-    <script type="text/javascript" src="/view/js/web_socket.js"></script>
-    <script type="text/javascript" src="/view/js/jquery.min.js"></script>
-    <!--    add-->
-    <!-- you really ought to include react-dom, but for react 0.14 you don't strictly have to. -->
-    <script src="/view/js/jquery-1.8.2.js"></script>
-    <script src="/view/js/react-0.14.3.js"></script>
-    <script src="/view/js/boardcanvas.js"></script>
+    <link href="css/boardcanvas.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="js/swfobject.js"></script>
+    <script type="text/javascript" src="js/web_socket.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="js/jquery-1.8.2.js"></script>
+    <script src="js/react-0.14.3.js"></script>
+    <script src="js/literallycanvas.js"></script>
 
 
-    <!--    add end-->
     <script type="text/javascript">
-        // if (typeof console == "undefined") {    this.console = { log: function (msg) {  } };}
-        // 如果浏览器不支持websocket，会使用这个flash自动模拟websocket协议，此过程对开发者透明
-        //WEB_SOCKET_SWF_LOCATION = "/swf/WebSocketMain.swf";
-        // 开启flash的websocket debug
-        // WEB_SOCKET_DEBUG = true;
-        var ws, name, client_list = {};
+        /**
+         * 开启flash的websocket debug
+         */
+        WEB_SOCKET_DEBUG = true;
+        /**
+         * 声明变量
+         */
+        var ws, name, client_list = {}, roomid;
         var lc;
         var localStorageKey = 'drawing';
         var select_client_id = 'all';
         var myid = '';
         var unsubscribeofchange;
 
-        // 连接服务端
+        /**
+         * 连接服务端
+         */
         function connect() {
             // 创建websocket
-//       ws = new WebSocket("ws://"+document.domain+":7272");
-            ws = new WebSocket("ws://118.89.102.238/:7272");
-            //console.log("ws://"+document.domain+":7272");
-            // 当socket连接打开时，输入用户名
+            ws = new WebSocket("ws://118.89.102.238:7272");
+            //建立连接
             ws.onopen = onopen;
             // 当有消息时根据消息类型显示不同信息
             ws.onmessage = onmessage;
             ws.onclose = function () {
                 console.log("连接关闭，定时重连");
-                //connect();
             };
             ws.onerror = function () {
                 console.log("出现错误");
             };
         }
 
-        // 连接建立时发送登录信息
+        /**
+         * 连接建立时发送登录信息
+         */
         function onopen() {
-//        name=<?php //UrlUtil::getUrlParam('user_email','') ?>//;
-            name = '<?php echo isset($_GET['user_email']) ? $_GET['user_email'] : 'xxxx@qq.com'?>';
-//        if(!name)
-//        {
-//            show_prompt();
-//        }
+            name = '<?php echo isset($_REQUEST['user_email']) ? $_REQUEST['user_email'] : 'xxxx@qq.com';?>';
+            roomid = '<?php echo isset($_REQUEST['meeting_url']) ? $_REQUEST['meeting_url'] : '1112200032';?>';
             // 登录
-            var login_data = '{"type":"login","client_name":"' + name.replace(/"/g, '\\"') + '","room_id":"<?php echo isset($_GET['room_id']) ? $_GET['room_id'] : 1?>"}';
+            var login_data = '{"type":"login","client_name":"' + name.replace(/"/g, '\\"') + '","room_id":"' + roomid + '"}';
             console.log("websocket握手成功，发送登录数据:" + login_data);
-//        console.log("url:"+<?php //UrlUtil::request_url()?>//);
             ws.send(login_data);
         }
 
-        // 服务端发来消息时
+        /**
+         * 服务端发来消息时
+         */
         function onmessage(e) {
-//        console.log(e.data);
             var data = eval("(" + e.data + ")");
             switch (data['type']) {
-                // Events.php中返回的init类型的消息，将client_id发给后台进行uid绑定
+                /**
+                 * Events.php中返回的init类型的消息，将client_id发给后台进行uid绑定
+                 */
                 case 'init':
                     // 利用jquery发起ajax请求，将client_id发给后端进行uid绑定
-                    $.post(<?php echo $_SERVER['DOCUMENT_ROOT'] . 'controller/meeting/bind.php'?>, {'client_id': data['client_id']}, function (data) {
-                    }, 'json');
+//                    $.post(<?php //echo $_SERVER['DOCUMENT_ROOT'] . 'controller/meeting/bind.php';?>//,
+//                        {'client_id': data['client_id']},
+//                        function (data) {
+//                            myid = data['client_id'];//当前用户的 client_id
+//                        },
+//                        'json');
+                    myid = data['client_id'];
                     break;
-                // 服务端ping客户端
+                /**
+                 * 心跳
+                 */
                 case 'ping':
                     ws.send('{"type":"pong"}');
                     break;
-                case 'getID':
-                    if (data['client_id']) {
-                        myid = data['client_id'];
-                    }
-                    console.log("收到的自己的id" + myid);
-                    break;
-                // 登录 更新用户列表
+                /**
+                 * 登录 更新用户列表
+                 */
                 case 'login':
                     //{"type":"login","client_id":xxx,"client_name":"xxx","client_list":"[...]","time":"xxx"}
 //                say(data['client_id'], data['client_name'],  data['client_name']+' 加入了聊天室', data['time']);
@@ -119,12 +118,16 @@ use \GatewayWorker\Lib\Gateway;
                     flush_client_list();
                     console.log(data['client_name'] + "登录成功");
                     break;
-                // 发言
+                /**
+                 * 接受到数据
+                 */
                 case 'say':
                     //{"type":"say","from_client_id":xxx,"to_client_id":"all/client_id","content":"xxx","time":"xxx"}
                     say(data['from_client_id'], data['from_client_name'], data['content'], data['time']);
                     break;
-                // 用户退出 更新用户列表
+                /**
+                 * 其他用户退出
+                 */
                 case 'logout':
                     //{"type":"logout","client_id":xxx,"time":"xxx"}
 //                say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time']);
@@ -133,28 +136,37 @@ use \GatewayWorker\Lib\Gateway;
             }
         }
 
-        // 输入姓名
-        function show_prompt() {
-            name = prompt('输入你的名字：', '');
-            if (!name || name == 'null') {
-                name = '游客';
-            }
-        }
 
-        // 提交对话
+        /**
+         * 提交自己改变的数据
+         */
         function onSubmit(datajson) {
-//      var input = document.getElementById("textarea");
             var to_client_id = $("#client_list option:selected").attr("value");
             var to_client_name = $("#client_list option:selected").text();
             var say_data = '{"type":"say","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name + '","content":"' + datajson.replace(/\\"/g, '425D8E69BF45B845CB7CF50FA43D64C68D379A46').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r') + '"}';
-            console.log("提交" + say_data);
             ws.send(say_data);
 
-//      input.value = "";
-//      input.focus();
         }
 
-        // 刷新用户列表框
+        /**
+         * 加载接收到的数据
+         */
+        function say(from_client_id, from_client_name, content, time) {
+            var newdata = content.replace(/&quot;/g, '"').replace(/425D8E69BF45B845CB7CF50FA43D64C68D379A46/g, '\\"');
+            unsubscribeofchange();
+            /**
+             * 如果消息不是自己发出去的
+             */
+            if (myid != '' && myid != from_client_id) {
+
+                lc.loadSnapshot(JSON.parse(newdata));
+            }
+            listenDrawingChange();
+
+        }
+        /**
+         * 刷新用户列表框
+         */
         function flush_client_list() {
             var userlist_window = $("#userlist");
             var client_list_slelect = $("#client_list");
@@ -169,42 +181,25 @@ use \GatewayWorker\Lib\Gateway;
             $("#client_list").val(select_client_id);
             userlist_window.append('</ul>');
         }
-
-        // 发言
-        function say(from_client_id, from_client_name, content, time) {
-            var newdata = content.replace(/&quot;/g, '"').replace(/425D8E69BF45B845CB7CF50FA43D64C68D379A46/g, '\\"');
-            console.log("收到" + newdata);
-            unsubscribeofchange();
-            //如果消息不是自己发出去的
-            if (myid != '' && myid != from_client_id) {
-
-                console.log('加载...');
-                lc.loadSnapshot(JSON.parse(newdata));
-                console.log("加载完成");
-            }
-            listenDrawingChange();
-//        localStorage.setItem(localStorageKey, content);
-//    	$("#dialog").append('<div class="speech_item"><img src="http://lorempixel.com/38/38/?'+from_client_id+'" class="user_icon" /> '+from_client_name+' <br> '+time+'<div style="clear:both;"></div><p class="triangle-isosceles top">'+content+'</p> </div>');
-        }
+        /**
+         * 监听画板的变化
+         */
         function listenDrawingChange() {
             unsubscribeofchange = lc.on('drawingChange', function () {
-//            localStorage.setItem(localStorageKey, JSON.stringify(lc.getSnapshot()));
                 var content = JSON.stringify(lc.getSnapshot());
-//            console.log("change"+content);
                 onSubmit(content);
             });
         }
+        /**
+         * 初始化画板
+         */
         $(document).ready(function () {
-//        var watermarkImage = new Image();
-//        watermarkImage.src = '/_static/watermark.jpg';
 
             lc = LC.init(document.getElementById("lc"), {
-                imageURLPrefix: '/view/images',
+                imageURLPrefix: 'images',
                 toolbarPosition: 'top',
                 defaultStrokeWidth: 2,
                 strokeWidths: [1, 2, 4, 8, 15]
-//            watermarkImage: watermarkImage,
-//            watermarkScale: 0.5  // you can scale it
             });
             listenDrawingChange();
 
@@ -215,18 +210,16 @@ use \GatewayWorker\Lib\Gateway;
 
 
 </head>
+
+<!--body onload时 建立连接-->
 <body onload="connect();">
+
+<!--主体-->
 <div class="container">
     <div class="row clearfix">
-        <!--	        <div class="col-md-1 column">-->
-        <!--	        </div>-->
         <div class="fs-container col-md-12 column">
             <div id="lc"></div>
         </div>
-        <!--	        <div class="col-md-12 column">-->
-        <!--	           <div class="thumbnail">-->
-        <!--	               <div class="caption" id="dialog"></div>-->
-        <!--	           </div>-->
         <form style="display: none">
             <select style="margin-bottom:8px" id="client_list">
                 <option value="all">所有人</option>
@@ -235,7 +228,6 @@ use \GatewayWorker\Lib\Gateway;
             <div class="say-btn"><input type="submit" class="btn btn-default" value="发表"/></div>
         </form>
 
-        <!--	        </div>-->
         <div class="col-md-3 column">
             <div class="thumbnail">
                 <div class="caption" id="userlist"></div>
@@ -243,6 +235,5 @@ use \GatewayWorker\Lib\Gateway;
         </div>
     </div>
 </div>
-<!--   <script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F7b1919221e89d2aa5711e4deb935debd' type='text/javascript'%3E%3C/script%3E"));</script>-->
 </body>
 </html>
