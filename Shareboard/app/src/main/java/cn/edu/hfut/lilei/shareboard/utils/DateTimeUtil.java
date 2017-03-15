@@ -3,6 +3,19 @@ package cn.edu.hfut.lilei.shareboard.utils;
 import java.util.Calendar;
 
 public class DateTimeUtil {
+
+    public static long millisSecondInHours(int hours) {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.HOUR, hours);
+        return c.getTimeInMillis();
+    }
+
+    public static long millisNow() {
+        Calendar c = Calendar.getInstance();
+        return c.getTimeInMillis();
+    }
+
+
     public static int zeroConvert(int hour_12) {
         int result;
         if (hour_12 == 0) {

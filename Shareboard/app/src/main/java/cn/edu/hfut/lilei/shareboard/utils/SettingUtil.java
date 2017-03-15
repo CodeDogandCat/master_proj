@@ -21,6 +21,15 @@ public class SettingUtil {
     //更新
     public static final String URL_UPDATE_SETTINGS =
             "http://118.89.102.238/controller/settings/update_info.php";
+    //主持会议(安排)
+    public static final String URL_HOST_MEETING =
+            "http://118.89.102.238/controller/meeting/host_meeting.php";
+    //进入会议
+    public static final String URL_ENTER_MEETING =
+            "http://118.89.102.238/controller/settings/enter_meeting.php";
+    //开会地址
+    public static final String URL_MEETING =
+            "http://118.89.102.238/view/index.php";
 
     //post name 参数
     public static final String post_check_verify_code = "300100";
@@ -31,19 +40,47 @@ public class SettingUtil {
     public static final String post_user_client_key = "300105";
     public static final String post_token = "300106";
     public static final String post_user_avatar = "300107";
-    public static final String post_need_feature = "300108";
-    public static final String update_avatar = "300109";
-    public static final String update_name = "300110";
-    public static final String update_password = "300111";
-    public static final String post_user_login_password_old = "300112";
-    public static final String post_user_login_password_new = "300113";
+    public static final String post_need_feature = "300108";//具体请求什么功能
+    public static final String update_avatar = "300109";//请求更新头像
+    public static final String update_name = "300110";//请求更新姓名
+    public static final String update_password = "300111";//请求更新密码
+    public static final String post_user_login_password_old = "300112";//旧密码
+    public static final String post_user_login_password_new = "300113";//新密码
+    public static final String post_to_user_email = "300114";//消息的目标用户
+    public static final String post_to_meeting_url = "300115";//消息的目标会议群组
+    public static final String post_meeting_message = "300116";//聊天消息
+    public static final String post_board_data = "300117";//白板内容
+    public static final String post_meeting_url = "300118";//会议url
+    public static final String post_meeting_theme = "300119";//会议主题
+    public static final String post_meeting_host_user_id = "300120";//会议主持人id
+    public static final String post_meeting_is_drawable = "300121";//参加者默认可画
+    public static final String post_meeting_is_talkable = "300122";//参加者默认可聊
+    public static final String post_meeting_is_add_to_calendar = "300124";//会议是否添加到日历提醒
+    public static final String post_meeting_start_time = "300125";//会议开始时间
+    public static final String post_meeting_end_time = "300126";//会议结束时间
+    public static final String post_meeting_password = "300127";//会议密码
+    public static final String post_meeting_status = "300128";//会议状态
+    public static final String post_is_enter_meeting = "300129";//是否进入会议
+    public static final String post_meeting_check_in_type = "300130";//进会类型（参加/主持）
+    public static final String post_meeting_id = "300131";//会议ID
+    public static final String post_meeting_page = "300132";//请求的会议列表的页码
+
 
     //sharepreference name 参数
     public static final String share_user_email = "400101";
     public static final String share_token = "400102";
     public static final String share_avatar = "400103";
     public static final String share_family_name = "400104";
-    public static final String share_given_name = "400105";
+    public static final String share_meeting_theme = "400105";
+    public static final String share_meeting_is_drawable = "400106";
+    public static final String share_meeting_is_talkable = "400107";
+    public static final String share_meeting_is_add_to_calendar = "400108";
+    public static final String share_meeting_start_time = "400109";
+    public static final String share_meeting_end_time = "400110";
+    public static final String share_meeting_password = "400111";
+    public static final String share_meeting_id = "400112";
+    public static final String share_meeting_url = "400113";
+    public static final String share_given_name = "400114";
 
 
     //系统调试参数

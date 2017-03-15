@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -20,6 +19,7 @@ import android.widget.TimePicker;
 
 import com.kyleduo.switchbutton.SwitchButton;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import cn.edu.hfut.lilei.shareboard.R;
@@ -27,13 +27,21 @@ import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
-import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
+import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
+import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SHOW_TIME_MIN;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_add_to_calendar;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_drawable;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_talkable;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_password;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_theme;
 
 
 public class ArrangeMeetingActivity extends SwipeBackActivity implements View.OnClickListener {
@@ -41,8 +49,8 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
     private LinearLayout mLlMeetingDate, mLlMeetingStartTime, mLlMeetingEndTime;
     private Button mBtnSave;
     private TextView mTvMeetingDate, mTvMeetingStartTime, mTvMeetingEndTime;
-    private SwitchButton mBtnAddToCalendar;
-    private EditText mEtTitle;
+    private SwitchButton mBtnAddToCalendar, mBtnIsDrawable, mBtnIsTalkable;
+    private EditText mEtTitle, mEtPassword;
     private LodingDialog.Builder mlodingDialog;
     //数据
     private int year, month, day, a_pm1, hour_24_1, hour_12_1, minite1, a_pm2, hour_24_2, hour_12_2,
@@ -121,12 +129,15 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
         mTvMeetingEndTime = (TextView) findViewById(R.id.tv_arrange_meeting_end_time);
         mBtnSave = (Button) findViewById(R.id.btn_arrange_meeting_save);
         mBtnAddToCalendar = (SwitchButton) findViewById(R.id.btn_arrange_meeting_add_to_calendar);
+        mBtnIsDrawable = (SwitchButton) findViewById(R.id.btn_arrange_meeting_able_to_draw);
+        mBtnIsTalkable = (SwitchButton) findViewById(R.id.btn_arrange_meeting_able_to_talk);
         mEtTitle = (EditText) findViewById(R.id.et_arrange_meeting_title);
         mLlMeetingDate.setOnClickListener(this);
         mLlMeetingStartTime.setOnClickListener(this);
         mLlMeetingEndTime.setOnClickListener(this);
         mBtnSave.setOnClickListener(this);
         mBtnAddToCalendar.setOnClickListener(this);
+
 
         //计算日期和时间
         Calendar c = Calendar.getInstance();
@@ -158,9 +169,68 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                 am_pm[a_pm2] + " " + DateTimeUtil.zeroConvert(hour_12_2) + ":00");
     }
 
-    //进行页面内容合法性检查
+    /**
+     * 加载本地存储
+     */
+    public void initFromSharePre() {
+        ArrayList<String> keyList = new ArrayList<>();
+        ArrayList<Integer> valueList = new ArrayList<>();
+
+        keyList.add(share_meeting_is_add_to_calendar);
+        keyList.add(share_meeting_is_drawable);
+        keyList.add(share_meeting_is_talkable);
+        valueList = SharedPrefUtil.getInstance()
+                .getIntegerDatas(keyList);
+        if (valueList != null) {
+
+            mBtnAddToCalendar.setCheckedImmediately((valueList.get(0) == 1));
+            mBtnIsDrawable.setCheckedImmediately((valueList.get(1) == 1));
+            mBtnIsTalkable.setCheckedImmediately((valueList.get(2) == 1));
+        }
+        title = (String) SharedPrefUtil.getInstance()
+                .getData(share_meeting_theme, "空");
+        if (!title.equals("空")) {
+            mEtTitle.setText(title);
+        } else {
+            String familyName = (String) SharedPrefUtil.getInstance()
+                    .getData(share_family_name, "空");
+            String givenName = (String) SharedPrefUtil.getInstance()
+                    .getData(share_given_name, "空");
+            if (familyName.equals("空") || givenName.equals("空")) {
+                mEtTitle.setText(R.string.no_name_meeting);
+            } else {
+                mEtTitle.setText(familyName + givenName + getString(R.string.his_meeting));
+            }
+        }
+        mpassword = (String) SharedPrefUtil.getInstance()
+                .getData(share_meeting_password, "空");
+        if (!mpassword.equals("空")) {
+            mEtPassword.setText(mpassword);
+        }
+    }
+
+    /**
+     * 页面内容合法性检查
+     *
+     * @return
+     */
     private boolean checkPageContent() {
+        title = mEtTitle.getText()
+                .toString()
+                .trim();
+        mpassword = mEtPassword.getText()
+                .toString()
+                .trim();
+        if (!StringUtil.isValidTheme(title)) {
+            MyAppUtil.showToast(mContext, R.string.can_not_recognize_meeting_theme);
+            return false;
+        }
+        if (!StringUtil.isValidPassword(mpassword)) {
+            MyAppUtil.showToast(mContext, R.string.can_not_recognize_meeting_password);
+            return false;
+        }
         return true;
+
     }
 
     /**
@@ -296,11 +366,9 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                             intent.putExtras(bundle);
                             startActivity(intent);
                         }
-                    }.execute(new Void[]{});
+                    }.execute();
 
 
-                } else {
-                    Log.i(SettingUtil.TAG, "CCCCCCCCCCCC");
                 }
 
                 break;

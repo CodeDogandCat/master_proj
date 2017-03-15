@@ -305,6 +305,27 @@ public class StringUtil {
     }
 
     /**
+     * 判断会议主题 是否符合
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isValidTheme(String str) {
+
+        if (isEmpty(str)) {
+            return false;
+        }
+        //可以包括汉字，英文字母，数字（不能数字开头）
+        String regex = "^[a-zA-Z\u4E00-\u9FA5][a-zA-Z0-9\u4E00-\u9FA5]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher isName = pattern.matcher(str);
+        if (!isName.matches()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * 判断密码 是否符合
      *
      * @param str
@@ -313,6 +334,27 @@ public class StringUtil {
     public static boolean isValidPassword(String str) {
 
         if (isEmpty(str) || (length(str) != 12)) {
+            return false;
+        }
+        //可以字母开头，数字和下划线
+        String regex = "^[a-zA-Z][a-zA-Z0-9_]*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher isPwd = pattern.matcher(str);
+        if (!isPwd.matches()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 判断密码 是否符合
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isValidMeetingPassword(String str) {
+
+        if (isEmpty(str) || (length(str) != 8)) {
             return false;
         }
         //可以字母开头，数字和下划线

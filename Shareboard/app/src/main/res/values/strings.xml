@@ -62,9 +62,8 @@
     <string name="from">从</string>
     <string name="to">到</string>
     <string name="meeting_participate_able_to_draw">与会者默认可绘画</string>
-    <string name="meeting_participate_able_to_talk">与会者默认开发言</string>
-    <string name="use_pmi">使用PMI (%1$s)</string>
-    <string name="meeting_password_optional">会议密码(选填,8位)</string>
+    <string name="meeting_participate_able_to_talk">与会者默认可发言</string>
+    <string name="meeting_password_optional">会议密码(8位)</string>
     <string name="add_to_canlendar">添加至日历项</string>
     <string name="meeting_date">开会日期</string>
     <string name="set_time">设置时间</string>
@@ -99,7 +98,9 @@
     <string name="can_not_recognize_email">不能识别的邮箱</string>
     <string name="can_not_recognize_family_name">不能识别的姓(只允许汉字、英文字母、数字,且不能以数字开头)</string>
     <string name="can_not_recognize_given_name">不能识别的名(只允许汉字、英文字母、数字,且不能以数字开头)</string>
-    <string name="can_not_recognize_login_password">不能识别的登录密码(12位,只允许英文字母、数字、下划线)</string>
+    <string name="can_not_recognize_meeting_theme">不能识别的会议主题(只允许汉字、英文字母、数字,且不能以数字开头)</string>
+    <string name="can_not_recognize_login_password">不能识别的登录密码(12位,只允许英文字母、数字、下划线,且以字母开头)</string>
+    <string name="can_not_recognize_meeting_password">不能识别的入会密码(8位,只允许英文字母、数字、下划线,且以字母开头)</string>
     <string name="system_error">操作出现错误</string>
     <string name="please_relogin">请重新登录来尝试解决问题</string>
     <string name="click_to_set_avatar">点击设置头像</string>
@@ -110,10 +111,20 @@
     <string name="arranging">安排...</string>
     <string name="loding">加载...</string>
     <string name="logingin">登录...</string>
-    <string name="can_not_recognize_old_pwd">不能识别的旧密码</string>
-    <string name="can_not_recognize_new_pwd">不能识别的新密码</string>
-    <string name="can_not_recognize_confirm_pwd">不能识别的确认密码</string>
+    <string name="can_not_recognize_old_pwd">不能识别的旧密码(12位,只允许英文字母、数字、下划线,且以字母开头)</string>
+    <string name="can_not_recognize_new_pwd">不能识别的新密码(12位,只允许英文字母、数字、下划线,且以字母开头)</string>
+    <string name="can_not_recognize_confirm_pwd">不能识别的确认密码(12位,只允许英文字母、数字、下划线,且以字母开头)</string>
     <string name="new_pwd_diff_confirm_pwd">新密码和确认密码不一致</string>
     <string name="new_pwd_equal_old_pwd">新密码和旧密码相同</string>
     <string name="no_change_alter">没有变化的修改</string>
+    <string name="about">关于小喵白板</string>
+    <string name="copyright">Copyright © 2017 HFUT SE LiLei.\n All rights reserved.</string>
+    <string name="about_board">关于小喵白板</string>
+    <string name="recommend">向他人推荐小喵白板</string>
+    <string name="feedback">发送反馈</string>
+    <string name="version_update">版本</string>
+    <string name="private_strategy">隐私策略</string>
+    <string name="default_meeting_theme">默认会议主题</string>
+    <string name="no_name_meeting">未命名的会议</string>
+    <string name="his_meeting">的会议</string>
 </resources>

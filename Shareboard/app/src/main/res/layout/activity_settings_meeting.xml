@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <RelativeLayout style="@style/actionbar">
+
+        <!--<LinearLayout-->
+        <!--style="@style/common_horizontal_division_line_style"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:background="@color/deepgray" />-->
+
+        <ImageView
+            android:id="@+id/img_settings_meeting_goback"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_yellow_leftarrow"/>
+
+        <TextView
+            style="@style/navbar_title_textview_style"
+            android:text="@string/meeting"/>
+
+        <Button
+            android:id="@+id/btn_settings_meeting_save"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@color/my_transparent"
+            android:text="@string/save"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        style="@style/common_horizontal_division_line_style"
+        android:background="@color/my_deepgray"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/my_barblack"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+
+            <EditText
+                android:id="@+id/et_settings_meeting_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/my_transparent"
+                android:gravity="left|center_vertical"
+                android:hint="@string/default_meeting_theme"
+                android:maxLength="20"
+                android:maxLines="1"
+                android:text="我的会议"
+                android:textColor="@color/my_yellow"
+                android:textSize="@dimen/small_text_size"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/common_horizontal_division_line_style"
+            android:background="@color/my_deepgray"/>
+
+        <LinearLayout style="@style/content_vertical_space"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/my_barblack"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/common_horizontal_division_line_style"
+                android:background="@color/my_deepgray"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/my_barblack"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="10dp">
+
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/meeting_participate_able_to_draw"
+                    android:textColor="@color/my_yellow"
+                    android:textSize="@dimen/small_text_size"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical">
+
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/btn_settings_meeting_drawable"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        app:kswTintColor="@color/my_yellow"/>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                style="@style/common_horizontal_division_line_style"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:background="@color/my_deepgray"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/my_barblack"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="10dp">
+
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/meeting_participate_able_to_talk"
+                    android:textColor="@color/my_yellow"
+                    android:textSize="@dimen/small_text_size"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical">
+
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/btn_settings_meeting_talkable"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        app:kswTintColor="@color/my_yellow"/>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/common_horizontal_division_line_style"
+                android:background="@color/my_deepgray"/>
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/content_vertical_space"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/my_barblack"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/my_barblack"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="10dp">
+
+
+                <EditText
+                    android:id="@+id/et_settings_meeting_meetingpassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:gravity="center_vertical|left"
+                    android:hint="@string/meeting_password_optional"
+                    android:maxLength="8"
+                    android:maxLines="1"
+                    android:textColor="@color/my_yellow"
+                    android:textSize="@dimen/small_text_size"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/common_horizontal_division_line_style"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:background="@color/my_deepgray"/>
+
+
+            <LinearLayout
+                style="@style/common_horizontal_division_line_style"
+                android:layout_width="match_parent"
+                android:background="@color/my_deepgray"/>
+        </LinearLayout>
+
+        <!--<LinearLayout style="@style/content_vertical_space" />-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/my_barblack"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/my_barblack"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="10dp">
+
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/add_to_canlendar"
+                    android:textColor="@color/my_yellow"
+                    android:textSize="@dimen/small_text_size"/>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical">
+
+                    <com.kyleduo.switchbutton.SwitchButton
+                        android:id="@+id/btn_settings_meeting_add_to_calendar"
+                        style="@style/SwitchButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        app:kswTintColor="@color/my_yellow"/>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/common_horizontal_division_line_style"
+                android:background="@color/my_deepgray"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

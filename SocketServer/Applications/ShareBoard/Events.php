@@ -75,6 +75,10 @@ class Events
                 if (!isset($_SESSION['room_id'])) {
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
                 }
+                // 非法请求
+                if (!isset($_SESSION['client_name'])) {
+                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
                 $room_id = $_SESSION['room_id'];
                 $client_name = $_SESSION['client_name'];
 

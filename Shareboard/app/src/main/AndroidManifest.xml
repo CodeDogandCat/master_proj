@@ -47,7 +47,10 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".activity.SetUserInfoActivity"/>
         <activity android:name=".activity.JoinMeetingActivity"/>
-        <activity android:name=".activity.MeetingActivity"/>
+        <activity
+            android:name=".activity.MeetingActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MeetingTheme"/>
         <activity android:name=".activity.ArrangeOrHostMeetingActivity"/>
         <activity android:name=".activity.MeetingInfoActivity"/>
         <activity
@@ -68,6 +71,16 @@
         <activity
             android:name=".activity.MainActivity"
             android:windowSoftInputMode="adjustPan"
+            />
+        <activity
+            android:name=".activity.MyMeetingActivity"
+            />
+        <activity
+            android:name=".activity.SettingsMeetingActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity
+            android:name=".activity.SettingsAboutActivity"
             />
 
 

@@ -17,27 +17,44 @@ import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_add_to_calendar;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_drawable;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_talkable;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_password;
+
 public class MyApplication extends Application {
     //上下文参数
     private static Context mContext;
+
+    /**
+     * 初始化 sharepreference
+     */
+    public void initSharePre() {
+        SharedPrefUtil.getInstance()
+                .saveData(share_meeting_is_add_to_calendar, 0);
+        SharedPrefUtil.getInstance()
+                .saveData(share_meeting_is_drawable, 1);
+        SharedPrefUtil.getInstance()
+                .saveData(share_meeting_is_talkable, 1);
+        SharedPrefUtil.getInstance()
+                .saveData(share_meeting_password, "a_000000");
+        SharedPrefUtil.getInstance()
+                .saveData("hasInit", "yes");
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-        //初始化 sharepreference
+        /**
+         * 初始化 sharepreference
+         */
         SharedPrefUtil.init(mContext);
-        //创建创建程序文件夹
-//        String installInfo = (String) SharedPrefUtil.getInstance()
-//                .getData(INSTALLED, "空");
-//        if (!installInfo.equals("installed")) {
-//            /**
-//             *创建系统文件夹
-//             */
-//            MyAppUtil.createSystemDir();
-//            SharedPrefUtil.getInstance()
-//                    .saveData(INSTALLED, "installed");
-//        }
+        if (SharedPrefUtil.getInstance()
+                .getData("hasInit", "空")
+                .equals("空")) {
+            initSharePre();
+        }
 
 
         //初始化数据库
@@ -49,14 +66,6 @@ public class MyApplication extends Application {
 //        CrashHandler crashHandler = CrashHandler.getInstance();
 //        crashHandler.init(mContext);
 
-        //---------这里给出的是示例代码,告诉你可以这么传,实际使用的时候,根据需要传,不需要就不传-------------//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.put("commonHeaderKey1", "commonHeaderValue1");    //header不支持中文
-//        headers.put("commonHeaderKey2", "commonHeaderValue2");
-//        HttpParams params = new HttpParams();
-//        params.put("commonParamsKey1", "commonParamsValue1");     //param支持中文,直接传,不要自己编码
-//        params.put("commonParamsKey2", "这里支持中文参数");
-        //-----------------------------------------------------------------------------------//
 
         //必须调用初始化
         OkGo.init(this);

@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.activity.SettingsAboutActivity;
+import cn.edu.hfut.lilei.shareboard.activity.SettingsMeetingActivity;
 import cn.edu.hfut.lilei.shareboard.activity.SettingsMyInfoActivity;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
@@ -23,7 +25,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
 public class SettingsFragment extends Fragment {
     //控件
-    private LinearLayout mLlAccount;
+    private LinearLayout mLlAccount, mLlMeetingSetting, mLlAbout;
     private AvatarImageView mPhoto;
     private TextView mName;
     private TextView mEmail;
@@ -74,6 +76,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void init(View view) {
+
         mContext = view.getContext();
         mName = (TextView) view.findViewById(R.id.tv_settings_name);
         mEmail = (TextView) view.findViewById(R.id.tv_settings_email);
@@ -89,5 +92,24 @@ public class SettingsFragment extends Fragment {
                 startActivity(i);
             }
         });
+        mLlMeetingSetting = (LinearLayout) view.findViewById(R.id.ll_settings_meetingsetting);
+        mLlMeetingSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent();
+                i.setClass(view.getContext(), SettingsMeetingActivity.class);
+                startActivity(i);
+            }
+        });
+        mLlAbout = (LinearLayout) view.findViewById(R.id.ll_settings_about);
+        mLlAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent();
+                i.setClass(view.getContext(), SettingsAboutActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 }

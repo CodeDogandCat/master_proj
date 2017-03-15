@@ -16,7 +16,7 @@ public class Meeting {
 
     public class ServerModel {
         public int meeting_id;
-        public String meeting_url;
+        public Long meeting_url;
         public String meeting_theme;
         public int meeting_is_drawable;
         public int meeting_is_talkable;
@@ -24,6 +24,14 @@ public class Meeting {
         public String meeting_password;
         public String meeting_start_time;
         public String meeting_end_time;
+
+        public Long getMeeting_url() {
+            return meeting_url;
+        }
+
+        public void setMeeting_url(Long meeting_url) {
+            this.meeting_url = meeting_url;
+        }
 
         public int getMeeting_id() {
             return meeting_id;
@@ -33,13 +41,6 @@ public class Meeting {
             this.meeting_id = meeting_id;
         }
 
-        public String getMeeting_url() {
-            return meeting_url;
-        }
-
-        public void setMeeting_url(String meeting_url) {
-            this.meeting_url = meeting_url;
-        }
 
         public String getMeeting_theme() {
             return meeting_theme;

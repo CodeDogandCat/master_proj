@@ -52,7 +52,7 @@ class MeetingOp
 
             if (($meeting_id = $this->db->insert($sql, $arr)) != false) {
                 $arr2 = array();//返回 会议ID 会议URL
-                $arr2[0] = $meeting_id;
+                $arr2[0] = (int)($meeting_id);
                 $arr2[1] = $arr[0];
 
                 return $arr2;//插入成功
@@ -123,7 +123,7 @@ class MeetingOp
         $rows = $this->db->select($sql, $arr);
 
         if (count($rows) == 1) {//存在且只存在一个这样的用户
-            return $rows[0]['user_id'];
+            return (int)($rows[0]['user_id']);
 
         }
         return false;//不存在
@@ -341,6 +341,7 @@ class MeetingOp
              * 获取user_email对应的user_id
              */
             if (($user_id = $this->getUserIdFromEmail() != false)) {
+//                echo 'getUserIdFromEmail';
 
                 $this->user->setId($user_id);
                 /**
@@ -348,17 +349,19 @@ class MeetingOp
                  * 状态必须为1，判断user_id和host_user_id是否一致,主持人会议期间不能退出，否则会议结束
                  */
                 if ($this->getMeetingStatusById() == 1) {
-
+//                    echo 'getMeetingStatusById';
                     if (($_id = $this->checkIfExistSameUserAndMeeting(2)) == false) {//不存在
+//                        echo 'checkIfExistSameUserAndMeeting';
                         /**
                          * 插入到 user_and_meeting表
                          */
                         if (($user_and_meeting_id = $this->addCheckIn(2)) != false) {
-
+//                            echo 'addCheckIn';
                             /**
                              * 更新 meeting 表的会议状态 为 3
                              */
                             if ($this->updateMeetingStatus(3)) {
+//                                echo 'updateMeetingStatus';
                                 /**
                                  * 返回
                                  */

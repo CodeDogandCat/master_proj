@@ -3,6 +3,8 @@ package cn.edu.hfut.lilei.shareboard.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
+
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.PACKAGE_NAME;
 
 
@@ -99,6 +101,43 @@ public class SharedPrefUtil {
 
         return null;
     }
+
+    /**
+     * 批量得到数据(字符串)
+     */
+    public ArrayList<String> getStringDatas(ArrayList<String> keyList) {
+        String tmp = "";
+        ArrayList<String> resultList = new ArrayList<>();
+        for (int i = 0; i < keyList.size(); i++) {
+            tmp = (String) getData(keyList.get(i), "空");
+            if (tmp.equals("空") || tmp == null) {
+                return null;
+            } else {
+                resultList.add(tmp);
+            }
+        }
+        return resultList;
+
+    }
+
+    /**
+     * 批量得到数据(整数)
+     */
+    public ArrayList<Integer> getIntegerDatas(ArrayList<String> keyList) {
+        Integer tmp = -1;
+        ArrayList<Integer> resultList = new ArrayList<>();
+        for (int i = 0; i < keyList.size(); i++) {
+            tmp = (Integer) getData(keyList.get(i), -1);
+            if (tmp == -1 || tmp == null) {
+                return null;
+            } else {
+                resultList.add(tmp);
+            }
+        }
+        return resultList;
+
+    }
+
 
     /**
      * 删除指定数据

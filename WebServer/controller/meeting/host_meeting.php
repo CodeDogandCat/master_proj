@@ -46,12 +46,11 @@ if (isset($_REQUEST[post_need_feature])) {
 
         case 'get':
             $data = array(
-                array(
-                    "meeting_id" => -1, "meeting_url" => "",
-                    "meeting_theme" => "", "meeting_is_drawable" => -1,
-                    "meeting_is_talkable" => -1, "meeting_is_add_to_calendar" => -1,
-                    "meeting_password" => "", "meeting_start_time" => "",
-                    "meeting_end_time" => "")
+                "meeting_id" => -1, "meeting_url" => -1,
+                "meeting_theme" => "", "meeting_is_drawable" => -1,
+                "meeting_is_talkable" => -1, "meeting_is_add_to_calendar" => -1,
+                "meeting_password" => "", "meeting_start_time" => "",
+                "meeting_end_time" => ""
 
             );
             /**
@@ -77,7 +76,7 @@ if (isset($_REQUEST[post_need_feature])) {
 
         case 'add':
             $data = array(
-                "meeting_id" => -1, "meeting_url" => "",
+                "meeting_id" => -1, "meeting_url" => -1,
                 "meeting_theme" => "", "meeting_is_drawable" => -1,
                 "meeting_is_talkable" => -1, "meeting_is_add_to_calendar" => -1,
                 "meeting_password" => "", "meeting_start_time" => "",
@@ -119,19 +118,25 @@ if (isset($_REQUEST[post_need_feature])) {
                             /**
                              * 需要立即进入会议
                              */
-                            $meeting_id = $result_arr[1];
+                            $meeting_id = $result_arr[0];
                             $meeting->setId($meeting_id);
                             $meetingOp = new MeetingOp($user, $meeting);
                             if (($user_and_meeting_id = $meetingOp->enterMeeting(2)) == false)//主持会议 type=2
                             {
                                 printResult(HOST_MEETING_ERROR, '召开会议失败', $data);
                             } else {
+//                                echo "放入session";
                                 //放入session  (进会id ,会议 id ,会议url ,用户 email)
                                 Session::set(SESSION_USER_AND_MEETING_ID, $user_and_meeting_id, 2592000);//30天过期
-                                Session::set(SESSION_MEETING_ID, $result_arr[0], 2592000);//30天过期
-                                Session::set(SESSION_MEETING_URL, $result_arr[1], 2592000);//30天过期
+                                Session::set(SESSION_MEETING_ID, $data['meeting_id'], 2592000);//30天过期
+                                Session::set(SESSION_MEETING_URL, $data['meeting_url'], 2592000);//30天过期
                                 Session::set(SESSION_EMAIL, $_REQUEST[post_user_email], 2592000);//30天过期
 
+//                                echo "放完session";
+//                                echo Session::get(SESSION_USER_AND_MEETING_ID) . ' ' .
+//                                    Session::get(SESSION_MEETING_ID) . ' ' .
+//                                    Session::get(SESSION_MEETING_URL) . ' ' .
+//                                    Session::get(SESSION_EMAIL) . ' ';
                                 printResult(SUCCESS, '召开会议成功', $data);
                             }
                         }
@@ -177,7 +182,7 @@ if (isset($_REQUEST[post_need_feature])) {
                     1//1 ：未开始并且未到期
                 );
                 $meeting->setId($_REQUEST[post_meeting_id]);
-                $meetingOp = init($user, $meeting);
+                $meetingOp = new MeetingOp($user, $meeting);
 
                 if (($result_arr = $meetingOp->updateMeeting()) != false) {
 
@@ -221,45 +226,5 @@ if (isset($_REQUEST[post_need_feature])) {
     }
 } else {
     printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
-}
-
-/**
- * 接受参数构造 user和 meeting对象
- * @param $user
- * @param $meeting
- * @return bool|MeetingOp
- */
-function init($user, $meeting)
-{
-    /**
-     * 检验参数，插入到meeting 表
-     */
-    if (isset($_REQUEST[post_user_email]) &&
-        isset($_REQUEST[post_meeting_theme]) &&
-        isset($_REQUEST[post_meeting_host_user_id]) &&
-        isset($_REQUEST[post_meeting_is_drawable]) &&
-        isset($_REQUEST[post_meeting_is_talkable]) &&
-        isset($_REQUEST[post_meeting_is_add_to_calendar]) &&
-        isset($_REQUEST[post_meeting_start_time]) &&
-        isset($_REQUEST[post_meeting_end_time]) &&
-        isset($_REQUEST[post_meeting_password])
-    ) {
-        $user = new User($_REQUEST[post_user_email]);
-        $meeting = new Meeting(
-            $_REQUEST[post_meeting_theme],
-            $_REQUEST[post_meeting_host_user_id],
-            $_REQUEST[post_meeting_is_drawable],
-            $_REQUEST[post_meeting_is_talkable],
-            $_REQUEST[post_meeting_is_add_to_calendar],
-            $_REQUEST[post_meeting_start_time],
-            $_REQUEST[post_meeting_end_time],
-            $_REQUEST[post_meeting_password],
-            1//1 ：未开始并且未到期
-        );
-        return $meetingOp = new MeetingOp($user, $meeting);
-
-    } else {
-        return false;
-    }
 }
 

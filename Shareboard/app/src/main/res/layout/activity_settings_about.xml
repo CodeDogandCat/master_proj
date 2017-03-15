@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/activity_vertical_margin">
+
+    <RelativeLayout style="@style/actionbar">
+
+
+        <ImageView
+            android:id="@+id/img_setmyinfo_goback"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_yellow_leftarrow"/>
+
+        <TextView
+            android:id="@+id/tv_setuserinfo_setuserinfo"
+            style="@style/navbar_title_textview_style"
+            android:text="@string/about_board"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout style="@style/content_vertical_space"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/my_barblack"
+        android:orientation="vertical">
+
+        <LinearLayout
+            style="@style/common_horizontal_division_line_style"
+            android:background="@color/my_deepgray"/>
+
+
+        <LinearLayout
+            android:id="@+id/ll_about_version_update"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/my_barblack"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:id="@+id/tv_about_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/version_update"
+                    android:textColor="@color/my_yellow"
+                    android:textSize="@dimen/small_text_size"/>
+
+                <ImageView
+                    android:id="@+id/img_settingmyinfo_name_next"
+                    android:layout_width="8dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="17dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_yellow_rightarrow"/>
+
+                <TextView
+                    android:id="@+id/tv_settingmyinfo_givenname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toLeftOf="@id/img_settingmyinfo_name_next"
+                    android:gravity="center"
+                    android:maxLength="15"
+                    android:maxLines="1"
+                    android:maxWidth="100dp"
+                    android:text="1.0.2"
+                    android:textSize="@dimen/super_small_text_size"/>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/common_horizontal_division_line_style"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@color/my_deepgray"/>
+
+
+        <LinearLayout
+            android:id="@+id/ll_about_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/my_barblack"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/feedback"
+                    android:textColor="@color/my_yellow"
+                    android:textSize="@dimen/small_text_size"/>
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="17dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_yellow_rightarrow"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/common_horizontal_division_line_style"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@color/my_deepgray"/>
+
+        <LinearLayout
+            android:id="@+id/ll_about_recommend"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/my_barblack"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:id="@+id/tv_settings_about"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/recommend"
+                    android:textColor="@color/my_yellow"
+                    android:textSize="@dimen/small_text_size"/>
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="17dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_yellow_rightarrow"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/common_horizontal_division_line_style"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@color/my_deepgray"/>
+
+        <LinearLayout
+            android:id="@+id/ll_about_private"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/my_barblack"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/private_strategy"
+                    android:textColor="@color/my_yellow"
+                    android:textSize="@dimen/small_text_size"/>
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="17dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_yellow_rightarrow"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/common_horizontal_division_line_style"
+        android:background="@color/my_deepgray"/>
+
+</LinearLayout>
+
+
