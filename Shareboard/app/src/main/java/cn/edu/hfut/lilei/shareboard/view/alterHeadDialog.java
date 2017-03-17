@@ -128,6 +128,7 @@ public class AlterHeadDialog extends Dialog {
 //                                case 3:
                             switch (position) {
                                 case 0:
+
                                     dialog.dismiss();
                                     String baseDir = "";
                                     if (FileUtil.isExternalStorageWritable()) {

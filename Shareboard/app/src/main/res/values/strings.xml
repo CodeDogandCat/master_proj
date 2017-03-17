@@ -80,8 +80,7 @@
     <string name="delete_meeting">删除会议</string>
     <string name="add_invite">添加受邀者</string>
     <string name="invite_title">"白板会议邀请-%1$s"</string>
-    <string name="invite_describe">"你好!\n\t%1$s 正在邀请你加入白板会议。\n\t加入方式：打开安卓小喵白板客户端，点击进入“加入会议”界面，输入会议ID（名称）与密码（可选），即可加入。\n\t会议ID： %2$s \n\t密码：%3$s "</string>
-    <string name="invite_content">"你好!\n\t%1$s 正在邀请你加入白板会议。\n\t主题：%2$s\n\t时间：%3$s GMT+8加入方式：打开安卓小喵白板客户端，点击进入“加入会议”界面，输入会议ID（名称）与密码（可选），即可加入。\n\t会议ID： %4$s \n\t密码：%5$s "</string>
+    <string name="invite_content">"你好!\n\t%1$s 正在邀请你加入白板会议。\n\t主题：%2$s\n\t时间：%3$s GMT+8\n\t会议ID： %4$s \n\t密码：%5$s \n\t加入方式：打开安卓小喵白板客户端，点击进入“加入会议”界面，输入会议ID与密码，即可加入。"</string>
     <string name="choose_invite_type">选择邀请方式</string>
     <string name="alreday_copy_to_sheet">已经复制到剪贴板</string>
     <string name="choose_sms">选择短信客户端</string>
@@ -100,6 +99,9 @@
     <string name="can_not_recognize_given_name">不能识别的名(只允许汉字、英文字母、数字,且不能以数字开头)</string>
     <string name="can_not_recognize_meeting_theme">不能识别的会议主题(只允许汉字、英文字母、数字,且不能以数字开头)</string>
     <string name="can_not_recognize_login_password">不能识别的登录密码(12位,只允许英文字母、数字、下划线,且以字母开头)</string>
+    <string name="can_not_recognize_login_password2">不能识别的登录密码</string>
+    <string name="can_not_recognize_meeting_url">不能识别的会议ID</string>
+    <string name="can_not_recognize_meeting_password2">不能识别的会议密码</string>
     <string name="can_not_recognize_meeting_password">不能识别的入会密码(8位,只允许英文字母、数字、下划线,且以字母开头)</string>
     <string name="system_error">操作出现错误</string>
     <string name="please_relogin">请重新登录来尝试解决问题</string>
@@ -111,6 +113,8 @@
     <string name="arranging">安排...</string>
     <string name="loding">加载...</string>
     <string name="logingin">登录...</string>
+    <string name="entering">加会...</string>
+    <string name="deleting">删除...</string>
     <string name="can_not_recognize_old_pwd">不能识别的旧密码(12位,只允许英文字母、数字、下划线,且以字母开头)</string>
     <string name="can_not_recognize_new_pwd">不能识别的新密码(12位,只允许英文字母、数字、下划线,且以字母开头)</string>
     <string name="can_not_recognize_confirm_pwd">不能识别的确认密码(12位,只允许英文字母、数字、下划线,且以字母开头)</string>
@@ -127,4 +131,6 @@
     <string name="default_meeting_theme">默认会议主题</string>
     <string name="no_name_meeting">未命名的会议</string>
     <string name="his_meeting">的会议</string>
+    <string name="delete_meeting_confirm">您是否要删除这个会议</string>
+    <string name="logout_confirm">您是否要注销当前账户</string>
 </resources>

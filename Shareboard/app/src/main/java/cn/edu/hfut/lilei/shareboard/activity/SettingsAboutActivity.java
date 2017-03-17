@@ -3,21 +3,21 @@ package cn.edu.hfut.lilei.shareboard.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-
-import com.kyleduo.switchbutton.SwitchButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 
 public class SettingsAboutActivity extends SwipeBackActivity implements View.OnClickListener {
     //控件
-    private Button mBtnSave;
-    private SwitchButton mBtnAddToCalendar, mBtnIsDrawable, mBtnIsTalkable;
-    private EditText mEtTheme, mEtPassword;
+    private LinearLayout mLlVersion, mLlFeedback, mLlRecommend, mLlPrivate;
+    private TextView mTvVersion, mTvFeedBack, mTvRecommend, mTvPrivate, mTvCurrentVersion;
+    private ImageView next1, next2, next3, next4;
     //数据
     private String mtheme, mpassword;
     //上下文参数
@@ -54,7 +54,44 @@ public class SettingsAboutActivity extends SwipeBackActivity implements View.OnC
             public void onScrollOverThreshold() {
             }
         });
+        mLlVersion = (LinearLayout) findViewById(R.id.ll_about_version_update);
+        mLlFeedback = (LinearLayout) findViewById(R.id.ll_about_feedback);
+        mLlRecommend = (LinearLayout) findViewById(R.id.ll_about_recommend);
+        mLlPrivate = (LinearLayout) findViewById(R.id.ll_about_private);
 
+        mTvVersion = (TextView) findViewById(R.id.tv_about_version);
+        mTvCurrentVersion = (TextView) findViewById(R.id.tv_about_current_version);
+        mTvFeedBack = (TextView) findViewById(R.id.tv_about_feedback);
+        mTvRecommend = (TextView) findViewById(R.id.tv_about_recommend);
+        mTvPrivate = (TextView) findViewById(R.id.tv_about_private);
+
+        next1 = (ImageView) findViewById(R.id.img_about_next1);
+        next2 = (ImageView) findViewById(R.id.img_about_next2);
+        next3 = (ImageView) findViewById(R.id.img_about_next3);
+        next4 = (ImageView) findViewById(R.id.img_about_next4);
+
+        mLlVersion.setOnClickListener(this);
+        mLlFeedback.setOnClickListener(this);
+        mLlRecommend.setOnClickListener(this);
+        mLlPrivate.setOnClickListener(this);
+
+
+        new TouchListener.Builder(mContext).setLinearLayout(mLlVersion)
+                .setTextView1(mTvVersion)
+                .setImageView(next1)
+                .create();
+        new TouchListener.Builder(mContext).setLinearLayout(mLlFeedback)
+                .setTextView1(mTvFeedBack)
+                .setImageView(next2)
+                .create();
+        new TouchListener.Builder(mContext).setLinearLayout(mLlRecommend)
+                .setTextView1(mTvRecommend)
+                .setImageView(next3)
+                .create();
+        new TouchListener.Builder(mContext).setLinearLayout(mLlPrivate)
+                .setTextView1(mTvPrivate)
+                .setImageView(next4)
+                .create();
 
     }
 

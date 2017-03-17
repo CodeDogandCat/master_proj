@@ -26,7 +26,7 @@ public class SettingUtil {
             "http://118.89.102.238/controller/meeting/host_meeting.php";
     //进入会议
     public static final String URL_ENTER_MEETING =
-            "http://118.89.102.238/controller/settings/enter_meeting.php";
+            "http://118.89.102.238/controller/meeting/enter_meeting.php";
     //开会地址
     public static final String URL_MEETING =
             "http://118.89.102.238/view/index.php";
@@ -100,6 +100,8 @@ public class SettingUtil {
     public static final String TAG = "shareboard";//调试TAG
     public static final String PACKAGE_NAME = "cn.edu.hfut.lilei.shareboard";//包名
     public static final String INSTALLED = "hasInstalled";//已经安装过
+    public static final int COMMON_CHECK_IN = 1;//与会人加会
+    public static final int HOST_CHECK_IN = 2;//主持人加会
 //    public static final String SYSTEM_DIR = "/data/data/" + PACKAGE_NAME + " /info";//系统文件夹
 
     //权限请求参数

@@ -97,7 +97,7 @@
             android:background="@color/my_barblack">
 
             <Button
-                android:id="@+id/btn_join_meeting"
+                android:id="@+id/btn_arrange_host_join_meeting"
                 style="@style/BigButton"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin26"
                 android:layout_marginRight="@dimen/activity_horizontal_margin26"
@@ -130,7 +130,7 @@
 
 
         <LinearLayout
-            android:id="@+id/ll_my_meeting"
+            android:id="@+id/ll_arrange_host_my_meeting"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/my_barblack"
@@ -143,7 +143,7 @@
                 android:layout_height="50dp">
 
                 <TextView
-                    android:id="@+id/tv_my_meeting"
+                    android:id="@+id/tv_arrange_host_my_meeting"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
@@ -154,6 +154,7 @@
                     android:textSize="@dimen/small_text_size" />
 
                 <ImageView
+                    android:id="@+id/img_arrange_host_next1"
                     android:layout_width="8dp"
                     android:layout_height="16dp"
                     android:layout_alignParentRight="true"
@@ -187,7 +188,7 @@
 
 
         <LinearLayout
-            android:id="@+id/ll_arrange_meeting"
+            android:id="@+id/ll_arrange_host_meeting"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/my_barblack"
@@ -200,7 +201,7 @@
                 android:layout_height="50dp">
 
                 <TextView
-                    android:id="@+id/tv_arrange_meeting"
+                    android:id="@+id/tv_arrange_host_arrange_meeting"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
@@ -211,6 +212,7 @@
                     android:textSize="@dimen/small_text_size" />
 
                 <ImageView
+                    android:id="@+id/img_arrange_host_next2"
                     android:layout_width="8dp"
                     android:layout_height="16dp"
                     android:layout_alignParentRight="true"

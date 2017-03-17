@@ -270,7 +270,7 @@ public class LoginActivity extends Activity {
                                 break;
                             case WRONG_FORMAT_INPUT_NO2:
                                 //提示登录密码格式不对
-                                showToast(mContext, R.string.can_not_recognize_login_password);
+                                showToast(mContext, R.string.can_not_recognize_login_password2);
                                 break;
 //                            case -1:
 //                                break;

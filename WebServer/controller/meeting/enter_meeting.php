@@ -3,13 +3,13 @@ session_start();
 header("Content-type: text/html; charset=utf-8");
 //error_reporting(0);
 
-$data = array("token" => "", "avatar" => "");
 try {
     require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/settings.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/model/User.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/model/Meeting.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/Session.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/meeting/MeetingOp.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/util/EncryptUtil.php';
 
     /**
      * 1.拦截token
@@ -41,10 +41,10 @@ try {
                     Session::set(SESSION_MEETING_URL, $_REQUEST[post_meeting_url], 2592000);//30天过期
                     Session::set(SESSION_EMAIL, $_REQUEST[post_user_email], 2592000);//30天过期
 
-                    printResult(SUCCESS, '主持人进会成功', $data);
+                    printResult(SUCCESS, '主持人进会成功', -1);
 
                 } else {
-                    printResult(HOST_MEETING_ERROR, '主持人进会失败', $data);
+                    printResult(HOST_MEETING_ERROR, '主持人进会失败', -1);
                 }
             }
         } elseif ($type == 1) {//普通加会
@@ -55,7 +55,7 @@ try {
             ) {
                 $user = new User($_REQUEST[post_user_email]);
 
-                $meeting = new Meeting(null, null, null, null, null, null, null, $_REQUEST[post_meeting_password], null);
+                $meeting = new Meeting(null, null, null, null, null, null, null, EncryptUtil::hash($_REQUEST[post_meeting_password], "lilimiao"), null);
                 $meeting->setUrl($_REQUEST[post_meeting_url]);
                 $meetingOp = new MeetingOp($user, $meeting);
 
@@ -67,20 +67,20 @@ try {
                     Session::set(SESSION_EMAIL, $_REQUEST[post_user_email], 2592000);//30天过期
 
 
-                    printResult(SUCCESS, '与会者加会成功', $data);
+                    printResult(SUCCESS, '与会者加会成功', -1);
 
                 } else {
-                    printResult(ADD_MEETING_ERROR, '与会者加会失败', $data);
+                    printResult(ADD_MEETING_ERROR, '与会者加会失败', -1);
                 }
             }
         }
 
     }
-    printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', $data);
+    printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
 
 
 } catch
 (Exception $exception) {
-    printResult(FAILURE, $exception->getMessage(), $data);
+    printResult(FAILURE, $exception->getMessage(), -1);
 
 }

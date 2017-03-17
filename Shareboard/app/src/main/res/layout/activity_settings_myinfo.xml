@@ -60,7 +60,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_settings_name"
+                        android:id="@+id/tv_settingmyinfo_avatar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -99,7 +99,7 @@
                 </RelativeLayout>
 
                 <ImageView
-                    android:id="@+id/img_setmyinfo_next"
+                    android:id="@+id/img_settingmyinfo_next1"
                     android:layout_width="8dp"
                     android:layout_height="16dp"
                     android:layout_alignParentRight="true"
@@ -143,7 +143,7 @@
                     android:textSize="@dimen/small_text_size"/>
 
                 <ImageView
-                    android:id="@+id/img_settingmyinfo_name_next"
+                    android:id="@+id/img_settingmyinfo_next2"
                     android:layout_width="8dp"
                     android:layout_height="16dp"
                     android:layout_alignParentRight="true"
@@ -158,7 +158,7 @@
                     android:layout_height="40dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
-                    android:layout_toLeftOf="@id/img_settingmyinfo_name_next"
+                    android:layout_toLeftOf="@id/img_settingmyinfo_next2"
                     android:gravity="center"
                     android:maxLength="15"
                     android:maxLines="1"
@@ -207,7 +207,7 @@
                 android:layout_height="50dp">
 
                 <TextView
-                    android:id="@+id/tv_settings_about"
+                    android:id="@+id/tv_settingmyinfo_login_pwd"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
@@ -217,6 +217,7 @@
                     android:textSize="@dimen/small_text_size"/>
 
                 <ImageView
+                    android:id="@+id/img_settingmyinfo_next3"
                     android:layout_width="8dp"
                     android:layout_height="16dp"
                     android:layout_alignParentRight="true"

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.kyleduo.switchbutton.SwitchButton;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
+import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
@@ -32,6 +34,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_theme
 
 public class SettingsMeetingActivity extends SwipeBackActivity implements View.OnClickListener {
     //控件
+    private LinearLayout mLlAddToCalendar, mLlIsDrawable, mLlIsTalkable;
     private Button mBtnSave;
     private SwitchButton mBtnAddToCalendar, mBtnIsDrawable, mBtnIsTalkable;
     private EditText mEtTheme, mEtPassword;
@@ -45,8 +48,6 @@ public class SettingsMeetingActivity extends SwipeBackActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_meeting);
         init();
-
-
     }
 
 
@@ -80,8 +81,23 @@ public class SettingsMeetingActivity extends SwipeBackActivity implements View.O
         mBtnIsTalkable = (SwitchButton) findViewById(R.id.btn_settings_meeting_talkable);
         mEtTheme = (EditText) findViewById(R.id.et_settings_meeting_title);
         mEtPassword = (EditText) findViewById(R.id.et_settings_meeting_meetingpassword);
+
+        mLlIsDrawable = (LinearLayout) findViewById(R.id.ll_settings_meeting_is_drawable);
+        mLlIsTalkable = (LinearLayout) findViewById(R.id.ll_settings_meeting_is_talkable);
+        mLlAddToCalendar = (LinearLayout) findViewById(R.id.ll_settings_meeting_add_to_calendar);
+
         mBtnSave.setOnClickListener(this);
         mBtnAddToCalendar.setOnClickListener(this);
+        mLlIsDrawable.setOnClickListener(this);
+        mLlIsTalkable.setOnClickListener(this);
+        mLlAddToCalendar.setOnClickListener(this);
+        new TouchListener.Builder(mContext).setLinearLayout(mLlIsDrawable)
+                .create();
+        new TouchListener.Builder(mContext).setLinearLayout(mLlIsTalkable)
+                .create();
+        new TouchListener.Builder(mContext).setLinearLayout(mLlAddToCalendar)
+                .create();
+
 
         initFromSharePre();
 
@@ -139,11 +155,22 @@ public class SettingsMeetingActivity extends SwipeBackActivity implements View.O
                         null);
 
         if (PermissionsUtil.hasPermission(this, Manifest.permission.WRITE_CALENDAR)) {
+            if (mBtnAddToCalendar.isChecked()) {
+                mBtnAddToCalendar.setChecked(false);
+            } else {
+                mBtnAddToCalendar.setChecked(true);
+
+            }
         } else {
             PermissionsUtil.requestPermission(this, new PermissionListener() {
                 @Override
                 public void permissionGranted(@NonNull String[] permissions) {
+                    if (mBtnAddToCalendar.isChecked()) {
+                        mBtnAddToCalendar.setChecked(false);
+                    } else {
+                        mBtnAddToCalendar.setChecked(true);
 
+                    }
                 }
 
                 @Override
@@ -182,9 +209,25 @@ public class SettingsMeetingActivity extends SwipeBackActivity implements View.O
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_settings_meeting_add_to_calendar:
+            case R.id.ll_settings_meeting_add_to_calendar:
                 //请求权限但不执行后续操作
                 requestCalendar();
+                break;
+            case R.id.ll_settings_meeting_is_drawable:
+                if (mBtnIsDrawable.isChecked()) {
+                    mBtnIsDrawable.setChecked(false);
+                } else {
+                    mBtnIsDrawable.setChecked(true);
+
+                }
+                break;
+            case R.id.ll_settings_meeting_is_talkable:
+                if (mBtnIsTalkable.isChecked()) {
+                    mBtnIsTalkable.setChecked(false);
+                } else {
+                    mBtnIsTalkable.setChecked(true);
+
+                }
                 break;
             //为保存按钮设置监听器
             case R.id.btn_settings_meeting_save:

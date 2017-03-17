@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
 
@@ -15,10 +17,12 @@ import java.util.ArrayList;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
+import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
 import cn.edu.hfut.lilei.shareboard.models.Meeting;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
+import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
@@ -27,30 +31,30 @@ import okhttp3.Response;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.HOST_CHECK_IN;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NO_TOKEN_FOUND;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_HOST_MEETING;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_is_enter_meeting;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_in_type;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_end_time;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_id;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_add_to_calendar;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_drawable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_talkable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_password;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_start_time;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_theme;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_id;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_add_to_calendar;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_drawable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_talkable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_password;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_theme;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
@@ -60,6 +64,8 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
     private LinearLayout mLlArrangeMeeting, mLlMyMeeting;
     private EditText mEtEmail;
     private Button mBtnStartMeeting;
+    private ImageView next1, next2;
+    private TextView myMeeting, arrangeMeeting;
     private LodingDialog.Builder mlodingDialog;
     //数据
 
@@ -93,9 +99,22 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
             public void onScrollOverThreshold() {
             }
         });
-        mLlMyMeeting = (LinearLayout) findViewById(R.id.ll_my_meeting);
-        mLlArrangeMeeting = (LinearLayout) findViewById(R.id.ll_arrange_meeting);
-        mBtnStartMeeting = (Button) findViewById(R.id.btn_join_meeting);
+        mLlMyMeeting = (LinearLayout) findViewById(R.id.ll_arrange_host_my_meeting);
+        mLlArrangeMeeting = (LinearLayout) findViewById(R.id.ll_arrange_host_meeting);
+        mBtnStartMeeting = (Button) findViewById(R.id.btn_arrange_host_join_meeting);
+        next1 = (ImageView) findViewById(R.id.img_arrange_host_next1);
+        next2 = (ImageView) findViewById(R.id.img_arrange_host_next2);
+        myMeeting = (TextView) findViewById(R.id.tv_arrange_host_my_meeting);
+        arrangeMeeting = (TextView) findViewById(R.id.tv_arrange_host_arrange_meeting);
+
+        new TouchListener.Builder(mContext).setLinearLayout(mLlMyMeeting)
+                .setTextView1(myMeeting)
+                .setImageView(next1)
+                .create();
+        new TouchListener.Builder(mContext).setLinearLayout(mLlArrangeMeeting)
+                .setTextView1(arrangeMeeting)
+                .setImageView(next2)
+                .create();
 
 
         mLlMyMeeting.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +130,9 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClass(ArrangeOrHostMeetingActivity.this, ArrangeMeetingActivity.class);
+                Bundle b = new Bundle();
+                b.putString(post_need_feature, "add");
+                intent.putExtras(b);
                 startActivity(intent);
             }
         });
@@ -149,7 +171,7 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                         ArrayList<Integer> valueList2 = new ArrayList<>();
                         keyList2.add(share_meeting_is_talkable);
                         keyList2.add(share_meeting_is_drawable);
-                        keyList2.add(share_meeting_is_add_to_calendar);
+//                        keyList2.add(share_meeting_is_add_to_calendar);
 
                         valueList2 = SharedPrefUtil.getInstance()
                                 .getIntegerDatas(keyList2);
@@ -181,11 +203,11 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                 .params(post_need_feature, "add")
                                 .params(post_token, valueList.get(0))
                                 .params(post_user_email, valueList.get(1))
-                                .params(post_meeting_password, valueList.get(2))
+                                .params(post_meeting_password, StringUtil.getMD5(valueList.get(2)))
                                 .params(post_meeting_theme, mtheme)
                                 .params(post_meeting_is_talkable, valueList2.get(0))
                                 .params(post_meeting_is_drawable, valueList2.get(1))
-                                .params(post_meeting_is_add_to_calendar, valueList2.get(2))
+                                .params(post_meeting_is_add_to_calendar, 0)//立即召开会议,不要添加日历提醒
                                 .params(post_meeting_start_time, DateTimeUtil.millisNow())
                                 .params(post_meeting_end_time, DateTimeUtil.millisSecondInHours(1))
                                 .params(post_is_enter_meeting, true)
@@ -194,18 +216,6 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                              public void onSuccess(Meeting o, Call call,
                                                                    Response response) {
                                                  if (o.getCode() == SUCCESS) {
-                                                     /**
-                                                      * 保存  meeting_id, meeting_url
-                                                      */
-                                                     SharedPrefUtil.getInstance()
-                                                             .saveData(share_meeting_id, o.getData()
-                                                                     .getMeeting_id()
-                                                             );
-                                                     SharedPrefUtil.getInstance()
-                                                             .saveData(share_meeting_url, o.getData()
-                                                                     .getMeeting_url()
-                                                             );
-
 
                                                      /**
                                                       * 跳到登录界面
@@ -216,7 +226,11 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                                      intent.setClass(ArrangeOrHostMeetingActivity.this,
                                                              MeetingActivity.class);
                                                      Bundle b = new Bundle();
-                                                     b.putInt("check_in_type", 2);
+                                                     b.putInt(post_meeting_check_in_type, HOST_CHECK_IN);
+                                                     b.putInt(post_meeting_id, o.getData()
+                                                             .getMeeting_id());
+                                                     b.putLong(post_meeting_url, o.getData()
+                                                             .getMeeting_url());
                                                      intent.putExtras(b);
                                                      startActivity(intent);
 
@@ -251,14 +265,6 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                             case NET_DISCONNECT:
                                 //弹出对话框，让用户开启网络
                                 NetworkUtil.setNetworkMethod(mContext);
-                                break;
-                            case NO_TOKEN_FOUND:
-                                //没有可用本地token,跳转到登录界面
-                                Intent intent = new Intent();
-                                intent.setClass(ArrangeOrHostMeetingActivity.this,
-                                        LoginActivity.class);
-                                startActivity(intent);
-                                finish();
                                 break;
                             case -1:
                                 break;

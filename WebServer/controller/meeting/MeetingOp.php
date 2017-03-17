@@ -98,7 +98,7 @@ class MeetingOp
      */
     public function deleteMeeting()
     {
-        $sql = 'DELETE FROM bd_meeting WHERE  WHERE meeting_id = ?';
+        $sql = 'DELETE FROM bd_meeting  WHERE meeting_id = ?';
 
 
         $arr = array();
@@ -113,17 +113,20 @@ class MeetingOp
 
     /**
      * 根据 email获取 用户id
-     * @return bool
+     * @return mixed
      */
     public function getUserIdFromEmail()
     {
-        $sql = 'SELECT user_id FROM bd_user WHERE user_email =?';
+        $sql = 'SELECT user_id FROM bd_user WHERE user_email = ?';
         $arr = array();
         $arr[0] = $this->user->getEmail();
+//        echo "email" . $arr[0];
         $rows = $this->db->select($sql, $arr);
 
         if (count($rows) == 1) {//存在且只存在一个这样的用户
-            return (int)($rows[0]['user_id']);
+//            var_dump($rows);
+//            echo $rows[0]["user_id"];
+            return $rows[0]['user_id'];
 
         }
         return false;//不存在
@@ -131,7 +134,7 @@ class MeetingOp
 
     /**
      * 根据会议ID 获取会议装状态
-     * @return bool
+     * @return mixed
      */
     public function getMeetingStatusById()
     {
@@ -149,13 +152,13 @@ class MeetingOp
     }
 
     /**
-     * 根据会议url获取 会议状态和密码
-     * @return bool
+     * 根据会议url获取 会议号,会议状态和密码
+     * @return mixed
      */
-    public function getMeetingStatusAndPwdByUrl()
+    public function getMeetingInfoByUrl()
     {
         if (($meeting_url = $this->meeting->getUrl()) != null) {
-            $sql = 'SELECT meeting_status,meeting_password FROM bd_meeting WHERE meeting_url =?';
+            $sql = 'SELECT meeting_status,meeting_password,meeting_id FROM bd_meeting WHERE meeting_url =?';
             $arr = array();
             $arr[0] = $meeting_url;
             $rows = $this->db->select($sql, $arr);
@@ -171,7 +174,7 @@ class MeetingOp
     /**
      * 检查user_and_meeting 表中 是否存在同样的（主持会议或）加会记录
      * @param $type
-     * @return bool
+     * @return mixed
      */
     public function checkIfExistSameUserAndMeeting($type)
     {
@@ -192,7 +195,7 @@ class MeetingOp
 
     /**
      * 增加入会记录
-     * @return bool
+     * @return mixed
      */
     public function addCheckIn($type)
     {
@@ -205,7 +208,7 @@ class MeetingOp
         $arr[1] = $dt->format('Y-m-d H:i:s');
         $arr[2] = $this->user->getId();
         $arr[3] = $this->meeting->getId();
-
+//        var_dump($arr);
         if (($user_and_meeting_id = $this->db->insert($sql, $arr)) == false) {
 
             return false;//插入失败
@@ -216,7 +219,7 @@ class MeetingOp
     /**
      * 更新入会记录
      * @param $_id
-     * @return bool
+     * @return mixed
      */
     public function updateCheckIn($_id)
     {
@@ -273,7 +276,7 @@ class MeetingOp
     /**
      * 根据 user_and_meeting_id 获取 进会信息
      * @param $_id
-     * @return bool
+     * @return mixed
      */
     public function getCheckInInfoById($_id)
     {
@@ -340,9 +343,9 @@ class MeetingOp
             /**
              * 获取user_email对应的user_id
              */
-            if (($user_id = $this->getUserIdFromEmail() != false)) {
+            if (($user_id = $this->getUserIdFromEmail()) != false) {
 //                echo 'getUserIdFromEmail';
-
+//                echo '###' . $user_id;
                 $this->user->setId($user_id);
                 /**
                  * 根据meeting_id,判断会议的状态（1 ：未开始并且未到期 2：未开始并且过期了 3：正在进行 4：开会结束）
@@ -381,16 +384,17 @@ class MeetingOp
             /**
              * 获取user_email对应的user_id
              */
-            if (($user_id = $this->getUserIdFromEmail() != false)) {
-
+            if (($user_id = $this->getUserIdFromEmail()) != false) {
                 $this->user->setId($user_id);
                 /**
                  * 根据meeting_url 获取 meeting_id，meeting_password,判断会议的状态（1 ：未开始并且未到期 2：未开始并且过期了 3：正在进行 4：开会结束）
                  * 状态必须为3，判断user_id和host_user_id是否一致,主持人会议期间不能退出，否则会议结束
                  */
-                if (($result_arr = $this->getMeetingStatusAndPwdByUrl()) != false) {
+                if (($result_arr = $this->getMeetingInfoByUrl()) != false) {
                     $status = $result_arr['meeting_status'];
                     $password = $result_arr['meeting_password'];
+                    $meeting_id = $result_arr['meeting_id'];
+                    $this->meeting->setId($meeting_id);
                     /**
                      * 比较 会议状态和密码
                      */
@@ -407,10 +411,11 @@ class MeetingOp
                             }
 
                         } else {
+
                             /**
                              * 更新到 user_and_meeting表
                              */
-                            if (($user_and_meeting_id = $this->updateCheckIn(1)) != false) {
+                            if (($user_and_meeting_id = $this->updateCheckIn($_id)) != false) {
                                 /**
                                  * 返回
                                  */

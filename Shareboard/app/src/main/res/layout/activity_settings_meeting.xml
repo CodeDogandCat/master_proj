@@ -67,7 +67,7 @@
                 android:maxLength="20"
                 android:maxLines="1"
                 android:text="我的会议"
-                android:textColor="@color/my_yellow"
+                android:textColor="@color/my_white"
                 android:textSize="@dimen/small_text_size"
                 />
 
@@ -91,6 +91,7 @@
                 android:background="@color/my_deepgray"/>
 
             <LinearLayout
+                android:id="@+id/ll_settings_meeting_is_drawable"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/my_barblack"
@@ -105,7 +106,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|left"
                     android:text="@string/meeting_participate_able_to_draw"
-                    android:textColor="@color/my_yellow"
+                    android:textColor="@color/my_white"
                     android:textSize="@dimen/small_text_size"/>
 
                 <RelativeLayout
@@ -133,6 +134,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_settings_meeting_is_talkable"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/my_barblack"
@@ -147,7 +149,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|left"
                     android:text="@string/meeting_participate_able_to_talk"
-                    android:textColor="@color/my_yellow"
+                    android:textColor="@color/my_white"
                     android:textSize="@dimen/small_text_size"/>
 
                 <RelativeLayout
@@ -200,8 +202,9 @@
                     android:hint="@string/meeting_password_optional"
                     android:maxLength="8"
                     android:maxLines="1"
-                    android:textColor="@color/my_yellow"
+                    android:textColor="@color/my_white"
                     android:textSize="@dimen/small_text_size"
+                    android:inputType="textVisiblePassword"
                     />
 
 
@@ -228,6 +231,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/ll_settings_meeting_add_to_calendar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/my_barblack"
@@ -242,7 +246,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|left"
                     android:text="@string/add_to_canlendar"
-                    android:textColor="@color/my_yellow"
+                    android:textColor="@color/my_white"
                     android:textSize="@dimen/small_text_size"/>
 
 

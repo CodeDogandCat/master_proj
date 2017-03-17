@@ -1,10 +1,7 @@
 package cn.edu.hfut.lilei.shareboard;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
@@ -13,8 +10,6 @@ import com.lzy.okgo.cookie.store.PersistentCookieStore;
 
 import java.util.logging.Level;
 
-import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
-import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_add_to_calendar;
@@ -61,7 +56,7 @@ public class MyApplication extends Application {
 //        GreenDaoManager.getInstance();
 
         //请求权限
-        requestSdcard();
+
         //全局异常捕获
 //        CrashHandler crashHandler = CrashHandler.getInstance();
 //        crashHandler.init(mContext);
@@ -131,32 +126,5 @@ public class MyApplication extends Application {
         return mContext;
     }
 
-    /**
-     * 获取权限
-     */
-    private void requestSdcard() {
-        PermissionsUtil.TipInfo tip =
-                new PermissionsUtil.TipInfo(null, null, null, null);
-
-        if (PermissionsUtil
-                .hasPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) &&
-                PermissionsUtil.hasPermission(mContext,
-                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-        } else {
-            PermissionsUtil.requestPermission((Activity) mContext, new PermissionListener() {
-                @Override
-                public void permissionGranted(@NonNull String[] permissions) {
-
-                }
-
-                @Override
-                public void permissionDenied(@NonNull String[] permissions) {
-
-                }
-            }, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE}, true, tip);
-        }
-    }
 
 }

@@ -98,13 +98,13 @@ public class CustomAlertDialog extends Dialog {
                     .findViewById(R.id.tvAlertDialogTitle);
             tvAlertTitle.setText(mTitle);
 
-//            if (!TextUtils.isEmpty(mMessage)) {
-            EditText tvAlertDialogMessage = (EditText) view
-                    .findViewById(R.id.tvAlertDialogMessage);
-            tvAlertDialogMessage.setVisibility(View.VISIBLE);
-//                View vMessageLine = (View) view.findViewById(R.id.vMessageLine);
-//                vMessageLine.setVisibility(View.VISIBLE);
-//            }
+            if (!TextUtils.isEmpty(mMessage)) {
+                EditText tvAlertDialogMessage = (EditText) view
+                        .findViewById(R.id.tvAlertDialogMessage);
+                tvAlertDialogMessage.setVisibility(View.VISIBLE);
+                View vMessageLine = (View) view.findViewById(R.id.vMessageLine);
+                vMessageLine.setVisibility(View.VISIBLE);
+            }
 
             Button btnPositive = (Button) view
                     .findViewById(R.id.btnAlertDialogPositive);

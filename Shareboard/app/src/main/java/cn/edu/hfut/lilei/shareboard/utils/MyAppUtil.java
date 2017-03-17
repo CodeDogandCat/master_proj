@@ -132,6 +132,46 @@ public class MyAppUtil {
 
 
     /**
+     * 删除指定 id 的事件
+     *
+     * @param context
+     * @param eventid
+     */
+    public static void delCalendarEvent(Context context, long eventid) {
+
+        ContentResolver cr = context.getContentResolver();
+        ContentValues updateValues = new ContentValues();
+        Uri deleteUri = null;
+        deleteUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventid);
+        cr.delete(deleteUri, null, null);
+
+    }
+
+    /**
+     * 更新指定 id 的事件
+     *
+     * @param context
+     * @param eventid
+     */
+    public static void updateCalendarEvent(Context context, long eventid, long startMillis,
+                                           long endMillis, String title, String description
+    ) {
+
+        ContentResolver cr = context.getContentResolver();
+        ContentValues updateValues = new ContentValues();
+        Uri updateUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventid);
+        updateValues.put(CalendarContract.Events.DTSTART, startMillis);
+        updateValues.put(CalendarContract.Events.DTEND, endMillis);
+        updateValues.put(CalendarContract.Events.TITLE,
+                String.format(context.getResources()
+                        .getString(R.string.invite_title), title));
+        updateValues.put(CalendarContract.Events.DESCRIPTION,
+                description);
+        cr.update(updateUri, updateValues, null, null);
+
+    }
+
+    /**
      * 查看指定日期的日历事件提醒
      *
      * @param context
@@ -147,6 +187,7 @@ public class MyAppUtil {
         context.startActivity(intent);
 
     }
+
 
     /**
      * 添加事件（提醒）系统日历
@@ -193,7 +234,7 @@ public class MyAppUtil {
             values2.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
             context.getContentResolver()
                     .insert(CalendarContract.Reminders.CONTENT_URI, values2);
-            showToast(context, context.getString(R.string.meeting_event_already_add));
+//            showToast(context, context.getString(R.string.meeting_event_already_add));
             return mEventID;
         } catch (SecurityException e) {
             return -1;
@@ -279,7 +320,6 @@ public class MyAppUtil {
     }
 
 
-
     /**
      * 获取版本名称
      */
@@ -314,10 +354,6 @@ public class MyAppUtil {
         }
         return versioncode;
     }
-
-
-
-
 
 
 }

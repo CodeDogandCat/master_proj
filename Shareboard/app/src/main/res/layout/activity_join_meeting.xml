@@ -57,7 +57,9 @@
                 style="@style/big_edittext"
                 android:gravity="center"
                 android:hint="@string/please_input_your_meeting_number"
-                android:inputType="textAutoCorrect"
+                android:inputType="number"
+                android:maxLength="12"
+                android:maxLines="1"
                 android:textSize="@dimen/small_text_size" />
 
         </LinearLayout>
@@ -103,6 +105,8 @@
                 android:gravity="center"
                 android:hint="@string/please_input_your_meeting_password"
                 android:inputType="textPassword"
+                android:maxLength="8"
+                android:maxLines="1"
                 android:textSize="@dimen/small_text_size" />
         </LinearLayout>
 

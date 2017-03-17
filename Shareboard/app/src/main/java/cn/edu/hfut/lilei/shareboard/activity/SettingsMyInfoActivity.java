@@ -3,6 +3,7 @@ package cn.edu.hfut.lilei.shareboard.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
+import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
 import cn.edu.hfut.lilei.shareboard.models.Register;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
@@ -31,6 +34,7 @@ import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.view.AlterHeadDialog;
+import cn.edu.hfut.lilei.shareboard.view.CustomAlertDialog;
 import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 import cn.edu.hfut.lilei.shareboard.view.NameInputDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
@@ -41,7 +45,6 @@ import okhttp3.Response;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.ALBUM_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CAMERA_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CROP_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CAMERA;
@@ -66,8 +69,10 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
     //控件
     private LinearLayout mLlAccount, mLlName, mLlLoginpassword, mLlLogout;
     private TextView mTvFamilyNameHint, mTvGivenNameHint;
+    private TextView mTvName, mTvAvatar, mTvLoginPwd;
     private AvatarImageView mPhoto;
     private LodingDialog.Builder mlodingDialog;
+    private ImageView next1, next2, next3;
     //数据
     private Uri cropUri;
     private boolean shouldCallUpdate = false;
@@ -87,31 +92,6 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
 
 
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        showLog("resume...");
-//        if (shouldCallUpdate) {
-//            update();
-//        }
-//
-//
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        showLog("stop...");
-//        shouldCallUpdate = true;
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        showLog("pause...");
-//        shouldCallUpdate = true;
-//    }
 
     private void update() {
         showLog("update ..................");
@@ -186,8 +166,15 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
             }
         });
         mPhoto = (AvatarImageView) this.findViewById(R.id.img_settingmyinfo_photo);
+        next1 = (ImageView) this.findViewById(R.id.img_settingmyinfo_next1);
+        next2 = (ImageView) this.findViewById(R.id.img_settingmyinfo_next2);
+        next3 = (ImageView) this.findViewById(R.id.img_settingmyinfo_next3);
         mTvFamilyNameHint = (TextView) findViewById(R.id.tv_settingmyinfo_familyname);
         mTvGivenNameHint = (TextView) findViewById(R.id.tv_settingmyinfo_givenname);
+        mTvAvatar = (TextView) findViewById(R.id.tv_settingmyinfo_avatar);
+        mTvName = (TextView) findViewById(R.id.tv_settingmyinfo_name);
+        mTvLoginPwd = (TextView) findViewById(R.id.tv_settingmyinfo_login_pwd);
+
 
         update();
 
@@ -237,23 +224,58 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                 }
         );
         mLlLogout = (LinearLayout) findViewById(R.id.ll_settingmyinfo_logout);
-        mLlLogout.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (!SharedPrefUtil.getInstance()
-                                .deleteData(share_token)) {
-                            showToast(mContext, R.string.logout_failed);
-                        } else {
-                            Intent intent = new Intent();
-                            intent.setClass(SettingsMyInfoActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
 
-                    }
-                }
+        mLlLogout.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View view) {
+
+                                             new CustomAlertDialog.Builder(mContext)
+                                                     .setTitle(getString(R.string.logout_confirm))
+                                                     .setPositiveButton(
+                                                             mContext.getString(R.string.confirm),
+                                                             new DialogInterface.OnClickListener() {
+                                                                 @Override
+                                                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                                                     if (!SharedPrefUtil.getInstance()
+                                                                             .deleteData(share_token)) {
+                                                                         showToast(mContext, R.string.logout_failed);
+                                                                     } else {
+                                                                         Intent intent = new Intent();
+                                                                         intent.setClass(SettingsMyInfoActivity.this,
+                                                                                 LoginActivity.class);
+                                                                         startActivity(intent);
+                                                                         finish();
+                                                                     }
+                                                                 }
+                                                             })
+                                                     .setNegativeButton(
+                                                             mContext.getString(R.string.cancel),
+                                                             null)
+                                                     .show();
+                                         }
+                                     }
         );
+
+
+        new TouchListener.Builder(mContext).setLinearLayout(mLlAccount)
+                .setTextView1(mTvAvatar)
+                .setImageView(next1)
+                .create();
+
+        new TouchListener.Builder(mContext).setLinearLayout(mLlName)
+                .setTextView1(mTvName)
+                .setImageView(next2)
+                .create();
+
+        new TouchListener.Builder(mContext).setLinearLayout(mLlLoginpassword)
+                .setTextView1(mTvLoginPwd)
+                .setImageView(next3)
+                .create();
+
+        new TouchListener.Builder(mContext).setLinearLayout(mLlLogout)
+                .create();
+
+
     }
 
     /**
@@ -290,7 +312,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
             return;
 
         switch (requestCode) {
-            case ALBUM_REQUEST_CODE:
+            case SettingUtil.ALBUM_REQUEST_CODE:
                 Log.i(SettingUtil.TAG, "ALBUM_resultcode" + resultCode);
                 Log.i(SettingUtil.TAG, "相册，开始裁剪");
                 Log.i(SettingUtil.TAG, "相册 [ " + data + " ]");
@@ -324,9 +346,9 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                             //网络连接不可用
                             return NET_DISCONNECT;
                         }
-                        /**
-                         * 2.构造参数
-                         */
+/**
+ * 2.构造参数
+ */
                         final String avatarPath =
                                 ImageUtil.getImageAbsolutePath19(mContext, cropUri);
 

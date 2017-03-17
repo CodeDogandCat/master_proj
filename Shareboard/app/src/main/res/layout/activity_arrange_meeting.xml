@@ -70,7 +70,7 @@
                     android:gravity="left|center_vertical"
                     android:hint="@string/meeting_theme"
                     android:text="李磊的会议"
-                    android:textColor="@color/my_yellow"
+                    android:textColor="@color/my_white"
                     android:textSize="@dimen/small_text_size"
                     android:maxLines="1"
                     android:maxLength="20"
@@ -111,7 +111,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical|left"
                         android:text="@string/date"
-                        android:textColor="@color/my_yellow"
+                        android:textColor="@color/my_white"
                         android:textSize="@dimen/small_text_size" />
 
                     <TextView
@@ -122,7 +122,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/meeting_date"
                         android:textSize="@dimen/small_text_size"
-                        android:textColor="@color/my_white"/>
+                       />
 
 
 
@@ -151,7 +151,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical|left"
                         android:text="@string/from"
-                        android:textColor="@color/my_yellow"
+                        android:textColor="@color/my_white"
                         android:textSize="@dimen/small_text_size" />
 
                     <TextView
@@ -162,7 +162,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/start_time"
                         android:textSize="@dimen/small_text_size"
-                        android:textColor="@color/my_white"/>
+                       />
 
 
                 </LinearLayout>
@@ -189,7 +189,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical|left"
                         android:text="@string/to"
-                        android:textColor="@color/my_yellow"
+                        android:textColor="@color/my_white"
                         android:textSize="@dimen/small_text_size" />
 
                     <TextView
@@ -200,7 +200,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/end_time"
                         android:textSize="@dimen/small_text_size"
-                        android:textColor="@color/my_white"/>
+                        />
 
                 </LinearLayout>
 
@@ -224,6 +224,7 @@
                     android:background="@color/my_deepgray" />
 
                 <LinearLayout
+                    android:id="@+id/ll_arrange_meeting_is_drawable"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/my_barblack"
@@ -238,7 +239,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical|left"
                         android:text="@string/meeting_participate_able_to_draw"
-                        android:textColor="@color/my_yellow"
+                        android:textColor="@color/my_white"
                         android:textSize="@dimen/small_text_size" />
 
                     <RelativeLayout
@@ -266,6 +267,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_arrange_meeting_is_talkable"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/my_barblack"
@@ -280,7 +282,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical|left"
                         android:text="@string/meeting_participate_able_to_talk"
-                        android:textColor="@color/my_yellow"
+                        android:textColor="@color/my_white"
                         android:textSize="@dimen/small_text_size" />
 
                     <RelativeLayout
@@ -331,7 +333,7 @@
                         android:background="@color/transparent"
                         android:gravity="center_vertical|left"
                         android:hint="@string/meeting_password_optional"
-                        android:textColor="@color/my_yellow"
+                        android:textColor="@color/my_white"
                         android:textSize="@dimen/small_text_size"
                         android:maxLength="8"
                         android:maxLines="1"
@@ -362,6 +364,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/ll_arrange_meeting_add_to_calendar"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/my_barblack"
@@ -376,7 +379,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical|left"
                         android:text="@string/add_to_canlendar"
-                        android:textColor="@color/my_yellow"
+                        android:textColor="@color/my_white"
                         android:textSize="@dimen/small_text_size" />
 
 

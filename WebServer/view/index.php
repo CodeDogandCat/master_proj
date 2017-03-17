@@ -5,6 +5,7 @@ header("Content-type: text/html; charset=utf-8");
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/settings.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/Session.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/tokenInterceptor.php';//check token
+require_once $_SERVER['DOCUMENT_ROOT'] . '/util/EncryptUtil.php';
 use \Workerman\Worker;
 use \Workerman\WebServer;
 use \GatewayWorker\Lib\Gateway;

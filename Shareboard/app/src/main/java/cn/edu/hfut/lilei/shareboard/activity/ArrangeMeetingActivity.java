@@ -18,23 +18,47 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.kyleduo.switchbutton.SwitchButton;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.request.PostRequest;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
+import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
+import cn.edu.hfut.lilei.shareboard.models.Common;
+import cn.edu.hfut.lilei.shareboard.models.Meeting;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
+import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SHOW_TIME_MIN;
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_HOST_MEETING;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_end_time;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_id;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_add_to_calendar;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_drawable;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_talkable;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_password;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_start_time;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_theme;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_add_to_calendar;
@@ -42,11 +66,14 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_dr
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_talkable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_password;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_theme;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
 
 public class ArrangeMeetingActivity extends SwipeBackActivity implements View.OnClickListener {
     //控件
-    private LinearLayout mLlMeetingDate, mLlMeetingStartTime, mLlMeetingEndTime;
+    private LinearLayout mLlMeetingDate, mLlMeetingStartTime, mLlMeetingEndTime, mLlAddToCalendar,
+            mLlIsDrawable, mLlIsTalkable;
     private Button mBtnSave;
     private TextView mTvMeetingDate, mTvMeetingStartTime, mTvMeetingEndTime;
     private SwitchButton mBtnAddToCalendar, mBtnIsDrawable, mBtnIsTalkable;
@@ -55,8 +82,12 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
     //数据
     private int year, month, day, a_pm1, hour_24_1, hour_12_1, minite1, a_pm2, hour_24_2, hour_12_2,
             minite2;
-    private long startMillis, endMillis, eventId = -1;
-    private String title, description, mid, mpassword;
+    private long startMillis, endMillis, eventId = -1, meeting_url;
+    private String title, description, mpassword, mfamilyName, mgivenName;
+    private String feature;
+    private Boolean isTalkable, isDrawable, addToCalendar;
+
+    private int is_talkable, is_drawable, is_add_to_calendar, meeting_id;
     private String[] am_pm = {"上午", "下午"};
     //上下文参数
     private Context mContext;
@@ -80,11 +111,22 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                         null);
 
         if (PermissionsUtil.hasPermission(this, Manifest.permission.WRITE_CALENDAR)) {
+            if (mBtnAddToCalendar.isChecked()) {
+                mBtnAddToCalendar.setChecked(false);
+            } else {
+                mBtnAddToCalendar.setChecked(true);
+
+            }
         } else {
             PermissionsUtil.requestPermission(this, new PermissionListener() {
                 @Override
                 public void permissionGranted(@NonNull String[] permissions) {
+                    if (mBtnAddToCalendar.isChecked()) {
+                        mBtnAddToCalendar.setChecked(false);
+                    } else {
+                        mBtnAddToCalendar.setChecked(true);
 
+                    }
                 }
 
                 @Override
@@ -102,6 +144,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
      */
     private void init() {
         mContext = this;
+
         //右滑返回
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
@@ -124,21 +167,53 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
         mLlMeetingDate = (LinearLayout) findViewById(R.id.ll_arrange_meeting_date);
         mLlMeetingStartTime = (LinearLayout) findViewById(R.id.ll_arrange_meeting_start_time);
         mLlMeetingEndTime = (LinearLayout) findViewById(R.id.ll_arrange_meeting_end_time);
+        mLlIsDrawable = (LinearLayout) findViewById(R.id.ll_arrange_meeting_is_drawable);
+        mLlIsTalkable = (LinearLayout) findViewById(R.id.ll_arrange_meeting_is_talkable);
+        mLlAddToCalendar = (LinearLayout) findViewById(R.id.ll_arrange_meeting_add_to_calendar);
+
         mTvMeetingDate = (TextView) findViewById(R.id.tv_arrange_meeting_date);
         mTvMeetingStartTime = (TextView) findViewById(R.id.tv_arrange_meeting_start_time);
         mTvMeetingEndTime = (TextView) findViewById(R.id.tv_arrange_meeting_end_time);
         mBtnSave = (Button) findViewById(R.id.btn_arrange_meeting_save);
+
         mBtnAddToCalendar = (SwitchButton) findViewById(R.id.btn_arrange_meeting_add_to_calendar);
         mBtnIsDrawable = (SwitchButton) findViewById(R.id.btn_arrange_meeting_able_to_draw);
         mBtnIsTalkable = (SwitchButton) findViewById(R.id.btn_arrange_meeting_able_to_talk);
+
         mEtTitle = (EditText) findViewById(R.id.et_arrange_meeting_title);
+        mEtPassword = (EditText) findViewById(R.id.et_arrange_meeting_meetingpassword);
         mLlMeetingDate.setOnClickListener(this);
         mLlMeetingStartTime.setOnClickListener(this);
         mLlMeetingEndTime.setOnClickListener(this);
         mBtnSave.setOnClickListener(this);
         mBtnAddToCalendar.setOnClickListener(this);
 
+        mLlIsDrawable.setOnClickListener(this);
+        mLlIsTalkable.setOnClickListener(this);
+        mLlAddToCalendar.setOnClickListener(this);
 
+        new TouchListener.Builder(mContext).setLinearLayout(mLlMeetingDate)
+                .create();
+        new TouchListener.Builder(mContext).setLinearLayout(mLlMeetingStartTime)
+                .create();
+        new TouchListener.Builder(mContext).setLinearLayout(mLlMeetingEndTime)
+                .create();
+        new TouchListener.Builder(mContext).setLinearLayout(mLlIsDrawable)
+                .create();
+        new TouchListener.Builder(mContext).setLinearLayout(mLlIsTalkable)
+                .create();
+        new TouchListener.Builder(mContext).setLinearLayout(mLlAddToCalendar)
+                .create();
+
+        getBundle();
+
+
+    }
+
+    /**
+     * 设置默认的当前日期，会议开始时间，会议结束时间的初始值
+     */
+    public void setDefaultDateTime() {
         //计算日期和时间
         Calendar c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
@@ -167,6 +242,76 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                 am_pm[a_pm1] + " " + DateTimeUtil.zeroConvert(hour_12_1) + ":00");
         mTvMeetingEndTime.setText(
                 am_pm[a_pm2] + " " + DateTimeUtil.zeroConvert(hour_12_2) + ":00");
+    }
+
+    /**
+     * 获取bundle参数,判断后续操作
+     */
+    private void getBundle() {
+        Bundle bundle = this.getIntent()
+                .getExtras();
+        feature = bundle.getString(post_need_feature);
+        //新增会议安排
+        if (feature.equals("add")) {
+            //加载本地存储
+            initFromSharePre();
+            setDefaultDateTime();
+        } else
+            //修改会议安排
+            if (feature.equals("edit")) {
+                //加载bundle传过来的参数
+                startMillis = bundle.getLong("startMillis");
+                endMillis = bundle.getLong("endMillis");
+                eventId = bundle.getLong("eventId");
+                title = bundle.getString("title");
+                meeting_url = bundle.getLong(post_meeting_url);
+                mpassword = bundle.getString("password");
+                meeting_id = bundle.getInt(post_meeting_id);
+                isDrawable = bundle.getBoolean("isDrawable");
+                isTalkable = bundle.getBoolean("isTalkable");
+                addToCalendar = bundle.getBoolean("addToCalendar");
+                //加载页面参数的值
+                initFromBundle();
+
+
+            }
+
+    }
+
+    /**
+     * 加载页面传递的参数
+     */
+    public void initFromBundle() {
+        mEtTitle.setText(title);
+        mEtPassword.setText(mpassword);
+        mBtnAddToCalendar.setCheckedImmediately(addToCalendar);
+        mBtnIsDrawable.setCheckedImmediately(isDrawable);
+        mBtnIsTalkable.setCheckedImmediately(isTalkable);
+
+        //设置 时间参数
+        Calendar start = Calendar.getInstance();
+        start.setTimeInMillis(startMillis);
+        year = start.get(Calendar.YEAR);
+        month = start.get(Calendar.MONTH);
+        day = start.get(Calendar.DAY_OF_MONTH);
+        a_pm1 = start.get(Calendar.AM_PM);
+        hour_24_1 = start.get(Calendar.HOUR_OF_DAY);
+        hour_12_1 = start.get(Calendar.HOUR);
+        minite1 = 0;
+
+        Calendar end = Calendar.getInstance();
+        end.setTimeInMillis(endMillis);
+        a_pm2 = end.get(Calendar.AM_PM);
+        hour_24_2 = end.get(Calendar.HOUR_OF_DAY);
+        hour_12_2 = end.get(Calendar.HOUR);
+        minite2 = 0;
+
+        //更新时间参数 到 界面
+        updateDate();
+        updateStartTime();
+        updateEndTime();
+
+
     }
 
     /**
@@ -225,12 +370,61 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
             MyAppUtil.showToast(mContext, R.string.can_not_recognize_meeting_theme);
             return false;
         }
-        if (!StringUtil.isValidPassword(mpassword)) {
+        if (!StringUtil.isValidMeetingPassword(mpassword)) {
             MyAppUtil.showToast(mContext, R.string.can_not_recognize_meeting_password);
             return false;
         }
         return true;
 
+    }
+
+
+    /**
+     * 把时间数据转化成必要格式的参数用来传递
+     */
+    private void timeConvertForBundle() {
+        Calendar start = Calendar.getInstance();
+        start.set(year, month, day);
+        start.set(Calendar.HOUR_OF_DAY, hour_24_1);
+        start.set(Calendar.MINUTE, minite1);
+        startMillis = start.getTimeInMillis();
+        if (hour_24_2 < hour_24_1) {
+
+            //结束时间看起来比开始时间早,则假定是第二天结束
+            start.set(Calendar.HOUR_OF_DAY, 0);
+            start.set(Calendar.MINUTE, 0);
+            start.add(Calendar.HOUR, 24);//第二天
+
+        }
+
+        start.set(Calendar.HOUR_OF_DAY, hour_24_2);
+        start.set(Calendar.MINUTE, minite2);
+        endMillis = start.getTimeInMillis();
+
+
+    }
+
+
+    /**
+     * 构造 日历事件描述
+     *
+     * @return String
+     */
+    public String getDescribe() {
+        return String.format(getResources().getString(
+                R.string.invite_content),
+                mfamilyName + mgivenName,
+                title,
+                DateTimeUtil.getPreString(
+                        startMillis) +
+                        am_pm[a_pm1] +
+                        DateTimeUtil.zeroConvert
+                                (hour_12_1) +
+                        ":" +
+                        DateTimeUtil.addZero(
+                                minite1),
+                String.valueOf(meeting_url),
+                mpassword);
     }
 
     /**
@@ -241,9 +435,25 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_arrange_meeting_add_to_calendar:
+            case R.id.ll_arrange_meeting_add_to_calendar:
                 //请求权限但不执行后续操作
                 requestCalendar();
+                break;
+            case R.id.ll_arrange_meeting_is_drawable:
+                if (mBtnIsDrawable.isChecked()) {
+                    mBtnIsDrawable.setChecked(false);
+                } else {
+                    mBtnIsDrawable.setChecked(true);
+
+                }
+                break;
+            case R.id.ll_arrange_meeting_is_talkable:
+                if (mBtnIsTalkable.isChecked()) {
+                    mBtnIsTalkable.setChecked(false);
+                } else {
+                    mBtnIsTalkable.setChecked(true);
+
+                }
                 break;
             //为会议开始日期设置监听器
             case R.id.ll_arrange_meeting_date:
@@ -318,100 +528,221 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
             //为保存按钮设置监听器
             case R.id.btn_arrange_meeting_save:
                 if (checkPageContent()) {
-                    timeConvertForBundle();
-                    if (mBtnAddToCalendar.isChecked()) {
-                        //插入日历事件提醒
-                        eventId =
-                                MyAppUtil.insertCalendarEvent(mContext, startMillis, endMillis,
-                                        title,
-                                        null,
-                                        description, null);
-                    }
-                    //加载中
+
                     mlodingDialog = loding(mContext, R.string.arranging);
-                    //保存到数据库
+
+                    timeConvertForBundle();
+
+                    is_talkable = mBtnIsTalkable.isChecked() ? 1 : 0;
+                    is_drawable = mBtnIsDrawable.isChecked() ? 1 : 0;
+                    is_add_to_calendar = mBtnAddToCalendar.isChecked() ? 1 : 0;
+
                     new AsyncTask<Void, Void, Integer>() {
 
                         @Override
-                        protected Integer doInBackground(Void... params) {
-
-                            //网络操作
-                            long startTime = System.currentTimeMillis();
-                            long loadingTime = System.currentTimeMillis() - startTime;
-                            if (loadingTime < SHOW_TIME_MIN) {
-                                try {
-                                    //线程休眠等待
-                                    Thread.sleep(SHOW_TIME_MIN - loadingTime);
-                                    mlodingDialog.cancle();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                        protected Integer doInBackground(Void... voids) {
+                            /**
+                             * 1.检查网络状态并提醒
+                             */
+                            if (!NetworkUtil.isNetworkConnected(mContext)) {
+                                //网络连接不可用
+                                return NET_DISCONNECT;
                             }
-                            return 1;
+                            /**
+                             * 2.获取会议设置
+                             */
+                            ArrayList<String> keyList = new ArrayList<>();
+                            ArrayList<String> valueList = new ArrayList<>();
+                            keyList.add(share_token);
+                            keyList.add(share_user_email);
+                            keyList.add(share_family_name);
+                            keyList.add(share_given_name);
+
+                            valueList = SharedPrefUtil.getInstance()
+                                    .getStringDatas(keyList);
+                            if (valueList == null) {
+                                return -2;
+                            }
+                            mfamilyName = valueList.get(2);
+                            mgivenName = valueList.get(3);
+
+                            /**
+                             * 3.发送
+                             */
+
+                            PostRequest tmp = OkGo.post(URL_HOST_MEETING)
+                                    .tag(this)
+                                    .params(post_need_feature, feature)
+                                    .params(post_token, valueList.get(0))
+                                    .params(post_user_email, valueList.get(1))
+                                    .params(post_meeting_password,
+                                            StringUtil.getMD5(mpassword))
+                                    .params(post_meeting_theme, title)
+                                    .params(post_meeting_is_talkable, is_talkable)
+                                    .params(post_meeting_is_drawable, is_drawable)
+                                    .params(post_meeting_is_add_to_calendar, is_add_to_calendar)
+                                    .params(post_meeting_start_time, startMillis)
+                                    .params(post_meeting_end_time, endMillis);
+
+                            if (feature.equals("edit")) {
+                                tmp.params(post_meeting_id, meeting_id);
+                                tmp.execute(new JsonCallback<Common>() {
+                                                @Override
+                                                public void onSuccess(Common o, Call call,
+                                                                      Response response) {
+                                                    if (o.getCode() == SUCCESS) {
+
+                                                        description = getDescribe();
+
+                                                        if (addToCalendar) {
+                                                            //更新日历提醒事件 mEventID
+                                                            MyAppUtil.updateCalendarEvent
+                                                                    (mContext, eventId,
+                                                                            startMillis,
+                                                                            endMillis,
+                                                                            title,
+                                                                            description);
+                                                        }
+
+                                                        /**
+                                                         * 跳到会议信息界面
+                                                         */
+                                                        jumpToNextPage();
+
+                                                    } else {
+                                                        //提示所有错误
+                                                        mlodingDialog.cancle();
+                                                        showToast(mContext, o.getMsg());
+                                                    }
+
+
+                                                }
+
+
+                                                @Override
+                                                public void onError(Call call, Response response,
+                                                                    Exception e) {
+                                                    super.onError(call, response, e);
+                                                    mlodingDialog.cancle();
+                                                    showToast(mContext, R.string.system_error);
+                                                }
+                                            }
+                                );
+
+                            } else
+                                if (feature.equals("add"))
+
+                                {
+                                    tmp.execute(new JsonCallback<Meeting>() {
+                                                    @Override
+                                                    public void onSuccess(Meeting o, Call call,
+                                                                          Response response) {
+                                                        if (o.getCode() == SUCCESS) {
+                                                            /**
+                                                             * 获取  meeting_id, meeting_url
+                                                             */
+                                                            meeting_id = o.getData()
+                                                                    .getMeeting_id();
+                                                            meeting_url = o.getData()
+                                                                    .getMeeting_url();
+                                                            description = getDescribe();
+
+
+                                                            if (mBtnAddToCalendar.isChecked()) {
+                                                                //插入日历事件提醒
+                                                                eventId =
+                                                                        MyAppUtil.insertCalendarEvent(
+                                                                                mContext,
+                                                                                startMillis, endMillis,
+                                                                                title,
+                                                                                null,
+                                                                                description, null);
+                                                            }
+
+                                                            /**
+                                                             * 跳到会议信息界面
+                                                             */
+                                                            jumpToNextPage();
+
+                                                        } else {
+                                                            //提示所有错误
+                                                            mlodingDialog.cancle();
+                                                            showToast(mContext, o.getMsg());
+                                                        }
+
+                                                    }
+
+                                                    @Override
+                                                    public void onError(Call call, Response response,
+                                                                        Exception e) {
+                                                        super.onError(call, response, e);
+                                                        mlodingDialog.cancle();
+                                                        showToast(mContext, R.string.system_error);
+                                                    }
+                                                }
+                                    );
+                                }
+
+
+                            return -1;
+
                         }
 
                         @Override
-                        protected void onPostExecute(Integer result) {
-                            //保存到参数
-                            Intent intent = new Intent();
-                            intent.setClass(ArrangeMeetingActivity.this, MeetingInfoActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putLong("startMillis", startMillis);
-                            bundle.putLong("endMillis", endMillis);
-                            bundle.putLong("eventId", eventId);
-                            bundle.putString("title", title);
-                            bundle.putString("description", description);
-                            bundle.putString("mid", mid);
-                            bundle.putString("mpassword", mpassword);
-                            intent.putExtras(bundle);
-                            startActivity(intent);
+                        protected void onPostExecute(Integer integer) {
+                            super.onPostExecute(integer);
+                            mlodingDialog.cancle();
+                            switch (integer) {
+                                case NET_DISCONNECT:
+                                    //弹出对话框，让用户开启网络
+                                    NetworkUtil.setNetworkMethod(mContext);
+                                    break;
+                                case -1:
+                                    break;
+                                case -2:
+                                    showToast(mContext, R.string.please_relogin);
+                                    break;
+                                default:
+//                                    showToast(mContext, R.string.system_error);
+                                    break;
+                            }
                         }
                     }.execute();
 
-
                 }
 
-                break;
-            default:
-                break;
         }
+
     }
 
     /**
-     * 把时间数据转化成必要格式的参数用来传递
+     * 跳转到会议信息页面
      */
-    private void timeConvertForBundle() {
-        Calendar start = Calendar.getInstance();
-        start.set(year, month, day);
-        start.set(Calendar.HOUR_OF_DAY, hour_24_1);
-        start.set(Calendar.MINUTE, minite1);
-        startMillis = start.getTimeInMillis();
-        if (hour_24_2 < hour_24_1) {
+    public void jumpToNextPage() {
+        Intent intent = new Intent();
+        intent.setClass(ArrangeMeetingActivity.this,
+                MeetingInfoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(post_meeting_id, meeting_id);
+        bundle.putLong(post_meeting_url,
+                meeting_url);
+        bundle.putLong("startMillis", startMillis);
+        bundle.putLong("endMillis", endMillis);
+        bundle.putLong("eventId", eventId);
+        bundle.putString("title", title);
+        bundle.putString("description", description);
+        bundle.putString("password", mpassword);
+        bundle.putBoolean("isDrawable",
+                mBtnIsDrawable.isChecked());
+        bundle.putBoolean("isTalkable",
+                mBtnIsTalkable.isChecked());
+        bundle.putBoolean("addToCalendar",
+                mBtnAddToCalendar.isChecked());
 
-            //结束时间看起来比开始时间早,则假定是第二天结束
-            start.set(Calendar.HOUR_OF_DAY, 0);
-            start.set(Calendar.MINUTE, 0);
-            start.add(Calendar.HOUR, 24);//第二天
-
-        }
-
-        start.set(Calendar.HOUR_OF_DAY, hour_24_2);
-        start.set(Calendar.MINUTE, minite2);
-        endMillis = start.getTimeInMillis();
-        title = mEtTitle.getText()
-                .toString()
-                .trim();
-        mid = "123-4444-8888";
-        mpassword = "888666";
-        description =
-                String.format(getResources().getString(R.string.invite_content), "李磊",
-                        "李磊的白板会议",
-                        DateTimeUtil.getPreString(startMillis) + am_pm[a_pm1] +
-                                DateTimeUtil.zeroConvert
-                                        (hour_12_1) +
-                                ":" +
-                                DateTimeUtil.addZero(minite1), mid, mpassword);
-
+        intent.putExtras(bundle);
+        mlodingDialog.cancle();
+        startActivity(intent);
+        finish();
     }
 
     /**
@@ -467,4 +798,8 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }

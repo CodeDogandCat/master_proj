@@ -326,6 +326,23 @@ public class StringUtil {
     }
 
     /**
+     * 判断meetingUrl 是否符合
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isValidMeetingUrl(String str) {
+
+        if (isEmpty(str) || (length(str) != 12)) {
+            return false;
+        }
+        if (!isNumeric(str)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * 判断密码 是否符合
      *
      * @param str

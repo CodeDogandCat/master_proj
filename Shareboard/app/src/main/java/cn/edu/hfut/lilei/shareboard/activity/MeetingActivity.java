@@ -18,7 +18,9 @@ import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.HOST_CHECK_IN;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_MEETING;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_in_type;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_id;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
@@ -27,8 +29,6 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_family_na
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_given_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_id;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
@@ -122,7 +122,9 @@ public class MeetingActivity extends Activity {
          * 加载本地数据
          */
         check_in_type = getIntent().getExtras()
-                .getInt("check_in_type");
+                .getInt(post_meeting_check_in_type);
+        meeting_url = getIntent().getExtras()
+                .getLong(post_meeting_url);
 
         ArrayList<String> keyList = new ArrayList<>();
         ArrayList<String> valueList = new ArrayList<>();
@@ -130,20 +132,18 @@ public class MeetingActivity extends Activity {
         keyList.add(share_user_email);
         keyList.add(share_family_name);
         keyList.add(share_given_name);
-        meeting_url = (long) SharedPrefUtil.getInstance()
-                .getData(share_meeting_url, -1L);
 
-        if (check_in_type == 2) {//host
-            meeting_id = (int) SharedPrefUtil.getInstance()
-                    .getData(share_meeting_id, -1);
 
+        if (check_in_type == HOST_CHECK_IN) {//host
+            meeting_id = getIntent().getExtras()
+                    .getInt(post_meeting_id);
         }
 
         valueList = SharedPrefUtil.getInstance()
                 .getStringDatas(keyList);
         if (valueList != null && meeting_url != -1L) {
             String params = "";
-            if (check_in_type == 2 && meeting_id != -1) {//host
+            if (check_in_type == HOST_CHECK_IN && meeting_id != -1) {//host
 
                 params = "?" +
                         post_token + "=" + valueList.get(0) + "&" +

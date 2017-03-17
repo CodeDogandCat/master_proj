@@ -9,6 +9,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/model/User.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/model/Meeting.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/Session.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/meeting/MeetingOp.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/util/EncryptUtil.php';
 
 /**
  * 1.拦截token
@@ -104,7 +105,7 @@ if (isset($_REQUEST[post_need_feature])) {
                     $_REQUEST[post_meeting_is_add_to_calendar],
                     $_REQUEST[post_meeting_start_time],
                     $_REQUEST[post_meeting_end_time],
-                    $_REQUEST[post_meeting_password],
+                    EncryptUtil::hash($_REQUEST[post_meeting_password], "lilimiao"),
                     1//1 ：未开始并且未到期
                 );
                 $meetingOp = new MeetingOp($user, $meeting);
@@ -154,8 +155,7 @@ if (isset($_REQUEST[post_need_feature])) {
             break;
 
 
-        case
-        'update':
+        case  'edit':
             /**
              * 检验参数，插入到meeting 表
              */
@@ -185,7 +185,6 @@ if (isset($_REQUEST[post_need_feature])) {
                 $meetingOp = new MeetingOp($user, $meeting);
 
                 if (($result_arr = $meetingOp->updateMeeting()) != false) {
-
                     printResult(SUCCESS, '更改会议安排成功', -1);
 
                 } else {

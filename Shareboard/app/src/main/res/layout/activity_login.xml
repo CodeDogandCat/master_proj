@@ -67,7 +67,7 @@
                 android:id="@+id/et_login_email"
                 style="@style/big_edittext"
                 android:hint="@string/email"
-                android:inputType="textEmailAddress"
+                android:inputType="textWebEmailAddress"
                 android:maxLength="60"
                 />
 
