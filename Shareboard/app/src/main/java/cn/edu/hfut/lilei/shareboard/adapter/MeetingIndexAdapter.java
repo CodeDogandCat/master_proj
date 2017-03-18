@@ -28,8 +28,6 @@ public class MeetingIndexAdapter extends BaseAdapter {
 
     /**
      * 组件集合，对应list.xml中的控件
-     *
-     * @author Administrator
      */
     public final class Zujian {
         public ImageView image;
@@ -77,7 +75,7 @@ public class MeetingIndexAdapter extends BaseAdapter {
                 .get("image"), (Integer) data.get(position)
                 .get("image"), zujian.image);
         zujian.title.setText((String) data.get(position)
-                .get("title"));
+                .get("tvMeetingTheme"));
         return convertView;
     }
 }

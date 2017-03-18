@@ -37,7 +37,7 @@ public class NetworkUtil {
     }
 
     /**
-     * show dialog to choose whether go to the view of network setting
+     * show dialog to choose whether go to the btnStart of network setting
      *
      * @param context
      */

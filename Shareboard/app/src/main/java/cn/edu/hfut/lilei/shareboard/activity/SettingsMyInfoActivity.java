@@ -26,17 +26,17 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
-import cn.edu.hfut.lilei.shareboard.models.Register;
+import cn.edu.hfut.lilei.shareboard.models.RegisterJson;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
-import cn.edu.hfut.lilei.shareboard.view.AlterHeadDialog;
-import cn.edu.hfut.lilei.shareboard.view.CustomAlertDialog;
-import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
-import cn.edu.hfut.lilei.shareboard.view.NameInputDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.AlterHeadDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.CustomAlertDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.NameInputDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
@@ -374,9 +374,9 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                 .params(post_user_email, email)
                                 .params(post_token, token)
                                 .params(post_user_avatar, avatarFile)
-                                .execute(new JsonCallback<Register>() {
+                                .execute(new JsonCallback<RegisterJson>() {
                                     @Override
-                                    public void onSuccess(Register o, Call call,
+                                    public void onSuccess(RegisterJson o, Call call,
                                                           Response response) {
                                         if (o.getCode() == SUCCESS) {
                                             /**

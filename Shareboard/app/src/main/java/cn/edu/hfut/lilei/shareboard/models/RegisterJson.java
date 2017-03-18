@@ -1,7 +1,7 @@
 package cn.edu.hfut.lilei.shareboard.models;
 
 
-public class Register {
+public class RegisterJson {
     public int code;//返回码
     public String msg;//提示信息
     public ServerModel data;

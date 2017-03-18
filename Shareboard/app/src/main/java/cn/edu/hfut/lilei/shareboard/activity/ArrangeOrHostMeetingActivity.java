@@ -18,12 +18,12 @@ import java.util.ArrayList;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
-import cn.edu.hfut.lilei.shareboard.models.Meeting;
+import cn.edu.hfut.lilei.shareboard.models.MeetingJson;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
-import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
@@ -37,7 +37,9 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_HOST_MEETING;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_is_enter_meeting;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_in_type;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_desc;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_end_time;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_event_id;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_id;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_add_to_calendar;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_drawable;
@@ -210,10 +212,12 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                 .params(post_meeting_is_add_to_calendar, 0)//立即召开会议,不要添加日历提醒
                                 .params(post_meeting_start_time, DateTimeUtil.millisNow())
                                 .params(post_meeting_end_time, DateTimeUtil.millisSecondInHours(1))
+                                .params(post_meeting_event_id, -1)//日历事件ID
+                                .params(post_meeting_desc, "")//会议描述
                                 .params(post_is_enter_meeting, true)
-                                .execute(new JsonCallback<Meeting>() {
+                                .execute(new JsonCallback<MeetingJson>() {
                                              @Override
-                                             public void onSuccess(Meeting o, Call call,
+                                             public void onSuccess(MeetingJson o, Call call,
                                                                    Response response) {
                                                  if (o.getCode() == SUCCESS) {
 

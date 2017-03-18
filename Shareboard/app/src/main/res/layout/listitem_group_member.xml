@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <!--<cn.edu.hfut.lilei.shareboard.view.CircleImageView-->
+            <!--<cn.edu.hfut.lilei.shareboard.btnStart.CircleImageView-->
                 <!--android:id="@+id/img_contacts_photo"-->
                 <!--android:layout_width="50dp"-->
                 <!--android:layout_height="50dp"-->

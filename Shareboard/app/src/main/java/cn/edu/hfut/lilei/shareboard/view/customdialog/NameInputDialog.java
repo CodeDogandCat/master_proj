@@ -1,4 +1,4 @@
-package cn.edu.hfut.lilei.shareboard.view;
+package cn.edu.hfut.lilei.shareboard.view.customdialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -18,7 +18,7 @@ import com.lzy.okgo.OkGo;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.models.Register;
+import cn.edu.hfut.lilei.shareboard.models.RegisterJson;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import okhttp3.Call;
@@ -322,9 +322,9 @@ public class NameInputDialog extends Dialog {
                                             .params(post_user_email, email)
                                             .params(post_user_family_name, familyName)
                                             .params(post_user_given_name, givenName)
-                                            .execute(new JsonCallback<Register>() {
+                                            .execute(new JsonCallback<RegisterJson>() {
                                                 @Override
-                                                public void onSuccess(Register o, Call call,
+                                                public void onSuccess(RegisterJson o, Call call,
                                                                       Response response) {
                                                     if (o.getCode() == SUCCESS) {
                                                         /**

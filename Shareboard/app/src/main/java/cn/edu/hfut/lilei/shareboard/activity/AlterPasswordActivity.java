@@ -12,11 +12,11 @@ import com.lzy.okgo.OkGo;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.models.Register;
+import cn.edu.hfut.lilei.shareboard.models.RegisterJson;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
-import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
@@ -167,9 +167,9 @@ public class AlterPasswordActivity extends SwipeBackActivity {
                                 .params(post_token, token)
                                 .params(post_user_login_password_old, oldPwdErypt)
                                 .params(post_user_login_password_new, newPwdErypt)
-                                .execute(new JsonCallback<Register>() {
+                                .execute(new JsonCallback<RegisterJson>() {
                                              @Override
-                                             public void onSuccess(Register o, Call call,
+                                             public void onSuccess(RegisterJson o, Call call,
                                                                    Response response) {
                                                  if (o.getCode() == SUCCESS) {
 

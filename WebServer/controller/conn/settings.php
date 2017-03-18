@@ -52,6 +52,8 @@ define('post_is_enter_meeting', '300129');//是否进入会议
 define('post_meeting_check_in_type', '300130');//进会类型（参加/主持）
 define('post_meeting_id', '300131');//会议ID
 define('post_meeting_page', '300132');//请求的会议列表的页码
+define('post_meeting_event_id', '300133');//日历事件ID
+define('post_meeting_desc', '300134');//会议描述
 
 
 /**

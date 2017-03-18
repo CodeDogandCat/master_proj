@@ -143,6 +143,28 @@ class DBPDO
         }
     }
 
+    //获取数据
+    public function select2($sql)
+    {
+//        $this->sth = $this->dbh->query($sql);
+//        $this->getPDOError();
+//        $this->sth->setFetchMode(PDO::FETCH_ASSOC);
+//        $result = $this->sth->fetchAll();
+//        $this->sth = null;
+        try {
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->getPDOError();
+            return $rows;
+        } catch (PDOException $e) {
+            $this->dbh = null;
+            var_dump($e->errorInfo);
+            printResult(DATABASE_OPERATE_FAILED, '数据库操作失败', -1);
+            exit(0);
+        }
+    }
+
     //获取数目
     public function countItem($sql, $arr)
     {

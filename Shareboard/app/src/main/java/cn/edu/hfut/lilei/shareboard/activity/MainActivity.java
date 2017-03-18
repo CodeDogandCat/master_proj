@@ -25,7 +25,7 @@ import cn.edu.hfut.lilei.shareboard.fragment.ContactsFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.MeetingFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.SettingsFragment;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
-import cn.edu.hfut.lilei.shareboard.view.CustomAlertDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.CustomAlertDialog;
 
 
 public class MainActivity extends FragmentActivity implements

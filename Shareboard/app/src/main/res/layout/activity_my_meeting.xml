@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <RelativeLayout style="@style/actionbar">
+
+        <!--<LinearLayout-->
+        <!--style="@style/common_horizontal_division_line_style"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:background="@color/deepgray" />-->
+
+        <ImageView
+            android:id="@+id/img_my_meeting_goback"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_yellow_leftarrow"/>
+
+        <TextView
+            style="@style/navbar_title_textview_style"
+            android:text="@string/my_meeting"/>
+
+        <Button
+            android:id="@+id/btn_my_meeting_refresh"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@color/my_transparent"
+            android:text="@string/refresh"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        style="@style/common_horizontal_division_line_style"
+        android:background="@color/my_deepgray"/>
+
+    <cn.edu.hfut.lilei.shareboard.view.swiperefreshandload.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ListView
+            android:id="@+id/lv_my_meeting"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000"
+            android:scrollbars="vertical">
+        </ListView>
+
+    </cn.edu.hfut.lilei.shareboard.view.swiperefreshandload.SwipeRefreshLayout>
+
+</LinearLayout>

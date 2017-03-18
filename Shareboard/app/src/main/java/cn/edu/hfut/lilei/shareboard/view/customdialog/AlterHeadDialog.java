@@ -1,4 +1,4 @@
-package cn.edu.hfut.lilei.shareboard.view;
+package cn.edu.hfut.lilei.shareboard.view.customdialog;
 
 import android.app.Activity;
 import android.app.Dialog;

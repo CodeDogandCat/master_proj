@@ -1,16 +1,18 @@
 package cn.edu.hfut.lilei.shareboard.models;
 
 
-public class Meeting {
+import java.util.List;
+
+public class MeetingListJson {
     public int code;//返回码
     public String msg;//提示信息
-    public ServerModel data;
+    public List<ServerModel> data;
 
-    public ServerModel getData() {
+    public List<ServerModel> getData() {
         return data;
     }
 
-    public void setData(ServerModel data) {
+    public void setData(List<ServerModel> data) {
         this.data = data;
     }
 
@@ -22,8 +24,26 @@ public class Meeting {
         public int meeting_is_talkable;
         public int meeting_is_add_to_calendar;
         public String meeting_password;
-        public String meeting_start_time;
-        public String meeting_end_time;
+        public long meeting_start_time;
+        public long meeting_end_time;
+        public Long event_id;
+        public String meeting_desc;
+
+        public String getMeeting_desc() {
+            return meeting_desc;
+        }
+
+        public void setMeeting_desc(String meeting_desc) {
+            this.meeting_desc = meeting_desc;
+        }
+
+        public Long getEvent_id() {
+            return event_id;
+        }
+
+        public void setEvent_id(Long event_id) {
+            this.event_id = event_id;
+        }
 
         public Long getMeeting_url() {
             return meeting_url;
@@ -82,19 +102,19 @@ public class Meeting {
             this.meeting_password = meeting_password;
         }
 
-        public String getMeeting_start_time() {
+        public long getMeeting_start_time() {
             return meeting_start_time;
         }
 
-        public void setMeeting_start_time(String meeting_start_time) {
+        public void setMeeting_start_time(long meeting_start_time) {
             this.meeting_start_time = meeting_start_time;
         }
 
-        public String getMeeting_end_time() {
+        public long getMeeting_end_time() {
             return meeting_end_time;
         }
 
-        public void setMeeting_end_time(String meeting_end_time) {
+        public void setMeeting_end_time(long meeting_end_time) {
             this.meeting_end_time = meeting_end_time;
         }
     }

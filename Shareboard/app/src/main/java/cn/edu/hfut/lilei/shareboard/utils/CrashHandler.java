@@ -177,7 +177,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 infos.put("versionCode", versionCode);
             }
         } catch (NameNotFoundException e) {
-            Log.e(TAG, "an error occured when collect package info", e);
+            Log.e(TAG, "an error occured when collect package tvMeetingId", e);
         }
 
         Field[] fields = Build.class.getDeclaredFields();
@@ -188,7 +188,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                         .toString());
                 Log.d(TAG, field.getName() + " : " + field.get(null));
             } catch (Exception e) {
-                Log.e(TAG, "an error occured when collect crash info", e);
+                Log.e(TAG, "an error occured when collect crash tvMeetingId", e);
             }
         }
     }

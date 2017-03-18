@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
-import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.HOST_CHECK_IN;
@@ -86,7 +86,7 @@ public class MeetingActivity extends Activity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // TODO Auto-generated method stub
-//              return super.shouldOverrideUrlLoading(view, url);
+//              return super.shouldOverrideUrlLoading(btnStart, url);
                 view.loadUrl(url);
                 return true;
             }

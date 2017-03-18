@@ -24,14 +24,14 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.data.AppInfo;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
-import cn.edu.hfut.lilei.shareboard.models.Common;
+import cn.edu.hfut.lilei.shareboard.models.CommonJson;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
-import cn.edu.hfut.lilei.shareboard.view.CustomAlertDialog;
-import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.CustomAlertDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
@@ -96,7 +96,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
         startMillis = bundle.getLong("startMillis");
         endMillis = bundle.getLong("endMillis");
         mEventID = bundle.getLong("eventId");
-        title = bundle.getString("title");
+        title = bundle.getString("tvMeetingTheme");
         description = bundle.getString("description");
         meeting_url = bundle.getLong(post_meeting_url);
         mpassword = bundle.getString("password");
@@ -300,7 +300,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
         bundle.putLong("startMillis", startMillis);
         bundle.putLong("endMillis", endMillis);
         bundle.putLong("eventId", mEventID);
-        bundle.putString("title", title);
+        bundle.putString("tvMeetingTheme", title);
         bundle.putString("password", mpassword);
         bundle.putBoolean("isDrawable",
                 isDrawable);
@@ -364,9 +364,9 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                                 .params(post_token, valueList.get(0))
                                                 .params(post_user_email, valueList.get(1))
                                                 .params(post_meeting_id, meeting_id)
-                                                .execute(new JsonCallback<Common>() {
+                                                .execute(new JsonCallback<CommonJson>() {
                                                              @Override
-                                                             public void onSuccess(Common o, Call call,
+                                                             public void onSuccess(CommonJson o, Call call,
                                                                                    Response response) {
                                                                  if (o.getCode() == SUCCESS) {
 
@@ -489,9 +489,9 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                         .params(post_meeting_url, meeting_url)
                         .params(post_meeting_id, meeting_id)
 
-                        .execute(new JsonCallback<Common>() {
+                        .execute(new JsonCallback<CommonJson>() {
                                      @Override
-                                     public void onSuccess(Common o, Call call,
+                                     public void onSuccess(CommonJson o, Call call,
                                                            Response response) {
                                          if (o.getCode() == SUCCESS) {
 

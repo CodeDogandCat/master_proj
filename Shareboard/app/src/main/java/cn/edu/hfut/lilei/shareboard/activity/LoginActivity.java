@@ -15,12 +15,12 @@ import com.lzy.okgo.OkGo;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.models.Login;
+import cn.edu.hfut.lilei.shareboard.models.LoginJson;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
-import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -194,9 +194,9 @@ public class LoginActivity extends Activity {
                                 .tag(this)
                                 .params(post_user_email, email)
                                 .params(post_user_login_password, passEncrypted)
-                                .execute(new JsonCallback<Login>() {
+                                .execute(new JsonCallback<LoginJson>() {
                                              @Override
-                                             public void onSuccess(Login o, Call call,
+                                             public void onSuccess(LoginJson o, Call call,
                                                                    Response response) {
                                                  if (o.getCode() == SUCCESS) {
                                                      /**

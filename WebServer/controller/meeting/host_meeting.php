@@ -47,11 +47,11 @@ if (isset($_REQUEST[post_need_feature])) {
 
         case 'get':
             $data = array(
-                "meeting_id" => -1, "meeting_url" => -1,
-                "meeting_theme" => "", "meeting_is_drawable" => -1,
-                "meeting_is_talkable" => -1, "meeting_is_add_to_calendar" => -1,
-                "meeting_password" => "", "meeting_start_time" => "",
-                "meeting_end_time" => ""
+                array("meeting_id" => -1, "meeting_url" => -1,
+                    "meeting_theme" => "", "meeting_is_drawable" => -1,
+                    "meeting_is_talkable" => -1, "meeting_is_add_to_calendar" => -1,
+                    "meeting_password" => "", "meeting_start_time" => -1,
+                    "meeting_end_time" => -1, "event_id" => -1, "meeting_desc" => "")
 
             );
             /**
@@ -61,7 +61,7 @@ if (isset($_REQUEST[post_need_feature])) {
                 $user = new User($_REQUEST[post_user_email]);
                 $meeting = new Meeting(null, null, null, null, null, null, null, null, null);
                 $meetingOp = new MeetingOp($user, $meeting);
-                if (($result_arr = $meetingOp->getMeetingInfo(post_meeting_page)) != false) {
+                if (($result_arr = $meetingOp->getMeetingInfo($_REQUEST[post_meeting_page])) != false) {
 
                     $data = $result_arr;
                     printResult(SUCCESS, '获取会议列表成功', $data);
@@ -80,8 +80,8 @@ if (isset($_REQUEST[post_need_feature])) {
                 "meeting_id" => -1, "meeting_url" => -1,
                 "meeting_theme" => "", "meeting_is_drawable" => -1,
                 "meeting_is_talkable" => -1, "meeting_is_add_to_calendar" => -1,
-                "meeting_password" => "", "meeting_start_time" => "",
-                "meeting_end_time" => ""
+                "meeting_password" => "", "meeting_start_time" => -1,
+                "meeting_end_time" => -1, "event_id" => -1, "meeting_desc" => ""
 
             );
             /**
@@ -94,7 +94,9 @@ if (isset($_REQUEST[post_need_feature])) {
                 isset($_REQUEST[post_meeting_is_add_to_calendar]) &&
                 isset($_REQUEST[post_meeting_start_time]) &&
                 isset($_REQUEST[post_meeting_end_time]) &&
-                isset($_REQUEST[post_meeting_password])
+                isset($_REQUEST[post_meeting_password]) &&
+                isset($_REQUEST[post_meeting_event_id]) &&
+                isset($_REQUEST[post_meeting_desc])
             ) {
                 $user = new User($_REQUEST[post_user_email]);
                 $meeting = new Meeting(
@@ -108,6 +110,8 @@ if (isset($_REQUEST[post_need_feature])) {
                     EncryptUtil::hash($_REQUEST[post_meeting_password], "lilimiao"),
                     1//1 ：未开始并且未到期
                 );
+                $meeting->setEventId($_REQUEST[post_meeting_event_id]);
+                $meeting->setMeetingDesc($_REQUEST[post_meeting_desc]);
                 $meetingOp = new MeetingOp($user, $meeting);
 
                 if (($result_arr = $meetingOp->addMeeting()) != false) {
@@ -167,7 +171,9 @@ if (isset($_REQUEST[post_need_feature])) {
                 isset($_REQUEST[post_meeting_is_add_to_calendar]) &&
                 isset($_REQUEST[post_meeting_start_time]) &&
                 isset($_REQUEST[post_meeting_end_time]) &&
-                isset($_REQUEST[post_meeting_password])
+                isset($_REQUEST[post_meeting_password]) &&
+                isset($_REQUEST[post_meeting_event_id]) &&
+                isset($_REQUEST[post_meeting_desc])
             ) {
                 $user = new User($_REQUEST[post_user_email]);
                 $meeting = new Meeting(
@@ -182,6 +188,8 @@ if (isset($_REQUEST[post_need_feature])) {
                     1//1 ：未开始并且未到期
                 );
                 $meeting->setId($_REQUEST[post_meeting_id]);
+                $meeting->setEventId($_REQUEST[post_meeting_event_id]);
+                $meeting->setMeetingDesc($_REQUEST[post_meeting_desc]);
                 $meetingOp = new MeetingOp($user, $meeting);
 
                 if (($result_arr = $meetingOp->updateMeeting()) != false) {

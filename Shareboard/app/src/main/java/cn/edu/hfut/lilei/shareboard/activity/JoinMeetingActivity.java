@@ -12,11 +12,11 @@ import com.lzy.okgo.OkGo;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.models.Common;
+import cn.edu.hfut.lilei.shareboard.models.CommonJson;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
-import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
@@ -144,9 +144,9 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                 .params(post_meeting_url, meetingUrl)
                                 .params(post_meeting_password, StringUtil.getMD5(pwd))
 
-                                .execute(new JsonCallback<Common>() {
+                                .execute(new JsonCallback<CommonJson>() {
                                              @Override
-                                             public void onSuccess(Common o, Call call,
+                                             public void onSuccess(CommonJson o, Call call,
                                                                    Response response) {
                                                  if (o.getCode() == SUCCESS) {
 

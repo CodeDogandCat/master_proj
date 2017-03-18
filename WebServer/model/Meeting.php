@@ -3,7 +3,40 @@
 class Meeting
 {
     private $id, $url, $theme, $host_user_id, $is_drawable,
-        $is_talkable, $is_add_to_calendar, $start_time, $end_time, $status, $password;
+        $is_talkable, $is_add_to_calendar, $start_time, $end_time, $status, $password,$event_id,$meeting_desc;
+
+    /**
+     * @return mixed
+     */
+    public function getEventId()
+    {
+        return $this->event_id;
+    }
+
+    /**
+     * @param mixed $event_id
+     */
+    public function setEventId($event_id)
+    {
+        $this->event_id = $event_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMeetingDesc()
+    {
+        return $this->meeting_desc;
+    }
+
+    /**
+     * @param mixed $meeting_desc
+     */
+    public function setMeetingDesc($meeting_desc)
+    {
+        $this->meeting_desc = $meeting_desc;
+    }
+
 
 
     /**

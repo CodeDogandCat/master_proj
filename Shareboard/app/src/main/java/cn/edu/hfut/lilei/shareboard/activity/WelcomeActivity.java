@@ -11,10 +11,10 @@ import com.lzy.okgo.OkGo;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.models.Common;
+import cn.edu.hfut.lilei.shareboard.models.CommonJson;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
-import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -109,9 +109,9 @@ public class WelcomeActivity extends Activity {
                 OkGo.post(URL_CHECK_TOKEN)
                         .tag(this)
                         .params(post_token, token)
-                        .execute(new JsonCallback<Common>() {
+                        .execute(new JsonCallback<CommonJson>() {
                             @Override
-                            public void onSuccess(Common o, Call call,
+                            public void onSuccess(CommonJson o, Call call,
                                                   Response response) {
                                 if (o != null) {
                                     /**

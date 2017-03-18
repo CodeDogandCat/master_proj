@@ -79,7 +79,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="35dp">
 
-                    <!--<cn.edu.hfut.lilei.shareboard.view.CircleImageView-->
+                    <!--<cn.edu.hfut.lilei.shareboard.btnStart.CircleImageView-->
                     <!--android:id="@+id/img_settingmyinfo_photo"-->
                     <!--android:layout_width="60dp"-->
                     <!--android:layout_height="60dp"-->

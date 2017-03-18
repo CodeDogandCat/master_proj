@@ -58,7 +58,7 @@ public class ApplicationInfoAdapter extends BaseAdapter {
         }
         AppInfo appInfo = (AppInfo) getItem(position);
         holder.appIcon.setImageDrawable(appInfo.getAppIcon());
-//        holder.tvAppLabel.setText(appInfo.getAppLabel());
+//        Holder.tvAppLabel.setText(appInfo.getAppLabel());
         holder.tvAppName.setText(appInfo.getAppName());
         return view;
     }
@@ -70,7 +70,7 @@ public class ApplicationInfoAdapter extends BaseAdapter {
 
         public ViewHolder(View view) {
             this.appIcon = (ImageView) view.findViewById(R.id.image);
-//            this.tvAppLabel = (TextView) view.findViewById(R.id.tvAppLabel);
+//            this.tvAppLabel = (TextView) btnStart.findViewById(R.id.tvAppLabel);
             this.tvAppName = (TextView) view.findViewById(R.id.title);
         }
     }

@@ -57,6 +57,7 @@
     <string name="set_new_password">设置新密码</string>
     <string name="check_your_password">核对您的密码</string>
     <string name="save">保存</string>
+    <string name="refresh">刷新</string>
     <string name="meeting_theme">会议主题</string>
     <string name="date">日期</string>
     <string name="from">从</string>
@@ -113,7 +114,7 @@
     <string name="arranging">安排...</string>
     <string name="loding">加载...</string>
     <string name="logingin">登录...</string>
-    <string name="entering">加会...</string>
+    <string name="entering">进会...</string>
     <string name="deleting">删除...</string>
     <string name="can_not_recognize_old_pwd">不能识别的旧密码(12位,只允许英文字母、数字、下划线,且以字母开头)</string>
     <string name="can_not_recognize_new_pwd">不能识别的新密码(12位,只允许英文字母、数字、下划线,且以字母开头)</string>
@@ -133,4 +134,14 @@
     <string name="his_meeting">的会议</string>
     <string name="delete_meeting_confirm">您是否要删除这个会议</string>
     <string name="logout_confirm">您是否要注销当前账户</string>
+    <string name="pull_to_refresh">下拉可以刷新</string>
+    <string name="release_to_refresh">释放立即刷新</string>
+    <string name="refreshing">正在刷新…</string>
+    <string name="not_updated_yet">暂未更新过</string>
+    <string name="updated_at">上次更新于%1$s前</string>
+    <string name="updated_just_now">刚刚更新</string>
+    <string name="meeting_theme_param">会议主题:%1$s</string>
+    <string name="meeting_id_param">会议ID:%1$s</string>
+    <string name="start">开始</string>
+    <string name="nothing_else">没有了</string>
 </resources>

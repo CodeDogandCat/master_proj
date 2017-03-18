@@ -28,15 +28,15 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
-import cn.edu.hfut.lilei.shareboard.models.Common;
-import cn.edu.hfut.lilei.shareboard.models.Meeting;
+import cn.edu.hfut.lilei.shareboard.models.CommonJson;
+import cn.edu.hfut.lilei.shareboard.models.MeetingJson;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
-import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
@@ -47,7 +47,9 @@ import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_HOST_MEETING;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_desc;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_end_time;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_event_id;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_id;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_add_to_calendar;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_drawable;
@@ -263,7 +265,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                 startMillis = bundle.getLong("startMillis");
                 endMillis = bundle.getLong("endMillis");
                 eventId = bundle.getLong("eventId");
-                title = bundle.getString("title");
+                title = bundle.getString("tvMeetingTheme");
                 meeting_url = bundle.getLong(post_meeting_url);
                 mpassword = bundle.getString("password");
                 meeting_id = bundle.getInt(post_meeting_id);
@@ -537,6 +539,17 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                     is_drawable = mBtnIsDrawable.isChecked() ? 1 : 0;
                     is_add_to_calendar = mBtnAddToCalendar.isChecked() ? 1 : 0;
 
+                    if (feature.equals("add") && mBtnAddToCalendar.isChecked()) {
+                        //插入日历事件提醒
+                        eventId =
+                                MyAppUtil.insertCalendarEvent(
+                                        mContext,
+                                        startMillis, endMillis,
+                                        title,
+                                        null,
+                                        description, null);
+                    }
+
                     new AsyncTask<Void, Void, Integer>() {
 
                         @Override
@@ -569,7 +582,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                             /**
                              * 3.发送
                              */
-
+                            description = getDescribe();
                             PostRequest tmp = OkGo.post(URL_HOST_MEETING)
                                     .tag(this)
                                     .params(post_need_feature, feature)
@@ -582,17 +595,18 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                                     .params(post_meeting_is_drawable, is_drawable)
                                     .params(post_meeting_is_add_to_calendar, is_add_to_calendar)
                                     .params(post_meeting_start_time, startMillis)
-                                    .params(post_meeting_end_time, endMillis);
+                                    .params(post_meeting_end_time, endMillis)
+                                    .params(post_meeting_desc, description);
 
                             if (feature.equals("edit")) {
                                 tmp.params(post_meeting_id, meeting_id);
-                                tmp.execute(new JsonCallback<Common>() {
+                                tmp.params(post_meeting_event_id, eventId);
+                                tmp.execute(new JsonCallback<CommonJson>() {
                                                 @Override
-                                                public void onSuccess(Common o, Call call,
+                                                public void onSuccess(CommonJson o, Call call,
                                                                       Response response) {
                                                     if (o.getCode() == SUCCESS) {
 
-                                                        description = getDescribe();
 
                                                         if (addToCalendar) {
                                                             //更新日历提醒事件 mEventID
@@ -630,12 +644,11 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                                 );
 
                             } else
-                                if (feature.equals("add"))
-
-                                {
-                                    tmp.execute(new JsonCallback<Meeting>() {
+                                if (feature.equals("add")) {
+                                    tmp.params(post_meeting_event_id, eventId);
+                                    tmp.execute(new JsonCallback<MeetingJson>() {
                                                     @Override
-                                                    public void onSuccess(Meeting o, Call call,
+                                                    public void onSuccess(MeetingJson o, Call call,
                                                                           Response response) {
                                                         if (o.getCode() == SUCCESS) {
                                                             /**
@@ -648,23 +661,18 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                                                             description = getDescribe();
 
 
-                                                            if (mBtnAddToCalendar.isChecked()) {
-                                                                //插入日历事件提醒
-                                                                eventId =
-                                                                        MyAppUtil.insertCalendarEvent(
-                                                                                mContext,
-                                                                                startMillis, endMillis,
-                                                                                title,
-                                                                                null,
-                                                                                description, null);
-                                                            }
-
                                                             /**
                                                              * 跳到会议信息界面
                                                              */
                                                             jumpToNextPage();
 
                                                         } else {
+                                                            //删除之前添加的日历事件
+                                                            if (eventId != -1) {
+                                                                MyAppUtil.delCalendarEvent(
+                                                                        mContext, eventId);
+                                                                eventId = -1;
+                                                            }
                                                             //提示所有错误
                                                             mlodingDialog.cancle();
                                                             showToast(mContext, o.getMsg());
@@ -676,6 +684,12 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                                                     public void onError(Call call, Response response,
                                                                         Exception e) {
                                                         super.onError(call, response, e);
+                                                        //删除之前添加的日历事件
+                                                        if (eventId != -1) {
+                                                            MyAppUtil.delCalendarEvent(
+                                                                    mContext, eventId);
+                                                            eventId = -1;
+                                                        }
                                                         mlodingDialog.cancle();
                                                         showToast(mContext, R.string.system_error);
                                                     }
@@ -729,7 +743,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
         bundle.putLong("startMillis", startMillis);
         bundle.putLong("endMillis", endMillis);
         bundle.putLong("eventId", eventId);
-        bundle.putString("title", title);
+        bundle.putString("tvMeetingTheme", title);
         bundle.putString("description", description);
         bundle.putString("password", mpassword);
         bundle.putBoolean("isDrawable",

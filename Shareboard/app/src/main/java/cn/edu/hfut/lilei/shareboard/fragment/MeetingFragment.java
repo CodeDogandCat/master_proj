@@ -57,17 +57,17 @@ public class MeetingFragment extends Fragment {
         //加入会议
         Map<String, Object> joinmeeting_map = new HashMap<String, Object>();
         joinmeeting_map.put("image", R.drawable.ic_joinmeeting);
-        joinmeeting_map.put("title", getString(R.string.join_meeting));
+        joinmeeting_map.put("tvMeetingTheme", getString(R.string.join_meeting));
         list.add(joinmeeting_map);
         //主持或安排会议
         Map<String, Object> hostmeeting_map = new HashMap<String, Object>();
         hostmeeting_map.put("image", R.drawable.ic_hostmeeting);
-        hostmeeting_map.put("title", getString(R.string.host_or_arrange_meeting));
+        hostmeeting_map.put("tvMeetingTheme", getString(R.string.host_or_arrange_meeting));
         list.add(hostmeeting_map);
         //系统消息
         Map<String, Object> systemmsg_map = new HashMap<String, Object>();
         systemmsg_map.put("image", R.drawable.ic_systemmsg);
-        systemmsg_map.put("title", getString(R.string.system_msg));
+        systemmsg_map.put("tvMeetingTheme", getString(R.string.system_msg));
         list.add(systemmsg_map);
         return list;
     }

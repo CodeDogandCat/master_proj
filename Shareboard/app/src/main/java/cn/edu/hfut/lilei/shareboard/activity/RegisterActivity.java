@@ -13,12 +13,12 @@ import com.lzy.okgo.OkGo;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.models.Common;
+import cn.edu.hfut.lilei.shareboard.models.CommonJson;
 import cn.edu.hfut.lilei.shareboard.utils.CountDownTimerUtils;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
-import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
@@ -116,9 +116,9 @@ public class RegisterActivity extends SwipeBackActivity {
                         OkGo.post(URL_SEND_VERIFY_CODE)
                                 .tag(this)
                                 .params(post_user_email, email)
-                                .execute(new JsonCallback<Common>() {
+                                .execute(new JsonCallback<CommonJson>() {
                                              @Override
-                                             public void onSuccess(Common o, Call call, Response response) {
+                                             public void onSuccess(CommonJson o, Call call, Response response) {
                                                  if (o.getCode() == SUCCESS) {
 
                                                      /**
@@ -216,9 +216,9 @@ public class RegisterActivity extends SwipeBackActivity {
                         OkGo.post(URL_SEND_VERIFY_CODE)
                                 .tag(this)
                                 .params(post_check_verify_code, verifyCode)
-                                .execute(new JsonCallback<Common>() {
+                                .execute(new JsonCallback<CommonJson>() {
                                     @Override
-                                    public void onSuccess(Common o, Call call, Response response) {
+                                    public void onSuccess(CommonJson o, Call call, Response response) {
                                         if (o.getCode() == SUCCESS) {
                                             //验证码发匹配正确
                                             mlodingDialog.cancle();

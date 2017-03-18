@@ -20,8 +20,8 @@ import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.data.AppInfo;
-import cn.edu.hfut.lilei.shareboard.view.InviteChooserDialog;
-import cn.edu.hfut.lilei.shareboard.view.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.InviteChooserDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.TIMEZONE;
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
@@ -326,7 +326,7 @@ public class MyAppUtil {
     public static String getAppVersionName(Context context) {
         String versionName = "";
         try {
-            // ---get the package info---
+            // ---get the package tvMeetingId---
             PackageManager pm = context.getPackageManager();
             PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
             versionName = pi.versionName;
@@ -345,7 +345,7 @@ public class MyAppUtil {
     public static int getAppVersionCode(Context context) {
         int versioncode = -1;
         try {
-            // ---get the package info---
+            // ---get the package tvMeetingId---
             PackageManager pm = context.getPackageManager();
             PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
             versioncode = pi.versionCode;

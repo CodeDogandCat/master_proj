@@ -35,8 +35,8 @@ class MeetingOp
 
             $sql = 'INSERT INTO bd_meeting (meeting_url,meeting_theme,meeting_host_user_id,meeting_is_drawable,
                 meeting_is_talkable,meeting_is_add_to_calendar,meeting_password,
-                meeting_start_time,meeting_end_time,meeting_status) 
-                VALUES (?,?,?,?,?,?,?,?,?,?)';
+                meeting_start_time,meeting_end_time,meeting_status,event_id,meeting_desc) 
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
 
             $arr = array();
             $arr[0] = Particle::generateParticle();
@@ -49,6 +49,8 @@ class MeetingOp
             $arr[7] = $this->meeting->getStartTime();
             $arr[8] = $this->meeting->getEndTime();
             $arr[9] = $this->meeting->getStatus();
+            $arr[10] = $this->meeting->getEventId();
+            $arr[11] = $this->meeting->getMeetingDesc();
 
             if (($meeting_id = $this->db->insert($sql, $arr)) != false) {
                 $arr2 = array();//返回 会议ID 会议URL
@@ -71,7 +73,7 @@ class MeetingOp
         $sql = 'UPDATE  bd_meeting SET   meeting_theme = ?,meeting_is_drawable = ?,
                                          meeting_is_talkable = ?,meeting_is_add_to_calendar = ?,
                                          meeting_password = ?,meeting_start_time = ?,
-                                         meeting_end_time = ?,meeting_status = ?
+                                         meeting_end_time = ?,meeting_status = ?,event_id = ?,meeting_desc = ?
  
                                    WHERE meeting_id = ?';
         $arr = array();
@@ -83,7 +85,9 @@ class MeetingOp
         $arr[5] = $this->meeting->getStartTime();
         $arr[6] = $this->meeting->getEndTime();
         $arr[7] = $this->meeting->getStatus();
-        $arr[8] = $this->meeting->getId();
+        $arr[8] = $this->meeting->getEventId();
+        $arr[9] = $this->meeting->getMeetingDesc();
+        $arr[10] = $this->meeting->getId();
         if ($this->db->update($sql, $arr) == false) {
 
             return false;//更新失败
@@ -345,7 +349,6 @@ class MeetingOp
              */
             if (($user_id = $this->getUserIdFromEmail()) != false) {
 //                echo 'getUserIdFromEmail';
-//                echo '###' . $user_id;
                 $this->user->setId($user_id);
                 /**
                  * 根据meeting_id,判断会议的状态（1 ：未开始并且未到期 2：未开始并且过期了 3：正在进行 4：开会结束）
@@ -485,19 +488,24 @@ class MeetingOp
      */
     public function getMeetingByStatusAndPage($status, $fromPage, $size)
     {
+//        $sql = 'SELECT meeting_id,meeting_url,meeting_theme,meeting_is_drawable,meeting_is_talkable,
+//                meeting_is_add_to_calendar,meeting_password,meeting_start_time,meeting_end_time,event_id,meeting_desc
+//                FROM bd_meeting
+//                WHERE meeting_host_user_id = ? AND meeting_status = ?
+//                ORDER BY meeting_id DESC LIMIT ?,?';
         $sql = 'SELECT meeting_id,meeting_url,meeting_theme,meeting_is_drawable,meeting_is_talkable,
-                meeting_is_add_to_calendar,meeting_password,meeting_start_time,meeting_end_time
+                meeting_is_add_to_calendar,meeting_password,meeting_start_time,meeting_end_time,event_id,meeting_desc
                 FROM bd_meeting  
-                WHERE meeting_host_user_id = ? AND meeting_status = ? 
-                ORDER BY meeting_id DESC limit ?,?';
+                WHERE meeting_host_user_id = ' . $this->user->getId() . ' AND meeting_status = ' . $status . '
+                ORDER BY meeting_id DESC LIMIT ' . $fromPage . ',' . $size;
 
-        $arr = array();
-        $arr[0] = $this->user->getId();
-        $arr[1] = $status;
-        $arr[2] = $fromPage;
-        $arr[3] = $size;
+//        $arr = array();
+//        $arr[0] = $this->user->getId();
+//        $arr[1] = $status;
+//        $arr[2] = $fromPage;
+//        $arr[3] = $size;
 
-        $rows = $this->db->select($sql, $arr);
+        $rows = $this->db->select2($sql);
         return $rows;
 
 
@@ -516,7 +524,7 @@ class MeetingOp
         if (($user_id = $this->getUserIdFromEmail()) != false) {
             $this->user->setId($user_id);
             //获取分页参数
-            $page = (int)($post_meeting_page);//andriod传的是string类型，所以要进行强制类型转换
+            $page = $post_meeting_page;
             $pageSize = 8;
             $pageFrom = $page * $pageSize;
             /**

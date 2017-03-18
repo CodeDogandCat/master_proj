@@ -29,7 +29,7 @@ public class SettingUtil {
             "http://118.89.102.238/controller/meeting/enter_meeting.php";
     //开会地址
     public static final String URL_MEETING =
-            "http://118.89.102.238/view/index.php";
+            "http://118.89.102.238/btnStart/index.php";
 
     //post name 参数
     public static final String post_check_verify_code = "300100";
@@ -64,6 +64,8 @@ public class SettingUtil {
     public static final String post_meeting_check_in_type = "300130";//进会类型（参加/主持）
     public static final String post_meeting_id = "300131";//会议ID
     public static final String post_meeting_page = "300132";//请求的会议列表的页码
+    public static final String post_meeting_event_id = "300133";//日历事件ID
+    public static final String post_meeting_desc = "300134";//会议描述
 
 
     //sharepreference name 参数
@@ -102,7 +104,7 @@ public class SettingUtil {
     public static final String INSTALLED = "hasInstalled";//已经安装过
     public static final int COMMON_CHECK_IN = 1;//与会人加会
     public static final int HOST_CHECK_IN = 2;//主持人加会
-//    public static final String SYSTEM_DIR = "/data/data/" + PACKAGE_NAME + " /info";//系统文件夹
+//    public static final String SYSTEM_DIR = "/data/data/" + PACKAGE_NAME + " /tvMeetingId";//系统文件夹
 
     //权限请求参数
     public static final int PERMISSION_REQUEST_CODE = 10000;//权限请求代码

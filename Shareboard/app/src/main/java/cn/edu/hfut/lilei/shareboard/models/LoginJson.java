@@ -1,7 +1,7 @@
 package cn.edu.hfut.lilei.shareboard.models;
 
 
-public class Login {
+public class LoginJson {
     public int code;//返回码
     public String msg;//提示信息
     public ServerModel data;

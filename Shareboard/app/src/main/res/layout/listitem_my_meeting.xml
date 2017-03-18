@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/rl_my_meeting"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical">
+
+
+        <LinearLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/ll_settings_photo"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/tv_my_meeting_theme_param_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLength="30"
+                android:maxLines="2"
+                android:maxWidth="200dp"
+                android:text="@string/meeting_theme_param"
+                android:textColor="@color/my_white"
+                android:textSize="@dimen/small_text_size"
+                />
+
+            <TextView
+                android:id="@+id/tv_my_meeting_id_param_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:maxLength="30"
+                android:maxLines="2"
+                android:maxWidth="200dp"
+                android:text="@string/meeting_id_param"
+                android:textColor="@color/my_white"
+                android:textSize="@dimen/super_small_text_size"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_my_meeting_start_item"
+            style="@style/SmallButtonBlack"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:text="@string/start"
+            />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
