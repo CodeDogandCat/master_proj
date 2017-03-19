@@ -3,35 +3,23 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:clipToPadding="true"
+              android:fitsSystemWindows="true"
               android:orientation="vertical"
-
               tools:context="cn.edu.hfut.lilei.shareboard.activity.RegisterActivity">
 
     <RelativeLayout style="@style/actionbar">
 
-        <!--<LinearLayout-->
-        <!--style="@style/common_horizontal_division_line_style"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:background="@color/deepgray" />-->
 
         <ImageView
             android:id="@+id/img_register_goback"
-            android:layout_width="10dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_yellow_leftarrow"/>
+            style="@style/actionbar_goback"/>
 
         <TextView
             android:id="@+id/tv_register_register"
             style="@style/navbar_title_textview_style"
             android:text="@string/register"/>
 
-        <!--<LinearLayout-->
-        <!--style="@style/common_horizontal_division_line_style"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:background="@color/deepgray" />-->
 
     </RelativeLayout>
 

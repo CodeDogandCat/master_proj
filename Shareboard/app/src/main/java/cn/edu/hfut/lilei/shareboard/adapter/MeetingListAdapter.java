@@ -114,6 +114,7 @@ public class MeetingListAdapter extends BaseAdapter implements View.OnClickListe
 
     public void clear() {
         data.clear();
-        notifyDataSetChanged();
+
     }
+
 }

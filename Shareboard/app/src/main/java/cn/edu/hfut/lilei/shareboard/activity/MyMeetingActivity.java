@@ -118,15 +118,6 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
         mSwipeLayout.setMode(SwipeRefreshLayout.Mode.BOTH);
         mSwipeLayout.setLoadNoFull(false);
 
-        mBtnFresh = (Button) findViewById(R.id.btn_my_meeting_refresh);
-        mBtnFresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onRefresh();
-            }
-        });
-
-
         page = 0;
         totalPage = 0;
         listContent = (ListView) findViewById(R.id.lv_my_meeting);
@@ -134,7 +125,23 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
         listContent.setAdapter(adapter);
         listContent.setOnItemClickListener(this);
 
-        loadMeetingList(0);
+
+        mBtnFresh = (Button) findViewById(R.id.btn_my_meeting_refresh);
+        mBtnFresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSwipeLayout.startRefresh();
+            }
+        });
+        //刷新
+        mSwipeLayout.startRefresh();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        //刷新
+        mSwipeLayout.startRefresh();
     }
 
     /**
@@ -185,44 +192,11 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                                              if (type == 0) {//getTotalMeeting
                                                  showLog("---------------length" + o.getData()
                                                          .size());
-//                                                 for (int i = 0; i < o.getData()
-//                                                         .size(); i++) {
-//                                                     MeetingListJson.ServerModel tmp = o.getData()
-//                                                             .get(i);
-//                                                     Meeting m = new Meeting(tmp.getMeeting_id(),
-//                                                             tmp.getMeeting_url(), tmp.getEvent_id
-//                                                             (), tmp.getMeeting_theme(), tmp
-//                                                             .getMeeting_is_drawable(), tmp
-//                                                             .getMeeting_is_talkable(), tmp
-//                                                             .getMeeting_is_add_to_calendar(), tmp
-//                                                             .getMeeting_password(), tmp
-//                                                             .getMeeting_start_time(), tmp
-//                                                             .getMeeting_end_time(), tmp
-//                                                             .getMeeting_desc());
-//                                                     data.add(m);
-//                                    }
                                                  data.addAll(o.getData());
                                                  adapter.clear();
                                                  adapter.addAll(data);
                                              } else
                                                  if (type == 1) {//getAdditionalMeeting
-
-//                                                     for (int i = 0; i < o.getData()
-//                                                             .size(); i++) {
-//                                                         MeetingListJson.ServerModel tmp = o.getData()
-//                                                                 .get(i);
-//                                                         Meeting m = new Meeting(tmp.getMeeting_id(),
-//                                                                 tmp.getMeeting_url(), tmp.getEvent_id
-//                                                                 (), tmp.getMeeting_theme(), tmp
-//                                                                 .getMeeting_is_drawable(), tmp
-//                                                                 .getMeeting_is_talkable(), tmp
-//                                                                 .getMeeting_is_add_to_calendar(), tmp
-//                                                                 .getMeeting_password(), tmp
-//                                                                 .getMeeting_start_time(), tmp
-//                                                                 .getMeeting_end_time(), tmp
-//                                                                 .getMeeting_desc());
-//                                                         data.add(m);
-//                                                     }
 
                                                      data.addAll(o.getData());
                                                      adapter.addAll(data);
@@ -231,8 +205,8 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                                          } else
 
                                          {
-                                             //提示所有错误
-                                             showToast(mContext, o.getMsg());
+                                             // 否则提示没有了
+                                             showToast(mContext, getString(R.string.nothing_else));
                                          }
                                      }
 
@@ -266,11 +240,7 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                         break;
                 }
             }
-        }
-
-                .
-
-                        execute();
+        }.execute();
 
 
     }
@@ -335,8 +305,8 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
 
 
                                          } else {
-                                             //提示所有错误
-                                             showToast(mContext, o.getMsg());
+                                             // 否则提示没有了
+                                             showToast(mContext, getString(R.string.nothing_else));
                                          }
 
 
@@ -386,7 +356,7 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                 getTotalPage();
 
             }
-        }, 500);
+        }, 200);
     }
 
     @Override
@@ -403,19 +373,19 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                 loadMeetingList(0);
 
             }
-        }, 500);
+        }, 200);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//        showLog("点到了我");
         /**
          * 跳转到 meetingInfo页面
          */
         MeetingListJson.ServerModel meeting = adapter.getItem(i);
         Intent intent = new Intent(mContext, MeetingInfoActivity.class);
-        System.out.println("点击了" + i);
-        Bundle bundle = this.getIntent()
-                .getExtras();
+//        System.out.println("点击了" + i);
+        Bundle bundle = new Bundle();
         bundle.putLong("startMillis", meeting.getMeeting_start_time());
         bundle.putLong("endMillis", meeting.getMeeting_end_time());
         bundle.putLong("eventId", meeting.getEvent_id());
@@ -440,6 +410,8 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
          */
         final long meeting_url = data.get((Integer) v.getTag())
                 .getMeeting_url();
+        final int meeting_id = data.get((Integer) v.getTag())
+                .getMeeting_id();
         mlodingDialog = loding(mContext, R.string.entering);
 
         new AsyncTask<Void, Void, Integer>() {

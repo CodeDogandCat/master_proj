@@ -5,7 +5,7 @@
               android:background="@color/my_black"
               android:orientation="horizontal">
 
-    <xhome.uestcfei.com.loadingpoppoint.LoadingPopPoint
+    <cn.edu.hfut.lilei.shareboard.view.customdialog.LoadingPopPoint
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:gravity="center_vertical|start"

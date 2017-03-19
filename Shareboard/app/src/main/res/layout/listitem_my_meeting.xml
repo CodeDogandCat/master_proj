@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rl_my_meeting"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical">
 
@@ -27,8 +27,8 @@
                 android:id="@+id/tv_my_meeting_theme_param_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:maxLength="30"
+                android:gravity="left"
+                android:maxLength="20"
                 android:maxLines="2"
                 android:maxWidth="200dp"
                 android:text="@string/meeting_theme_param"
@@ -41,13 +41,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:gravity="center"
+                android:gravity="left"
                 android:maxLength="30"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:maxWidth="200dp"
                 android:text="@string/meeting_id_param"
                 android:textColor="@color/my_white"
-                android:textSize="@dimen/super_small_text_size"/>
+                android:textSize="14sp"/>
         </LinearLayout>
 
         <Button
@@ -56,6 +56,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:focusable="false"
             android:text="@string/start"
             />
 

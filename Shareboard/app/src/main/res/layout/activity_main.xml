@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="cn.edu.hfut.lilei.shareboard.activity.MainActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:clipToPadding="true"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical"
+              tools:context="cn.edu.hfut.lilei.shareboard.activity.MainActivity">
 
     <RelativeLayout
         android:id="@+id/rl_main_actionbar"
         style="@style/actionbar">
 
-        <!--<LinearLayout-->
-        <!--style="@style/common_horizontal_division_line_style"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:background="@color/deepgray" />-->
-
 
         <TextView
             android:id="@+id/tv_main_title"
             style="@style/navbar_title_textview_style"
-            android:text="@string/meeting" />
+            android:text="@string/meeting"/>
 
         <LinearLayout
             android:id="@+id/ll_main_actionbar_right"
@@ -27,7 +24,7 @@
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:orientation="horizontal"
-            android:paddingTop="6dp"></LinearLayout>
+            ></LinearLayout>
 
 
     </RelativeLayout>
@@ -42,7 +39,7 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8" />
+            android:layout_weight="8"/>
         <!--<View-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="0.5dp"-->
@@ -66,7 +63,7 @@
                 android:gravity="center"
                 android:text="@string/meeting"
                 android:textColor="@color/my_white"
-                android:textSize="@dimen/super_small_text_size" />
+                android:textSize="@dimen/super_small_text_size"/>
 
 
             <RadioButton
@@ -79,7 +76,7 @@
                 android:gravity="center"
                 android:text="@string/contacts"
                 android:textColor="@color/my_white"
-                android:textSize="@dimen/super_small_text_size" />
+                android:textSize="@dimen/super_small_text_size"/>
 
             <RadioButton
                 android:id="@+id/btn_main_settings"
@@ -92,7 +89,7 @@
                 android:gravity="center"
                 android:text="@string/settings"
                 android:textColor="@color/my_white"
-                android:textSize="@dimen/super_small_text_size" />
+                android:textSize="@dimen/super_small_text_size"/>
 
 
         </RadioGroup>

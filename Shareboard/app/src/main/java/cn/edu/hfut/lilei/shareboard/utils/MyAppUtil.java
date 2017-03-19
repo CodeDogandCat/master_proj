@@ -355,6 +355,5 @@ public class MyAppUtil {
         return versioncode;
     }
 
-
 }
 

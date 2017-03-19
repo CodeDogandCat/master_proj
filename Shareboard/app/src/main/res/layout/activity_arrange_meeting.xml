@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:clipToPadding="true"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
 
 
     <RelativeLayout style="@style/actionbar">
@@ -15,31 +17,24 @@
 
         <ImageView
             android:id="@+id/img_arrange_meeting_goback"
-            android:layout_width="10dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_yellow_leftarrow" />
+            style="@style/actionbar_goback"
+            />
 
         <TextView
             style="@style/navbar_title_textview_style"
-            android:text="@string/arrange_meeting" />
+            android:text="@string/arrange_meeting"/>
 
         <Button
             android:id="@+id/btn_arrange_meeting_save"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@color/my_transparent"
-            android:text="@string/save"
-            android:textStyle="bold" />
+            style="@style/actionbar_button"
+            android:text="@string/save"/>
 
     </RelativeLayout>
+
     <LinearLayout
         style="@style/common_horizontal_division_line_style"
-        android:background="@color/my_deepgray" />
+        android:background="@color/my_deepgray"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -49,8 +44,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-
 
 
             <LinearLayout
@@ -69,11 +62,11 @@
                     android:background="@color/my_transparent"
                     android:gravity="left|center_vertical"
                     android:hint="@string/meeting_theme"
+                    android:maxLength="20"
+                    android:maxLines="1"
                     android:text="李磊的会议"
                     android:textColor="@color/my_white"
                     android:textSize="@dimen/small_text_size"
-                    android:maxLines="1"
-                    android:maxLength="20"
                     />
 
 
@@ -81,9 +74,9 @@
 
             <LinearLayout
                 style="@style/common_horizontal_division_line_style"
-                android:background="@color/my_deepgray" />
+                android:background="@color/my_deepgray"/>
 
-            <LinearLayout style="@style/content_vertical_space" />
+            <LinearLayout style="@style/content_vertical_space"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,7 +86,7 @@
 
                 <LinearLayout
                     style="@style/common_horizontal_division_line_style"
-                    android:background="@color/my_deepgray" />
+                    android:background="@color/my_deepgray"/>
 
                 <LinearLayout
                     android:id="@+id/ll_arrange_meeting_date"
@@ -112,7 +105,7 @@
                         android:gravity="center_vertical|left"
                         android:text="@string/date"
                         android:textColor="@color/my_white"
-                        android:textSize="@dimen/small_text_size" />
+                        android:textSize="@dimen/small_text_size"/>
 
                     <TextView
                         android:id="@+id/tv_arrange_meeting_date"
@@ -122,8 +115,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/meeting_date"
                         android:textSize="@dimen/small_text_size"
-                       />
-
+                        />
 
 
                 </LinearLayout>
@@ -132,7 +124,7 @@
                 <LinearLayout
                     style="@style/common_horizontal_division_line_style"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:background="@color/my_deepgray" />
+                    android:background="@color/my_deepgray"/>
 
 
                 <LinearLayout
@@ -152,7 +144,7 @@
                         android:gravity="center_vertical|left"
                         android:text="@string/from"
                         android:textColor="@color/my_white"
-                        android:textSize="@dimen/small_text_size" />
+                        android:textSize="@dimen/small_text_size"/>
 
                     <TextView
                         android:id="@+id/tv_arrange_meeting_start_time"
@@ -162,7 +154,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/start_time"
                         android:textSize="@dimen/small_text_size"
-                       />
+                        />
 
 
                 </LinearLayout>
@@ -170,7 +162,7 @@
                 <LinearLayout
                     style="@style/common_horizontal_division_line_style"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:background="@color/my_deepgray" />
+                    android:background="@color/my_deepgray"/>
 
 
                 <LinearLayout
@@ -190,7 +182,7 @@
                         android:gravity="center_vertical|left"
                         android:text="@string/to"
                         android:textColor="@color/my_white"
-                        android:textSize="@dimen/small_text_size" />
+                        android:textSize="@dimen/small_text_size"/>
 
                     <TextView
                         android:id="@+id/tv_arrange_meeting_end_time"
@@ -206,12 +198,12 @@
 
                 <LinearLayout
                     style="@style/common_horizontal_division_line_style"
-                    android:background="@color/my_deepgray" />
+                    android:background="@color/my_deepgray"/>
 
 
             </LinearLayout>
 
-            <LinearLayout style="@style/content_vertical_space" />
+            <LinearLayout style="@style/content_vertical_space"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -221,7 +213,7 @@
 
                 <LinearLayout
                     style="@style/common_horizontal_division_line_style"
-                    android:background="@color/my_deepgray" />
+                    android:background="@color/my_deepgray"/>
 
                 <LinearLayout
                     android:id="@+id/ll_arrange_meeting_is_drawable"
@@ -240,7 +232,7 @@
                         android:gravity="center_vertical|left"
                         android:text="@string/meeting_participate_able_to_draw"
                         android:textColor="@color/my_white"
-                        android:textSize="@dimen/small_text_size" />
+                        android:textSize="@dimen/small_text_size"/>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -253,7 +245,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            app:kswTintColor="@color/my_yellow" />
+                            app:kswTintColor="@color/my_yellow"/>
                     </RelativeLayout>
 
 
@@ -263,7 +255,7 @@
                 <LinearLayout
                     style="@style/common_horizontal_division_line_style"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:background="@color/my_deepgray" />
+                    android:background="@color/my_deepgray"/>
 
 
                 <LinearLayout
@@ -283,7 +275,7 @@
                         android:gravity="center_vertical|left"
                         android:text="@string/meeting_participate_able_to_talk"
                         android:textColor="@color/my_white"
-                        android:textSize="@dimen/small_text_size" />
+                        android:textSize="@dimen/small_text_size"/>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -296,7 +288,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            app:kswTintColor="@color/my_yellow" />
+                            app:kswTintColor="@color/my_yellow"/>
                     </RelativeLayout>
 
 
@@ -304,11 +296,11 @@
 
                 <LinearLayout
                     style="@style/common_horizontal_division_line_style"
-                    android:background="@color/my_deepgray" />
+                    android:background="@color/my_deepgray"/>
 
             </LinearLayout>
 
-            <LinearLayout style="@style/content_vertical_space" />
+            <LinearLayout style="@style/content_vertical_space"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -333,10 +325,10 @@
                         android:background="@color/transparent"
                         android:gravity="center_vertical|left"
                         android:hint="@string/meeting_password_optional"
-                        android:textColor="@color/my_white"
-                        android:textSize="@dimen/small_text_size"
                         android:maxLength="8"
                         android:maxLines="1"
+                        android:textColor="@color/my_white"
+                        android:textSize="@dimen/small_text_size"
                         />
 
 
@@ -345,14 +337,13 @@
                 <LinearLayout
                     style="@style/common_horizontal_division_line_style"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:background="@color/my_deepgray" />
-
+                    android:background="@color/my_deepgray"/>
 
 
                 <LinearLayout
                     style="@style/common_horizontal_division_line_style"
                     android:layout_width="match_parent"
-                    android:background="@color/my_deepgray" />
+                    android:background="@color/my_deepgray"/>
             </LinearLayout>
 
             <!--<LinearLayout style="@style/content_vertical_space" />-->
@@ -380,7 +371,7 @@
                         android:gravity="center_vertical|left"
                         android:text="@string/add_to_canlendar"
                         android:textColor="@color/my_white"
-                        android:textSize="@dimen/small_text_size" />
+                        android:textSize="@dimen/small_text_size"/>
 
 
                     <RelativeLayout
@@ -394,7 +385,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            app:kswTintColor="@color/my_yellow" />
+                            app:kswTintColor="@color/my_yellow"/>
                     </RelativeLayout>
 
 
@@ -402,7 +393,7 @@
 
                 <LinearLayout
                     style="@style/common_horizontal_division_line_style"
-                    android:background="@color/my_deepgray" />
+                    android:background="@color/my_deepgray"/>
             </LinearLayout>
 
         </LinearLayout>

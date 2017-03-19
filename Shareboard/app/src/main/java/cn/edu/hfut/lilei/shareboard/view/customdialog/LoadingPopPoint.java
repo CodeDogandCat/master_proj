@@ -1,4 +1,4 @@
-package xhome.uestcfei.com.loadingpoppoint;
+package cn.edu.hfut.lilei.shareboard.view.customdialog;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,6 +9,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class LoadingPopPoint extends View {
 
     private static final String TAG = "LoadingPopPoint";

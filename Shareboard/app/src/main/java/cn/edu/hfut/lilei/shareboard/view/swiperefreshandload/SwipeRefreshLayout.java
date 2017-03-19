@@ -718,7 +718,7 @@ public class SwipeRefreshLayout extends ViewGroup {
 		return true;
 	}
 
-	private void startRefresh() {
+	public void startRefresh() {
 		if (!mLoading && !mRefreshing) {
 			removeCallbacks(mCancel);
 			mReturnToStartPosition.run();
@@ -727,7 +727,7 @@ public class SwipeRefreshLayout extends ViewGroup {
 		}
 	}
 
-	private void startLoad() {
+	public void startLoad() {
 		if (!mLoading && !mRefreshing) {
 			removeCallbacks(mCancel);
 			mReturnToStartPosition.run();

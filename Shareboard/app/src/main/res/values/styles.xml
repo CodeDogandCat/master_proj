@@ -24,6 +24,7 @@
     <style name="NoActionBarTheme" parent="android:Theme.Holo.NoActionBar">
         <!-- Customize your tvMeetingTheme here. -->
         <item name="android:windowAnimationStyle">@style/default_animation</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <!-- 默认Activity跳转动画 -->
@@ -41,6 +42,7 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowAnimationStyle">@style/default_animation</item>
     </style>
+
     <style name="MeetingTheme" parent="@android:style/Theme.Holo">
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowActionBar">false</item>
@@ -66,9 +68,10 @@
         <item name="android:textColor">@color/my_yellow</item>
         <item name="android:gravity">center</item>
     </style>
+
     <style name="SmallButtonBlack">
-        <item name="android:layout_width">60dp</item>
-        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">70dp</item>
+        <item name="android:layout_height">35dp</item>
         <item name="android:background">@drawable/btn_black</item>
         <item name="android:textSize">@dimen/small_text_size</item>
         <item name="android:textColor">@color/my_yellow</item>
@@ -97,7 +100,27 @@
     <style name="actionbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/nav_height</item>
-        <item name="android:background">@color/my_barblack</item>
+        <item name="android:background">@color/my_yellow</item>
+    </style>
+
+    <style name="actionbar_goback">
+        <item name="android:layout_width">10dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:src">@drawable/ic_black_leftarrow</item>
+    </style>
+
+    <style name="actionbar_button">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:background">@color/my_transparent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/nav_title_size</item>
+        <item name="android:textColor">@color/my_black</item>
     </style>
 
     <style name="big_edittext">
@@ -146,12 +169,13 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerInParent">true</item>
-        <item name="android:textColor">@color/my_white</item>
+        <item name="android:textColor">@color/my_black</item>
         <item name="android:textSize">@dimen/nav_title_size</item>
         <item name="android:textStyle">bold</item>
 
     </style>
-    <style name="NoDisplay" parent="Theme.AppCompat.NoActionBar" >
+
+    <style name="NoDisplay" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsTranslucent">true</item>

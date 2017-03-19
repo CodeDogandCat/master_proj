@@ -146,7 +146,6 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
      */
     private void init() {
         mContext = this;
-
         //右滑返回
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);

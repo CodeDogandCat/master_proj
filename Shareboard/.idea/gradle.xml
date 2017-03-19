@@ -10,9 +10,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/AvatarImageViewLibrary" />
-            <option value="$PROJECT_DIR$/LoadingAnimLibrary" />
-            <option value="$PROJECT_DIR$/SwipeBackLibrary" />
-            <option value="$PROJECT_DIR$/SwitchButtonLibrary" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>

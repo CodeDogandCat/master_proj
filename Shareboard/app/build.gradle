@@ -49,12 +49,13 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile project(':AvatarImageViewLibrary')
     compile 'org.apache.directory.studio:org.apache.commons.lang:2.6'
-    compile project(':SwitchButtonLibrary')
-    compile project(':SwipeBackLibrary')
-    compile project(':LoadingAnimLibrary')
     compile 'com.lzy.net:okgo:2.1.4'
     //对okhttp的封装
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'org.greenrobot:greendao:3.2.0'
     compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    compile 'com.kyleduo.switchbutton:library:1.4.5'
+    compile 'me.imid.swipebacklayout.lib:library:1.0.0'
+
 }

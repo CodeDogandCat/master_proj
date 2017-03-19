@@ -1,1 +1,1 @@
-include ':app', ':AvatarImageViewLibrary', ':SwitchButtonLibrary', ':SwipeBackLibrary', ':LoadingAnimLibrary'
+include ':app', ':AvatarImageViewLibrary'

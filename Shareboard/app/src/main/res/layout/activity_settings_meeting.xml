@@ -3,24 +3,16 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:clipToPadding="true"
+              android:fitsSystemWindows="true"
               android:orientation="vertical">
 
 
     <RelativeLayout style="@style/actionbar">
 
-        <!--<LinearLayout-->
-        <!--style="@style/common_horizontal_division_line_style"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:background="@color/deepgray" />-->
-
         <ImageView
             android:id="@+id/img_settings_meeting_goback"
-            android:layout_width="10dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_yellow_leftarrow"/>
+            style="@style/actionbar_goback"/>
 
         <TextView
             style="@style/navbar_title_textview_style"
@@ -28,13 +20,9 @@
 
         <Button
             android:id="@+id/btn_settings_meeting_save"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@color/my_transparent"
+            style="@style/actionbar_button"
             android:text="@string/save"
-            android:textStyle="bold"/>
+            />
 
     </RelativeLayout>
 
@@ -200,11 +188,11 @@
                     android:background="@color/transparent"
                     android:gravity="center_vertical|left"
                     android:hint="@string/meeting_password_optional"
+                    android:inputType="textVisiblePassword"
                     android:maxLength="8"
                     android:maxLines="1"
                     android:textColor="@color/my_white"
                     android:textSize="@dimen/small_text_size"
-                    android:inputType="textVisiblePassword"
                     />
 
 

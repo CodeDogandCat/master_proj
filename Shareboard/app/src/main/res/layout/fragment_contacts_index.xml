@@ -10,8 +10,8 @@
     <cn.edu.hfut.lilei.shareboard.view.ClearEditText
         android:id="@+id/filter_edit"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dip"
+        android:layout_height="30dp"
+        android:layout_marginTop="1dip"
         android:background="@drawable/et_yellow"
         android:drawableLeft="@mipmap/search_bar_icon_normal"
         android:hint="请输入关键字"

@@ -87,7 +87,7 @@ public class MainActivity extends FragmentActivity implements
 
         //联系人页面actionbar右侧的添加联系人图标
         mImgAddContact = new ImageView(this);
-        ImageUtil.load(mContext, R.drawable.ic_white_22, R.drawable.ic_white_22, mImgAddContact);
+        ImageUtil.load(mContext, R.drawable.ic_black_add, R.drawable.ic_black_add, mImgAddContact);
         mlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         hasAddContactIcon = false;//标志着当前页面没有添加联系人图标
@@ -135,9 +135,10 @@ public class MainActivity extends FragmentActivity implements
                             @Override
                             public void onClick(View view) {
                                 new CustomAlertDialog.Builder(MainActivity.this)
-                                        .setTitle(getString(R.string.inputemail))
+                                        .setTitle(getString(R.string.add_friend))
+                                        .setMessage(getString(R.string.inputemail))
                                         .setPositiveButton(
-                                                MainActivity.this.getString(R.string.add_friend),
+                                                getString(R.string.confirm),
                                                 null)
                                         .show();
                             }

@@ -29,7 +29,7 @@ public class SettingUtil {
             "http://118.89.102.238/controller/meeting/enter_meeting.php";
     //开会地址
     public static final String URL_MEETING =
-            "http://118.89.102.238/btnStart/index.php";
+            "http://118.89.102.238/view/index.php";
 
     //post name 参数
     public static final String post_check_verify_code = "300100";
