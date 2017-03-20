@@ -1,6 +1,7 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,6 +38,9 @@ public class SettingsAboutActivity extends SwipeBackActivity implements View.OnC
      */
     private void init() {
         mContext = this;
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
+        }
         //右滑返回
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);

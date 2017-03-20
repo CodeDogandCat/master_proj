@@ -5,15 +5,15 @@
         android:duration="200"
         android:fromXScale="1"
         android:fromYScale="1"
-        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
-        android:pivotX="50%"
-        android:pivotY="50%"
-        android:toXScale="0.7"
-        android:toYScale="0.7" />
+        android:interpolator="@android:anim/bounce_interpolator"
+        android:pivotX="0.0"
+        android:pivotY="0.0"
+        android:toXScale="0.5"
+        android:toYScale="0.5" />
 
     <alpha
         android:duration="200"
         android:fromAlpha="1"
-        android:toAlpha="0" />
+        android:toAlpha="0.2" />
 
 </set>

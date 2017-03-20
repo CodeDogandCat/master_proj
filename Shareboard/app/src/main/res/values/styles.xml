@@ -23,24 +23,23 @@
 
     <style name="NoActionBarTheme" parent="android:Theme.Holo.NoActionBar">
         <!-- Customize your tvMeetingTheme here. -->
-        <item name="android:windowAnimationStyle">@style/default_animation</item>
+        <!--<item name="android:windowAnimationStyle">@style/default_animation</item>-->
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <!-- 默认Activity跳转动画 -->
-    <style name="default_animation" mce_bogus="1" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/default_anim_in</item>
-        <item name="android:activityOpenExitAnimation">@anim/default_stay</item>
-        <item name="android:activityCloseEnterAnimation">@anim/default_stay</item>
-        <item name="android:activityCloseExitAnimation">@anim/default_anim_out</item>
-    </style>
+    <!--<style name="default_animation" mce_bogus="1" parent="@android:style/Animation.Activity">-->
+        <!--<item name="android:activityOpenEnterAnimation">@anim/default_anim_in</item>-->
+        <!--<item name="android:activityOpenExitAnimation">@anim/default_stay</item>-->
+        <!--<item name="android:activityCloseEnterAnimation">@anim/default_stay</item>-->
+        <!--<item name="android:activityCloseExitAnimation">@anim/default_anim_out</item>-->
+    <!--</style>-->
 
     <style name="WelcomeTheme" parent="@android:style/Theme.Holo">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowAnimationStyle">@style/default_animation</item>
     </style>
 
     <style name="MeetingTheme" parent="@android:style/Theme.Holo">
@@ -48,7 +47,6 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowAnimationStyle">@style/default_animation</item>
     </style>
 
     <style name="BigButton">

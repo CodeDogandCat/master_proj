@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -69,6 +70,9 @@ public class LoginActivity extends Activity {
 
     private void init() {
         mContext = this;
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
+        }
         mImgEmail = (ImageView) findViewById(R.id.img_login_email);
         mImgPassword = (ImageView) findViewById(R.id.img_login_password);
         mEtEmail = (EditText) findViewById(R.id.et_login_email);

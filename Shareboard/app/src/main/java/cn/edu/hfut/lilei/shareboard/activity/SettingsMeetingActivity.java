@@ -2,6 +2,7 @@ package cn.edu.hfut.lilei.shareboard.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -56,6 +57,9 @@ public class SettingsMeetingActivity extends SwipeBackActivity implements View.O
      */
     private void init() {
         mContext = this;
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
+        }
         //右滑返回
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);

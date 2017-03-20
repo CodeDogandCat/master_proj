@@ -2,6 +2,7 @@ package cn.edu.hfut.lilei.shareboard.activity;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -64,7 +65,9 @@ public class MainActivity extends FragmentActivity implements
 
     protected void init() {
         mContext = this;
-//        getPermission();
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
+        }
         Fragment meetingFragment = new MeetingFragment();
         Fragment contactsFragment = new ContactsFragment();
         Fragment settingsFragment = new SettingsFragment();

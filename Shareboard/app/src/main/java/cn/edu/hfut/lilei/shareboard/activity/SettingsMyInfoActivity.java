@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -142,6 +143,9 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
     private void init() {
 
         mContext = this;
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
+        }
         if (FileUtil.isExternalStorageWritable()) {
             baseDir = mContext.getExternalFilesDir("")
                     .getAbsolutePath();

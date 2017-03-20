@@ -3,6 +3,7 @@ package cn.edu.hfut.lilei.shareboard.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -60,6 +61,9 @@ public class JoinMeetingActivity extends SwipeBackActivity {
 
     private void init() {
         mContext = this;
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
+        }
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
                 SwipeBackLayout.EDGE_LEFT);

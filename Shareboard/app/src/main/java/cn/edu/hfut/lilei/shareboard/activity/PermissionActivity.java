@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 
+import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 
@@ -37,6 +39,9 @@ public class PermissionActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
+        }
         if (getIntent() == null || !getIntent().hasExtra("permission")) {
             finish();
             return;
