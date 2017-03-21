@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        style="@style/actionbar"
+        android:background="@color/my_black">
+
+        <ImageView
+            android:id="@+id/img_arrange_meeting_goback"
+            style="@style/actionbar_goback"
+            />
+
+        <TextView
+            style="@style/navbar_title_textview_style"
+            android:text="1141-0213-4178"
+            android:textColor="@color/my_white"
+            />
+
+        <Button
+            android:id="@+id/btn_arrange_meeting_save"
+            style="@style/actionbar_button"
+            android:text="@string/end"
+            android:textColor="@color/my_red"
+            />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_meeting_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/fl_meeting_stage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            >
+
+            <RelativeLayout
+                android:id="@+id/rl_share_pic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <cn.edu.hfut.lilei.shareboard.view.imageview.PinchImageView
+                    android:id="@+id/share_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_meeting_canvas"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <WebView
+                    android:id="@+id/wv_meeting_canvas"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    />
+
+            </LinearLayout>
+
+            <cn.edu.hfut.lilei.shareboard.view.DragFloatActionButton
+                android:id="@+id/fab_meeting_start_draw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_yellow_50"
+                app:backgroundTint="@color/my_transparent"
+                app:borderWidth="0dp"
+                app:elevation="6dp"
+                app:fabSize="normal"
+                app:layout_anchor="@id/fl_meeting_stage"
+                app:layout_anchorGravity="bottom|right"
+                android:layout_marginBottom="20dp"
+                app:pressedTranslationZ="5dp"
+                app:rippleColor="@color/darkblue"
+                android:layout_gravity="bottom|left"
+                />
+
+        </FrameLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGroup_meeting"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:background="@color/my_black"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_meeting_im"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/share"
+                android:textColor="@color/my_white"
+                android:textSize="@dimen/super_small_text_size"/>
+
+
+            <RadioButton
+                android:id="@+id/btn_meeting_members"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/participate"
+                android:textColor="@color/my_white"
+                android:textSize="@dimen/super_small_text_size"/>
+
+            <RadioButton
+                android:id="@+id/btn_meeting_lock"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/lock_meeting"
+                android:textColor="@color/my_white"
+                android:textSize="@dimen/super_small_text_size"/>
+
+
+        </RadioGroup>
+
+
+    </LinearLayout>
+</LinearLayout>
+

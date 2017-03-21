@@ -30,6 +30,8 @@ public class SettingUtil {
     //开会地址
     public static final String URL_MEETING =
             "http://118.89.102.238/view/index.php";
+    public static final String URL_TEST =
+            "http://118.89.102.238/view/test.html";
 
     //post name 参数
     public static final String post_check_verify_code = "300100";

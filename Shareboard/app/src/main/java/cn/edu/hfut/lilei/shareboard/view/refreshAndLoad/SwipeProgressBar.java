@@ -1,4 +1,4 @@
-package cn.edu.hfut.lilei.shareboard.view.swiperefreshandload;
+package cn.edu.hfut.lilei.shareboard.view.refreshandload;
 
 /*
  * Copyright (C) 2013 The Android Open Source Project

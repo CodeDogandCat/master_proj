@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.edu.hfut.lilei.shareboard.view.swiperefreshandload;
+package cn.edu.hfut.lilei.shareboard.view.refreshandload;
 
 import android.content.Context;
 import android.content.res.Resources;

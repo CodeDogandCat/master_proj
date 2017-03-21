@@ -144,4 +144,8 @@
     <string name="meeting_id_param">会议ID: %1$s</string>
     <string name="start">开始</string>
     <string name="nothing_else">没有了</string>
+    <string name="end">结束</string>
+    <string name="lock_meeting">锁定会议</string>
+    <string name="participate">参与者</string>
+    <string name="share">共享</string>
 </resources>

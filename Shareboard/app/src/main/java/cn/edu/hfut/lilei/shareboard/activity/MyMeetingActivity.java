@@ -24,7 +24,7 @@ import cn.edu.hfut.lilei.shareboard.models.MeetingListJson;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
-import cn.edu.hfut.lilei.shareboard.view.swiperefreshandload.SwipeRefreshLayout;
+import cn.edu.hfut.lilei.shareboard.view.refreshandload.SwipeRefreshLayout;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;

@@ -124,13 +124,13 @@ if (
                     case 'login':
                         //{"type":"login","client_id":xxx,"client_name":"xxx","client_list":"[...]","time":"xxx"}
 //                say(data['client_id'], data['client_name'],  data['client_name']+' 加入了聊天室', data['time']);
-                        if (data['client_list']) {
-                            client_list = data['client_list'];
-                        }
-                        else {
-                            client_list[data['client_id']] = data['client_name'];
-                        }
-                        flush_client_list();
+//                        if (data['client_list']) {
+//                            client_list = data['client_list'];
+//                        }
+//                        else {
+//                            client_list[data['client_id']] = data['client_name'];
+//                        }
+//                        flush_client_list();
                         console.log(data['client_name'] + "登录成功");
                         break;
                     /**
@@ -146,8 +146,8 @@ if (
                     case 'logout':
                         //{"type":"logout","client_id":xxx,"time":"xxx"}
 //                say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time']);
-                        delete client_list[data['from_client_id']];
-                        flush_client_list();
+//                        delete client_list[data['from_client_id']];
+//                        flush_client_list();
                 }
             }
 
@@ -156,8 +156,11 @@ if (
              * 提交自己改变的数据
              */
             function onSubmit(datajson) {
-                var to_client_id = $("#client_list option:selected").attr("value");
-                var to_client_name = $("#client_list option:selected").text();
+//                var to_client_id = $("#client_list option:selected").attr("value");
+//                var to_client_name = $("#client_list option:selected").text();
+                var to_client_id = "all";
+                var to_client_name = "所有人";
+
                 var say_data = '{"type":"say","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name + '","content":"' + datajson.replace(/\\"/g, '425D8E69BF45B845CB7CF50FA43D64C68D379A46').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r') + '"}';
                 ws.send(say_data);
 
@@ -183,18 +186,18 @@ if (
              * 刷新用户列表框
              */
             function flush_client_list() {
-                var userlist_window = $("#userlist");
-                var client_list_slelect = $("#client_list");
-                userlist_window.empty();
-                client_list_slelect.empty();
-                userlist_window.append('<h4>在线用户</h4><ul>');
-                client_list_slelect.append('<option value="all" id="cli_all">所有人</option>');
-                for (var p in client_list) {
-                    userlist_window.append('<li id="' + p + '">' + client_list[p] + '</li>');
-                    client_list_slelect.append('<option value="' + p + '">' + client_list[p] + '</option>');
-                }
-                $("#client_list").val(select_client_id);
-                userlist_window.append('</ul>');
+//                var userlist_window = $("#userlist");
+//                var client_list_slelect = $("#client_list");
+//                userlist_window.empty();
+//                client_list_slelect.empty();
+//                userlist_window.append('<h4>在线用户</h4><ul>');
+//                client_list_slelect.append('<option value="all" id="cli_all">所有人</option>');
+//                for (var p in client_list) {
+//                    userlist_window.append('<li id="' + p + '">' + client_list[p] + '</li>');
+//                    client_list_slelect.append('<option value="' + p + '">' + client_list[p] + '</option>');
+//                }
+//                $("#client_list").val(select_client_id);
+//                userlist_window.append('</ul>');
             }
             /**
              * 监听画板的变化
@@ -214,7 +217,18 @@ if (
                     imageURLPrefix: 'images',
                     toolbarPosition: 'top',
                     defaultStrokeWidth: 2,
-                    strokeWidths: [1, 2, 4, 8, 15]
+                    strokeWidths: [1, 2, 4, 8, 15],
+                    tools: [
+                        LC.tools.Pencil,//画笔
+                        LC.tools.Eraser,//橡皮
+                        LC.tools.Line,//直线
+                        LC.tools.Rectangle,//矩形
+                        LC.tools.Ellipse,//椭圆
+                        LC.tools.Text,//文字
+                        LC.tools.Pan,//缩放
+                        LC.tools.SelectShape//选择移动
+
+                    ]
                 });
                 listenDrawingChange();
 
@@ -235,19 +249,19 @@ if (
             <div class="fs-container col-md-12 column">
                 <div id="lc"></div>
             </div>
-            <form style="display: none">
-                <select style="margin-bottom:8px" id="client_list">
-                    <option value="all">所有人</option>
-                </select>
-                <textarea class="textarea thumbnail" id="textarea"></textarea>
-                <div class="say-btn"><input type="submit" class="btn btn-default" value="发表"/></div>
-            </form>
-
-            <div class="col-md-3 column">
-                <div class="thumbnail">
-                    <div class="caption" id="userlist"></div>
-                </div>
-            </div>
+<!--            <form style="display: none">-->
+<!--                <select style="margin-bottom:8px" id="client_list">-->
+<!--                    <option value="all">所有人</option>-->
+<!--                </select>-->
+<!--                <textarea class="textarea thumbnail" id="textarea"></textarea>-->
+<!--                <div class="say-btn"><input type="submit" class="btn btn-default" value="发表"/></div>-->
+<!--            </form>-->
+<!---->
+<!--            <div class="col-md-3 column" style="visibility: hidden">-->
+<!--                <div class="thumbnail">-->
+<!--                    <div class="caption" id="userlist"></div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </div>
     </body>
