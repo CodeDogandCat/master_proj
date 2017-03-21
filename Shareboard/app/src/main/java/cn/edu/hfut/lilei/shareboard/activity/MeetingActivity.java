@@ -40,16 +40,16 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
     private RadioGroup mRadioGroup;
     private DragFloatActionButton fab;
     private LinearLayout mLlWebviewCanvas;
-    private RelativeLayout mRlSharePic;
+    private RelativeLayout mRlSharePic,mRlActionbar;
 
     //数据
     //按钮的没选中显示的图标
-    private int[] unselectedIconIds = {R.drawable.ic_white_04,
-            R.drawable.ic_white_39, R.drawable.ic_white_48
+    private int[] unselectedIconIds = {R.drawable.ic_default_members,
+            R.drawable.ic_default_share, R.drawable.ic_default_lock
     };
     //按钮的选中显示的图标
-    private int[] selectedIconIds = {R.drawable.ic_yellow_04,
-            R.drawable.ic_yellow_39, R.drawable.ic_yellow_48
+    private int[] selectedIconIds = {R.drawable.ic_press_members,
+            R.drawable.ic_press_share, R.drawable.ic_press_lock
     };
 
     //上下文参数
@@ -76,22 +76,10 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
     private void init() {
         mContext = this;
         mRlSharePic = (RelativeLayout) findViewById(R.id.rl_share_pic);
+        mRlActionbar = (RelativeLayout) findViewById(R.id.rl_meeting_actionbar);
         mLlWebviewCanvas = (LinearLayout) findViewById(R.id.ll_meeting_canvas);
 
-        fab = (DragFloatActionButton) findViewById(R.id.fab_meeting_start_draw);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isDrawing) {
-                    mLlWebviewCanvas.setVisibility(View.VISIBLE);
-                    isDrawing = true;
-                } else {
-                    mLlWebviewCanvas.setVisibility(View.GONE);
-                    isDrawing=false;
-                }
-//                showToast(mContext, "点击了我");
-            }
-        });
+
         /**
          * 设置图片
          */
@@ -111,6 +99,27 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup_meeting);
         mRadioGroup.setOnCheckedChangeListener(this);
         selectPage(0);
+        /**
+         * 设置悬浮按钮
+         */
+        fab = (DragFloatActionButton) findViewById(R.id.fab_meeting_start_draw);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isDrawing) {
+                    mLlWebviewCanvas.setVisibility(View.VISIBLE);
+                    mRlActionbar.setVisibility(View.GONE);
+                    mRadioGroup.setVisibility(View.GONE);
+                    isDrawing = true;
+                } else {
+                    mLlWebviewCanvas.setVisibility(View.GONE);
+                    mRlActionbar.setVisibility(View.VISIBLE);
+                    mRadioGroup.setVisibility(View.VISIBLE);
+                    isDrawing=false;
+                }
+//                showToast(mContext, "点击了我");
+            }
+        });
     }
 
     /**
@@ -255,8 +264,8 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
         // 将所有的tab的icon变成灰色的
         for (int i = 0; i < mRadioGroup.getChildCount(); i++) {
             Drawable gray = getResources().getDrawable(unselectedIconIds[i]);
-            gray.setBounds(0, 0, 130,
-                    130);
+            gray.setBounds(0, 0, 80,
+                    80);
 
             RadioButton child = (RadioButton) mRadioGroup.getChildAt(i);
             child.setCompoundDrawables(null, gray, null, null);
@@ -265,21 +274,19 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
         }
         // 改变图标
         Drawable yellow = getResources().getDrawable(selectedIconIds[position]);
-        yellow.setBounds(0, 0, 130,
-                130);
+        yellow.setBounds(0, 0, 80,
+                80);
         RadioButton select = (RadioButton) mRadioGroup.getChildAt(position);
         select.setCompoundDrawables(null, yellow, null, null);
-        select.setTextColor(getResources().getColor(
-                R.color.my_yellow));
     }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.btn_meeting_im:
+            case R.id.btn_meeting_members:
                 selectPage(0);
                 break;
-            case R.id.btn_meeting_members:
+            case R.id.btn_meeting_share:
                 selectPage(1);
                 break;
             case R.id.btn_meeting_lock:

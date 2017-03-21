@@ -6,6 +6,7 @@
               android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rl_meeting_actionbar"
         style="@style/actionbar"
         android:background="@color/my_black">
 
@@ -35,13 +36,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/my_black">
 
         <FrameLayout
             android:id="@+id/fl_meeting_stage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8"
+            android:layout_weight="11"
             >
 
             <RelativeLayout
@@ -76,17 +78,18 @@
                 android:id="@+id/fab_meeting_start_draw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_yellow_50"
+                android:src="@drawable/ic_default_draw"
                 app:backgroundTint="@color/my_transparent"
-                app:borderWidth="0dp"
-                app:elevation="6dp"
+                app:borderWidth="1dp"
+                app:elevation="12dp"
                 app:fabSize="normal"
                 app:layout_anchor="@id/fl_meeting_stage"
-                app:layout_anchorGravity="bottom|right"
+                app:layout_anchorGravity="center"
                 android:layout_marginBottom="20dp"
                 app:pressedTranslationZ="5dp"
-                app:rippleColor="@color/darkblue"
-                android:layout_gravity="bottom|left"
+                app:rippleColor="@color/my_black"
+                app:backgroundTintMode="screen"
+                android:layout_gravity="bottom"
                 />
 
         </FrameLayout>
@@ -101,19 +104,6 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/btn_meeting_im"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/share"
-                android:textColor="@color/my_white"
-                android:textSize="@dimen/super_small_text_size"/>
-
-
-            <RadioButton
                 android:id="@+id/btn_meeting_members"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -123,7 +113,20 @@
                 android:gravity="center"
                 android:text="@string/participate"
                 android:textColor="@color/my_white"
-                android:textSize="@dimen/super_small_text_size"/>
+                android:textSize="10sp"/>
+
+
+            <RadioButton
+                android:id="@+id/btn_meeting_share"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/to_share"
+                android:textColor="@color/my_white"
+                android:textSize="10sp"/>
 
             <RadioButton
                 android:id="@+id/btn_meeting_lock"
@@ -135,7 +138,7 @@
                 android:gravity="center"
                 android:text="@string/lock_meeting"
                 android:textColor="@color/my_white"
-                android:textSize="@dimen/super_small_text_size"/>
+                android:textSize="10sp"/>
 
 
         </RadioGroup>

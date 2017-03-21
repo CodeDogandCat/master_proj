@@ -14,6 +14,8 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.utils.hugeimageutil.TileDrawable;
 import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 
+import static cn.edu.hfut.lilei.shareboard.R.color.yellow;
+
 
 public class MeetingTestActivity extends Activity implements RadioGroup.OnCheckedChangeListener {
     //控件
@@ -84,8 +86,8 @@ public class MeetingTestActivity extends Activity implements RadioGroup.OnChecke
         // 将所有的tab的icon变成灰色的
         for (int i = 0; i < mRadioGroup.getChildCount(); i++) {
             Drawable gray = getResources().getDrawable(unselectedIconIds[i]);
-            gray.setBounds(0, 0, 130,
-                    130);
+            gray.setBounds(0, 0, 60,
+                    60);
 
             RadioButton child = (RadioButton) mRadioGroup.getChildAt(i);
             child.setCompoundDrawables(null, gray, null, null);
@@ -93,22 +95,22 @@ public class MeetingTestActivity extends Activity implements RadioGroup.OnChecke
                     R.color.my_white));
         }
         // 改变图标
-        Drawable yellow = getResources().getDrawable(selectedIconIds[position]);
-        yellow.setBounds(0, 0, 130,
-                130);
+        Drawable press = getResources().getDrawable(selectedIconIds[position]);
+        press.setBounds(0, 0, 60,
+                60);
         RadioButton select = (RadioButton) mRadioGroup.getChildAt(position);
-        select.setCompoundDrawables(null, yellow, null, null);
-        select.setTextColor(getResources().getColor(
-                R.color.my_yellow));
+        select.setCompoundDrawables(null, press, null, null);
+//        select.setTextColor(getResources().getColor(
+//                R.color.my_yellow));
     }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.btn_meeting_im:
+            case R.id.btn_meeting_members:
                 selectPage(0);
                 break;
-            case R.id.btn_meeting_members:
+            case R.id.btn_meeting_share:
                 selectPage(1);
                 break;
             case R.id.btn_meeting_lock:

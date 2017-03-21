@@ -28,9 +28,30 @@ if (
 
         <style type="text/css">
             .fs-container {
-                width: auto;
+                width: 100%;
+                height: 100%;
                 margin: auto;
+                /*max-width: 100%;*/
+            }
+
+            canvas {
+                width: auto;
+                height: auto;
                 max-width: 100%;
+                max-height: 100%;
+            }
+
+            .lc-picker {
+                height: auto;
+                max-height: 100%;
+            }
+            #lc{
+                width: 100%;
+                height: 100%;
+
+            }
+            .label{
+                font-size:100%;
             }
 
         </style>
@@ -144,7 +165,7 @@ if (
                      * 其他用户退出
                      */
                     case 'logout':
-                        //{"type":"logout","client_id":xxx,"time":"xxx"}
+                    //{"type":"logout","client_id":xxx,"time":"xxx"}
 //                say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time']);
 //                        delete client_list[data['from_client_id']];
 //                        flush_client_list();
@@ -217,13 +238,14 @@ if (
                     imageURLPrefix: 'images',
                     toolbarPosition: 'top',
                     defaultStrokeWidth: 2,
-                    strokeWidths: [1, 2, 4, 8, 15],
+                    strokeWidths: [ 2, 4, 8, 10,15,20],
                     tools: [
                         LC.tools.Pencil,//画笔
                         LC.tools.Eraser,//橡皮
                         LC.tools.Line,//直线
                         LC.tools.Rectangle,//矩形
                         LC.tools.Ellipse,//椭圆
+                        LC.tools.Polygon,//多边形
                         LC.tools.Text,//文字
                         LC.tools.Pan,//缩放
                         LC.tools.SelectShape//选择移动
@@ -244,26 +266,22 @@ if (
     <body onload="connect();">
 
     <!--主体-->
-    <div class="container">
-        <div class="row clearfix">
-            <div class="fs-container col-md-12 column">
-                <div id="lc"></div>
-            </div>
-<!--            <form style="display: none">-->
-<!--                <select style="margin-bottom:8px" id="client_list">-->
-<!--                    <option value="all">所有人</option>-->
-<!--                </select>-->
-<!--                <textarea class="textarea thumbnail" id="textarea"></textarea>-->
-<!--                <div class="say-btn"><input type="submit" class="btn btn-default" value="发表"/></div>-->
-<!--            </form>-->
-<!---->
-<!--            <div class="col-md-3 column" style="visibility: hidden">-->
-<!--                <div class="thumbnail">-->
-<!--                    <div class="caption" id="userlist"></div>-->
-<!--                </div>-->
-<!--            </div>-->
-        </div>
+    <div class="fs-container">
+        <div id="lc"></div>
     </div>
+    <!--            <form style="display: none">-->
+    <!--                <select style="margin-bottom:8px" id="client_list">-->
+    <!--                    <option value="all">所有人</option>-->
+    <!--                </select>-->
+    <!--                <textarea class="textarea thumbnail" id="textarea"></textarea>-->
+    <!--                <div class="say-btn"><input type="submit" class="btn btn-default" value="发表"/></div>-->
+    <!--            </form>-->
+    <!---->
+    <!--            <div class="col-md-3 column" style="visibility: hidden">-->
+    <!--                <div class="thumbnail">-->
+    <!--                    <div class="caption" id="userlist"></div>-->
+    <!--                </div>-->
+    <!--            </div>-->
     </body>
     </html>
 

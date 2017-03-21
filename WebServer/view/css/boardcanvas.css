@@ -13,7 +13,7 @@
 }
 
 .literally .button-style-1:hover:not(.disabled) {
-    border-color: #a1d9fe
+    border-color: #EACB3C
 }
 
 .literally .button-style-1.disabled {
@@ -28,7 +28,7 @@
 
 .literally.toolbar-at-top .lc-options {
     top: 0;
-    border-bottom: 1px solid #555
+    /*border-bottom: 1px solid #555*/
 }
 
 .literally.toolbar-at-bottom .lc-drawing {
@@ -56,6 +56,7 @@
     position: relative;
     background-color: transparent;
     min-height: 400px;
+    height: 100%;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -68,7 +69,7 @@
 .literally,.literally * {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    box-sizing: border-box
+    box-sizing: border-box;
 }
 
 .literally>* {
@@ -79,7 +80,7 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 61px;
+    width: 30px;
     background-color: transparent;
 }
 
@@ -100,7 +101,8 @@
 
 .literally .lc-drawing.with-gui {
     right: 0;
-    left: 61px;
+    /*left: 61px;*/
+    left: 0;
     cursor: default
 }
 
@@ -119,7 +121,7 @@
 
 .literally .lc-picker {
     z-index: 1001;
-    border-right: 1px solid #555
+    /*border-right: 1px solid #555*/
 }
 
 .literally .lc-picker .toolbar-button {
@@ -144,7 +146,7 @@
 }
 
 .literally .lc-picker .toolbar-button:hover:not(.disabled) {
-    border-color: #a1d9fe
+    border-color: #D6AC18;
 }
 
 .literally .lc-picker .toolbar-button.disabled {
@@ -155,12 +157,16 @@
 .literally .lc-picker .thin-button {
     cursor: pointer;
     float: left;
-    position: relative
+    position: relative;
+    background: rgba(100,100,100,0.5);
 }
 
 .literally .lc-picker .fat-button {
     clear: both;
-    width: 56px
+    width: 36px;
+    font-style: oblique;
+    font-size: medium;
+    color: #F51010
 }
 
 .literally .lc-picker .lc-pick-tool,.literally .lc-picker .lc-undo,.literally .lc-picker .lc-redo,.literally .lc-picker .lc-zoom-in,.literally .lc-picker .lc-zoom-out {
@@ -172,7 +178,7 @@
 .literally .color-well {
     font-size: 10px;
     float: left;
-    width: 60px
+    width: 30px
 }
 
 .literally .color-well.open {
@@ -182,11 +188,11 @@
 .literally .color-well-color-container {
     border: 2px solid transparent;
     border-radius: 3px;
-    border: 1px solid #aaa;
+    border: 1px solid black;
     position: relative;
     width: 28px;
     height: 28px;
-    margin: 1px auto;
+    margin: 1px 0;
     overflow: visible
 }
 
@@ -235,9 +241,9 @@
 .literally .color-picker-popup {
     position: absolute;
     z-index: 1;
-    background-color: #191919;
+    background-color: black;
     border: 1px solid #D6AC18;
-    left: 60px;
+    left: 31px;
     bottom: 31px
 }
 
@@ -254,7 +260,7 @@
 }
 
 .literally .color-picker-popup .color-row .color-cell:hover,.literally .color-picker-popup .color-row .color-cell.selected {
-    border: 1px solid #555;
+    border: 1px solid #D6AC18;
     line-height: 18px
 }
 
@@ -284,11 +290,12 @@
     border: 2px solid transparent;
     border-radius: 3px;
     margin: 1px;
-    border: 1px solid #aaa;
+    border: 1px solid transparent;
     width: 28px;
     height: 28px;
     float: left;
-    position: relative
+    position: relative;
+    background: rgba(100,100,100,0.5);
 }
 
 .literally .horz-toolbar .square-toolbar-button {
@@ -297,11 +304,12 @@
 }
 
 .literally .horz-toolbar .square-toolbar-button.selected:not(.disabled) {
+    /*background-color: #a1d9fe*/
     background-color: #a1d9fe
 }
 
 .literally .horz-toolbar .square-toolbar-button:hover:not(.disabled) {
-    border-color: #a1d9fe
+    border-color: #D6AC18
 }
 
 .literally .horz-toolbar .square-toolbar-button.disabled {
@@ -344,14 +352,14 @@
 .literally .lc-options {
     z-index: 1;
     right: 0;
-    left: 61px
+    left: 30px
 }
 
 .literally .lc-options .lc-font-settings {
     height: 30px;
     line-height: 31px;
     padding-left: 4px;
-    background-color: #191919
+    background-color: #a1d9fe
 }
 
 .literally .lc-options .lc-font-settings input {
