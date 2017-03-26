@@ -108,6 +108,29 @@ class Events
                     'time' => date('Y-m-d H:i:s')
                 );
                 return Gateway::sendToGroup($room_id, json_encode($new_message));
+            case 'sync':
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                // 非法请求
+                if (!isset($_SESSION['client_name'])) {
+                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                $room_id = $_SESSION['room_id'];
+                return Gateway::sendToGroup($room_id, $message);
+            case 'cancle_sync':
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                // 非法请求
+                if (!isset($_SESSION['client_name'])) {
+                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                $room_id = $_SESSION['room_id'];
+                return Gateway::sendToGroup($room_id, $message);
+
         }
     }
 

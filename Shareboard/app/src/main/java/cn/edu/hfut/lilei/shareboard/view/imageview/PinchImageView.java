@@ -39,7 +39,7 @@ public class PinchImageView extends ImageView  {
     /**
      * 图片最大放大比例
      */
-    private static final float MAX_SCALE = 4f;
+    private static final float MAX_SCALE = 6f;
 
 
     ////////////////////////////////监听器////////////////////////////////

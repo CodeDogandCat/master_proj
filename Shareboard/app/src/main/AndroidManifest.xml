@@ -111,6 +111,12 @@
             android:theme="@style/MeetingTheme"
             android:windowSoftInputMode="adjustPan"
             />
+        <activity
+            android:name=".activity.JsAvtivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MeetingTheme"
+            android:windowSoftInputMode="adjustPan"
+            />
 
 
     </application>

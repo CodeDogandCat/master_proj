@@ -35,9 +35,19 @@ public class DragFloatActionButton extends android.support.design.widget.Floatin
         screenWidth = ScreenUtil.getScreenWidth(getContext());
         screenWidthHalf = screenWidth / 2;
         screenHeight = ScreenUtil.getHeight((Activity) getContext());
-        statusHeight = ScreenUtil.getStatusBarHeight( getContext());
+        statusHeight = ScreenUtil.getStatusBarHeight(getContext());
     }
 
+    public void setTitleBarSize(int height) {
+        titleBarSize = height;
+    }
+
+    public void setBottomBarSize(int height) {
+        bottomBarSize = height;
+    }
+
+    private int titleBarSize;
+    private int bottomBarSize;
     private int lastX;
     private int lastY;
 
@@ -69,8 +79,9 @@ public class DragFloatActionButton extends android.support.design.widget.Floatin
                 float y = getY() + dy;
                 //检测是否到达边缘 左上右下
                 x = x < 0 ? 0 : x > screenWidth - getWidth() ? screenWidth - getWidth() : x;
-                y = y < statusHeight ? statusHeight :
-                        y + getHeight() > screenHeight ? screenHeight - getHeight() : y;
+                y = y < statusHeight + titleBarSize ? statusHeight + titleBarSize :
+                        y + getHeight() > screenHeight - bottomBarSize ?
+                                screenHeight - bottomBarSize - getHeight() : y;
                 setX(x);
                 setY(y);
                 lastX = rawX;

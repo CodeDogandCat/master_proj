@@ -136,6 +136,8 @@ public class WelcomeActivity extends Activity {
                                     Intent intent = new Intent();
 //                                    intent.setClass(WelcomeActivity.this,
 //                                            MeetingTestActivity.class);
+//                                    intent.setClass(WelcomeActivity.this,
+//                                            JsAvtivity.class);
                                     intent.setClass(WelcomeActivity.this,
                                             MeetingActivity.class);
                                     startActivity(intent);

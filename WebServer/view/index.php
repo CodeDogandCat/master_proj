@@ -45,13 +45,15 @@ if (
                 height: auto;
                 max-height: 100%;
             }
-            #lc{
+
+            #lc {
                 width: 100%;
                 height: 100%;
 
             }
-            .label{
-                font-size:100%;
+
+            .label {
+                font-size: 100%;
             }
 
         </style>
@@ -165,13 +167,62 @@ if (
                      * 其他用户退出
                      */
                     case 'logout':
+                        break;
                     //{"type":"logout","client_id":xxx,"time":"xxx"}
 //                say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time']);
 //                        delete client_list[data['from_client_id']];
 //                        flush_client_list();
+                    case 'sync':
+                        //把base64传给java
+                        getSharePic(data['sync_pic']);
+                        break;
+                    case 'cancle_sync':
+                        broadcastCancleSync();
+                        break;
+
                 }
             }
+            /**
+             *广播主持人取消共享给Native 与会者
+             */
+            function broadcastCancleSync() {
+                window.board.cancleSync();
+            }
 
+
+            /**
+             * 主持人取消共享
+             */
+            function cancleSyncPic() {
+                //发送到websocket
+                var to_client_id = "all";
+                var to_client_name = "所有人";
+
+                var sync_data = '{"type":"cancle_sync","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name +'"}';
+                ws.send(sync_data);
+            }
+
+            /**
+             *发送base64给 Native 与会者
+             */
+            function getSharePic(base64Str) {
+
+                window.board.syncContent(base64Str);
+            }
+
+            /**
+             *主持人同步图片
+             */
+            function syncPic(base64Str) {
+                //发送到websocket
+                var to_client_id = "all";
+                var to_client_name = "所有人";
+
+                var sync_data = '{"type":"sync","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name + '","sync_pic":"' + base64Str + '"}';
+                ws.send(sync_data);
+                //回复发送结果
+                window.board.syncResultCode("success");
+            }
 
             /**
              * 提交自己改变的数据
@@ -182,7 +233,9 @@ if (
                 var to_client_id = "all";
                 var to_client_name = "所有人";
 
-                var say_data = '{"type":"say","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name + '","content":"' + datajson.replace(/\\"/g, '425D8E69BF45B845CB7CF50FA43D64C68D379A46').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r') + '"}';
+                var say_data = '{"type":"say","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name + '",' +
+                    '"content":"' + datajson.replace(/\\"/g, '425D8E69BF45B845CB7CF50FA43D64C68D379A46').replace(/"/g, '\\"')
+                        .replace(/\n/g, '\\n').replace(/\r/g, '\\r') + '"}';
                 ws.send(say_data);
 
             }
@@ -229,7 +282,8 @@ if (
                     onSubmit(content);
                 });
             }
-            /**
+
+            /*
              * 初始化画板
              */
             $(document).ready(function () {
@@ -238,7 +292,7 @@ if (
                     imageURLPrefix: 'images',
                     toolbarPosition: 'top',
                     defaultStrokeWidth: 2,
-                    strokeWidths: [ 2, 4, 8, 10,15,20],
+                    strokeWidths: [2, 4, 8, 10, 15, 20],
                     tools: [
                         LC.tools.Pencil,//画笔
                         LC.tools.Eraser,//橡皮
@@ -256,6 +310,7 @@ if (
 
 
             });
+
 
         </script>
 
