@@ -15,6 +15,7 @@ define('SESSION_EMAIL', 'user_email');
 define('SESSION_MEETING_URL', 'meeting_url');
 define('SESSION_USER_AND_MEETING_ID', 'user_and_meeting_id');
 define('SESSION_MEETING_ID', 'meeting_id');
+define('SESSION_HOST_EMAIL', 'meeting_host_email');
 
 /**
  * request name 信息
@@ -54,6 +55,7 @@ define('post_meeting_id', '300131');//会议ID
 define('post_meeting_page', '300132');//请求的会议列表的页码
 define('post_meeting_event_id', '300133');//日历事件ID
 define('post_meeting_desc', '300134');//会议描述
+define('post_meeting_host_email', '300135');//会议主持人email
 
 
 /**

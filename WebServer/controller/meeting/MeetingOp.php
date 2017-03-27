@@ -137,6 +137,27 @@ class MeetingOp
     }
 
     /**
+     * 根据 用户id 获取 email
+     * @return mixed
+     */
+    public function getEmailFromUserId($id)
+    {
+        $sql = 'SELECT user_email FROM bd_user WHERE  user_id= ?';
+        $arr = array();
+        $arr[0] = $id;
+//        echo "email" . $arr[0];
+        $rows = $this->db->select($sql, $arr);
+
+        if (count($rows) == 1) {//存在且只存在一个这样的用户
+//            var_dump($rows);
+//            echo $rows[0]["user_id"];
+            return $rows[0]['user_email'];
+
+        }
+        return false;//不存在
+    }
+
+    /**
      * 根据会议ID 获取会议装状态
      * @return mixed
      */
@@ -162,7 +183,7 @@ class MeetingOp
     public function getMeetingInfoByUrl()
     {
         if (($meeting_url = $this->meeting->getUrl()) != null) {
-            $sql = 'SELECT meeting_status,meeting_password,meeting_id FROM bd_meeting WHERE meeting_url =?';
+            $sql = 'SELECT meeting_status,meeting_password,meeting_id,meeting_host_user_id FROM bd_meeting WHERE meeting_url =?';
             $arr = array();
             $arr[0] = $meeting_url;
             $rows = $this->db->select($sql, $arr);
@@ -397,10 +418,23 @@ class MeetingOp
                     $status = $result_arr['meeting_status'];
                     $password = $result_arr['meeting_password'];
                     $meeting_id = $result_arr['meeting_id'];
-                    $this->meeting->setId($meeting_id);
+                    $host_id = $result_arr['meeting_host_user_id'];
+                    /**
+                     * 获取主持人的email
+                     */
+                    if (($host_user_email = $this->getEmailFromUserId($host_id)) != false) {
+
+                        Session::set(SESSION_HOST_EMAIL, $host_user_email, 2592000);//30天过期
+                    } else {
+                        return false;
+                    }
+
+
                     /**
                      * 比较 会议状态和密码
                      */
+                    $this->meeting->setId($meeting_id);
+
                     if ($status == 3 && $password == $this->meeting->getPassword()) {
                         if (($_id = $this->checkIfExistSameUserAndMeeting(1)) == false) {//不存在
                             /**

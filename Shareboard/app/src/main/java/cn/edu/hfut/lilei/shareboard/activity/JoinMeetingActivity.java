@@ -32,6 +32,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_ENTER_MEETING;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO1;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO2;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_in_type;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_host_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_password;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
@@ -167,6 +168,7 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                                      b.putInt(post_meeting_check_in_type, COMMON_CHECK_IN);
                                                      b.putLong(post_meeting_url, Long.parseLong
                                                              (meetingUrl));
+                                                     b.putString(post_meeting_host_email,o.getMsg());
                                                      intent.putExtras(b);
                                                      startActivity(intent);
                                                      finish();

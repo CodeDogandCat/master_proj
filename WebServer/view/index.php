@@ -14,6 +14,7 @@ if (
     isset($_REQUEST[post_user_email]) &&
     isset($_REQUEST[post_meeting_url]) &&
     isset($_REQUEST[post_user_family_name]) &&
+    isset($_REQUEST[post_meeting_check_in_type]) &&
     isset($_REQUEST[post_user_given_name])
 
 ) {
@@ -82,11 +83,33 @@ if (
             var select_client_id = 'all';
             var myid = '';
             var unsubscribeofchange;
+            var host_email, check_in_type;
 
             /**
              * 连接服务端
              */
             function connect() {
+                check_in_type = <?php echo $_REQUEST[post_meeting_check_in_type]?>;
+
+                if (check_in_type == 1) {
+                    <?php
+                    if(isset($_REQUEST[post_meeting_host_email])){
+                    Session::set(SESSION_HOST_EMAIL, $_REQUEST[post_meeting_host_email], 2592000);//30天过期
+                    ?>
+                    host_email = '<?php echo $_REQUEST[post_meeting_host_email]?>';
+                    console.log("host_email赋值" + host_email);
+                    console.log("check_in_type赋值" + check_in_type);
+                    <?php
+                    }else {
+                    ?>
+                    return;
+                    <?php
+                    }
+                    ?>
+
+                }
+                console.log("即将建立连接");
+
                 // 创建websocket
                 ws = new WebSocket("ws://118.89.102.238:7272");
                 //建立连接
@@ -111,9 +134,38 @@ if (
                 name = email + "-" + familyName + " " + givenName;
                 roomid = '<?php echo $_REQUEST[post_meeting_url];?>';
                 // 登录
-                var login_data = '{"type":"login","client_name":"' + name.replace(/"/g, '\\"') + '","room_id":"' + roomid + '"}';
+                var login_data = '{"type":"login","client_name":"' + name.replace(/"/g, '\\"') + '","client_email":"' + email + '","room_id":"' + roomid + '"}';
                 console.log("websocket握手成功，发送登录数据:" + login_data);
                 ws.send(login_data);
+
+
+            }
+            /**
+             *向主持人请求初始 画板数据
+             *
+             */
+            function getInitCanvasData() {
+                // 登录
+                var login_data = '{"type":"getInitCanvasData","from_client_email":"' + email + '","to_client_email":"' + host_email + '"}';
+                console.log("向主持人请求初始画板数据" + login_data);
+                ws.send(login_data);
+            }
+            /**
+             *向主持人请求初始 图片数据
+             *
+             */
+            function getInitShareData() {
+                // 登录
+                var login_data = '{"type":"getInitShareData","from_client_email":"' + email + '","to_client_email":"' + host_email + '"}';
+                console.log("向主持人请求初始图片数据" + login_data);
+                ws.send(login_data);
+            }
+
+            /**
+             *发送当前画板数据给新加会的人
+             */
+            function sendCanvasDataToNewer() {
+
             }
 
             /**
@@ -155,6 +207,10 @@ if (
 //                        }
 //                        flush_client_list();
                         console.log(data['client_name'] + "登录成功");
+                        if (check_in_type == 1) {
+                            getInitCanvasData();
+//                    getInitShareData();
+                        }
                         break;
                     /**
                      * 接受到数据
@@ -172,12 +228,38 @@ if (
 //                say(data['from_client_id'], data['from_client_name'], data['from_client_name']+' 退出了', data['time']);
 //                        delete client_list[data['from_client_id']];
 //                        flush_client_list();
+
                     case 'sync':
                         //把base64传给java
                         getSharePic(data['sync_pic']);
                         break;
                     case 'cancle_sync':
                         broadcastCancleSync();
+                        break;
+                    /**
+                     * 主持人收到加会者请求 画板数据的请求
+                     */
+                    case 'getInitCanvasData':
+                        console.log("主持人收到数据请求");
+                        if (check_in_type == 2) {
+
+                            var datajson = JSON.stringify(lc.getSnapshot());
+                            var sync_data = '{"type":"CanvasData","from_client_email":"' + data['to_client_email'] + '","' +
+                                'to_client_email":"' + data['from_client_email'] + '",' +
+                                '"content":"' + datajson.replace(/\\"/g, '425D8E69BF45B845CB7CF50FA43D64C68D379A46').replace(/"/g, '\\"')
+                                    .replace(/\n/g, '\\n').replace(/\r/g, '\\r') + '"}';
+                            ws.send(sync_data);
+                        }
+                        break;
+                    //接收到主持人传来的 画板初始数据
+                    case 'CanvasData':
+                        console.log("加会者收到数据");
+                        if (check_in_type == 1) {
+                            var newdata = data['content'].replace(/&quot;/g, '"').replace(/425D8E69BF45B845CB7CF50FA43D64C68D379A46/g, '\\"');
+                            lc.loadSnapshot(JSON.parse(newdata));
+                        }
+                        break;
+                    case 'getInitShareData':
                         break;
 
                 }
@@ -198,7 +280,7 @@ if (
                 var to_client_id = "all";
                 var to_client_name = "所有人";
 
-                var sync_data = '{"type":"cancle_sync","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name +'"}';
+                var sync_data = '{"type":"cancle_sync","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name + '"}';
                 ws.send(sync_data);
             }
 

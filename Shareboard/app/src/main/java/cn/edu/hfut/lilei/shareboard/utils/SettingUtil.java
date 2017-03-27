@@ -68,6 +68,7 @@ public class SettingUtil {
     public static final String post_meeting_page = "300132";//请求的会议列表的页码
     public static final String post_meeting_event_id = "300133";//日历事件ID
     public static final String post_meeting_desc = "300134";//会议描述
+    public static final String post_meeting_host_email = "300135";//会议主持人email
 
 
     //sharepreference name 参数

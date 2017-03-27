@@ -90,7 +90,7 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
      */
     private void init() {
         mContext = this;
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         //右滑返回
@@ -202,8 +202,8 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                                              } else
                                                  if (type == 1) {//getAdditionalMeeting
 
-                                                     data.addAll(o.getData());
-                                                     adapter.addAll(data);
+                                                     data.addAll(o.getData());//增加新的部分
+                                                     adapter.addAll(o.getData());//增加新的部分
                                                  }
 
                                          } else
@@ -294,11 +294,9 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                                          if (o.getCode() == SUCCESS) {
 
                                              totalPage = o.getCode();
-                                             // 和page比较，如果page+2<=totalpage,就加载下一页，这个时候不要清空timeline
+                                             // 和page比较，如果page+1<=totalpage,就加载下一页，这个时候不要清空timeline
                                              if (page + 1 <= totalPage) {
 
-                                                 // data清空，adapter不要清空
-                                                 data.clear();
                                                  loadMeetingList(1);//loadAddition
 
                                              } else {

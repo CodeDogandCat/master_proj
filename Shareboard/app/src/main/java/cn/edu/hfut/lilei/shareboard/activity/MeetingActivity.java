@@ -20,9 +20,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
+
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ScreenUtil;
+import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.hugeimageutil.HugeImageRegionLoader;
 import cn.edu.hfut.lilei.shareboard.utils.hugeimageutil.TileDrawable;
 import cn.edu.hfut.lilei.shareboard.view.DragFloatActionButton;
@@ -33,6 +36,20 @@ import static cn.edu.hfut.lilei.shareboard.R.id.rl_share_pic;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.HOST_CHECK_IN;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_MEETING;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_in_type;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_host_email;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_id;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_family_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_given_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
 
 public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
@@ -46,6 +63,7 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
     private DragFloatActionButton fab;
     private LinearLayout mLlWebviewCanvas, mLlActionGroup, mLlMeetingStage;
     private RelativeLayout mRlSharePic, mRlActionbar;
+    private PinchImageView pinchImageView;
 
     //数据
     //按钮的没选中显示的图标
@@ -63,6 +81,7 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
     private int meeting_id = -1;
     private long meeting_url = -1L;
     private boolean isDrawing = false;
+    private String meeting_host_email;
 
 
     @Override
@@ -151,7 +170,7 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
             /**
              * 设置图片
              */
-            final PinchImageView pinchImageView = (PinchImageView) findViewById(R.id.share_pic);
+            pinchImageView = (PinchImageView) findViewById(R.id.share_pic);
             String tmp = ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() +
                     "/" + R.drawable.card;
 
@@ -216,19 +235,24 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                           public void run() {
                               if (check_in_type == 1) {
 
-                                  fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
-                                  fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
-                                  mLlWebviewCanvas.setVisibility(View.GONE);
-                                  mRlActionbar.setVisibility(View.VISIBLE);
-                                  mLlActionGroup.setVisibility(View.VISIBLE);
-                                  isDrawing = false;
-                                  mLlMeetingStage.setBackgroundColor(
-                                          getResources().getColor(R.color.my_black));
+//                                  fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
+//                                  fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
+//                                  mLlWebviewCanvas.setVisibility(View.GONE);
+//                                  mRlActionbar.setVisibility(View.VISIBLE);
+//                                  mLlActionGroup.setVisibility(View.VISIBLE);
+//                                  isDrawing = false;
+//                                  mLlMeetingStage.setBackgroundColor(
+//                                          getResources().getColor(R.color.my_black));
+//                                  /**
+//                                   * 改变舞台的背景色
+//                                   */
+//                                  mLlMeetingStage.setBackgroundColor(
+//                                          getResources().getColor(R.color.my_black));
                                   /**
-                                   * 改变舞台的背景色
+                                   * 把共享图片换成默认图片
                                    */
-                                  mLlMeetingStage.setBackgroundColor(
-                                          getResources().getColor(R.color.my_black));
+                                  pinchImageView.setImageDrawable(getResources().getDrawable(R
+                                          .drawable.bgg));
                                   showToast(mContext, "主持人关闭了共享");
                               }
 
@@ -257,9 +281,9 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                         /**
                          * 设置共享图片
                          */
-                        PinchImageView pinchImageView2 =
+                        pinchImageView =
                                 (PinchImageView) findViewById(R.id.share_pic);
-                        pinchImageView2.setImageBitmap(ImageUtil.base64ToBitmap(str));
+                        pinchImageView.setImageBitmap(ImageUtil.base64ToBitmap(str));
 
                         /**
                          * 设置悬浮按钮的活动范围
@@ -384,61 +408,68 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                 finish();
             }
         });
-        mWvCanvas.loadUrl(
-                "http://118.89.102.238/view/index.php?300130=2&300106=4a6bf78a56af924352f2544c3fe6291e&300101=2662083658%40qq.com&300118=240288589327&300131=139&300102=%E6%9D%8E%E7%A3%8A&300103=%E5%93%88%E5%93%88");
-        mWvCanvas.setVisibility(View.VISIBLE);// 加载完之后进行设置显示，以免加载时初始化效果不好看
-        mWvCanvas.addJavascriptInterface(this, "board");
+//        mWvCanvas.loadUrl(
+//                "http://118.89.102.238/view/index.php?300130=2&300106=4a6bf78a56af924352f2544c3fe6291e&300101=2662083658%40qq.com&300118=240288589327&300131=139&300102=%E6%9D%8E%E7%A3%8A&300103=%E5%93%88%E5%93%88");
+//        mWvCanvas.setVisibility(View.VISIBLE);// 加载完之后进行设置显示，以免加载时初始化效果不好看
+//        mWvCanvas.addJavascriptInterface(this, "board");
 
 
         /**
          * 加载本地数据
          */
-//        check_in_type = getIntent().getExtras()
-//                .getInt(post_meeting_check_in_type);
-//        meeting_url = getIntent().getExtras()
-//                .getLong(post_meeting_url);
-//
-//        ArrayList<String> keyList = new ArrayList<>();
-//        ArrayList<String> valueList = new ArrayList<>();
-//        keyList.add(share_token);
-//        keyList.add(share_user_email);
-//        keyList.add(share_family_name);
-//        keyList.add(share_given_name);
-//
-//
-//        if (check_in_type == HOST_CHECK_IN) {//host
-//            meeting_id = getIntent().getExtras()
-//                    .getInt(post_meeting_id);
-//        }
-//
-//        valueList = SharedPrefUtil.getInstance()
-//                .getStringDatas(keyList);
-//        if (valueList != null && meeting_url != -1L) {
-//            String params = "";
-//            if (check_in_type == HOST_CHECK_IN && meeting_id != -1) {//host
-//
-//                params = "?" +
-//                        post_token + "=" + valueList.get(0) + "&" +
-//                        post_user_email + "=" + valueList.get(1) + "&" +
-//                        post_user_family_name + "=" + valueList.get(2) + "&" +
-//                        post_user_given_name + "=" + valueList.get(3) + "&" +
-//                        post_meeting_id + "=" + meeting_id + "&" +
-//                        post_meeting_url + "=" + meeting_url;
-//
-//            } else {
-//                params = "?" +
-//                        post_token + "=" + valueList.get(0) + "&" +
-//                        post_user_email + "=" + valueList.get(1) + "&" +
-//                        post_user_family_name + "=" + valueList.get(2) + "&" +
-//                        post_user_given_name + "=" + valueList.get(3) + "&" +
-//                        post_meeting_url + "=" + meeting_url;
-//            }
-//            mWvCanvas.loadUrl(URL_MEETING + params);
-//            mWvCanvas.setVisibility(View.VISIBLE);// 加载完之后进行设置显示，以免加载时初始化效果不好看
-//        }
-//        mWvCanvas.loadUrl(
-//                "http://118.89.102.238/view/index.php?300130=2&300106=4a6bf78a56af924352f2544c3fe6291e&300101=2662083658%40qq.com&300118=240288589327&300131=139&300102=%E6%9D%8E%E7%A3%8A&300103=%E5%93%88%E5%93%88");
-//        mWvCanvas.setVisibility(View.VISIBLE);// 加载完之后进行设置显示，以免加载时初始化效果不好看
+        check_in_type = getIntent().getExtras()
+                .getInt(post_meeting_check_in_type);
+        meeting_url = getIntent().getExtras()
+                .getLong(post_meeting_url);
+        if (check_in_type == 1) {
+            meeting_host_email = getIntent().getExtras()
+                    .getString(post_meeting_host_email);
+        }
+
+
+        ArrayList<String> keyList = new ArrayList<>();
+        ArrayList<String> valueList = new ArrayList<>();
+        keyList.add(share_token);
+        keyList.add(share_user_email);
+        keyList.add(share_family_name);
+        keyList.add(share_given_name);
+
+
+        if (check_in_type == HOST_CHECK_IN) {//host
+            meeting_id = getIntent().getExtras()
+                    .getInt(post_meeting_id);
+        }
+
+        valueList = SharedPrefUtil.getInstance()
+                .getStringDatas(keyList);
+        if (valueList != null && meeting_url != -1L) {
+            String params = "";
+            if (check_in_type == HOST_CHECK_IN && meeting_id != -1) {//host
+
+                params = "?" +
+                        post_token + "=" + valueList.get(0) + "&" +
+                        post_user_email + "=" + valueList.get(1) + "&" +
+                        post_user_family_name + "=" + valueList.get(2) + "&" +
+                        post_user_given_name + "=" + valueList.get(3) + "&" +
+                        post_meeting_id + "=" + meeting_id + "&" +
+                        post_meeting_check_in_type + "=" + check_in_type + "&" +
+                        post_meeting_url + "=" + meeting_url;
+
+            } else {
+                params = "?" +
+                        post_token + "=" + valueList.get(0) + "&" +
+                        post_user_email + "=" + valueList.get(1) + "&" +
+                        post_user_family_name + "=" + valueList.get(2) + "&" +
+                        post_user_given_name + "=" + valueList.get(3) + "&" +
+                        post_meeting_check_in_type + "=" + check_in_type + "&" +
+                        post_meeting_host_email + "=" + meeting_host_email + "&" +
+                        post_meeting_url + "=" + meeting_url;
+            }
+            mWvCanvas.loadUrl(URL_MEETING + params);
+            mWvCanvas.setVisibility(View.VISIBLE);// 加载完之后进行设置显示，以免加载时初始化效果不好看
+            mWvCanvas.addJavascriptInterface(this, "board");
+        }
+
     }
 
     /**

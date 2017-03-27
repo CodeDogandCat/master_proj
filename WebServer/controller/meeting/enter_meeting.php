@@ -60,14 +60,16 @@ try {
                 $meetingOp = new MeetingOp($user, $meeting);
 
                 if (($user_and_meeting_id = $meetingOp->enterMeeting($type)) != false) {
-
                     //放入session  (进会id  ,会议url ,用户 email)
                     Session::set(SESSION_USER_AND_MEETING_ID, $user_and_meeting_id, 2592000);//30天过期
                     Session::set(SESSION_MEETING_URL, $_REQUEST[post_meeting_url], 2592000);//30天过期
                     Session::set(SESSION_EMAIL, $_REQUEST[post_user_email], 2592000);//30天过期
-
-
-                    printResult(SUCCESS, '与会者加会成功', -1);
+                    if (($host_email = Session::get(SESSION_HOST_EMAIL)) != false) {
+                        //返回 主持人邮箱
+                        printResult(SUCCESS, $host_email, -1);
+                    } else {
+                        printResult(ADD_MEETING_ERROR, '与会者加会失败', -1);
+                    }
 
                 } else {
                     printResult(ADD_MEETING_ERROR, '与会者加会失败', -1);

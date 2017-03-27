@@ -47,9 +47,13 @@ class Events
 
                 // 把房间号昵称放到session中
                 $room_id = $message_data['room_id'];
+                $client_email = $message_data['client_email'];
                 $client_name = htmlspecialchars($message_data['client_name']);
                 $_SESSION['room_id'] = $room_id;
                 $_SESSION['client_name'] = $client_name;
+                $_SESSION['client_email'] = $client_email;
+                //绑定clientid 和 client_email
+                Gateway::bindUid($client_id, $client_email);
 
                 // 获取房间内所有用户列表
                 $clients_list = Gateway::getClientSessionsByGroup($room_id);
@@ -108,6 +112,7 @@ class Events
                     'time' => date('Y-m-d H:i:s')
                 );
                 return Gateway::sendToGroup($room_id, json_encode($new_message));
+            //同步主持人分享数据
             case 'sync':
                 // 非法请求
                 if (!isset($_SESSION['room_id'])) {
@@ -119,6 +124,7 @@ class Events
                 }
                 $room_id = $_SESSION['room_id'];
                 return Gateway::sendToGroup($room_id, $message);
+            //主持人取消分享数据
             case 'cancle_sync':
                 // 非法请求
                 if (!isset($_SESSION['room_id'])) {
@@ -130,6 +136,54 @@ class Events
                 }
                 $room_id = $_SESSION['room_id'];
                 return Gateway::sendToGroup($room_id, $message);
+            //加会者初次请求主持人的初始化白板数据
+            case 'getInitCanvasData':
+                echo "ccccccccccccccccccccccccccccccc1";
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                // 非法请求
+                if (!isset($_SESSION['client_name'])) {
+                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                $room_id = $_SESSION['room_id'];
+                echo "ccccccccccccccccccccccccccccccc2";
+//                return Gateway::sendToGroup($room_id, $message);
+                Gateway::sendToUid($message_data['to_client_email'], $message);
+                break;
+            //加会者初次请求主持人的初始化 共享图片数据
+            case 'getInitShareData':
+                echo "@@@@@@@@@@@@@@@@@@@@@1";
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                // 非法请求
+                if (!isset($_SESSION['client_name'])) {
+                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                $room_id = $_SESSION['room_id'];
+                echo "@@@@@@@@@@@@@@@@@@@@@2";
+//                return Gateway::sendToGroup($room_id, $message);
+                Gateway::sendToUid($message_data['to_client_email'], $message);
+                break;
+            //转发画板数据给 新加入的与会者
+            case 'CanvasData':
+                echo "##################1";
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                // 非法请求
+                if (!isset($_SESSION['client_name'])) {
+                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                $room_id = $_SESSION['room_id'];
+                echo "##################2";
+//                return Gateway::sendToGroup($room_id, $message);
+                Gateway::sendToUid($message_data['to_client_email'], $message);
+                break;
 
         }
     }
