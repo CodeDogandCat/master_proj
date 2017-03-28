@@ -232,8 +232,10 @@ public class ImageUtil {
 
     }
 
+
     /**
      * bitmap转为base64
+     *
      * @param bitmap
      * @return
      */
@@ -251,10 +253,16 @@ public class ImageUtil {
 
                 byte[] bitmapBytes = baos.toByteArray();
                 result = Base64.encodeToString(bitmapBytes, Base64.DEFAULT);
+                result = result.replaceAll("/", "_a");
+                result = result.replaceAll("\\+", "_b");
+                result = result.replaceAll("=", "_c");
+                result = result.replaceAll("\\\\", "_d");
+//                result = URLEncoder.encode(result, "utf-8");
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
+        }
+        finally {
             try {
                 if (baos != null) {
                     baos.flush();
@@ -269,10 +277,22 @@ public class ImageUtil {
 
     /**
      * base64转为bitmap
+     *
      * @param base64Data
      * @return
      */
     public static Bitmap base64ToBitmap(String base64Data) {
+        base64Data = base64Data.replaceAll("_a", "/");
+        base64Data = base64Data.replaceAll("_b", "+");
+        base64Data = base64Data.replaceAll("_c", "=");
+        base64Data = base64Data.replaceAll("_d", "\\");
+
+//        try {
+//            base64Data = URLDecoder.decode(base64Data, "utf-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+
         byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }

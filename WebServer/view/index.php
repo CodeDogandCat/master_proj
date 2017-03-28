@@ -84,6 +84,7 @@ if (
             var myid = '';
             var unsubscribeofchange;
             var host_email, check_in_type;
+            var init_times = 0;
 
             /**
              * 连接服务端
@@ -140,33 +141,7 @@ if (
 
 
             }
-            /**
-             *向主持人请求初始 画板数据
-             *
-             */
-            function getInitCanvasData() {
-                // 登录
-                var login_data = '{"type":"getInitCanvasData","from_client_email":"' + email + '","to_client_email":"' + host_email + '"}';
-                console.log("向主持人请求初始画板数据" + login_data);
-                ws.send(login_data);
-            }
-            /**
-             *向主持人请求初始 图片数据
-             *
-             */
-            function getInitShareData() {
-                // 登录
-                var login_data = '{"type":"getInitShareData","from_client_email":"' + email + '","to_client_email":"' + host_email + '"}';
-                console.log("向主持人请求初始图片数据" + login_data);
-                ws.send(login_data);
-            }
 
-            /**
-             *发送当前画板数据给新加会的人
-             */
-            function sendCanvasDataToNewer() {
-
-            }
 
             /**
              * 服务端发来消息时
@@ -207,9 +182,9 @@ if (
 //                        }
 //                        flush_client_list();
                         console.log(data['client_name'] + "登录成功");
-                        if (check_in_type == 1) {
+                        if (check_in_type == 1 && init_times == 0) {
+                            init_times = 1;
                             getInitCanvasData();
-//                    getInitShareData();
                         }
                         break;
                     /**
@@ -229,12 +204,17 @@ if (
 //                        delete client_list[data['from_client_id']];
 //                        flush_client_list();
 
+                    /**
+                     * 发送base64给 Native 与会者
+                     */
                     case 'sync':
-                        //把base64传给java
-                        getSharePic(data['sync_pic']);
+                        window.board.syncContent(data['sync_pic']);
                         break;
+                    /**
+                     *广播主持人取消共享的消息给Native 与会者
+                     */
                     case 'cancle_sync':
-                        broadcastCancleSync();
+                        window.board.cancleSync();
                         break;
                     /**
                      * 主持人收到加会者请求 画板数据的请求
@@ -257,23 +237,67 @@ if (
                         if (check_in_type == 1) {
                             var newdata = data['content'].replace(/&quot;/g, '"').replace(/425D8E69BF45B845CB7CF50FA43D64C68D379A46/g, '\\"');
                             lc.loadSnapshot(JSON.parse(newdata));
+                            getInitShareData();
                         }
                         break;
                     case 'getInitShareData':
+                        console.log("主持人收到share数据请求");
+                        if (check_in_type == 2) {
+                            //调用主持人 native 函数
+                            window.board.getSharePic(data['from_client_email']);
+                        }
+                        break;
+                    //接收到主持人传来的 画板初始数据
+                    case 'ShareData':
+                        console.log("加会者收到share数据");
+                        if (check_in_type == 1) {
+                            //调用加会者 native 函数
+                            window.board.initShareContent(data['content']);
+                        }
                         break;
 
                 }
             }
             /**
-             *广播主持人取消共享给Native 与会者
+             *用socket 转发主持人share图片->新加会的那个人
+             * 主持人 native来调用
              */
-            function broadcastCancleSync() {
-                window.board.cancleSync();
+            function syncPicToNewer(to_client_email, base64Str) {
+
+
+                var sync_data = '{"type":"ShareData","from_client_email":"' + email + '","to_client_email":"' + to_client_email + '","content":"' + base64Str + '"}';
+                console.log("syncPicToNewer用socket 转发主持人share图片->新加会的那个人");
+//                console.log("js base64长度" + base64Str.length);
+                console.log(sync_data);
+//                console.log("js message长度" + sync_data.length);
+
+
+                ws.send(sync_data);
+
+            }
+            /**
+             *用socket 转发初始share数据请求->主持人
+             *js来调用
+             */
+            function getInitShareData() {
+                console.log("getInitShareData用socket 转发初始share数据请求->主持人");
+                var login_data = '{"type":"getInitShareData","from_client_email":"' + email + '","to_client_email":"' + host_email + '"}';
+                console.log("向主持人请求初始图片数据" + login_data);
+                ws.send(login_data);
+            }
+            /**
+             *用socket 转发初始画板数据请求->主持人
+             *js 来调用
+             */
+            function getInitCanvasData() {
+                var login_data = '{"type":"getInitCanvasData","from_client_email":"' + email + '","to_client_email":"' + host_email + '"}';
+                console.log("向主持人请求初始画板数据" + login_data);
+                ws.send(login_data);
             }
 
-
             /**
-             * 主持人取消共享
+             * 用socket转发 主持人取消共享->与会者
+             * 由native 来调用
              */
             function cancleSyncPic() {
                 //发送到websocket
@@ -285,21 +309,14 @@ if (
             }
 
             /**
-             *发送base64给 Native 与会者
-             */
-            function getSharePic(base64Str) {
-
-                window.board.syncContent(base64Str);
-            }
-
-            /**
-             *主持人同步图片
+             *用 socket转发 主持人同步图片->与会者
+             * 由native 来调用
              */
             function syncPic(base64Str) {
                 //发送到websocket
                 var to_client_id = "all";
                 var to_client_name = "所有人";
-
+                console.log("js base64长度" + base64Str.length);
                 var sync_data = '{"type":"sync","to_client_id":"' + to_client_id + '","to_client_name":"' + to_client_name + '","sync_pic":"' + base64Str + '"}';
                 ws.send(sync_data);
                 //回复发送结果

@@ -172,7 +172,7 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
              */
             pinchImageView = (PinchImageView) findViewById(R.id.share_pic);
             String tmp = ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() +
-                    "/" + R.drawable.card;
+                    "/" + R.drawable.bggg;
 
             setShareImage(pinchImageView, tmp);
 
@@ -190,6 +190,7 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                         pinchImageView.setDrawingCacheEnabled(false);
                         //从bitmap获取base64
                         String base64 = ImageUtil.bitmapToBase64(bmp);
+                        showLog("native base64长度" + base64.length());
                         showLog(base64);
                         //调用js函数
                         mWvCanvas.loadUrl("javascript:syncPic('" + base64 + "')");
@@ -225,43 +226,91 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
 
     }
 
+
     /**
-     * 主持人取消共享
+     * 新加会的加会者接收共享的图片
+     *
+     * @param str
      */
     @android.webkit.JavascriptInterface
-    public void cancleSync() {
+    public void initShareContent(final String str) {
         runOnUiThread(new Runnable() {
-                          @Override
-                          public void run() {
-                              if (check_in_type == 1) {
+            @Override
+            public void run() {
+                showLog("新加会的加会者接收共享的图片" + str);
 
-//                                  fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
-//                                  fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
-//                                  mLlWebviewCanvas.setVisibility(View.GONE);
-//                                  mRlActionbar.setVisibility(View.VISIBLE);
-//                                  mLlActionGroup.setVisibility(View.VISIBLE);
-//                                  isDrawing = false;
-//                                  mLlMeetingStage.setBackgroundColor(
-//                                          getResources().getColor(R.color.my_black));
-//                                  /**
-//                                   * 改变舞台的背景色
-//                                   */
-//                                  mLlMeetingStage.setBackgroundColor(
-//                                          getResources().getColor(R.color.my_black));
-                                  /**
-                                   * 把共享图片换成默认图片
-                                   */
-                                  pinchImageView.setImageDrawable(getResources().getDrawable(R
-                                          .drawable.bgg));
-                                  showToast(mContext, "主持人关闭了共享");
-                              }
+                if (check_in_type == 1) {
+                    if (!str.equals("")) {//获取share图片的base64
 
-                          }
-                      }
+                        /**
+                         * 设置共享图片
+                         */
+                        pinchImageView =
+                                (PinchImageView) findViewById(R.id.share_pic);
+                        pinchImageView.setImageBitmap(ImageUtil.base64ToBitmap(str));
 
-        );
+                        /**
+                         * 设置悬浮按钮的活动范围
+                         */
+                        fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
+                        fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 60));
+                        /**
+                         * 设置布局的可见性
+                         */
+                        mLlWebviewCanvas.setVisibility(View.VISIBLE);
+                        mRlActionbar.setVisibility(View.GONE);
+                        mLlActionGroup.setVisibility(View.GONE);
+                        isDrawing = true;
+                        /**
+                         * 改变舞台的背景色
+                         */
+                        mLlMeetingStage.setBackgroundColor(
+                                getResources().getColor(R.color.my_white));
+                        showToast(mContext, "主持人正在共享");
+                    }
+
+                }
+            }
+        });
 
     }
+
+    /**
+     * 新加会的与会者请求得到share的图片
+     */
+    @android.webkit.JavascriptInterface
+    public void getSharePic(final String client_email) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showLog("新加会的与会者请求得到share的图片");
+                if (check_in_type == 2) {
+                    if (isDrawing) {
+                        /**
+                         * 同步共享图片bitmap
+                         */
+                        pinchImageView.setDrawingCacheEnabled(true);
+                        Bitmap bmp = Bitmap.createBitmap(pinchImageView.getDrawingCache());
+                        pinchImageView.setDrawingCacheEnabled(false);
+                        //从bitmap获取base64
+                        String base64 = ImageUtil.bitmapToBase64(bmp);
+                        showLog("native base64长度" + base64.length());
+
+                        String call = "javascript:syncPicToNewer('" + client_email + "','" + base64
+                                + "')";
+                        showLog("native call长度" + call.length());
+                        showLog(call);
+                        //调用js函数
+                        mWvCanvas.loadUrl(call);
+
+                    }
+                }
+
+            }
+        });
+
+    }
+
 
     /**
      * 加会者接收共享的图片
@@ -311,6 +360,7 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
 
     }
 
+
     /**
      * 主持人获取分享图片是否成功
      *
@@ -350,6 +400,30 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
 
             }
         });
+
+    }
+
+    /**
+     * 主持人取消共享
+     */
+    @android.webkit.JavascriptInterface
+    public void cancleSync() {
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              if (check_in_type == 1) {
+
+                                  /**
+                                   * 把共享图片换成默认图片
+                                   */
+                                  pinchImageView.setImageDrawable(null);
+                                  showToast(mContext, "主持人关闭了共享");
+                              }
+
+                          }
+                      }
+
+        );
 
     }
 
