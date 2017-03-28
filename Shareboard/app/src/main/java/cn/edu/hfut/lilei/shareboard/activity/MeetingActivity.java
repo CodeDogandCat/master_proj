@@ -1,7 +1,6 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -33,6 +32,7 @@ import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import cn.edu.hfut.lilei.shareboard.view.imageview.PinchImageView;
 
 import static cn.edu.hfut.lilei.shareboard.R.id.rl_share_pic;
+import static cn.edu.hfut.lilei.shareboard.R.id.rl_share_web;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
@@ -56,13 +56,13 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
     //控件
     private PowerManager.WakeLock mWakeLock;
     private PowerManager mPm;
-    private WebView mWvCanvas;
+    private WebView mWvCanvas, mWvShareWeb;
     private LodingDialog.Builder mlodingDialog;
-    private TileDrawable mTileDrawable, mTileDrawable2;
+    private TileDrawable mTileDrawable;
     private RadioGroup mRadioGroup;
     private DragFloatActionButton fab;
     private LinearLayout mLlWebviewCanvas, mLlActionGroup, mLlMeetingStage;
-    private RelativeLayout mRlSharePic, mRlActionbar;
+    private RelativeLayout mRlSharePic, mRlActionbar, mRlShareWeb;
     private PinchImageView pinchImageView;
 
     //数据
@@ -82,6 +82,7 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
     private long meeting_url = -1L;
     private boolean isDrawing = false;
     private String meeting_host_email;
+    private int shareType = 0;//对主持人有效   0 :没有分享 1:分享图片 2:分享网页
 
 
     @Override
@@ -100,14 +101,25 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
     private void init() {
         mContext = this;
         check_in_type = 1;
+        //共享图片层
         mRlSharePic = (RelativeLayout) findViewById(rl_share_pic);
+        //共享图片
+        pinchImageView = (PinchImageView) findViewById(R.id.share_pic);
+        //共享网页层
+        mRlShareWeb = (RelativeLayout) findViewById(rl_share_web);
+        //共享网页
+        mWvShareWeb = (WebView) findViewById(R.id.share_web);
+        //顶部栏
         mRlActionbar = (RelativeLayout) findViewById(R.id.rl_meeting_actionbar);
+        //底部栏
         mLlActionGroup = (LinearLayout) findViewById(R.id.ll_meeting_action_group);
+        //主画板
         mLlWebviewCanvas = (LinearLayout) findViewById(R.id.ll_meeting_canvas);
+        //整个舞台
         mLlMeetingStage = (LinearLayout) findViewById(R.id.ll_meeting_stage);
 
         /**
-         * 设置webview
+         * 设置主画板
          */
         mPm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         mWakeLock = mPm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "SCREEN_DIM_WAKE_LOCK");
@@ -122,59 +134,103 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
         /**
          * 设置悬浮按钮
          */
-
         fab = (DragFloatActionButton) findViewById(R.id.fab_meeting_start_draw);
         fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
         fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
-        fab.setOnClickListener(new View.OnClickListener() {
+        /**
+         * 初始化加会者设置
+         */
+        initParticipate();
+        /**
+         * 初始化主持人设置
+         */
+        initHost();
+        //测试共享网页
+//        shareWeb();
+
+
+    }
+
+    /**
+     * 共享图片
+     */
+    private void sharePic() {
+        shareType = 1;
+        mRlSharePic.setVisibility(View.VISIBLE);
+
+    }
+
+    /**
+     * 共享网页
+     */
+    @SuppressLint("SetJavaScriptEnabled")
+    private void shareWeb() {
+        shareType = 2;
+        mRlShareWeb.setVisibility(View.VISIBLE);
+        WebSettings webSettings = mWvShareWeb.getSettings();
+        webSettings.setSaveFormData(false);
+        webSettings.setJavaScriptEnabled(true);
+        //下面2行用来支持缩放
+        webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
+        //隐藏缩放控制条
+        webSettings.setDisplayZoomControls(false);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setAppCacheEnabled(false);
+        webSettings.setDefaultTextEncodingName("utf-8");
+        WebView.setWebContentsDebuggingEnabled(true);
+
+        mWvShareWeb.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        mWvShareWeb.setWebViewClient(new WebViewClient() {
             @Override
-            public void onClick(View view) {
-                //如果进入画板
-                if (!isDrawing) {
-                    /**
-                     * 设置悬浮按钮的活动范围
-                     */
-                    fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
-                    fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 60));
-                    /**
-                     * 设置布局的可见性
-                     */
-                    mLlWebviewCanvas.setVisibility(View.VISIBLE);
-                    mRlActionbar.setVisibility(View.GONE);
-                    mLlActionGroup.setVisibility(View.GONE);
-                    isDrawing = true;
-                    /**
-                     * 改变舞台的背景色
-                     */
-                    mLlMeetingStage.setBackgroundColor(
-                            getResources().getColor(R.color.my_white));
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // TODO Auto-generated method stub
+//              return super.shouldOverrideUrlLoading(btnStart, url);
+                return false;
+            }
 
-                } else {
-                    fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
-                    fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
-                    mLlWebviewCanvas.setVisibility(View.GONE);
-                    mRlActionbar.setVisibility(View.VISIBLE);
-                    mLlActionGroup.setVisibility(View.VISIBLE);
-                    isDrawing = false;
-                    mLlMeetingStage.setBackgroundColor(
-                            getResources().getColor(R.color.my_black));
-
-
-                }
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description,
+                                        String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                // 加载网页失败时处理  如：
+                view.loadDataWithBaseURL(null,
+                        "<span style=\"color:#FF0000\">加载失败</span>",
+                        "text/html",
+                        "utf-8",
+                        null);
+                finish();
             }
         });
 
+        mWvShareWeb.loadUrl("https://www.baidu.com/");
+        mWvShareWeb.setVisibility(View.VISIBLE);// 加载完之后进行设置显示，以免加载时初始化效果不好看
+    }
 
+    /**
+     * 初始化主持人设置
+     */
+    private void initHost() {
+        //主持人设置
         if (check_in_type == 2) {
 
             /**
-             * 设置图片
+             * 设置底部状态栏
              */
-            pinchImageView = (PinchImageView) findViewById(R.id.share_pic);
-            String tmp = ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() +
-                    "/" + R.drawable.bggg;
+            mRadioGroup.getChildAt(1)
+                    .setVisibility(View.VISIBLE);
+            mRadioGroup.getChildAt(2)
+                    .setVisibility(View.VISIBLE);
+            /**
+             * 设置图片 在选择分享类型后
+             */
 
-            setShareImage(pinchImageView, tmp);
+//            String tmp = ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() +
+//                    "/" + R.drawable.bggg;
+//
+//            setShareImage(pinchImageView, tmp);
 
             fab.setOnClickListener(null);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -182,22 +238,37 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                 public void onClick(View view) {
                     //如果进入画板
                     if (!isDrawing) {
+                        Bitmap bmp = null;
                         /**
-                         * 同步共享图片bitmap
+                         * 同步共享
                          */
-                        pinchImageView.setDrawingCacheEnabled(true);
-                        Bitmap bmp = Bitmap.createBitmap(pinchImageView.getDrawingCache());
-                        pinchImageView.setDrawingCacheEnabled(false);
-                        //从bitmap获取base64
-                        String base64 = ImageUtil.bitmapToBase64(bmp);
-                        showLog("native base64长度" + base64.length());
-                        showLog(base64);
-                        //调用js函数
-                        mWvCanvas.loadUrl("javascript:syncPic('" + base64 + "')");
+                        if (shareType == 1) {
+                            //共享的是图片
+                            mRlSharePic.setVisibility(View.VISIBLE);//可见
+                            pinchImageView.setDrawingCacheEnabled(true);
+                            bmp = Bitmap.createBitmap(pinchImageView.getDrawingCache());
+                            pinchImageView.setDrawingCacheEnabled(false);
+                        } else
+                            if (shareType == 2) {
+                                //共享的是网页
+                                mRlShareWeb.setVisibility(View.VISIBLE);//可见
+                                mWvShareWeb.setDrawingCacheEnabled(true);
+                                bmp = Bitmap.createBitmap(mWvShareWeb.getDrawingCache());
+                                mWvShareWeb.setDrawingCacheEnabled(false);
+                            }
+                        if (bmp != null) {
+                            //从bitmap获取base64
+                            String base64 = ImageUtil.bitmapToBase64(bmp);
+                            showLog("native base64长度" + base64.length());
+                            showLog(base64);
+                            //调用js函数
+                            mWvCanvas.loadUrl("javascript:syncPic('" + base64 + "')");
+                        }
+
 
                     } else {
                         /**
-                         * 取消共享图片
+                         * 取消共享(主持人跳出画板,进行调整中...)
                          */
                         mWvCanvas.loadUrl("javascript:cancleSyncPic()");
                         fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
@@ -211,19 +282,60 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
 
 
                     }
-//                showToast(mContext, "点击了我");
                 }
             });
-            /**
-             * 设置底部状态栏
-             */
-            mRadioGroup.getChildAt(1)
-                    .setVisibility(View.VISIBLE);
-            mRadioGroup.getChildAt(2)
-                    .setVisibility(View.VISIBLE);
+
 
         }
+    }
 
+    /**
+     * 初始化加会者设置
+     */
+    private void initParticipate() {
+        //加会者设置
+        if (check_in_type == 1) {
+
+            //与会者使用的悬浮按钮的功能
+            fab.setOnClickListener(null);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //如果进入画板
+                    if (!isDrawing) {
+                        /**
+                         * 设置悬浮按钮的活动范围
+                         */
+                        fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
+                        fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 60));
+                        /**
+                         * 设置布局的可见性
+                         */
+                        mLlWebviewCanvas.setVisibility(View.VISIBLE);
+                        mRlActionbar.setVisibility(View.GONE);
+                        mLlActionGroup.setVisibility(View.GONE);
+                        isDrawing = true;
+                        /**
+                         * 改变舞台的背景色
+                         */
+                        mLlMeetingStage.setBackgroundColor(
+                                getResources().getColor(R.color.my_white));
+
+                    } else {
+                        fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
+                        fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
+                        mLlWebviewCanvas.setVisibility(View.GONE);
+                        mRlActionbar.setVisibility(View.VISIBLE);
+                        mLlActionGroup.setVisibility(View.VISIBLE);
+                        isDrawing = false;
+                        mLlMeetingStage.setBackgroundColor(
+                                getResources().getColor(R.color.my_black));
+
+
+                    }
+                }
+            });
+        }
     }
 
 
@@ -245,6 +357,7 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                         /**
                          * 设置共享图片
                          */
+                        mRlSharePic.setVisibility(View.VISIBLE);//可见
                         pinchImageView =
                                 (PinchImageView) findViewById(R.id.share_pic);
                         pinchImageView.setImageBitmap(ImageUtil.base64ToBitmap(str));
@@ -286,22 +399,38 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                 showLog("新加会的与会者请求得到share的图片");
                 if (check_in_type == 2) {
                     if (isDrawing) {
+                        Bitmap bmp = null;
                         /**
-                         * 同步共享图片bitmap
+                         * 同步共享
                          */
-                        pinchImageView.setDrawingCacheEnabled(true);
-                        Bitmap bmp = Bitmap.createBitmap(pinchImageView.getDrawingCache());
-                        pinchImageView.setDrawingCacheEnabled(false);
-                        //从bitmap获取base64
-                        String base64 = ImageUtil.bitmapToBase64(bmp);
-                        showLog("native base64长度" + base64.length());
+                        if (shareType == 1) {
+                            //共享的是图片
+                            mRlSharePic.setVisibility(View.VISIBLE);//可见
+                            pinchImageView.setDrawingCacheEnabled(true);
+                            bmp = Bitmap.createBitmap(pinchImageView.getDrawingCache());
+                            pinchImageView.setDrawingCacheEnabled(false);
+                        } else
+                            if (shareType == 2) {
+                                //共享的是网页
+                                mRlShareWeb.setVisibility(View.VISIBLE);//可见
+                                mWvShareWeb.setDrawingCacheEnabled(true);
+                                bmp = Bitmap.createBitmap(mWvShareWeb.getDrawingCache());
+                                mWvShareWeb.setDrawingCacheEnabled(false);
+                            }
+                        if (bmp != null) {
+                            //从bitmap获取base64
+                            String base64 = ImageUtil.bitmapToBase64(bmp);
+                            showLog("native base64长度" + base64.length());
 
-                        String call = "javascript:syncPicToNewer('" + client_email + "','" + base64
-                                + "')";
-                        showLog("native call长度" + call.length());
-                        showLog(call);
-                        //调用js函数
-                        mWvCanvas.loadUrl(call);
+                            String call =
+                                    "javascript:syncPicToNewer('" + client_email + "','" + base64
+                                            + "')";
+                            showLog("native call长度" + call.length());
+                            showLog(call);
+                            //调用js函数
+                            mWvCanvas.loadUrl(call);
+                        }
+
 
                     }
                 }
@@ -330,6 +459,7 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                         /**
                          * 设置共享图片
                          */
+                        mRlSharePic.setVisibility(View.VISIBLE);//可见
                         pinchImageView =
                                 (PinchImageView) findViewById(R.id.share_pic);
                         pinchImageView.setImageBitmap(ImageUtil.base64ToBitmap(str));
@@ -392,9 +522,9 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                          */
                         mLlMeetingStage.setBackgroundColor(
                                 getResources().getColor(R.color.my_white));
-                        showToast(mContext, "你正在共享图片");
+                        showToast(mContext, getString(R.string.you_are_sharing));
                     } else {//同步失败
-                        showToast(mContext, "共享图片失败");
+                        showToast(mContext, getString(R.string.share_fail));
                     }
                 }
 
@@ -414,10 +544,10 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                               if (check_in_type == 1) {
 
                                   /**
-                                   * 把共享图片换成默认图片
+                                   * 使得共享图片不可见
                                    */
-                                  pinchImageView.setImageDrawable(null);
-                                  showToast(mContext, "主持人关闭了共享");
+                                  mRlSharePic.setVisibility(View.GONE);//不可见
+                                  showToast(mContext, getString(R.string.host_close_share));
                               }
 
                           }
@@ -430,29 +560,16 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
     /**
      * 设置webview参数,并启动
      */
-    @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
+    @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled"})
     private void startWebView() {
-        WebSettings webSettings = mWvCanvas.getSettings();
-        webSettings.setSaveFormData(false);
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setSupportZoom(false);
-        webSettings.setUseWideViewPort(true);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webSettings.setAppCacheEnabled(false);
-        webSettings.setDefaultTextEncodingName("utf-8");
-        WebView.setWebContentsDebuggingEnabled(true);
-
-        mWvCanvas.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-        mWvCanvas.setBackgroundColor(getResources().getColor(R.color.transparent));//背景透明
-        mWvCanvas.requestFocus();
+        //初始化 webview 基本设置
+        initWebView(mWvCanvas);
         mWvCanvas.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // TODO Auto-generated method stub
 //              return super.shouldOverrideUrlLoading(btnStart, url);
-                view.loadUrl(url);
-                return true;
+                return false;
             }
 
             @Override
@@ -482,11 +599,6 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                 finish();
             }
         });
-//        mWvCanvas.loadUrl(
-//                "http://118.89.102.238/view/index.php?300130=2&300106=4a6bf78a56af924352f2544c3fe6291e&300101=2662083658%40qq.com&300118=240288589327&300131=139&300102=%E6%9D%8E%E7%A3%8A&300103=%E5%93%88%E5%93%88");
-//        mWvCanvas.setVisibility(View.VISIBLE);// 加载完之后进行设置显示，以免加载时初始化效果不好看
-//        mWvCanvas.addJavascriptInterface(this, "board");
-
 
         /**
          * 加载本地数据
@@ -546,6 +658,26 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
 
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
+    private void initWebView(WebView web) {
+        WebSettings webSettings = web.getSettings();
+        webSettings.setSaveFormData(false);
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setSupportZoom(false);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setAppCacheEnabled(false);
+        webSettings.setDefaultTextEncodingName("utf-8");
+        WebView.setWebContentsDebuggingEnabled(true);
+
+        web.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        web.setBackgroundColor(getResources().getColor(R.color.transparent));//背景透明
+        web.requestFocus();
+
+    }
+
+
     /**
      * 设置要share的图片
      *
@@ -598,6 +730,29 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
             select.setCompoundDrawables(null, yellow, null, null);
 
         }
+        switch (position) {
+            case 0:
+                /**
+                 * page 0 参与者
+                 */
+                break;
+            case 1:
+                /**
+                 * page 1 选择共享类型
+                 */
+                //弹出选择框
+
+                //更改分享类型 share_type
+
+
+                break;
+            case 2:
+                /**
+                 * page 2 锁定会议
+                 */
+                break;
+        }
+
 
     }
 

@@ -70,9 +70,9 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/to_share"
-                android:visibility="gone"
                 android:textColor="@color/my_white"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:visibility="gone"/>
 
             <RadioButton
                 android:id="@+id/btn_meeting_lock"
@@ -84,8 +84,8 @@
                 android:gravity="center"
                 android:text="@string/lock_meeting"
                 android:textColor="@color/my_white"
-                android:visibility="gone"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:visibility="gone"/>
 
 
         </RadioGroup>
@@ -119,23 +119,43 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
                 android:gravity="left|top"
+                android:visibility="gone"
 
                 >
 
                 <cn.edu.hfut.lilei.shareboard.view.imageview.PinchImageView
                     android:id="@+id/share_pic"
-                    android:layout_width="100dp"
-                    android:layout_height="200dp"
-                    android:layout_alignParentLeft="true"
+                    android:layout_width="285dp"
+                    android:layout_height="506dp"
                     android:background="@color/my_white"
                     />
 
                 <!--<cn.edu.hfut.lilei.shareboard.view.imageview.PinchImageView-->
-                    <!--android:id="@+id/share_pic2"-->
-                    <!--android:layout_width="100dp"-->
-                    <!--android:layout_height="200dp"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--/>-->
+                <!--android:id="@+id/share_pic2"-->
+                <!--android:layout_width="100dp"-->
+                <!--android:layout_height="200dp"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--/>-->
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_share_web"
+                android:layout_width="285dp"
+                android:layout_height="506dp"
+                android:layout_gravity="left|top"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:gravity="left|top"
+                android:visibility="gone"
+
+                >
+
+                <WebView
+                    android:id="@+id/share_web"
+                    android:layout_width="285dp"
+                    android:layout_height="506dp"
+                    />
+
             </RelativeLayout>
 
             <LinearLayout

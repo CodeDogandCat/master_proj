@@ -149,4 +149,7 @@
     <string name="participate">参与者</string>
     <string name="share">共享</string>
     <string name="to_share">共享</string>
+    <string name="share_fail">共享失败</string>
+    <string name="you_are_sharing">你正在共享</string>
+    <string name="host_close_share">主持人关闭了共享</string>
 </resources>
