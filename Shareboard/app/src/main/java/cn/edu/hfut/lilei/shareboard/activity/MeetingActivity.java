@@ -146,7 +146,7 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
          */
         initHost();
         //测试共享网页
-//        shareWeb();
+        shareWeb();
 
 
     }
@@ -256,14 +256,21 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                                 bmp = Bitmap.createBitmap(mWvShareWeb.getDrawingCache());
                                 mWvShareWeb.setDrawingCacheEnabled(false);
                             }
+
+                        String base64 = "nothing";
+
                         if (bmp != null) {
                             //从bitmap获取base64
-                            String base64 = ImageUtil.bitmapToBase64(bmp);
+                            base64 = ImageUtil.bitmapToBase64(bmp);
                             showLog("native base64长度" + base64.length());
-                            showLog(base64);
-                            //调用js函数
-                            mWvCanvas.loadUrl("javascript:syncPic('" + base64 + "')");
                         }
+                        String call = "javascript:syncPic('" + base64 + "')";
+
+                        showLog("native call长度" + call.length());
+//                            showLog(call);
+
+                        //调用js函数
+                        mWvCanvas.loadUrl(call);
 
 
                     } else {
@@ -296,6 +303,8 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
         //加会者设置
         if (check_in_type == 1) {
 
+            //与会者刚刚进会是看不到悬浮按钮的,也就不能进入画板
+            fab.setVisibility(View.GONE);
             //与会者使用的悬浮按钮的功能
             fab.setOnClickListener(null);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -352,34 +361,38 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                 showLog("新加会的加会者接收共享的图片" + str);
 
                 if (check_in_type == 1) {
-                    if (!str.equals("")) {//获取share图片的base64
+
+                    //悬浮按钮可见
+                    fab.setVisibility(View.VISIBLE);
+                    /**
+                     * 设置悬浮按钮的活动范围
+                     */
+                    fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
+                    fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 60));
+                    /**
+                     * 设置布局的可见性
+                     */
+                    mLlWebviewCanvas.setVisibility(View.VISIBLE);
+                    mRlActionbar.setVisibility(View.GONE);
+                    mLlActionGroup.setVisibility(View.GONE);
+                    isDrawing = true;
+                    /**
+                     * 改变舞台的背景色
+                     */
+                    mLlMeetingStage.setBackgroundColor(
+                            getResources().getColor(R.color.my_white));
+                    //获取share图片的base64,且不为空,说明 当前主持人在 share_type= 1 or 2
+                    if (!str.equals("nothing")) {
 
                         /**
                          * 设置共享图片
                          */
                         mRlSharePic.setVisibility(View.VISIBLE);//可见
-                        pinchImageView =
-                                (PinchImageView) findViewById(R.id.share_pic);
                         pinchImageView.setImageBitmap(ImageUtil.base64ToBitmap(str));
 
-                        /**
-                         * 设置悬浮按钮的活动范围
-                         */
-                        fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
-                        fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 60));
-                        /**
-                         * 设置布局的可见性
-                         */
-                        mLlWebviewCanvas.setVisibility(View.VISIBLE);
-                        mRlActionbar.setVisibility(View.GONE);
-                        mLlActionGroup.setVisibility(View.GONE);
-                        isDrawing = true;
-                        /**
-                         * 改变舞台的背景色
-                         */
-                        mLlMeetingStage.setBackgroundColor(
-                                getResources().getColor(R.color.my_white));
                         showToast(mContext, "主持人正在共享");
+                    } else {
+                        showToast(mContext, "主持人正在使用白板");
                     }
 
                 }
@@ -417,20 +430,23 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                                 bmp = Bitmap.createBitmap(mWvShareWeb.getDrawingCache());
                                 mWvShareWeb.setDrawingCacheEnabled(false);
                             }
+
+
+                        String base64 = "nothing";
+
                         if (bmp != null) {
                             //从bitmap获取base64
-                            String base64 = ImageUtil.bitmapToBase64(bmp);
+                            base64 = ImageUtil.bitmapToBase64(bmp);
                             showLog("native base64长度" + base64.length());
-
-                            String call =
-                                    "javascript:syncPicToNewer('" + client_email + "','" + base64
-                                            + "')";
-                            showLog("native call长度" + call.length());
-                            showLog(call);
-                            //调用js函数
-                            mWvCanvas.loadUrl(call);
                         }
+                        String call = "javascript:syncPicToNewer('" + client_email + "','" + base64
+                                + "')";
 
+                        showLog("native call长度" + call.length());
+//                            showLog(call);
+
+                        //调用js函数
+                        mWvCanvas.loadUrl(call);
 
                     }
                 }
@@ -454,34 +470,37 @@ public class MeetingActivity extends AppCompatActivity implements RadioGroup.OnC
                 showLog(str);
 
                 if (check_in_type == 1) {
-                    if (!str.equals("")) {//获取share图片的base64
+                    //悬浮按钮可见
+                    fab.setVisibility(View.VISIBLE);
+                    /**
+                     * 设置悬浮按钮的活动范围
+                     */
+                    fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
+                    fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 60));
+                    /**
+                     * 设置布局的可见性
+                     */
+                    mLlWebviewCanvas.setVisibility(View.VISIBLE);
+                    mRlActionbar.setVisibility(View.GONE);
+                    mLlActionGroup.setVisibility(View.GONE);
+                    isDrawing = true;
+                    /**
+                     * 改变舞台的背景色
+                     */
+                    mLlMeetingStage.setBackgroundColor(
+                            getResources().getColor(R.color.my_white));
+                    //获取share图片的base64,且不为空,说明 当前主持人在 share_type= 1 or 2
+                    if (!str.equals("")) {
 
                         /**
                          * 设置共享图片
                          */
                         mRlSharePic.setVisibility(View.VISIBLE);//可见
-                        pinchImageView =
-                                (PinchImageView) findViewById(R.id.share_pic);
                         pinchImageView.setImageBitmap(ImageUtil.base64ToBitmap(str));
 
-                        /**
-                         * 设置悬浮按钮的活动范围
-                         */
-                        fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
-                        fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 60));
-                        /**
-                         * 设置布局的可见性
-                         */
-                        mLlWebviewCanvas.setVisibility(View.VISIBLE);
-                        mRlActionbar.setVisibility(View.GONE);
-                        mLlActionGroup.setVisibility(View.GONE);
-                        isDrawing = true;
-                        /**
-                         * 改变舞台的背景色
-                         */
-                        mLlMeetingStage.setBackgroundColor(
-                                getResources().getColor(R.color.my_white));
                         showToast(mContext, "主持人正在共享");
+                    } else {
+                        showToast(mContext, "主持人正在使用白板");
                     }
 
                 }

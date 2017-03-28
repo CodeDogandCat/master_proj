@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:clipToPadding="true"
-              android:fitsSystemWindows="true"
-              android:orientation="vertical"
-              tools:context="cn.edu.hfut.lilei.shareboard.activity.MainActivity">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context="cn.edu.hfut.lilei.shareboard.activity.MainActivity">
 
     <RelativeLayout
         android:id="@+id/rl_main_actionbar"
-        style="@style/actionbar">
+        style="@style/actionbar"
+        android:layout_alignParentTop="true">
 
 
         <TextView
@@ -30,36 +29,28 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_main_action_group"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
         android:gravity="bottom"
         android:orientation="vertical">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="8"/>
-        <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0.5dp"-->
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="60dp"
             android:layout_gravity="bottom"
-            android:layout_weight="1"
             android:background="@color/my_barblack"
             android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/btn_main_meeting"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_weight="1"
                 android:background="@null"
                 android:button="@null"
-                android:drawableTop="@drawable/ic_yellow_04"
                 android:gravity="center"
                 android:text="@string/meeting"
                 android:textColor="@color/my_white"
@@ -69,7 +60,7 @@
             <RadioButton
                 android:id="@+id/btn_main_contacts"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_weight="1"
                 android:background="@null"
                 android:button="@null"
@@ -81,7 +72,7 @@
             <RadioButton
                 android:id="@+id/btn_main_settings"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_weight="1"
                 android:background="@null"
                 android:button="@null"
@@ -97,5 +88,21 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_main_stage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ll_main_action_group"
+        android:layout_below="@id/rl_main_actionbar"
+        android:gravity="center"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </LinearLayout>
+
+
+</RelativeLayout>

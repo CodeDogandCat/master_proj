@@ -237,6 +237,7 @@ if (
                         if (check_in_type == 1) {
                             var newdata = data['content'].replace(/&quot;/g, '"').replace(/425D8E69BF45B845CB7CF50FA43D64C68D379A46/g, '\\"');
                             lc.loadSnapshot(JSON.parse(newdata));
+                            //获取共享图片,如果主持人没有共享图片,那么不能提示到native 加会者
                             getInitShareData();
                         }
                         break;
