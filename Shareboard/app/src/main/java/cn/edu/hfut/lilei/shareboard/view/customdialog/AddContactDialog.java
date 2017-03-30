@@ -13,20 +13,20 @@ import android.widget.TextView;
 
 import cn.edu.hfut.lilei.shareboard.R;
 
-public class CustomAlertDialog extends Dialog {
+public class AddContactDialog extends Dialog {
 
 
-    public CustomAlertDialog(Context context) {
+    public AddContactDialog(Context context) {
         super(context);
     }
 
-    public CustomAlertDialog(Context context, int themeId) {
+    public AddContactDialog(Context context, int themeId) {
         super(context, themeId);
     }
 
     public static class Builder {
         private Context mContext;
-        private String mTitle, mMessage;
+        private String mTitle, mMessage, mHint;
         private String mPositiveButtonText, mNegativeButtonText;
 
         private OnClickListener mPositiveButtonClickListener,
@@ -53,6 +53,20 @@ public class CustomAlertDialog extends Dialog {
 
         public Builder setMessage(String message) {
             mMessage = message;
+            return this;
+        }
+
+        public String getmMessage() {
+            return mMessage;
+        }
+
+        public Builder setHint(int resId) {
+            mHint = (String) mContext.getText(resId);
+            return this;
+        }
+
+        public Builder setHint(String hint) {
+            mHint = hint;
             return this;
         }
 
@@ -86,24 +100,23 @@ public class CustomAlertDialog extends Dialog {
             return this;
         }
 
-        public CustomAlertDialog create() {
+        public AddContactDialog create() {
             LayoutInflater inflater = LayoutInflater.from(mContext);
-            View view = inflater.inflate(R.layout.dialog_contacts_add, null);
-            final CustomAlertDialog customAlertDialog = new CustomAlertDialog(
+            View view = inflater.inflate(R.layout.dialog_common_input, null);
+            final AddContactDialog addContactDialog = new AddContactDialog(
                     mContext, R.style.CustomAlertDialog);
-            customAlertDialog.addContentView(view, new ViewGroup.LayoutParams(
+            addContactDialog.addContentView(view, new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT));
             TextView tvAlertTitle = (TextView) view
                     .findViewById(R.id.tvAlertDialogTitle);
             tvAlertTitle.setText(mTitle);
+            final EditText tvAlertDialogMessage = (EditText) view
+                    .findViewById(R.id.tvAlertDialogMessage);
 
-            if (!TextUtils.isEmpty(mMessage)) {
-                EditText tvAlertDialogMessage = (EditText) view
-                        .findViewById(R.id.tvAlertDialogMessage);
+            if (!TextUtils.isEmpty(mHint)) {
                 tvAlertDialogMessage.setVisibility(View.VISIBLE);
-                View vMessageLine = (View) view.findViewById(R.id.vMessageLine);
-                vMessageLine.setVisibility(View.VISIBLE);
+                tvAlertDialogMessage.setHint(mHint);
             }
 
             Button btnPositive = (Button) view
@@ -115,10 +128,18 @@ public class CustomAlertDialog extends Dialog {
                         @Override
                         public void onClick(View v) {
                             mPositiveButtonClickListener.onClick(
-                                    customAlertDialog, BUTTON_POSITIVE);
+                                    addContactDialog, BUTTON_POSITIVE);
+                        }
+                    });
+                } else {
+                    btnPositive.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            addContactDialog.dismiss();
                         }
                     });
                 }
+
             } else {
                 btnPositive.setVisibility(View.GONE);
             }
@@ -131,14 +152,14 @@ public class CustomAlertDialog extends Dialog {
                         @Override
                         public void onClick(View v) {
                             mNegativeButtonClickListener.onClick(
-                                    customAlertDialog, BUTTON_NEGATIVE);
+                                    addContactDialog, BUTTON_NEGATIVE);
                         }
                     });
                 } else {
                     btnNegative.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            customAlertDialog.dismiss();
+                            addContactDialog.dismiss();
                         }
                     });
                 }
@@ -152,11 +173,11 @@ public class CustomAlertDialog extends Dialog {
                 layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
                 btnPositive.setLayoutParams(layoutParams);
             }
-            return customAlertDialog;
+            return addContactDialog;
         }
 
-        public CustomAlertDialog show() {
-            CustomAlertDialog dialog = create();
+        public AddContactDialog show() {
+            AddContactDialog dialog = create();
             dialog.show();
             return dialog;
         }

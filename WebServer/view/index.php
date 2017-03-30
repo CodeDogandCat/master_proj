@@ -256,9 +256,63 @@ if (
                             window.board.initShareContent(data['content']);
                         }
                         break;
+                    //加会者离会
+                    case 'leaveMeeting':
+                        if (data['from_client_email'] != email) {
+                            //通知native
+                            window.board.memberLeave(data['content']);
+                        }
+                        break;
+                    //主持人离会
+                    case 'hostLeaveMeeting':
+                        if (data['from_client_email'] != email) {
+                            //通知native
+                            window.board.hostLeave(data['content']);
+
+                        }
+                        break;
 
                 }
             }
+            /**
+             * native 加会者收到主持人 离会消息
+             * native来调用
+             */
+            function leaveForHostLeave() {
+                if (check_in_type == 1) {
+                    //加会者结束自己
+                    ws.close();
+                }
+
+
+            }
+
+            /**
+             *用socket 转发退会消息 给其他人
+             * native来调用
+             */
+            function syncLeaveMeeting(name) {
+                if (check_in_type == 1) {
+                    var sync_data = '{"type":"leaveMeeting","from_client_email":"' + email + '","to_client_email":"' + host_email + '","content":"' + name + '"}';
+                    console.log("加会者离会");
+
+                    ws.send(sync_data);
+                    // 加会者结束自己
+                    ws.close();
+
+                } else if (check_in_type == 2) {
+                    var sync_data1 = '{"type":"hostLeaveMeeting","from_client_email":"' + email + '","to_client_email":"all","content":"' + name + '"}';
+                    console.log("主持人离会");
+
+                    ws.send(sync_data1);
+                    // 主持人结束自己
+                    ws.close();
+                }
+
+
+            }
+
+
             /**
              *用socket 转发主持人share图片->新加会的那个人
              * 主持人 native来调用

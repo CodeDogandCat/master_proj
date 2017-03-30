@@ -24,6 +24,17 @@
         android:background="@color/my_yellow" >
     </View>
 
+    <EditText
+        android:id="@+id/tvAlertDialogMessage"
+        android:layout_width="match_parent"
+        android:textSize="@dimen/super_small_text_size"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        android:background="@color/my_transparent"
+        android:gravity="center"
+        android:textColor="@color/my_white"/>
+
+
 
     <RelativeLayout
         android:id="@+id/rlAlertDialogButtons"
@@ -42,7 +53,8 @@
             android:layout_margin="5dp"
             android:textColor="@color/my_black"
             android:background="@drawable/btn_yellow"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textSize="@dimen/nav_title_size"/>
 
         <Button
             android:id="@+id/btnAlertDialogPositive"

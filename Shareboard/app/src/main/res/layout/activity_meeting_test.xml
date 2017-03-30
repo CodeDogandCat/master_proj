@@ -11,21 +11,22 @@
         android:layout_alignParentTop="true"
         android:background="@color/my_black">
 
-        <ImageView
-            android:id="@+id/img_arrange_meeting_goback"
-            style="@style/actionbar_goback"
-            />
+        <!--<ImageView-->
+        <!--android:id="@+id/img_meeting_goback"-->
+        <!--style="@style/actionbar_goback"-->
+        <!--/>-->
 
         <TextView
+            android:id="@+id/tv_meeting_url"
             style="@style/navbar_title_textview_style"
-            android:text="1141-0213-4178"
+            android:text="0000-0000-0000"
             android:textColor="@color/my_white"
             />
 
         <Button
-            android:id="@+id/btn_arrange_meeting_save"
+            android:id="@+id/btn_meeting_leave"
             style="@style/actionbar_button"
-            android:text="@string/end"
+            android:text="@string/leave"
             android:textColor="@color/my_red"
             />
 
@@ -37,58 +38,48 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="@color/my_black"
-        android:gravity="bottom"
-        android:orientation="vertical">
+        android:gravity="center_horizontal|bottom"
+        android:orientation="horizontal">
 
-        <RadioGroup
-            android:id="@+id/radioGroup_meeting"
-            android:layout_width="match_parent"
+
+        <RadioButton
+            android:id="@+id/btn_meeting_members"
+            android:layout_width="0dp"
             android:layout_height="60dp"
-            android:layout_gravity="bottom"
-            android:background="@color/my_black"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/btn_meeting_members"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/participate"
-                android:textColor="@color/my_white"
-                android:textSize="12sp"/>
+            android:layout_weight="1"
+            android:background="@null"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/participate"
+            android:textColor="@color/my_white"
+            android:textSize="12sp"/>
 
 
-            <RadioButton
-                android:id="@+id/btn_meeting_share"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/to_share"
-                android:textColor="@color/my_white"
-                android:textSize="12sp"
-                android:visibility="gone"/>
+        <RadioButton
+            android:id="@+id/btn_meeting_share"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/to_share"
+            android:textColor="@color/my_white"
+            android:textSize="12sp"
+            android:visibility="gone"/>
 
-            <RadioButton
-                android:id="@+id/btn_meeting_lock"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/lock_meeting"
-                android:textColor="@color/my_white"
-                android:textSize="12sp"
-                android:visibility="gone"/>
-
-
-        </RadioGroup>
+        <RadioButton
+            android:id="@+id/btn_meeting_lock"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/lock_meeting"
+            android:textColor="@color/my_white"
+            android:textSize="12sp"
+            android:visibility="gone"/>
 
 
     </LinearLayout>
@@ -110,6 +101,27 @@
             android:layout_height="match_parent"
             android:gravity="left|top"
             >
+
+            <RelativeLayout
+                android:id="@+id/rl_meeting_avatar"
+                android:layout_width="285dp"
+                android:layout_height="506dp"
+                android:layout_gravity="center"
+                android:visibility="visible"
+
+                >
+
+                <cn.carbs.android.avatarimageview.library.AvatarImageView
+                    android:id="@+id/img_meeting_avatar"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    app:aiv_BoarderWidth="0dp"
+                    app:aiv_ShowBoarder="false"
+                    app:aiv_TextSizeRatio="0.4"/>
+            </RelativeLayout>
+
 
             <RelativeLayout
                 android:id="@+id/rl_share_pic"

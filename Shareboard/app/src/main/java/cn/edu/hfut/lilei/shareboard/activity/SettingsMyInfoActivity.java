@@ -35,7 +35,7 @@ import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.view.customdialog.AlterHeadDialog;
-import cn.edu.hfut.lilei.shareboard.view.customdialog.CustomAlertDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.AddContactDialog;
 import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import cn.edu.hfut.lilei.shareboard.view.customdialog.NameInputDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
@@ -233,10 +233,10 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                          @Override
                                          public void onClick(View view) {
 
-                                             new CustomAlertDialog.Builder(mContext)
+                                             new AddContactDialog.Builder(mContext)
                                                      .setTitle(getString(R.string.logout_confirm))
                                                      .setPositiveButton(
-                                                             mContext.getString(R.string.confirm),
+                                                             getString(R.string.yes),
                                                              new DialogInterface.OnClickListener() {
                                                                  @Override
                                                                  public void onClick(DialogInterface dialogInterface, int i) {
@@ -253,7 +253,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                                                  }
                                                              })
                                                      .setNegativeButton(
-                                                             mContext.getString(R.string.cancel),
+                                                             getString(R.string.no),
                                                              null)
                                                      .show();
                                          }

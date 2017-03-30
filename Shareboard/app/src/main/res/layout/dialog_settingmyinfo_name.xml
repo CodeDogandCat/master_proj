@@ -80,7 +80,8 @@
             android:layout_margin="5dp"
             android:background="@drawable/btn_yellow"
             android:gravity="center"
-            android:textColor="@color/my_black" />
+            android:textColor="@color/my_black"
+            android:textSize="@dimen/nav_title_size"/>
 
         <Button
             android:id="@+id/btn_dialog_settingmyinfo_positive"

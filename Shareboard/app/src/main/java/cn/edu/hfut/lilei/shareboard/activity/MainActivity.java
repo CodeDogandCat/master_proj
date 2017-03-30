@@ -26,7 +26,7 @@ import cn.edu.hfut.lilei.shareboard.fragment.ContactsFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.MeetingFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.SettingsFragment;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
-import cn.edu.hfut.lilei.shareboard.view.customdialog.CustomAlertDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.AddContactDialog;
 
 
 public class MainActivity extends FragmentActivity implements
@@ -65,7 +65,7 @@ public class MainActivity extends FragmentActivity implements
 
     protected void init() {
         mContext = this;
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         Fragment meetingFragment = new MeetingFragment();
@@ -137,12 +137,13 @@ public class MainActivity extends FragmentActivity implements
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                new CustomAlertDialog.Builder(MainActivity.this)
+                                new AddContactDialog.Builder(MainActivity.this)
                                         .setTitle(getString(R.string.add_friend))
-                                        .setMessage(getString(R.string.inputemail))
+                                        .setHint(R.string.search_contacts_by_email)
                                         .setPositiveButton(
                                                 getString(R.string.confirm),
                                                 null)
+                                        .setPositiveButton(getString(R.string.cancel), null)
                                         .show();
                             }
                         }

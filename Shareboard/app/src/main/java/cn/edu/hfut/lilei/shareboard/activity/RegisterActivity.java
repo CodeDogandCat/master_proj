@@ -60,7 +60,7 @@ public class RegisterActivity extends SwipeBackActivity {
 
     private void init() {
         mContext = this;
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
@@ -122,7 +122,8 @@ public class RegisterActivity extends SwipeBackActivity {
                                 .params(post_user_email, email)
                                 .execute(new JsonCallback<CommonJson>() {
                                              @Override
-                                             public void onSuccess(CommonJson o, Call call, Response response) {
+                                             public void onSuccess(CommonJson o, Call call,
+                                                                   Response response) {
                                                  if (o.getCode() == SUCCESS) {
 
                                                      /**
@@ -135,6 +136,10 @@ public class RegisterActivity extends SwipeBackActivity {
                                                      //2分钟后可以重新发送验证码
                                                      CountDownTimerUtils mCountDownTimerUtils = new
                                                              CountDownTimerUtils(mContext, mTvSendVerifyCode,
+                                                             mContext.getResources()
+                                                                     .getString(
+                                                                             R.string
+                                                                                     .resend_verify_code_later),
                                                              120000, 1000);
                                                      mCountDownTimerUtils.start();
                                                      mlodingDialog.cancle();
@@ -222,7 +227,8 @@ public class RegisterActivity extends SwipeBackActivity {
                                 .params(post_check_verify_code, verifyCode)
                                 .execute(new JsonCallback<CommonJson>() {
                                     @Override
-                                    public void onSuccess(CommonJson o, Call call, Response response) {
+                                    public void onSuccess(CommonJson o, Call call,
+                                                          Response response) {
                                         if (o.getCode() == SUCCESS) {
                                             //验证码发匹配正确
                                             mlodingDialog.cancle();

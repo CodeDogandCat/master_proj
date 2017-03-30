@@ -31,7 +31,7 @@ import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
-import cn.edu.hfut.lilei.shareboard.view.customdialog.CustomAlertDialog;
+import cn.edu.hfut.lilei.shareboard.view.customdialog.AddContactDialog;
 import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
@@ -321,7 +321,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
      */
     private void delete() {
 
-        new CustomAlertDialog.Builder(MeetingInfoActivity.this)
+        new AddContactDialog.Builder(MeetingInfoActivity.this)
                 .setTitle(getString(R.string.delete_meeting_confirm))
                 .setPositiveButton(
                         MeetingInfoActivity.this.getString(R.string.confirm),

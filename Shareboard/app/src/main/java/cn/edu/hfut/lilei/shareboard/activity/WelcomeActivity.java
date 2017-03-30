@@ -18,7 +18,6 @@ import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NO_TOKEN_FOUND;
@@ -81,7 +80,7 @@ public class WelcomeActivity extends Activity {
 
     private void init() {
         mContext = this;
-        mlodingDialog = loding(mContext, R.string.loding);
+//        mlodingDialog = loding(mContext, R.string.loding);
         new AsyncTask<Void, Void, Integer>() {
 
             @Override
@@ -120,7 +119,7 @@ public class WelcomeActivity extends Activity {
                                     SharedPrefUtil.getInstance()
                                             .deleteData(share_token);
 
-                                    mlodingDialog.cancle();
+//                                    mlodingDialog.cancle();
                                     /**
                                      * 4.跳到登录界面
                                      */
@@ -132,7 +131,7 @@ public class WelcomeActivity extends Activity {
                                     /**
                                      * 5.自动登录成功,不会返回可打印信息,直接跳转
                                      */
-                                    mlodingDialog.cancle();
+//                                    mlodingDialog.cancle();
                                     Intent intent = new Intent();
 //                                    intent.setClass(WelcomeActivity.this,
 //                                            MeetingTestActivity.class);
@@ -161,7 +160,7 @@ public class WelcomeActivity extends Activity {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                mlodingDialog.cancle();
+//                mlodingDialog.cancle();
                 switch (integer) {
                     case NET_DISCONNECT:
                         //弹出对话框，让用户开启网络

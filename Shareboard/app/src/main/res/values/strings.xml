@@ -152,4 +152,20 @@
     <string name="share_fail">共享失败</string>
     <string name="you_are_sharing">你正在共享</string>
     <string name="host_close_share">主持人关闭了共享</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="confirm_leave_meeting">你是否要离开当前会议</string>
+    <string name="leave">离开</string>
+    <string name="confirm_host_leave">主持人离会,会议结束</string>
+    <string name="end_meeting">结束会议</string>
+    <string name="choose_share">选择共享资源</string>
+    <string name="pic">图片</string>
+    <string name="web_page">网页</string>
+    <string name="please_input_url">请输入网址</string>
+    <string name="open_web_page_error">打开网页失败</string>
+    <string name="invalid_web_url">无效网址</string>
+    <string name="end_share">结束共享</string>
+    <string name="share_web_page">共享网页</string>
+    <string name="http">http://</string>
+    <string name="host_left_meeting_end">主持人离会,会议结束</string>
 </resources>

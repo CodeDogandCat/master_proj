@@ -198,6 +198,34 @@ class Events
                 Gateway::sendToUid($message_data['to_client_email'], $message);
                 echo "@@@@@@@@@@@@@@@@@@@@@2" . $message_data['to_client_email'];
                 break;
+            //主持人离会->发给加会者
+            case 'hostLeaveMeeting':
+                echo "hostLeaveMeeting主持人离会->发给加会者\n";
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                // 非法请求
+                if (!isset($_SESSION['client_name'])) {
+                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                $room_id = $_SESSION['room_id'];
+                return Gateway::sendToGroup($room_id, $message);
+                break;
+            //加会者离会->发给其他人
+            case 'leaveMeeting':
+                echo "leaveMeeting加会者离会->发给其他人\n";
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                // 非法请求
+                if (!isset($_SESSION['client_name'])) {
+                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                $room_id = $_SESSION['room_id'];
+                return Gateway::sendToGroup($room_id, $message);
+                break;
 
 
         }

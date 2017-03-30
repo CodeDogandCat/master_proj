@@ -5,6 +5,8 @@ import org.apache.commons.lang.StringUtils;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
@@ -407,6 +409,32 @@ public class StringUtil {
         }
 
 
+    }
+
+    /**
+     * 判断网址是否合法
+     *
+     * @param urlString
+     * @return
+     */
+    public static boolean isValidUrl(String urlString) {
+        URI uri = null;
+        try {
+            uri = new URI(urlString);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        if (uri.getHost() == null) {
+            return false;
+        }
+        if (uri.getScheme()
+                .equalsIgnoreCase("http") || uri.getScheme()
+                .equalsIgnoreCase("https")) {
+            return true;
+        }
+        return false;
     }
 
 
