@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
@@ -27,13 +28,18 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+
 import java.util.ArrayList;
 
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
+import cn.edu.hfut.lilei.shareboard.models.CommonJson;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
+import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ScreenUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
@@ -45,6 +51,8 @@ import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
 import cn.edu.hfut.lilei.shareboard.view.customdialog.ShareChooseDialog;
 import cn.edu.hfut.lilei.shareboard.view.customdialog.UrlInputDialog;
 import cn.edu.hfut.lilei.shareboard.view.imageview.PinchImageView;
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static cn.edu.hfut.lilei.shareboard.R.id.rl_share_pic;
 import static cn.edu.hfut.lilei.shareboard.R.id.rl_share_web;
@@ -53,11 +61,16 @@ import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.ALBUM_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.HOST_CHECK_IN;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_HOST_MEETING;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_LEAVE_MEETING;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_MEETING;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_in_type;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_host_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_id;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_family_name;
@@ -100,6 +113,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     private String meeting_host_email;
     private int shareType = 0;//对主持人有效   0 :没有分享 1:分享图片 2:分享网页
     private boolean isLock = false;//会议是否锁定
+    private boolean leaveForHostLeave = false;//因为主持人离开了,我必须离开
 
     //上下文参数
     private Context mContext;
@@ -218,11 +232,120 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     }
 
     /**
+     * 离会的数据库操作
+     */
+    public void leaveMeetingDBOper() {
+        mlodingDialog = loding(mContext, R.string.leaving);
+
+        new AsyncTask<Void, Void, Integer>() {
+
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                /**
+                 * 1.检查网络状态并提醒
+                 */
+                if (!NetworkUtil.isNetworkConnected(mContext)) {
+                    //网络连接不可用
+                    return NET_DISCONNECT;
+                }
+                /**
+                 * 2.检查页面参数合法性
+                 */
+                String token = (String) SharedPrefUtil.getInstance()
+                        .getData(share_token, "空");
+
+                //如果没有token,跳转到登录界面
+                if (token.equals("空")) {
+                    return -2;
+                }
+                String email = (String) SharedPrefUtil.getInstance()
+                        .getData(share_user_email, "空");
+
+                //如果没有email
+                if (token.equals("空")) {
+                    return -2;
+                }
+
+                /**
+                 * 3.发送
+                 */
+
+                OkGo.post(URL_LEAVE_MEETING)
+                        .tag(this)
+                        .params(post_meeting_check_in_type, check_in_type)
+                        .params(post_token, token)
+                        .params(post_user_email, email)
+                        .params(post_meeting_url, meeting_url)
+                        .params(post_meeting_id, meeting_id)
+
+                        .execute(new JsonCallback<CommonJson>() {
+                                     @Override
+                                     public void onSuccess(CommonJson o, Call call,
+                                                           Response response) {
+                                         if (o.getCode() == SUCCESS) {
+                                             /**
+                                              * 跳到会议界面
+                                              */
+                                             mlodingDialog.cancle();
+//                                                     showToast(mContext, o.getMsg());
+                                             //同步离会消息
+                                             syncLeaveMeeting();
+                                             //离开当前界面
+                                             finish();
+
+                                         } else {
+                                             //提示所有错误
+                                             mlodingDialog.cancle();
+                                             showToast(mContext, o.getMsg());
+                                         }
+
+                                     }
+
+                                     @Override
+                                     public void onError(Call call, Response response,
+                                                         Exception e) {
+                                         super.onError(call, response, e);
+                                         mlodingDialog.cancle();
+                                         showToast(mContext, R.string.system_error);
+                                     }
+                                 }
+                        );
+
+
+                return -1;
+
+            }
+
+            @Override
+            protected void onPostExecute(Integer integer) {
+                super.onPostExecute(integer);
+                mlodingDialog.cancle();
+                switch (integer) {
+                    case NET_DISCONNECT:
+                        //弹出对话框，让用户开启网络
+                        NetworkUtil.setNetworkMethod(mContext);
+                        break;
+                    case -1:
+                        break;
+                    case -2:
+                        showToast(mContext, R.string.please_relogin);
+                        break;
+                    default:
+//                                    showToast(mContext, R.string.system_error);
+                        break;
+                }
+            }
+        }.execute();
+
+    }
+
+    /**
      * 设置离会按钮操作
      */
     public void leaveMeetingAction() {
         //加会者离会
         if (check_in_type == 1) {
+
             new CommonAlertDialog.Builder(mContext)
                     .setTitle(getString(R.string.confirm_leave_meeting))
                     .setPositiveButton(
@@ -230,12 +353,8 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-
-                                    //离会操作
-                                    showToast(mContext, "离会");
-                                    syncLeaveMeeting();
-                                    //离开当前界面
-                                    finish();
+                                    //修改数据库
+                                    leaveMeetingDBOper();
 
                                 }
                             })
@@ -253,11 +372,8 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        //离会操作
-                                        showToast(mContext, "主持人结束会议");
-                                        syncLeaveMeeting();
-                                        //离开当前界面
-                                        finish();
+                                        //修改数据库
+                                        leaveMeetingDBOper();
                                     }
                                 })
                         .setNegativeButton(
@@ -295,6 +411,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                leaveForHostLeave = true;
                 //弹出框提示 主持人离会,退出
                 new CommonAlertDialog.Builder(mContext)
                         .setTitle(getString(R.string.host_left_meeting_end))
@@ -304,14 +421,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         //离会操作
-                                        String call =
-                                                "javascript:leaveForHostLeave()";
-
-                                        showLog(call);
-                                        //调用js函数
-                                        mWvCanvas.loadUrl(call);
-                                        //离开当前界面
-                                        finish();
+                                        leaveMeetingDBOper();
 
                                     }
                                 })
@@ -335,12 +445,22 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                         (share_given_name, "");
         String name = tmpFamilyName + tmpGivenName;
         if (!name.equals("")) {
-            String call =
-                    "javascript:syncLeaveMeeting('" + name + "')";
+            if (leaveForHostLeave) {
+                String call =
+                        "javascript:leaveForHostLeave()";
 
-            showLog(call);
-            //调用js函数
-            mWvCanvas.loadUrl(call);
+                showLog(call);
+                //调用js函数
+                mWvCanvas.loadUrl(call);
+            } else {
+                String call =
+                        "javascript:syncLeaveMeeting('" + name + "')";
+
+                showLog(call);
+                //调用js函数
+                mWvCanvas.loadUrl(call);
+            }
+
         }
     }
 
@@ -835,6 +955,12 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                         post_meeting_host_email + "=" + meeting_host_email + "&" +
                         post_meeting_url + "=" + meeting_url;
             }
+            if (!NetworkUtil.isNetworkConnected(mContext)) {
+                //网络连接不可用
+                //弹出对话框，让用户开启网络
+                NetworkUtil.setNetworkMethod(mContext);
+
+            }
             mWvCanvas.loadUrl(URL_MEETING + params);
             mWvCanvas.setVisibility(View.VISIBLE);// 加载完之后进行设置显示，以免加载时初始化效果不好看
             mWvCanvas.addJavascriptInterface(this, "board");
@@ -1037,6 +1163,146 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         }
     }
 
+    /**
+     * 锁定会议/解锁会议
+     *
+     * @param type
+     */
+    public void lockMeetingDBOper(final int type) {
+        if (type == 0) {
+            mlodingDialog = loding(mContext, R.string.locking);
+        } else
+            if (type == 1) {
+                mlodingDialog = loding(mContext, R.string.unlocking);
+            }
+
+
+        new AsyncTask<Void, Void, Integer>() {
+
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                /**
+                 * 1.检查网络状态并提醒
+                 */
+                if (!NetworkUtil.isNetworkConnected(mContext)) {
+                    //网络连接不可用
+                    return NET_DISCONNECT;
+                }
+                /**
+                 * 2.检查页面参数合法性
+                 */
+                String token = (String) SharedPrefUtil.getInstance()
+                        .getData(share_token, "空");
+
+                //如果没有token,跳转到登录界面
+                if (token.equals("空")) {
+                    return -2;
+                }
+                String email = (String) SharedPrefUtil.getInstance()
+                        .getData(share_user_email, "空");
+
+                //如果没有email
+                if (token.equals("空")) {
+                    return -2;
+                }
+
+                String feature = "";
+                if (type == 0) {
+                    feature = "lock";
+                } else
+                    if (type == 1) {
+                        feature = "unlock";
+                    }
+                /**
+                 * 3.发送
+                 */
+                OkGo.post(URL_HOST_MEETING)
+                        .tag(this)
+                        .params(post_need_feature, feature)
+                        .params(post_meeting_check_in_type, check_in_type)
+                        .params(post_token, token)
+                        .params(post_user_email, email)
+                        .params(post_meeting_url, meeting_url)
+                        .params(post_meeting_id, meeting_id)
+
+                        .execute(new JsonCallback<CommonJson>() {
+
+                                     @Override
+                                     public void onSuccess(CommonJson o, Call call,
+                                                           Response response) {
+                                         if (o.getCode() == SUCCESS) {
+                                             if (mlodingDialog != null) {
+                                                 mlodingDialog.cancle();
+                                             }
+                                             if (type == 0) {//锁定成功
+                                                 //修改UI
+                                                 changeToSelected(mBtnLock, 2, "解锁");
+                                                 isLock = true;
+
+                                                 showToast(mContext, getString(R.string.lock_success));
+                                             } else
+                                                 if (type == 1) {
+                                                     //修改UI
+                                                     changeToUnSelected(mBtnLock, 2, "锁定");
+                                                     isLock = false;
+                                                     //解锁成功
+                                                     showToast(mContext, getString(R.string.unlock_success));
+                                                 }
+
+
+                                         } else {
+                                             //提示所有错误
+                                             if (mlodingDialog != null) {
+                                                 mlodingDialog.cancle();
+                                             }
+                                             showToast(mContext, o.getMsg());
+                                         }
+
+
+                                     }
+
+
+                                     @Override
+                                     public void onError(Call call, Response response,
+                                                         Exception e) {
+                                         super.onError(call, response, e);
+                                         if (mlodingDialog != null) {
+                                             mlodingDialog.cancle();
+                                         }
+                                         showToast(mContext, R.string.system_error);
+                                     }
+                                 }
+                        );
+
+
+                return -1;
+
+            }
+
+            @Override
+            protected void onPostExecute(Integer integer) {
+                super.onPostExecute(integer);
+                if (mlodingDialog != null) {
+                    mlodingDialog.cancle();
+                }
+                switch (integer) {
+                    case NET_DISCONNECT:
+                        //弹出对话框，让用户开启网络
+                        NetworkUtil.setNetworkMethod(mContext);
+                        break;
+                    case -1:
+                        break;
+                    case -2:
+                        showToast(mContext, R.string.please_relogin);
+                        break;
+                    default:
+//                                    showToast(mContext, R.string.system_error);
+                        break;
+                }
+            }
+        }.execute();
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -1075,13 +1341,12 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
             case R.id.btn_meeting_lock:
                 if (!isLock) {
                     //发送http锁定会议
+                    lockMeetingDBOper(0);
 
-                    changeToSelected(mBtnLock, 2, "解锁");
-                    isLock = true;
                 } else {
                     //发送http 解锁
-                    changeToUnSelected(mBtnLock, 2, "锁定");
-                    isLock = false;
+                    lockMeetingDBOper(1);
+
 
                 }
 

@@ -27,6 +27,9 @@ public class SettingUtil {
     //进入会议
     public static final String URL_ENTER_MEETING =
             "http://118.89.102.238/controller/meeting/enter_meeting.php";
+    //进入会议
+    public static final String URL_LEAVE_MEETING =
+            "http://118.89.102.238/controller/meeting/leave_meeting.php";
     //开会地址
     public static final String URL_MEETING =
             "http://118.89.102.238/view/index.php";

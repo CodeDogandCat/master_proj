@@ -126,10 +126,11 @@ if (isset($_REQUEST[post_need_feature])) {
                             $meeting_id = $result_arr[0];
                             $meeting->setId($meeting_id);
                             $meetingOp = new MeetingOp($user, $meeting);
-                            if (($user_and_meeting_id = $meetingOp->enterMeeting(2)) == false)//主持会议 type=2
+                            if (($result_arr2 = $meetingOp->enterMeeting(2)) == false)//主持会议 type=2
                             {
                                 printResult(HOST_MEETING_ERROR, '召开会议失败', $data);
                             } else {
+                                $user_and_meeting_id = $result_arr2['user_and_meeting_id'];
 //                                echo "放入session";
                                 //放入session  (进会id ,会议 id ,会议url ,用户 email)
                                 Session::set(SESSION_USER_AND_MEETING_ID, $user_and_meeting_id, 2592000);//30天过期
@@ -218,6 +219,46 @@ if (isset($_REQUEST[post_need_feature])) {
 
                 } else {
                     printResult(DELETE_MEETING_ERROR, '删除失败', -1);
+                }
+            } else {
+                printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
+            }
+            break;
+
+        case 'lock':
+            if (isset($_REQUEST[post_meeting_id]) &&
+                isset($_REQUEST[post_user_email])
+            ) {
+                $user = new User($_REQUEST[post_user_email]);
+                $meeting = new Meeting(null, null, null, null, null, null, null, null, null);
+                $meeting->setId($_REQUEST[post_meeting_id]);
+                $meetingOp = new MeetingOp($user, $meeting);
+                if (($result_arr = $meetingOp->lockMeeting()) != false) {
+
+                    printResult(SUCCESS, '锁定会议成功', -1);
+
+                } else {
+                    printResult(DELETE_MEETING_ERROR, '锁定会议失败', -1);
+                }
+            } else {
+                printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
+            }
+            break;
+
+        case 'unlock':
+            if (isset($_REQUEST[post_meeting_id]) &&
+                isset($_REQUEST[post_user_email])
+            ) {
+                $user = new User($_REQUEST[post_user_email]);
+                $meeting = new Meeting(null, null, null, null, null, null, null, null, null);
+                $meeting->setId($_REQUEST[post_meeting_id]);
+                $meetingOp = new MeetingOp($user, $meeting);
+                if (($result_arr = $meetingOp->unlockMeeting()) != false) {
+
+                    printResult(SUCCESS, '解锁会议成功', -1);
+
+                } else {
+                    printResult(DELETE_MEETING_ERROR, '解锁会议失败', -1);
                 }
             } else {
                 printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);

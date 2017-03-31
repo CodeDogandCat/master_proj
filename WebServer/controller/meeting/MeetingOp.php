@@ -95,6 +95,42 @@ class MeetingOp
         return true;//更新成功
 
     }
+    /**
+     * 锁定会议
+     * @return bool
+     */
+    public function lockMeeting()
+    {
+        $sql = 'UPDATE  bd_meeting SET meeting_status = 5  WHERE meeting_id = ?';
+
+
+        $arr = array();
+        $arr[0] = $this->meeting->getId();
+        if ($this->db->update($sql, $arr) == false) {
+
+            return false;//失败
+        }
+        return true;//成功
+
+    }
+    /**
+     * 解锁会议
+     * @return bool
+     */
+    public function unlockMeeting()
+    {
+        $sql = 'UPDATE  bd_meeting SET meeting_status = 3  WHERE meeting_id = ?';
+
+
+        $arr = array();
+        $arr[0] = $this->meeting->getId();
+        if ($this->db->update($sql, $arr) == false) {
+
+            return false;//失败
+        }
+        return true;//成功
+
+    }
 
     /**
      * 删除会议
@@ -267,6 +303,7 @@ class MeetingOp
      */
     public function updateCheckOut($_id)
     {
+//        echo "updateCheckOut1";
         $sql = 'UPDATE  bd_user_and_meeting SET check_out_time = ? WHERE user_and_meeting_id = ?';
         $arr = array();
         $dt = new DateTime();
@@ -276,6 +313,7 @@ class MeetingOp
 
             return false;//更新失败
         }
+//        echo "updateCheckOut2";
         return true;//更新成功
     }
 
@@ -286,6 +324,7 @@ class MeetingOp
      */
     public function updateMeetingStatus($toStatus)
     {
+//        echo "updateMeetingStatus1";
         $sql = 'UPDATE  bd_meeting SET meeting_status = ? WHERE meeting_id = ?';
         $arr = array();
         $arr[0] = $toStatus;
@@ -294,6 +333,7 @@ class MeetingOp
 
             return false;//更新失败
         }
+//        echo "updateMeetingStatus2";
         return true;//更新成功
     }
 
@@ -326,15 +366,21 @@ class MeetingOp
     public function leaveMeeting($_id)
     {
         if (($result_arr = $this->getCheckInInfoById($_id)) != false) {
-            $checkInType = $result_arr[0]['check_in_type'];
-            $user_id = $result_arr[0]['bd_user_user_id'];
-            $meeting_id = $result_arr[0]['bd_meeting_meeting_id'];
+//            echo "getCheckInInfoById1";
+//            var_dump($result_arr);
+//            echo "getCheckInInfoById2";
+
+            $checkInType = $result_arr['check_in_type'];
+            $user_id = $result_arr['bd_user_user_id'];
+            $meeting_id = $result_arr['bd_meeting_meeting_id'];
+
             $this->user->setId($user_id);
             $this->meeting->setId($meeting_id);
             /**
              * 判断用户是不是会议的主持人
              */
             if ($checkInType == 2) {//是主持人
+//                echo "是主持人";
                 /**
                  * 更新 check_out_time,还要更改会议的状态
                  */
@@ -344,6 +390,7 @@ class MeetingOp
 
 
             } elseif ($checkInType == 1) {//不是主持人
+//                echo "不是主持人";
                 /**
                  * 只需要更新 check_out_time
                  */
@@ -360,7 +407,7 @@ class MeetingOp
     /**
      * 进入会议
      * @param $type 1:与会 2:主持
-     * @return bool
+     * @return mixed
      */
     public function enterMeeting($type)
     {
@@ -375,6 +422,9 @@ class MeetingOp
                  * 根据meeting_id,判断会议的状态（1 ：未开始并且未到期 2：未开始并且过期了 3：正在进行 4：开会结束）
                  * 状态必须为1，判断user_id和host_user_id是否一致,主持人会议期间不能退出，否则会议结束
                  */
+                $data = array(
+                    "user_and_meeting_id" => -1, "result_desc" => "ok",
+                );
                 if ($this->getMeetingStatusById() == 1) {
 //                    echo 'getMeetingStatusById';
                     if (($_id = $this->checkIfExistSameUserAndMeeting(2)) == false) {//不存在
@@ -392,7 +442,8 @@ class MeetingOp
                                 /**
                                  * 返回
                                  */
-                                return $user_and_meeting_id;
+                                $data['user_and_meeting_id'] = $user_and_meeting_id;
+                                return $data;
                             }
 
 
@@ -400,6 +451,9 @@ class MeetingOp
 
                     }
 
+                } else {
+                    $data['result_desc'] = "无效的会议";
+                    return $data;
                 }
 
             }
@@ -428,39 +482,61 @@ class MeetingOp
                     } else {
                         return false;
                     }
-
+                    $data = array(
+                        "user_and_meeting_id" => -1, "result_desc" => "ok",
+                    );
 
                     /**
                      * 比较 会议状态和密码
                      */
                     $this->meeting->setId($meeting_id);
+                    switch ($status) {
+                        case 1:
+                            $data['result_desc'] = "会议还未开始,须等待主持人进入";
+                            return $data;
+                        case 3:
+                            //当前会议正在进行
+                            if ($password == $this->meeting->getPassword()) {
+                                if (($_id = $this->checkIfExistSameUserAndMeeting(1)) == false) {//不存在
+                                    /**
+                                     * 插入到 user_and_meeting表
+                                     */
+                                    if (($user_and_meeting_id = $this->addCheckIn(1)) != false) {
+                                        /**
+                                         * 返回
+                                         */
+                                        $data['user_and_meeting_id'] = $user_and_meeting_id;
+                                        return $data;
+                                    }
 
-                    if ($status == 3 && $password == $this->meeting->getPassword()) {
-                        if (($_id = $this->checkIfExistSameUserAndMeeting(1)) == false) {//不存在
-                            /**
-                             * 插入到 user_and_meeting表
-                             */
-                            if (($user_and_meeting_id = $this->addCheckIn(1)) != false) {
-                                /**
-                                 * 返回
-                                 */
-                                return $user_and_meeting_id;
+                                } else {
+
+                                    /**
+                                     * 更新到 user_and_meeting表
+                                     */
+                                    if (($user_and_meeting_id = $this->updateCheckIn($_id)) != false) {
+                                        /**
+                                         * 返回
+                                         */
+                                        $data['user_and_meeting_id'] = $user_and_meeting_id;
+                                        return $data;
+                                    }
+                                }
                             }
+                            break;
 
-                        } else {
+                        case 5:
+                            $data['result_desc'] = "会议被主持人锁定";
+                            return $data;
 
-                            /**
-                             * 更新到 user_and_meeting表
-                             */
-                            if (($user_and_meeting_id = $this->updateCheckIn($_id)) != false) {
-                                /**
-                                 * 返回
-                                 */
-                                return $user_and_meeting_id;
-                            }
-                        }
+                        case 4:
+                            $data['result_desc'] = "会议已经结束";
+                            return $data;
+
+                        case 2:
+                            $data['result_desc'] = "无效的会议";
+                            return $data;
                     }
-
 
                 }
 

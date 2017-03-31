@@ -171,6 +171,7 @@ public class UrlInputDialog extends Dialog {
 
             mWvShareWeb.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
             mWvShareWeb.setWebViewClient(new WebViewClient() {
+                int times = 0;
 
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -185,8 +186,12 @@ public class UrlInputDialog extends Dialog {
                     if (mlodingDialog != null) {
                         mlodingDialog.cancle();
                     }
-                    //调用回调
-                    mCallback.openWebSuccess();
+                    if (times == 0) {
+                        //调用回调
+                        mCallback.openWebSuccess();
+                    }
+                    times = 1;
+
                 }
 
                 @Override
@@ -194,8 +199,11 @@ public class UrlInputDialog extends Dialog {
                                             String description,
                                             String failingUrl) {
                     super.onReceivedError(view, errorCode, description, failingUrl);
-                    //调用回调
-                    mCallback.openWebError();
+                    if (times == 0) {
+                        //调用回调
+                        mCallback.openWebError();
+                    }
+                    times = 1;
 
 
                 }
