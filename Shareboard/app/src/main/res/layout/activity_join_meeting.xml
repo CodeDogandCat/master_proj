@@ -25,8 +25,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="250dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin26"
@@ -55,28 +54,6 @@
             android:id="@+id/ll_setuserinfo_bottomlineofname"
             style="@style/common_horizontal_division_line_style"
             android:background="@color/my_yellow"/>
-
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:gravity="center"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:paddingRight="10dp">-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/tv_exchange_jointype"-->
-        <!--style="@style/big_edittext"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:gravity="center"-->
-        <!--android:inputType="textAutoCorrect"-->
-        <!--android:text="@string/join_meeting_by_meeting_name"-->
-        <!--android:textColor="@color/my_yellow"-->
-        <!--android:textSize="@dimen/super_small_text_size" />-->
-
-        <!--</LinearLayout>-->
 
 
         <LinearLayout
@@ -113,11 +90,5 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical"/>
 
 </LinearLayout>

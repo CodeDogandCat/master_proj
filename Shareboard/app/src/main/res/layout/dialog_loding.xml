@@ -8,7 +8,6 @@
     <cn.edu.hfut.lilei.shareboard.view.customdialog.LoadingPopPoint
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@color/my_transparent"
         android:gravity="center_vertical|start"
         />
 
