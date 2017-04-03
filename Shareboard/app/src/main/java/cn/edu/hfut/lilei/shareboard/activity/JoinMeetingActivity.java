@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +35,8 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO2;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_in_type;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_host_email;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_drawable;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_talkable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_password;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
@@ -62,12 +66,10 @@ public class JoinMeetingActivity extends SwipeBackActivity {
 
     private void init() {
         mContext = this;
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
-                SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override
@@ -86,6 +88,49 @@ public class JoinMeetingActivity extends SwipeBackActivity {
 
         mBtnJoinMeeting = (Button) findViewById(R.id.btn_join_meeting);
         mEtMeetingUrl = (EditText) findViewById(R.id.et_meeting_number);
+        //监听输入字符,格式化输出
+
+        mEtMeetingUrl.addTextChangedListener(new TextWatcher() {
+                                                 private boolean isAdd;
+
+                                                 @Override
+                                                 public void beforeTextChanged(
+                                                         CharSequence s, int start,
+                                                         int count, int after) {
+                                                     if (after == 1) {//增加
+                                                         isAdd = true;
+                                                     } else {
+                                                         isAdd = false;
+                                                     }
+                                                 }
+
+                                                 @Override
+                                                 public void onTextChanged(
+                                                         CharSequence s, int start,
+                                                         int before, int count) {
+                                                 }
+
+                                                 @Override
+                                                 public void afterTextChanged(
+                                                         Editable s) {
+                                                     if (isAdd) {
+                                                         if (null != mEtMeetingUrl) {
+                                                             String str = s.toString();
+                                                             if (!str.endsWith(" ")) {
+                                                                 int length = s.length();
+                                                                 if (length == 4 || length == 9) {
+                                                                     String str1 = str + "-";
+                                                                     //手动添加-
+                                                                     mEtMeetingUrl.setText(str1);
+                                                                     mEtMeetingUrl.setSelection(str1.length());//光标移到最右边
+                                                                 }
+                                                             }
+                                                         }
+                                                     }
+                                                 }
+                                             }
+
+        );
         mEtMeetingPassword = (EditText) findViewById(R.id.et_meeting_password);
         mBtnJoinMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +141,8 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                         .trim();
                 final String meetingUrl = mEtMeetingUrl.getText()
                         .toString()
-                        .trim();
+                        .trim()
+                        .replaceAll("-", "");
 
                 new AsyncTask<Void, Void, Integer>() {
 
@@ -154,6 +200,30 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                              public void onSuccess(CommonJson o, Call call,
                                                                    Response response) {
                                                  if (o.getCode() == SUCCESS) {
+                                                     int data = o.getData();
+                                                     boolean isDrawable, isTalkable;
+                                                     switch (data) {
+                                                         case 0:
+                                                             isDrawable = false;
+                                                             isTalkable = false;
+                                                             break;
+                                                         case 1:
+                                                             isDrawable = false;
+                                                             isTalkable = true;
+                                                             break;
+                                                         case 10:
+                                                             isDrawable = true;
+                                                             isTalkable = false;
+                                                             break;
+                                                         case 11:
+                                                             isDrawable = true;
+                                                             isTalkable = true;
+                                                             break;
+                                                         default:
+                                                             isDrawable = true;
+                                                             isTalkable = true;
+                                                             break;
+                                                     }
 
 
                                                      /**
@@ -168,7 +238,9 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                                      b.putInt(post_meeting_check_in_type, COMMON_CHECK_IN);
                                                      b.putLong(post_meeting_url, Long.parseLong
                                                              (meetingUrl));
-                                                     b.putString(post_meeting_host_email,o.getMsg());
+                                                     b.putString(post_meeting_host_email, o.getMsg());
+                                                     b.putBoolean(post_meeting_is_drawable, isDrawable);
+                                                     b.putBoolean(post_meeting_is_talkable, isTalkable);
                                                      intent.putExtras(b);
                                                      startActivity(intent);
                                                      finish();

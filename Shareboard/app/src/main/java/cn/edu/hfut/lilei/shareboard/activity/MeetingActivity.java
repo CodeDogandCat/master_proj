@@ -22,21 +22,30 @@ import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.adapter.MemberListAdapter;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
+import cn.edu.hfut.lilei.shareboard.data.MeetingMemberInfo;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.models.CommonJson;
+import cn.edu.hfut.lilei.shareboard.models.MemberJson;
+import cn.edu.hfut.lilei.shareboard.models.MemberListJson;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -69,19 +78,26 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_MEETING;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_in_type;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_host_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_id;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_drawable;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_talkable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_avatar;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_family_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_given_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_avatar;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
 
-public class MeetingActivity extends AppCompatActivity implements ShareChooseDialog.Builder.IShareWebPage, UrlInputDialog.Builder.IUrlInput, View.OnClickListener {
+public class MeetingActivity extends AppCompatActivity implements ShareChooseDialog.Builder.IShareWebPage, UrlInputDialog.Builder.IUrlInput, View.OnClickListener, MemberListAdapter.Callback, AdapterView.OnItemClickListener {
+    /**
+     * meeting 页面的变量
+     */
     //控件
     private PowerManager.WakeLock mWakeLock;
     private PowerManager mPm;
@@ -90,7 +106,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     private TileDrawable mTileDrawable;
     private DragFloatActionButton fab;
     private LinearLayout mLlWebviewCanvas, mLlActionGroup, mLlMeetingStage;
-    private RelativeLayout mRlSharePic, mRlActionbar, mRlShareWeb, mRlAvatar;
+    private RelativeLayout mRlSharePic, mRlActionbar, mRlShareWeb, mRlAvatar, mRlMeeting;
     private PinchImageView pinchImageView;
     private AvatarImageView mAvatar;
     private Button mBtnLeave;
@@ -110,13 +126,24 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     private int meeting_id = -1;
     private long meeting_url = -1L;
     private boolean isDrawing = false;
-    private String meeting_host_email;
+    private String meeting_host_email, my_email;
     private int shareType = 0;//对主持人有效   0 :没有分享 1:分享图片 2:分享网页
     private boolean isLock = false;//会议是否锁定
     private boolean leaveForHostLeave = false;//因为主持人离开了,我必须离开
+    private List<MeetingMemberInfo> memberInfoList = new ArrayList<>();
+    private boolean isTalkable, isDrawable;
 
     //上下文参数
     private Context mContext;
+
+    /**
+     * 参与者页面的 变量
+     */
+    private RelativeLayout mRlMember, mRlMaster;
+    private TextView mTvMemberTitle;
+    private Button mBtnChat, mBtnInvite;
+    private ListView listContent = null;
+    private MemberListAdapter adapter;
 
 
     @Override
@@ -127,13 +154,29 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
         setContentView(R.layout.activity_meeting_test);
         init();
+        initMeeting();
 
 
     }
 
-
+    /**
+     * 公共部分的初始化
+     */
     public void init() {
         mContext = this;
+        mRlMeeting = (RelativeLayout) findViewById(R.id.rl_meeting);
+        mRlMember = (RelativeLayout) findViewById(R.id.rl_member);
+//        mRlMaster = (RelativeLayout) findViewById(R.id.rl_master);
+
+    }
+
+
+    /**
+     * meeting 页面的 初始化
+     */
+    public void initMeeting() {
+        mRlMember.setVisibility(View.GONE);
+        mRlMeeting.setVisibility(View.VISIBLE);
         check_in_type = 1;
         //会议url
         mTvMeetingUrl = (TextView) findViewById(R.id.tv_meeting_url);
@@ -232,6 +275,107 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     }
 
     /**
+     * 销毁参与者页面的资源
+     */
+    public void recycleMember() {
+        //
+        mRlMeeting.setVisibility(View.VISIBLE);
+        mRlMember.setVisibility(View.GONE);
+    }
+
+    /**
+     * 参与者页面的 初始化
+     */
+    public void initMember() {
+        mRlMeeting.setVisibility(View.GONE);
+        mRlMember.setVisibility(View.VISIBLE);
+        //资源释放
+
+        //资源释放结束
+        mTvMemberTitle = (TextView) findViewById(R.id.tv_member_title);
+        mBtnChat = (Button) findViewById(R.id.btn_member_chat);
+        mBtnInvite = (Button) findViewById(R.id.btn_member_invite);
+        listContent = (ListView) findViewById(R.id.lv_meeting_member);
+        mTvMemberTitle.setText(String.format(getResources().getString(R.string.current_members),
+                memberInfoList.size() + ""));
+        mBtnChat.setOnClickListener(this);
+        mBtnInvite.setOnClickListener(this);
+        adapter = new MemberListAdapter(mContext, my_email, check_in_type, this);
+        listContent.setAdapter(adapter);
+        listContent.setOnItemClickListener(this);
+        //
+        adapter.clear();
+        adapter.addAll(memberInfoList);
+        adapter.notifyDataSetChanged();
+
+
+    }
+
+    /**
+     * 按钮监听器
+     *
+     * @param view
+     */
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            /**
+             * page 0 参与者
+             */
+            case R.id.btn_meeting_members:
+                //打开参与者页面
+//                showToast(mContext, "打开参与者页面");
+                initMember();
+                break;
+            /**
+             * page 1 选择共享类型
+             */
+            case R.id.btn_meeting_share:
+                if (shareType == 0) {
+                    //弹出选择框
+                    requestPermission();
+
+                } else {
+                    //退出共享
+                    mRlSharePic.setVisibility(View.GONE);
+                    mRlShareWeb.setVisibility(View.GONE);
+                    shareType = 0;
+                    mRlAvatar.setVisibility(View.VISIBLE);
+                    changeToUnSelected(mBtnShare, 1, "共享");
+
+                    //通知加会者:主持人关闭了共享
+                    mWvCanvas.loadUrl("javascript:cancleSyncPic()");
+
+                }
+                break;
+            /**
+             * page 2 锁定会议
+             */
+            case R.id.btn_meeting_lock:
+                if (!isLock) {
+                    //发送http锁定会议
+                    lockMeetingDBOper(0);
+
+                } else {
+                    //发送http 解锁
+                    lockMeetingDBOper(1);
+
+
+                }
+
+                break;
+            /**
+             * 离会
+             */
+            case R.id.btn_meeting_leave:
+                leaveMeetingAction();
+                break;
+        }
+
+    }
+
+
+    /**
      * 离会的数据库操作
      */
     public void leaveMeetingDBOper() {
@@ -297,6 +441,8 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                              //提示所有错误
                                              mlodingDialog.cancle();
                                              showToast(mContext, o.getMsg());
+                                             //离开当前界面
+                                             finish();
                                          }
 
                                      }
@@ -307,6 +453,8 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                          super.onError(call, response, e);
                                          mlodingDialog.cancle();
                                          showToast(mContext, R.string.system_error);
+                                         //离开当前界面
+                                         finish();
                                      }
                                  }
                         );
@@ -353,6 +501,8 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    //清空会议联系人
+                                    memberInfoList.clear();
                                     //修改数据库
                                     leaveMeetingDBOper();
 
@@ -385,16 +535,152 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     }
 
     /**
-     * 接受加会者的离会消息
-     *
-     * @param str
+     * 初始化 所有的 参与者
      */
     @android.webkit.JavascriptInterface
-    public void memberLeave(final String str) {
+    public void addMembers(final String membersInfo) {
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              showLog("增加所有的 参与者1");
+                              showLog(membersInfo);
+                              memberInfoList.clear();
+                              memberInfoList.addAll(new Gson().fromJson(membersInfo, MemberListJson
+                                      .class)
+                                      .toMemberInfoList());
+                              showLog(memberInfoList.toString());
+                              showLog("增加所有的 参与者2");
+
+                          }
+
+                      }
+
+        );
+
+    }
+
+    /**
+     * 接受 主持人 修改权限的消息
+     */
+    @android.webkit.JavascriptInterface
+    public void alterPermission(final String is_Drawable, final String is_Talkable) {
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              showLog("接受 主持人 修改权限的消息");
+                              boolean tmpIsDrawable, tmpIsTalkable;
+                              if (!is_Drawable.equals("null")) {
+                                  tmpIsDrawable = Boolean.valueOf(is_Drawable);
+                                  if (tmpIsDrawable != isDrawable) {
+                                      isDrawable = tmpIsDrawable;
+                                      if (tmpIsDrawable) {
+//                                      mRlMaster.setVisibility(View.GONE);
+                                          showToast(mContext, getString(R.string.host_allow_draw));
+                                      } else {
+                                          if (isDrawing) {
+//                                          mRlMaster.setVisibility(View.VISIBLE);
+                                          }
+
+                                          showToast(mContext, getString(R.string.host_forbid_draw));
+                                      }
+
+
+                                  }
+                              }
+                              if (!is_Talkable.equals("null")) {
+                                  tmpIsTalkable = Boolean.valueOf(is_Talkable);
+
+
+                                  if (tmpIsTalkable != isTalkable)
+
+                                  {
+                                      isTalkable = tmpIsTalkable;
+                                      if (tmpIsTalkable) {
+                                          showToast(mContext, getString(R.string.host_allow_talk));
+                                      } else {
+                                          showToast(mContext, getString(R.string.host_forbid_talk));
+                                      }
+                                  }
+                              }
+
+
+                          }
+
+
+                      }
+
+
+        );
+
+    }
+
+
+    /**
+     * 增加一个 参与者
+     */
+    @android.webkit.JavascriptInterface
+    public void addMember(final String membersInfo) {
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              showLog("增加一个 参与者1");
+                              showLog(membersInfo);
+                              MeetingMemberInfo member = new Gson().fromJson(membersInfo,
+                                      MemberJson.class)
+                                      .toMemberInfo();
+                              showLog(member.toString());
+                              //去重
+                              for (int i = 0; i < memberInfoList.size(); i++) {
+                                  if (memberInfoList.get(i)
+                                          .getClient_email()
+                                          .equals(member.getClient_email())) {
+                                      //重复的数据
+                                      memberInfoList.remove(i);
+                                  }
+                              }
+                              //增加新的
+                              memberInfoList.add(member);
+                              showLog(memberInfoList.toString());
+                              showLog("增加一个 参与者2");
+
+                          }
+
+                      }
+
+        );
+
+    }
+
+    /**
+     * 接受加会者的离会消息
+     *
+     * @param email
+     * @param name
+     */
+    @android.webkit.JavascriptInterface
+    public void memberLeave(final String email, final String name) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                showToast(mContext, str + "离开了会议");
+                //修改会议参与者
+                //删除
+                for (int i = 0; i < memberInfoList.size(); i++) {
+                    if (memberInfoList.get(i)
+                            .getClient_email()
+                            .equals(email)) {
+                        memberInfoList.remove(i);
+                    }
+                }
+                /**
+                 * 刷新联系人列表
+                 */
+                if (mRlMember.getVisibility() == View.VISIBLE) {
+                    adapter.clear();
+                    adapter.addAll(memberInfoList);
+                    adapter.notifyDataSetChanged();
+                }
+                showToast(mContext, name + "离开了会议");
+                showLog(memberInfoList.toString());
 
             }
         });
@@ -420,6 +706,8 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                        //清空参与者列表
+                                        memberInfoList.clear();
                                         //离会操作
                                         leaveMeetingDBOper();
 
@@ -494,6 +782,13 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
                     //如果主持人进入画板,再同步图片一遍了
                     if (!isDrawing) {
+                        if (!isDrawable) {
+                            //显示 遮罩层
+                            showToast(mContext, "当前不能使用");
+//                            mRlMaster.setVisibility(View.VISIBLE);
+                        }
+
+
                         Bitmap bmp = null;
                         /**
                          * 同步共享
@@ -510,6 +805,8 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                 mWvShareWeb.setDrawingCacheEnabled(true);
                                 bmp = Bitmap.createBitmap(mWvShareWeb.getDrawingCache());
                                 mWvShareWeb.setDrawingCacheEnabled(false);
+                            } else {
+                                mRlAvatar.setVisibility(View.GONE);
                             }
 
                         String base64 = "nothing";
@@ -529,9 +826,15 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
 
                     } else {
+                        //隐藏遮罩层
+//                        mRlMaster.setVisibility(View.GONE);
+
                         //退出画板界面
                         fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
                         fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
+                        if (shareType == 0) {
+                            mRlAvatar.setVisibility(View.VISIBLE);
+                        }
                         mLlWebviewCanvas.setVisibility(View.GONE);
                         mRlActionbar.setVisibility(View.VISIBLE);
                         mLlActionGroup.setVisibility(View.VISIBLE);
@@ -562,6 +865,10 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 public void onClick(View view) {
                     //如果进入画板
                     if (!isDrawing) {
+                        if (!isDrawable) {
+                            //显示 遮罩层
+//                            mRlMaster.setVisibility(View.VISIBLE);
+                        }
                         /**
                          * 设置悬浮按钮的活动范围
                          */
@@ -585,6 +892,8 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
 
                     } else {
+                        //隐藏遮罩层
+//                        mRlMaster.setVisibility(View.GONE);
                         fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
                         fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
 
@@ -655,10 +964,10 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                         mRlSharePic.setVisibility(View.VISIBLE);//可见
                         pinchImageView.setImageBitmap(ImageUtil.base64ToBitmap(str));
 
-                        showToast(mContext, "主持人正在共享");
+//                        showToast(mContext, "主持人正在共享");
                     } else {
                         mRlSharePic.setVisibility(View.GONE);//不可见
-                        showToast(mContext, "主持人正在使用白板");
+//                        showToast(mContext, "主持人正在使用白板");
                     }
 
                 }
@@ -666,6 +975,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         });
 
     }
+
 
     /**
      * 新加会的与会者请求得到share的图片
@@ -769,9 +1079,9 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                         mRlSharePic.setVisibility(View.VISIBLE);//可见
                         pinchImageView.setImageBitmap(ImageUtil.base64ToBitmap(str));
 
-                        showToast(mContext, "主持人正在共享");
+//                        showToast(mContext, "主持人正在共享");
                     } else {
-                        showToast(mContext, "主持人正在使用白板");
+//                        showToast(mContext, "主持人正在使用白板");
                     }
 
                 }
@@ -899,6 +1209,10 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 .getInt(post_meeting_check_in_type);
         meeting_url = getIntent().getExtras()
                 .getLong(post_meeting_url);
+        isDrawable = getIntent().getExtras()
+                .getBoolean(post_meeting_is_drawable);
+        isTalkable = getIntent().getExtras()
+                .getBoolean(post_meeting_is_talkable);
 
         //设置会议号
         String tmp = String.valueOf(meeting_url);
@@ -923,6 +1237,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         keyList.add(share_user_email);
         keyList.add(share_family_name);
         keyList.add(share_given_name);
+        keyList.add(share_avatar);
 
 
         if (check_in_type == HOST_CHECK_IN) {//host
@@ -932,6 +1247,9 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
         valueList = SharedPrefUtil.getInstance()
                 .getStringDatas(keyList);
+
+        my_email = valueList.get(1);
+
         if (valueList != null && meeting_url != -1L) {
             String params = "";
             if (check_in_type == HOST_CHECK_IN && meeting_id != -1) {//host
@@ -941,7 +1259,10 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                         post_user_email + "=" + valueList.get(1) + "&" +
                         post_user_family_name + "=" + valueList.get(2) + "&" +
                         post_user_given_name + "=" + valueList.get(3) + "&" +
+                        post_user_avatar + "=" + valueList.get(4) + "&" +
                         post_meeting_id + "=" + meeting_id + "&" +
+                        post_meeting_is_drawable + "=" + isDrawable + "&" +
+                        post_meeting_is_talkable + "=" + isTalkable + "&" +
                         post_meeting_check_in_type + "=" + check_in_type + "&" +
                         post_meeting_url + "=" + meeting_url;
 
@@ -951,6 +1272,9 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                         post_user_email + "=" + valueList.get(1) + "&" +
                         post_user_family_name + "=" + valueList.get(2) + "&" +
                         post_user_given_name + "=" + valueList.get(3) + "&" +
+                        post_user_avatar + "=" + valueList.get(4) + "&" +
+                        post_meeting_is_drawable + "=" + isDrawable + "&" +
+                        post_meeting_is_talkable + "=" + isTalkable + "&" +
                         post_meeting_check_in_type + "=" + check_in_type + "&" +
                         post_meeting_host_email + "=" + meeting_host_email + "&" +
                         post_meeting_url + "=" + meeting_url;
@@ -1305,64 +1629,6 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            /**
-             * page 0 参与者
-             */
-            case R.id.btn_meeting_members:
-                //打开参与者页面
-                showToast(mContext, "打开参与者页面");
-                break;
-            /**
-             * page 1 选择共享类型
-             */
-            case R.id.btn_meeting_share:
-                if (shareType == 0) {
-                    //弹出选择框
-                    requestPermission();
-
-                } else {
-                    //退出共享
-                    mRlSharePic.setVisibility(View.GONE);
-                    mRlShareWeb.setVisibility(View.GONE);
-                    shareType = 0;
-                    mRlAvatar.setVisibility(View.VISIBLE);
-                    changeToUnSelected(mBtnShare, 1, "共享");
-
-                    //通知加会者:主持人关闭了共享
-                    mWvCanvas.loadUrl("javascript:cancleSyncPic()");
-
-                }
-                break;
-            /**
-             * page 2 锁定会议
-             */
-            case R.id.btn_meeting_lock:
-                if (!isLock) {
-                    //发送http锁定会议
-                    lockMeetingDBOper(0);
-
-                } else {
-                    //发送http 解锁
-                    lockMeetingDBOper(1);
-
-
-                }
-
-                break;
-            /**
-             * 离会
-             */
-            case R.id.btn_meeting_leave:
-                leaveMeetingAction();
-                break;
-        }
-
-    }
-
-
-    @Override
     protected void onResume() {
         super.onResume();
         //常亮锁
@@ -1395,13 +1661,186 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                     // 监控返回键
                     leaveMeetingAction();
                 }
-            } else {
-                // 监控返回键
-                leaveMeetingAction();
-            }
+            } else
+                if (mRlMember.getVisibility() == View.VISIBLE) {
+                    recycleMember();
+                } else {
+                    // 监控返回键
+                    leaveMeetingAction();
+                }
             return false;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+
+    /**
+     * adapter 的callback: 修改与会者的权限
+     *
+     * @param v
+     */
+    @Override
+    public void click(View v) {
+        int position = (Integer) v.getTag();
+
+        if (check_in_type == 2) {
+            //获取当前状态
+            MeetingMemberInfo member = memberInfoList.get(position);
+            String client_email = member.getClient_email();
+            boolean client_is_drawable, client_is_talkable;
+            client_is_drawable = member.isClient_is_drawable();
+            client_is_talkable = member.isClient_is_talkable();
+
+            if (v.getId() == R.id.img_item_member_draw) {
+                if (client_is_drawable) {
+                    client_is_drawable = false;
+                    //修改状态
+                    member.setClient_is_drawable(false);
+                    //刷新联系人列表
+                    adapter.setIsDrawable(position, false);
+                    //修改UI
+                    ImageUtil.load(mContext, R.drawable.ic_undraw, R.drawable.ic_undraw,
+                            (ImageView) v);
+                    if (client_email.equals(my_email)) {
+                        isDrawable = false;
+                        if (!isDrawing) {
+//                            mRlMaster.setVisibility(View.VISIBLE);
+                        }
+                        showToast(mContext, getString(R.string.forbid_draw));
+                    } else {
+                        //js 通知当事人
+                        String call = "javascript:alterUserPermission('" + client_email + "','" +
+                                false + "','" + null
+                                + "')";
+                        //调用js函数
+                        mWvCanvas.loadUrl(call);
+                    }
+
+
+                } else {
+                    client_is_drawable = true;
+                    //修改状态
+                    member.setClient_is_drawable(true);
+                    //刷新联系人列表
+                    adapter.setIsDrawable(position, true);
+                    //修改UI
+                    ImageUtil.load(mContext, R.drawable.ic_draw, R.drawable.ic_draw,
+                            (ImageView) v);
+                    if (client_email.equals(my_email)) {
+                        isDrawable = true;
+//                        mRlMaster.setVisibility(View.GONE);
+                        showToast(mContext, getString(R.string.allow_draw));
+                    } else {
+                        //js 通知当事人
+                        String call = "javascript:alterUserPermission('" + client_email + "','" +
+                                true + "','" + null
+                                + "')";
+                        //调用js函数
+                        mWvCanvas.loadUrl(call);
+                    }
+
+                }
+
+
+            } else
+                if (v.getId() == R.id.img_item_member_talk) {
+                    if (client_is_talkable) {
+                        client_is_talkable = false;
+                        //修改状态
+                        member.setClient_is_drawable(false);
+                        //刷新联系人列表
+                        adapter.setIsTalkable(position, false);
+                        // 修改UI
+                        ImageUtil.load(mContext, R.drawable.ic_muting, R.drawable.ic_muting,
+                                (ImageView) v);
+
+                        if (client_email.equals(my_email)) {
+                            isTalkable = false;
+                            showToast(mContext, getString(R.string.forbid_talk));
+                        } else {
+                            //js 通知当事人
+                            String call =
+                                    "javascript:alterUserPermission('" + client_email + "','" +
+                                            null + "','" + false
+                                            + "')";
+                            //调用js函数
+                            mWvCanvas.loadUrl(call);
+                        }
+
+
+                    } else {
+                        client_is_talkable = true;
+                        //修改状态
+                        member.setClient_is_drawable(true);
+                        //刷新联系人列表
+                        adapter.setIsTalkable(position, true);
+                        // 修改UI
+                        ImageUtil.load(mContext, R.drawable.ic_unmutinging,
+                                R.drawable.ic_unmutinging,
+                                (ImageView) v);
+
+                        if (client_email.equals(my_email)) {
+                            isTalkable = true;
+                            showToast(mContext, getString(R.string.allow_talk));
+                        } else {
+                            //js 通知当事人
+                            String call =
+                                    "javascript:alterUserPermission('" + client_email + "','" +
+                                            null + "','" + true
+                                            + "')";
+                            //调用js函数
+                            mWvCanvas.loadUrl(call);
+                        }
+
+                    }
+                }
+
+
+        }
+
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+        if (check_in_type == 2) {
+
+            String client_email = memberInfoList.get(i)
+                    .getClient_email();
+            if (!my_email.equals(client_email)) {
+                //弹出框
+                showToast(mContext, "踢人");
+                //调用js 踢人
+                //js 通知当事人
+                String call =
+                        "javascript:kickout('" + client_email + "')";
+                //调用js函数
+                mWvCanvas.loadUrl(call);
+            }
+
+        }
+
+    }
+
+    /**
+     * 接受踢人信号
+     */
+    @android.webkit.JavascriptInterface
+    public void kickout() {
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              showToast(mContext, getString(R.string.you_kick_out));
+                              //关闭页面
+                              finish();
+
+                          }
+
+                      }
+
+        );
+
     }
 
 

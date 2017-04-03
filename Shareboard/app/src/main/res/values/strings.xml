@@ -173,4 +173,17 @@
     <string name="leaving">离会...</string>
     <string name="lock_success">锁定成功</string>
     <string name="unlock_success">解锁成功</string>
+    <string name="talk">聊天</string>
+    <string name="invite">邀请</string>
+    <string name="current_members">参与者(%1$s)</string>
+    <string name="me_host">(我,主持人)</string>
+    <string name="forbid_talk">你被禁止讲话</string>
+    <string name="allow_talk">你被允许讲话</string>
+    <string name="allow_draw">你被允许使用画板</string>
+    <string name="forbid_draw">你被禁止使用画板</string>
+    <string name="host_allow_draw">主持人允许你使用画板</string>
+    <string name="host_forbid_draw">主持人禁止你使用画板</string>
+    <string name="host_allow_talk">主持人允许你讲话</string>
+    <string name="host_forbid_talk">主持人禁止你讲话</string>
+    <string name="you_kick_out">你被主持人提出</string>
 </resources>

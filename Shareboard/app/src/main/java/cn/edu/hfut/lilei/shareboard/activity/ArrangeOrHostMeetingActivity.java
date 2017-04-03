@@ -88,7 +88,7 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void init() {
         mContext = this;
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
@@ -176,12 +176,12 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                             return -2;
                         }
                         ArrayList<String> keyList2 = new ArrayList<>();
-                        ArrayList<Integer> valueList2 = new ArrayList<>();
+
                         keyList2.add(share_meeting_is_talkable);
                         keyList2.add(share_meeting_is_drawable);
 //                        keyList2.add(share_meeting_is_add_to_calendar);
 
-                        valueList2 = SharedPrefUtil.getInstance()
+                        final ArrayList<Integer> valueList2 = SharedPrefUtil.getInstance()
                                 .getIntegerDatas(keyList2);
 
                         if (valueList2 == null) {
@@ -213,8 +213,8 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                 .params(post_user_email, valueList.get(1))
                                 .params(post_meeting_password, StringUtil.getMD5(valueList.get(2)))
                                 .params(post_meeting_theme, mtheme)
-                                .params(post_meeting_is_talkable, valueList2.get(0))
                                 .params(post_meeting_is_drawable, valueList2.get(1))
+                                .params(post_meeting_is_talkable, valueList2.get(0))
                                 .params(post_meeting_is_add_to_calendar, 0)//立即召开会议,不要添加日历提醒
                                 .params(post_meeting_start_time, DateTimeUtil.millisNow())
                                 .params(post_meeting_end_time, DateTimeUtil.millisSecondInHours(1))
@@ -241,6 +241,10 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                                              .getMeeting_id());
                                                      b.putLong(post_meeting_url, o.getData()
                                                              .getMeeting_url());
+                                                     b.putBoolean(post_meeting_is_drawable,
+                                                             valueList2.get(1) == 1);
+                                                     b.putBoolean(post_meeting_is_talkable,
+                                                             valueList2.get(0) == 1);
                                                      intent.putExtras(b);
                                                      startActivity(intent);
 

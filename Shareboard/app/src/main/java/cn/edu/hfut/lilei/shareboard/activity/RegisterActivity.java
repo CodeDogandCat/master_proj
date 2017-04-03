@@ -64,8 +64,6 @@ public class RegisterActivity extends SwipeBackActivity {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
-                SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override

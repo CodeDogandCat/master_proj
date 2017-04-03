@@ -15,6 +15,9 @@ if (
     isset($_REQUEST[post_meeting_url]) &&
     isset($_REQUEST[post_user_family_name]) &&
     isset($_REQUEST[post_meeting_check_in_type]) &&
+    isset($_REQUEST[post_user_avatar]) &&
+    isset($_REQUEST[post_meeting_is_drawable]) &&
+    isset($_REQUEST[post_meeting_is_talkable]) &&
     isset($_REQUEST[post_user_given_name])
 
 ) {
@@ -83,8 +86,21 @@ if (
             var select_client_id = 'all';
             var myid = '';
             var unsubscribeofchange;
-            var host_email, check_in_type;
-            var init_times = 0;
+            var host_email, check_in_type, user_avatar, isDrawable, isTalkable;
+
+            isDrawable = <?php echo $_REQUEST[post_meeting_is_drawable]?>;
+            check_in_type = <?php echo $_REQUEST[post_meeting_check_in_type]?>;
+
+            if (check_in_type == 1) {
+                if (isDrawable) {
+                    initCanvasDrawable();
+                } else {
+                    initCanvasNotDrawable();
+                }
+            } else if (check_in_type == 2) {
+                initCanvasDrawable();
+            }
+
 
             /**
              * 连接服务端
@@ -129,13 +145,31 @@ if (
              * 连接建立时发送登录信息
              */
             function onopen() {
+
+                email = '<?php echo $_REQUEST[post_user_email];?>';
                 familyName = '<?php echo $_REQUEST[post_user_family_name]; ?>';
                 givenName = '<?php echo $_REQUEST[post_user_given_name];?>';
-                email = '<?php echo $_REQUEST[post_user_email];?>';
-                name = email + "-" + familyName + " " + givenName;
+                name = familyName + " " + givenName;
                 roomid = '<?php echo $_REQUEST[post_meeting_url];?>';
+                user_avatar = '<?php echo $_REQUEST[post_user_avatar];?>';
+                check_in_type = <?php echo $_REQUEST[post_meeting_check_in_type]?>;
+                isDrawable = <?php echo $_REQUEST[post_meeting_is_drawable]?>;
+                isTalkable = <?php echo $_REQUEST[post_meeting_is_talkable]?>;
+
+
                 // 登录
-                var login_data = '{"type":"login","client_name":"' + name.replace(/"/g, '\\"') + '","client_email":"' + email + '","room_id":"' + roomid + '"}';
+                var login_data = '{"type":"login","client_family_name":"' +
+                    familyName.replace(/"/g, '\\"') +
+                    '","client_given_name":"' + givenName.replace(/"/g, '\\"') +
+                    '","client_email":"' + email +
+                    '","room_id":"' + roomid +
+                    '","client_avatar":"' + user_avatar +
+                    '","client_is_drawable":' + isDrawable +
+                    ',"client_is_talkable":' + isTalkable +
+                    ',"client_type":"' + check_in_type +
+                    '"}';
+
+
                 console.log("websocket握手成功，发送登录数据:" + login_data);
                 ws.send(login_data);
 
@@ -173,19 +207,29 @@ if (
                      */
                     case 'login':
                         //{"type":"login","client_id":xxx,"client_name":"xxx","client_list":"[...]","time":"xxx"}
-//                say(data['client_id'], data['client_name'],  data['client_name']+' 加入了聊天室', data['time']);
-//                        if (data['client_list']) {
-//                            client_list = data['client_list'];
-//                        }
-//                        else {
-//                            client_list[data['client_id']] = data['client_name'];
-//                        }
-//                        flush_client_list();
                         console.log(data['client_name'] + "登录成功");
-                        if (check_in_type == 1 && init_times == 0) {
-                            init_times = 1;
-                            getInitCanvasData();
+                        if (data['client_email']) {
+                            if (check_in_type == 1 && email == data['client_email']) {
+                                getInitCanvasData();
+                            } else {
+                                if (email != data['client_email']) {
+                                    //接收新登录的其他人,增加这个参与者到自己的 Native 参与者 list
+                                    window.board.addMember(e.data);
+                                }
+
+                            }
                         }
+                        break;
+                    /**
+                     * 同步所有参与者列表 到自己
+                     */
+                    case 'all_members':
+                        if (data['client_list']) {
+                            client_list = data['client_list'];
+                            window.board.addMembers(e.data);
+
+                        }
+
                         break;
                     /**
                      * 接受到数据
@@ -259,8 +303,9 @@ if (
                     //加会者离会
                     case 'leaveMeeting':
                         if (data['from_client_email'] != email) {
+                            //通知别人
                             //通知native
-                            window.board.memberLeave(data['content']);
+                            window.board.memberLeave(data['from_client_email'], data['content']);
                         }
                         break;
                     //主持人离会
@@ -271,9 +316,56 @@ if (
 
                         }
                         break;
+                    //转发主持人修改的会议权限
+                    case 'alter_permission':
+                        if (data['from_client_email'] != email) {
+                            //通知native
+                            if (data['is_drawable'] == "false") {
+                                //重新加载 画板
+                                initCanvasNotDrawable();
+                                //重新向主持人请求  画板数据
+                                getInitCanvasData();
+
+                            } else {
+                                initCanvasDrawable();
+                                //重新向主持人请求  画板数据
+                                getInitCanvasData();
+
+                            }
+                            window.board.alterPermission(data['is_drawable'], data['is_talkable']);
+
+                        }
+                        break;
+                    //主持人踢人 =>当事人
+                    case 'kickout':
+                        if (data['from_client_email'] != email) {
+                            //通知native
+                            window.board.kickout();
+
+                            //通知其他人 当事人被踢 离会
+                            syncLeaveMeeting(name);
+                            ws.close();
+
+                        }
+                        break;
 
                 }
             }
+
+            /**
+             * native 主持人 踢人
+             * native来调用
+             */
+            function kickout(to_email) {
+                if (check_in_type == 2) {
+                    var sync_data = '{"type":"kickout","from_client_email":"' + email + '","to_client_email":"' + to_email + '","content":"kickout"}';
+                    console.log("主持人踢人");
+                    ws.send(sync_data);
+                }
+
+
+            }
+
             /**
              * native 加会者收到主持人 离会消息
              * native来调用
@@ -289,7 +381,7 @@ if (
 
             /**
              *用socket 转发退会消息 给其他人
-             * native来调用
+             *
              */
             function syncLeaveMeeting(name) {
                 if (check_in_type == 1) {
@@ -311,7 +403,23 @@ if (
 
 
             }
+            /**
+             *用socket 转发主持人修改权限的消息
+             * 主持人 native来调用
+             */
+            function alterUserPermission(to_client_email, is_drawable, is_talkable) {
 
+                var sync_data = '{"type":"alter_permission","from_client_email":"' + email
+                    + '","to_client_email":"' + to_client_email
+                    + '","is_drawable":"' + is_drawable
+                    + '","is_talkable":"' + is_talkable + '"}';
+
+
+                console.log("alterUserPermission用socket 转发主持人修改权限的消息");
+                console.log(sync_data);
+
+                ws.send(sync_data);
+            }
 
             /**
              *用socket 转发主持人share图片->新加会的那个人
@@ -437,33 +545,60 @@ if (
                 });
             }
 
-            /*
-             * 初始化画板
-             */
-            $(document).ready(function () {
+            //可以绘画的画板
+            function initCanvasDrawable() {
+                /*
+                 * 初始化画板
+                 */
+                $(document).ready(function () {
 
-                lc = LC.init(document.getElementById("lc"), {
-                    imageURLPrefix: 'images',
-                    toolbarPosition: 'top',
-                    defaultStrokeWidth: 2,
-                    strokeWidths: [2, 4, 8, 10, 15, 20],
-                    tools: [
-                        LC.tools.Pencil,//画笔
-                        LC.tools.Eraser,//橡皮
-                        LC.tools.Line,//直线
-                        LC.tools.Rectangle,//矩形
-                        LC.tools.Ellipse,//椭圆
-                        LC.tools.Polygon,//多边形
-                        LC.tools.Text,//文字
-                        LC.tools.Pan,//缩放
-                        LC.tools.SelectShape//选择移动
+                    lc = LC.init(document.getElementById("lc"), {
+                        imageURLPrefix: 'images',
+                        toolbarPosition: 'top',
+                        defaultStrokeWidth: 2,
+                        strokeWidths: [2, 4, 8, 10, 15, 20],
+                        tools: [
+                            LC.tools.Pencil,//画笔
+                            LC.tools.Eraser,//橡皮
+                            LC.tools.Line,//直线
+                            LC.tools.Rectangle,//矩形
+                            LC.tools.Ellipse,//椭圆
+                            LC.tools.Polygon,//多边形
+                            LC.tools.Text,//文字
+                            LC.tools.Pan,//缩放
+                            LC.tools.SelectShape//选择移动
 
-                    ]
+                        ]
+                    });
+                    listenDrawingChange();
+
+
                 });
-                listenDrawingChange();
+            }
+
+            //不能绘画的画板
+            function initCanvasNotDrawable() {
+                /*
+                 * 初始化画板
+                 */
+                $(document).ready(function () {
+
+                    lc = LC.init(document.getElementById("lc"), {
+                        imageURLPrefix: 'images',
+                        toolbarPosition: 'top',
+                        defaultStrokeWidth: 2,
+                        strokeWidths: [2, 4, 8, 10, 15, 20],
+                        tools: [
+                            LC.tools.Pan,//缩放
+                            LC.tools.SelectShape//选择移动
+
+                        ]
+                    });
+                    listenDrawingChange();
 
 
-            });
+                });
+            }
 
 
         </script>

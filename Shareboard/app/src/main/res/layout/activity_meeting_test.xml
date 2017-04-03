@@ -1,211 +1,298 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rl_meeting_actionbar"
-        style="@style/actionbar"
-        android:layout_alignParentTop="true"
-        android:background="@color/my_black">
-
-        <!--<ImageView-->
-        <!--android:id="@+id/img_meeting_goback"-->
-        <!--style="@style/actionbar_goback"-->
-        <!--/>-->
-
-        <TextView
-            android:id="@+id/tv_meeting_url"
-            style="@style/navbar_title_textview_style"
-            android:text="0000-0000-0000"
-            android:textColor="@color/my_white"
-            />
-
-        <Button
-            android:id="@+id/btn_meeting_leave"
-            style="@style/actionbar_button"
-            android:text="@string/leave"
-            android:textColor="@color/my_red"
-            />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_meeting_action_group"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/my_black"
-        android:gravity="center_horizontal|bottom"
-        android:orientation="horizontal">
-
-
-        <RadioButton
-            android:id="@+id/btn_meeting_members"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/participate"
-            android:textColor="@color/my_white"
-            android:textSize="12sp"/>
-
-
-        <RadioButton
-            android:id="@+id/btn_meeting_share"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/to_share"
-            android:textColor="@color/my_white"
-            android:textSize="12sp"
-            android:visibility="gone"/>
-
-        <RadioButton
-            android:id="@+id/btn_meeting_lock"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/lock_meeting"
-            android:textColor="@color/my_white"
-            android:textSize="12sp"
-            android:visibility="gone"/>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_meeting_stage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/ll_meeting_action_group"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/rl_meeting_actionbar"
-        android:background="@color/my_black"
-        android:gravity="left|top"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/rl_meeting"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
         >
 
-        <FrameLayout
-            android:id="@+id/fl_meeting_stage"
+        <RelativeLayout
+            android:id="@+id/rl_meeting_actionbar"
+            style="@style/actionbar"
+            android:layout_alignParentTop="true"
+            android:background="@color/my_black">
+
+            <TextView
+                android:id="@+id/tv_meeting_url"
+                style="@style/navbar_title_textview_style"
+                android:text="0000-0000-0000"
+                android:textColor="@color/my_white"
+                />
+
+            <Button
+                android:id="@+id/btn_meeting_leave"
+                style="@style/actionbar_button"
+                android:text="@string/leave"
+                android:textColor="@color/my_red"
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_meeting_action_group"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/my_black"
+            android:gravity="center_horizontal|bottom"
+            android:orientation="horizontal">
+
+
+            <RadioButton
+                android:id="@+id/btn_meeting_members"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/participate"
+                android:textColor="@color/my_white"
+                android:textSize="12sp"/>
+
+
+            <RadioButton
+                android:id="@+id/btn_meeting_share"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/to_share"
+                android:textColor="@color/my_white"
+                android:textSize="12sp"
+                android:visibility="gone"/>
+
+            <RadioButton
+                android:id="@+id/btn_meeting_lock"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/lock_meeting"
+                android:textColor="@color/my_white"
+                android:textSize="12sp"
+                android:visibility="gone"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_meeting_stage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/ll_meeting_action_group"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/rl_meeting_actionbar"
+            android:background="@color/my_black"
             android:gravity="left|top"
             >
 
-            <RelativeLayout
-                android:id="@+id/rl_meeting_avatar"
-                android:layout_width="285dp"
-                android:layout_height="506dp"
-                android:layout_gravity="center"
-                android:visibility="visible"
-
-                >
-
-                <cn.carbs.android.avatarimageview.library.AvatarImageView
-                    android:id="@+id/img_meeting_avatar"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    app:aiv_BoarderWidth="0dp"
-                    app:aiv_ShowBoarder="false"
-                    app:aiv_TextSizeRatio="0.4"/>
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/rl_share_pic"
-                android:layout_width="285dp"
-                android:layout_height="506dp"
-                android:layout_gravity="left|top"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:gravity="left|top"
-                android:visibility="gone"
-
-                >
-
-                <cn.edu.hfut.lilei.shareboard.view.imageview.PinchImageView
-                    android:id="@+id/share_pic"
-                    android:layout_width="285dp"
-                    android:layout_height="506dp"
-                    android:background="@color/my_white"
-                    />
-
-                <!--<cn.edu.hfut.lilei.shareboard.view.imageview.PinchImageView-->
-                <!--android:id="@+id/share_pic2"-->
-                <!--android:layout_width="100dp"-->
-                <!--android:layout_height="200dp"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--/>-->
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_share_web"
-                android:layout_width="285dp"
-                android:layout_height="506dp"
-                android:layout_gravity="left|top"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:gravity="left|top"
-                android:visibility="gone"
-
-                >
-
-                <WebView
-                    android:id="@+id/share_web"
-                    android:layout_width="285dp"
-                    android:layout_height="506dp"
-                    />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_meeting_canvas"
+            <FrameLayout
+                android:id="@+id/fl_meeting_stage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:gravity="left|top"
+                >
 
-                <WebView
-                    android:id="@+id/wv_meeting_canvas"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                <RelativeLayout
+                    android:id="@+id/rl_meeting_avatar"
+                    android:layout_width="285dp"
+                    android:layout_height="506dp"
+                    android:layout_gravity="center"
+                    android:visibility="visible"
+
+                    >
+
+                    <cn.carbs.android.avatarimageview.library.AvatarImageView
+                        android:id="@+id/img_meeting_avatar"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        app:aiv_BoarderWidth="0dp"
+                        app:aiv_ShowBoarder="false"
+                        app:aiv_TextSizeRatio="0.4"/>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/rl_share_pic"
+                    android:layout_width="285dp"
+                    android:layout_height="506dp"
+                    android:layout_gravity="left|top"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:gravity="left|top"
+                    android:visibility="gone"
+
+                    >
+
+                    <cn.edu.hfut.lilei.shareboard.view.imageview.PinchImageView
+                        android:id="@+id/share_pic"
+                        android:layout_width="285dp"
+                        android:layout_height="506dp"
+                        android:background="@color/my_white"
+                        />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_share_web"
+                    android:layout_width="285dp"
+                    android:layout_height="506dp"
+                    android:layout_gravity="left|top"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:gravity="left|top"
+                    android:visibility="gone"
+
+                    >
+
+                    <WebView
+                        android:id="@+id/share_web"
+                        android:layout_width="285dp"
+                        android:layout_height="506dp"
+                        />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_meeting_canvas"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <WebView
+                        android:id="@+id/wv_meeting_canvas"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        />
+
+                </LinearLayout>
+
+                <!--<RelativeLayout-->
+                    <!--android:id="@+id/rl_master"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@color/my_transparent"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:visibility="gone">-->
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:background="@color/my_transparent"-->
+                        <!--android:src="@drawable/camera"-->
+                        <!--/>-->
+                <!--</RelativeLayout>-->
+
+
+                <cn.edu.hfut.lilei.shareboard.view.DragFloatActionButton
+                    android:id="@+id/fab_meeting_start_draw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:src="@drawable/ic_default_draw"
+                    app:backgroundTint="@color/my_transparent"
+                    app:backgroundTintMode="screen"
+                    app:borderWidth="1dp"
+                    app:elevation="12dp"
+                    app:fabSize="normal"
+                    app:layout_anchor="@id/ll_meeting_stage"
+                    app:layout_anchorGravity="right|center_vertical"
+                    app:pressedTranslationZ="5dp"
+                    app:rippleColor="@color/my_black"
                     />
 
-            </LinearLayout>
-
-            <cn.edu.hfut.lilei.shareboard.view.DragFloatActionButton
-                android:id="@+id/fab_meeting_start_draw"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:src="@drawable/ic_default_draw"
-                app:backgroundTint="@color/my_transparent"
-                app:backgroundTintMode="screen"
-                app:borderWidth="1dp"
-                app:elevation="12dp"
-                app:fabSize="normal"
-                app:layout_anchor="@id/ll_meeting_stage"
-                app:layout_anchorGravity="right|center_vertical"
-                app:pressedTranslationZ="5dp"
-                app:rippleColor="@color/my_black"
-                />
-
-        </FrameLayout>
-    </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
 
 
-</RelativeLayout>
+    </RelativeLayout>
 
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/rl_member"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+        >
+
+        <RelativeLayout
+            android:id="@+id/rl_member_top_bar"
+            style="@style/actionbar"
+            android:layout_alignParentTop="true">
+
+            <ImageView
+                android:id="@+id/img_member_goback"
+                style="@style/actionbar_goback"/>
+
+            <TextView
+                android:id="@+id/tv_member_title"
+                style="@style/navbar_title_textview_style"
+                android:text="@string/current_members"/>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_member_bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:background="@color/my_transparent"
+            >
+
+            <Button
+                android:id="@+id/btn_member_chat"
+                style="@style/BigButtonBlack"
+                android:layout_width="80dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="50dp"
+                android:text="@string/talk"
+                android:textSize="14sp"/>
+
+            <Button
+                android:id="@+id/btn_member_invite"
+                style="@style/BigButtonBlack"
+                android:layout_width="80dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="50dp"
+                android:text="@string/invite"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+
+
+        <ListView
+            android:id="@+id/lv_meeting_member"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/rl_member_bottom_bar"
+            android:layout_below="@id/rl_member_top_bar"
+            android:background="@color/my_transparent"
+            android:cacheColorHint="@color/my_transparent"
+            android:scrollbarSize="3dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbarThumbVertical="@drawable/scrollbar_vertical_thumb"
+            android:scrollbars="vertical">
+
+        </ListView>
+
+
+    </RelativeLayout>
+</FrameLayout>

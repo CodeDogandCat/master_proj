@@ -95,6 +95,7 @@ class MeetingOp
         return true;//更新成功
 
     }
+
     /**
      * 锁定会议
      * @return bool
@@ -113,6 +114,7 @@ class MeetingOp
         return true;//成功
 
     }
+
     /**
      * 解锁会议
      * @return bool
@@ -219,7 +221,7 @@ class MeetingOp
     public function getMeetingInfoByUrl()
     {
         if (($meeting_url = $this->meeting->getUrl()) != null) {
-            $sql = 'SELECT meeting_status,meeting_password,meeting_id,meeting_host_user_id FROM bd_meeting WHERE meeting_url =?';
+            $sql = 'SELECT meeting_status,meeting_password,meeting_id,meeting_host_user_id,meeting_is_drawable,meeting_is_talkable FROM bd_meeting WHERE meeting_url =?';
             $arr = array();
             $arr[0] = $meeting_url;
             $rows = $this->db->select($sql, $arr);
@@ -473,6 +475,8 @@ class MeetingOp
                     $password = $result_arr['meeting_password'];
                     $meeting_id = $result_arr['meeting_id'];
                     $host_id = $result_arr['meeting_host_user_id'];
+                    $is_drawable = $result_arr['meeting_is_drawable'];
+                    $is_talkable = $result_arr['meeting_is_talkable'];
                     /**
                      * 获取主持人的email
                      */
@@ -483,7 +487,7 @@ class MeetingOp
                         return false;
                     }
                     $data = array(
-                        "user_and_meeting_id" => -1, "result_desc" => "ok",
+                        "user_and_meeting_id" => -1, "result_desc" => "ok", "meeting_is_drawable" => $is_drawable, "meeting_is_talkable" => $is_talkable
                     );
 
                     /**

@@ -85,6 +85,9 @@ define("DELETE_MEETING_ERROR", 4018);//删除会议失败
 define("GET_PAGES_ERROR", 4019);//获取页数失败
 define("GET_MEETING_LIST_ERROR", 4020);//获取会议列表失败
 define("BINDING_ERROR", 4021);//绑定失败
+define("LOCK_MEETING_ERROR", 4022);//锁定会议失败
+define("UNLOCK_MEETING_ERROR", 4023);//解锁会议失败
+define("GET_MEETING_MEMBERS_ERROR", 4024);//获取参与者失败
 
 /**
  * 数据库连接信息

@@ -238,7 +238,7 @@ if (isset($_REQUEST[post_need_feature])) {
                     printResult(SUCCESS, '锁定会议成功', -1);
 
                 } else {
-                    printResult(DELETE_MEETING_ERROR, '锁定会议失败', -1);
+                    printResult(LOCK_MEETING_ERROR, '锁定会议失败', -1);
                 }
             } else {
                 printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
@@ -258,12 +258,31 @@ if (isset($_REQUEST[post_need_feature])) {
                     printResult(SUCCESS, '解锁会议成功', -1);
 
                 } else {
-                    printResult(DELETE_MEETING_ERROR, '解锁会议失败', -1);
+                    printResult(UNLOCK_MEETING_ERROR, '解锁会议失败', -1);
                 }
             } else {
                 printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
             }
             break;
+//        case 'get_members':
+//            if (isset($_REQUEST[post_meeting_id]) &&
+//                isset($_REQUEST[post_user_email])
+//            ) {
+//                $user = new User($_REQUEST[post_user_email]);
+//                $meeting = new Meeting(null, null, null, null, null, null, null, null, null);
+//                $meeting->setId($_REQUEST[post_meeting_id]);
+//                $meetingOp = new MeetingOp($user, $meeting);
+//                if (($members = $meetingOp->unlockMeeting()) != false) {
+//
+//                    printResult(SUCCESS, '获取参与者成功', $result_arr);
+//
+//                } else {
+//                    printResult(GET_MEETING_MEMBERS_ERROR, '获取参与者失败', -1);
+//                }
+//            } else {
+//                printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
+//            }
+//            break;
 
 
         default:

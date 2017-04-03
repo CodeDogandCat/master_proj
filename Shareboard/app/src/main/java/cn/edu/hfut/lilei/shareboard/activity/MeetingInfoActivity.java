@@ -49,6 +49,8 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_ENTER_MEETING;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_HOST_MEETING;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_in_type;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_id;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_drawable;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_talkable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
@@ -125,7 +127,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
      */
     private void init() {
         mContext = this;
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         //右滑返回
@@ -512,6 +514,8 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                              b.putInt(post_meeting_check_in_type, HOST_CHECK_IN);
                                              b.putInt(post_meeting_id, meeting_id);
                                              b.putLong(post_meeting_url, meeting_url);
+                                             b.putBoolean(post_meeting_is_drawable, isDrawable);
+                                             b.putBoolean(post_meeting_is_talkable, isTalkable);
                                              intent.putExtras(b);
                                              startActivity(intent);
 

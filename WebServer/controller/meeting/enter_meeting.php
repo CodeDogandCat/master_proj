@@ -76,7 +76,7 @@ try {
                         Session::set(SESSION_EMAIL, $_REQUEST[post_user_email], 2592000);//30天过期
                         if (($host_email = Session::get(SESSION_HOST_EMAIL)) != false) {
                             //返回 主持人邮箱
-                            printResult(SUCCESS, $host_email, -1);
+                            printResult(SUCCESS, $host_email, $result_arr["meeting_is_drawable"] * 10 + $result_arr["meeting_is_talkable"]);
                         } else {
                             printResult(ADD_MEETING_ERROR, '加会失败', -1);
                         }

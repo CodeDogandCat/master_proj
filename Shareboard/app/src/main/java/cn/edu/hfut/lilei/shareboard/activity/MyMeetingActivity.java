@@ -95,8 +95,6 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
         }
         //右滑返回
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setShadow(getResources().getDrawable(R.drawable.shadow),
-                SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override

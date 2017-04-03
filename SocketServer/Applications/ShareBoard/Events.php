@@ -48,31 +48,50 @@ class Events
                     throw new \Exception("\$message_data['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']} \$message:$message");
                 }
 
+
                 // 把房间号昵称放到session中
                 $room_id = $message_data['room_id'];
                 $client_email = $message_data['client_email'];
-                $client_name = htmlspecialchars($message_data['client_name']);
+                $client_family_name = htmlspecialchars($message_data['client_family_name']);
+                $client_given_name = htmlspecialchars($message_data['client_given_name']);
+                $client_avatar = $message_data['client_avatar'];
+                $client_type = $message_data['client_type'];
+                $client_is_drawable = $message_data['client_is_drawable'];
+                $client_is_talkable = $message_data['client_is_talkable'];
+
                 $_SESSION['room_id'] = $room_id;
-                $_SESSION['client_name'] = $client_name;
+                $_SESSION['client_family_name'] = $client_family_name;
+                $_SESSION['client_given_name'] = $client_given_name;
                 $_SESSION['client_email'] = $client_email;
+                $_SESSION['client_avatar'] = $client_avatar;
+                $_SESSION['client_type'] = $client_type;
+                $_SESSION['client_is_drawable'] = $client_is_drawable;
+                $_SESSION['client_is_talkable'] = $client_is_talkable;
+
+
+                //绑定clientid 和会议室
+                Gateway::joinGroup($client_id, $room_id);
                 //绑定clientid 和 client_email
                 Gateway::bindUid($client_id, $client_email);
+                // 转播给当前房间的所有客户端，xx 进会 ,其他人的参与者列表增加一个
+                Gateway::sendToGroup($room_id, $message);
 
-                // 获取房间内所有用户列表
+
+                // 获取房间内之前所有用户列表
                 $clients_list = Gateway::getClientSessionsByGroup($room_id);
+                $members_list = array();
+
                 foreach ($clients_list as $tmp_client_id => $item) {
-                    $clients_list[$tmp_client_id] = $item['client_name'];
+                    array_push($members_list, $item);
                 }
-                $clients_list[$client_id] = $client_name;
+//                echo '所有session1';
+//                var_dump($members_list);
+//                echo '所有session2';
 
-                // 转播给当前房间的所有客户端，xx进入聊天室 message {type:login, client_id:xx, name:xx}
-                $new_message2 = array('type' => 'login', 'client_id' => $client_id, 'client_name' => htmlspecialchars($client_name), 'time' => date('Y-m-d H:i:s'));
-                Gateway::sendToGroup($room_id, json_encode($new_message2));
-                Gateway::joinGroup($client_id, $room_id);
+                // 同步全部参与者列表到  自己
+                $member_info = array('type' => 'all_members', 'client_email' => $client_email, 'client_list' => $members_list);
+                Gateway::sendToCurrentClient(json_encode($member_info));
 
-                // 给当前用户发送用户列表
-                $new_message2['client_list'] = $clients_list;
-                Gateway::sendToCurrentClient(json_encode($new_message2));
 
                 return;
 
@@ -83,12 +102,8 @@ class Events
                 if (!isset($_SESSION['room_id'])) {
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
                 }
-                // 非法请求
-                if (!isset($_SESSION['client_name'])) {
-                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
-                }
                 $room_id = $_SESSION['room_id'];
-                $client_name = $_SESSION['client_name'];
+                $client_name = $_SESSION['client_family_name'] . $_SESSION['client_given_name'];
 
 //                // 私聊
 //                if($message_data['to_client_id'] != 'all')
@@ -123,10 +138,6 @@ class Events
                 if (!isset($_SESSION['room_id'])) {
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
                 }
-                // 非法请求
-                if (!isset($_SESSION['client_name'])) {
-                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
-                }
                 $room_id = $_SESSION['room_id'];
                 return Gateway::sendToGroup($room_id, $message);
             //主持人取消分享数据
@@ -136,10 +147,6 @@ class Events
                 if (!isset($_SESSION['room_id'])) {
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
                 }
-                // 非法请求
-                if (!isset($_SESSION['client_name'])) {
-                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
-                }
                 $room_id = $_SESSION['room_id'];
                 return Gateway::sendToGroup($room_id, $message);
             //加会者初次请求主持人的初始化白板数据->发给主持人
@@ -148,10 +155,6 @@ class Events
                 // 非法请求
                 if (!isset($_SESSION['room_id'])) {
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
-                }
-                // 非法请求
-                if (!isset($_SESSION['client_name'])) {
-                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
                 }
                 Gateway::sendToUid($message_data['to_client_email'], $message);
                 echo "ccccccccccccccccccccccccccccccc1";
@@ -163,10 +166,6 @@ class Events
                 if (!isset($_SESSION['room_id'])) {
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
                 }
-                // 非法请求
-                if (!isset($_SESSION['client_name'])) {
-                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
-                }
                 Gateway::sendToUid($message_data['to_client_email'], $message);
                 echo "ccccccccccccccccccccccccccccccc2";
                 break;
@@ -176,10 +175,6 @@ class Events
                 // 非法请求
                 if (!isset($_SESSION['room_id'])) {
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
-                }
-                // 非法请求
-                if (!isset($_SESSION['client_name'])) {
-                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
                 }
                 Gateway::sendToUid($message_data['to_client_email'], $message);
                 echo "@@@@@@@@@@@@@@@@@@@@@1" . $message_data['to_client_email'];
@@ -191,10 +186,6 @@ class Events
                 if (!isset($_SESSION['room_id'])) {
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
                 }
-                // 非法请求
-                if (!isset($_SESSION['client_name'])) {
-                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
-                }
                 Gateway::sendToUid($message_data['to_client_email'], $message);
                 echo "@@@@@@@@@@@@@@@@@@@@@2" . $message_data['to_client_email'];
                 break;
@@ -204,10 +195,6 @@ class Events
                 // 非法请求
                 if (!isset($_SESSION['room_id'])) {
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
-                }
-                // 非法请求
-                if (!isset($_SESSION['client_name'])) {
-                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
                 }
                 $room_id = $_SESSION['room_id'];
                 return Gateway::sendToGroup($room_id, $message);
@@ -219,12 +206,26 @@ class Events
                 if (!isset($_SESSION['room_id'])) {
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
                 }
-                // 非法请求
-                if (!isset($_SESSION['client_name'])) {
-                    throw new \Exception("\$_SESSION['client_name'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
-                }
                 $room_id = $_SESSION['room_id'];
                 return Gateway::sendToGroup($room_id, $message);
+                break;
+            //主持人修改权限
+            case 'alter_permission':
+                echo "alterUserPermission用socket 转发主持人修改权限的消息\n";
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                Gateway::sendToUid($message_data['to_client_email'], $message);
+                break;
+            //主持人 踢人
+            case 'kickout':
+                echo "kickout用socket 转发主持人踢人的消息\n";
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                Gateway::sendToUid($message_data['to_client_email'], $message);
                 break;
 
 
@@ -243,7 +244,7 @@ class Events
         // 从房间的客户端列表中删除
         if (isset($_SESSION['room_id'])) {
             $room_id = $_SESSION['room_id'];
-            $new_message = array('type' => 'logout', 'from_client_id' => $client_id, 'from_client_name' => $_SESSION['client_name'], 'time' => date('Y-m-d H:i:s'));
+            $new_message = array('type' => 'logout', 'from_client_id' => $client_id, 'from_client_name' => $_SESSION['client_family_name'] . $_SESSION['client_given_name'], 'time' => date('Y-m-d H:i:s'));
             Gateway::sendToGroup($room_id, json_encode($new_message));
         }
     }
