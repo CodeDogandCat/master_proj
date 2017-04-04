@@ -1,7 +1,7 @@
 package cn.edu.hfut.lilei.shareboard.models;
 
 
-import cn.edu.hfut.lilei.shareboard.data.MeetingMemberInfo;
+import cn.edu.hfut.lilei.shareboard.enity.MeetingMemberInfo;
 
 public class MemberJson {
 

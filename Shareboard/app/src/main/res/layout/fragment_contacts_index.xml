@@ -7,7 +7,7 @@
     android:orientation="vertical"
     >
 
-    <cn.edu.hfut.lilei.shareboard.view.ClearEditText
+    <cn.edu.hfut.lilei.shareboard.widget.ClearEditText
         android:id="@+id/filter_edit"
         android:layout_width="fill_parent"
         android:layout_height="30dp"
@@ -75,7 +75,7 @@
             android:textSize="@dimen/big_tip_size"
             android:visibility="invisible" />
 
-        <cn.edu.hfut.lilei.shareboard.view.SideBar
+        <cn.edu.hfut.lilei.shareboard.widget.SideBar
             android:id="@+id/sidrbar"
             android:layout_width="20dp"
             android:layout_height="fill_parent"

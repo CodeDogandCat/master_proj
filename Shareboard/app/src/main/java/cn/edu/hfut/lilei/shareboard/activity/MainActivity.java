@@ -26,7 +26,7 @@ import cn.edu.hfut.lilei.shareboard.fragment.ContactsFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.MeetingFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.SettingsFragment;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
-import cn.edu.hfut.lilei.shareboard.view.customdialog.AddContactDialog;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.AddContactDialog;
 
 
 public class MainActivity extends FragmentActivity implements

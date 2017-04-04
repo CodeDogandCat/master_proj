@@ -12,7 +12,7 @@ import java.util.List;
 
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.data.GroupMemberInfo;
+import cn.edu.hfut.lilei.shareboard.enity.GroupMemberInfo;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 

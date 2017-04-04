@@ -41,7 +41,7 @@ import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.MemberListAdapter;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.data.MeetingMemberInfo;
+import cn.edu.hfut.lilei.shareboard.enity.MeetingMemberInfo;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.models.CommonJson;
 import cn.edu.hfut.lilei.shareboard.models.MemberJson;
@@ -54,12 +54,12 @@ import cn.edu.hfut.lilei.shareboard.utils.ScreenUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.hugeimageutil.HugeImageRegionLoader;
 import cn.edu.hfut.lilei.shareboard.utils.hugeimageutil.TileDrawable;
-import cn.edu.hfut.lilei.shareboard.view.DragFloatActionButton;
-import cn.edu.hfut.lilei.shareboard.view.customdialog.CommonAlertDialog;
-import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
-import cn.edu.hfut.lilei.shareboard.view.customdialog.ShareChooseDialog;
-import cn.edu.hfut.lilei.shareboard.view.customdialog.UrlInputDialog;
-import cn.edu.hfut.lilei.shareboard.view.imageview.PinchImageView;
+import cn.edu.hfut.lilei.shareboard.widget.DragFloatActionButton;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.CommonAlertDialog;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.ShareChooseDialog;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.UrlInputDialog;
+import cn.edu.hfut.lilei.shareboard.widget.imageview.PinchImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -370,6 +370,11 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
             case R.id.btn_meeting_leave:
                 leaveMeetingAction();
                 break;
+            case R.id.btn_member_chat:
+                //打开聊天界面
+                Intent i = new Intent();
+                i.setClass(mContext, ChatActivity.class);
+                startActivity(i);
         }
 
     }
@@ -1806,17 +1811,38 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
         if (check_in_type == 2) {
 
-            String client_email = memberInfoList.get(i)
+            final String client_email = memberInfoList.get(i)
                     .getClient_email();
+            final String familyName = memberInfoList.get(i)
+                    .getClient_family_name();
+            final String givenName = memberInfoList.get(i)
+                    .getClient_given_name();
+
             if (!my_email.equals(client_email)) {
                 //弹出框
-                showToast(mContext, "踢人");
-                //调用js 踢人
-                //js 通知当事人
-                String call =
-                        "javascript:kickout('" + client_email + "')";
-                //调用js函数
-                mWvCanvas.loadUrl(call);
+                new CommonAlertDialog.Builder(mContext)
+                        .setTitle(getString(R.string.member_manage))
+                        .setMessage("踢出" + familyName + " " + givenName)
+                        .setPositiveButton(
+                                mContext.getString(R.string.yes),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        //调用js 踢人
+                                        //js 通知当事人
+                                        String call =
+                                                "javascript:kickout('" + client_email + "')";
+                                        //调用js函数
+                                        mWvCanvas.loadUrl(call);
+
+                                    }
+                                })
+                        .setNegativeButton(
+                                mContext.getString(R.string.no),
+                                null)
+                        .show();
+
+
             }
 
         }

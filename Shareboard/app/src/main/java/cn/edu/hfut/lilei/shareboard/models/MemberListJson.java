@@ -4,7 +4,7 @@ package cn.edu.hfut.lilei.shareboard.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.hfut.lilei.shareboard.data.MeetingMemberInfo;
+import cn.edu.hfut.lilei.shareboard.enity.MeetingMemberInfo;
 
 public class MemberListJson {
 

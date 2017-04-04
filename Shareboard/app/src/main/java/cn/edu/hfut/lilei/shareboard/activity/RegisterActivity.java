@@ -19,7 +19,7 @@ import cn.edu.hfut.lilei.shareboard.utils.CountDownTimerUtils;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
-import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;

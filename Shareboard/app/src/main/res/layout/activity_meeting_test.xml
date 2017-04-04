@@ -139,7 +139,7 @@
 
                     >
 
-                    <cn.edu.hfut.lilei.shareboard.view.imageview.PinchImageView
+                    <cn.edu.hfut.lilei.shareboard.widget.imageview.PinchImageView
                         android:id="@+id/share_pic"
                         android:layout_width="285dp"
                         android:layout_height="506dp"
@@ -201,7 +201,7 @@
                 <!--</RelativeLayout>-->
 
 
-                <cn.edu.hfut.lilei.shareboard.view.DragFloatActionButton
+                <cn.edu.hfut.lilei.shareboard.widget.DragFloatActionButton
                     android:id="@+id/fab_meeting_start_draw"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

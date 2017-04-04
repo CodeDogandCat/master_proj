@@ -1,17 +1,28 @@
 <resources>
 
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- Application tvMeetingTheme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <style name="text_subhead_black">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_title</item>
+        <item name="android:textSize">@dimen/text_subhead</item>
     </style>
+
+    <style name="text_body">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_sub</item>
+        <item name="android:textSize">@dimen/text_body</item>
+    </style>
+
+
     <!-- Base application tvMeetingTheme. -->
     <style name="FullScreenTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
         <!-- Customize your tvMeetingTheme here. -->
@@ -29,10 +40,10 @@
 
     <!-- 默认Activity跳转动画 -->
     <!--<style name="default_animation" mce_bogus="1" parent="@android:style/Animation.Activity">-->
-        <!--<item name="android:activityOpenEnterAnimation">@anim/default_anim_in</item>-->
-        <!--<item name="android:activityOpenExitAnimation">@anim/default_stay</item>-->
-        <!--<item name="android:activityCloseEnterAnimation">@anim/default_stay</item>-->
-        <!--<item name="android:activityCloseExitAnimation">@anim/default_anim_out</item>-->
+    <!--<item name="android:activityOpenEnterAnimation">@anim/default_anim_in</item>-->
+    <!--<item name="android:activityOpenExitAnimation">@anim/default_stay</item>-->
+    <!--<item name="android:activityCloseEnterAnimation">@anim/default_stay</item>-->
+    <!--<item name="android:activityCloseExitAnimation">@anim/default_anim_out</item>-->
     <!--</style>-->
 
     <style name="WelcomeTheme" parent="@android:style/Theme.Holo">

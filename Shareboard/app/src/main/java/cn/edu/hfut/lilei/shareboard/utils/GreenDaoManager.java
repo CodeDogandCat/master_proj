@@ -1,7 +1,7 @@
 package cn.edu.hfut.lilei.shareboard.utils;
 
 
-import cn.edu.hfut.lilei.shareboard.MyApplication;
+import cn.edu.hfut.lilei.shareboard.base.MyApplication;
 import cn.edu.hfut.lilei.shareboard.greendao.gen.DaoMaster;
 import cn.edu.hfut.lilei.shareboard.greendao.gen.DaoSession;
 

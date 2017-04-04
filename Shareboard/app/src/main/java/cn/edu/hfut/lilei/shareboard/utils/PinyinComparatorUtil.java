@@ -2,7 +2,7 @@ package cn.edu.hfut.lilei.shareboard.utils;
 
 import java.util.Comparator;
 
-import cn.edu.hfut.lilei.shareboard.data.GroupMemberInfo;
+import cn.edu.hfut.lilei.shareboard.enity.GroupMemberInfo;
 
 /**
  * 

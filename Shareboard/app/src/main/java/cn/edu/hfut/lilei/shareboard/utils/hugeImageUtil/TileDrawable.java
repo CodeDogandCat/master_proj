@@ -14,7 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.ImageView;
 
-import cn.edu.hfut.lilei.shareboard.view.imageview.PinchImageView;
+import cn.edu.hfut.lilei.shareboard.widget.imageview.PinchImageView;
 
 
 /**

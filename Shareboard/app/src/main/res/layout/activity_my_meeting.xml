@@ -34,7 +34,7 @@
         style="@style/common_horizontal_division_line_style"
         android:background="@color/my_deepgray"/>
 
-    <cn.edu.hfut.lilei.shareboard.view.refreshandload.SwipeRefreshLayout
+    <cn.edu.hfut.lilei.shareboard.widget.refreshandload.SwipeRefreshLayout
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -53,6 +53,6 @@
 
         </ListView>
 
-    </cn.edu.hfut.lilei.shareboard.view.refreshandload.SwipeRefreshLayout>
+    </cn.edu.hfut.lilei.shareboard.widget.refreshandload.SwipeRefreshLayout>
 
 </LinearLayout>

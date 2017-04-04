@@ -19,9 +19,9 @@ import android.widget.Toast;
 import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.data.AppInfo;
-import cn.edu.hfut.lilei.shareboard.view.customdialog.InviteChooserDialog;
-import cn.edu.hfut.lilei.shareboard.view.customdialog.LodingDialog;
+import cn.edu.hfut.lilei.shareboard.enity.AppInfo;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.InviteChooserDialog;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.TIMEZONE;
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;

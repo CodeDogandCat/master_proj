@@ -186,4 +186,5 @@
     <string name="host_allow_talk">主持人允许你讲话</string>
     <string name="host_forbid_talk">主持人禁止你讲话</string>
     <string name="you_kick_out">你被主持人提出</string>
+    <string name="member_manage">参会人员管理</string>
 </resources>
