@@ -602,25 +602,33 @@ class MeetingOp
      */
     public function getMeetingByStatusAndPage($status, $fromPage, $size)
     {
-//        $sql = 'SELECT meeting_id,meeting_url,meeting_theme,meeting_is_drawable,meeting_is_talkable,
-//                meeting_is_add_to_calendar,meeting_password,meeting_start_time,meeting_end_time,event_id,meeting_desc
-//                FROM bd_meeting
-//                WHERE meeting_host_user_id = ? AND meeting_status = ?
-//                ORDER BY meeting_id DESC LIMIT ?,?';
-        $sql = 'SELECT meeting_id,meeting_url,meeting_theme,meeting_is_drawable,meeting_is_talkable,
+
+        date_default_timezone_set('PRC');//其中PRC为“中华人民共和国”
+        $time = explode(" ", microtime());
+        $time = $time [1] . ($time [0] * 1000);
+        $time2 = explode(".", $time);
+        $time = $time2[0];
+
+        //更新会议状态
+        $sql = 'UPDATE  bd_meeting SET   meeting_status = ? WHERE meeting_end_time < ? AND  meeting_status = ?';
+        $arr = array();
+        $arr[0] = 2;
+        $arr[1] = $time;
+        $arr[2] = 1;
+
+        if ($this->db->update($sql, $arr) != false) {
+
+            $sql = 'SELECT meeting_id,meeting_url,meeting_theme,meeting_is_drawable,meeting_is_talkable,
                 meeting_is_add_to_calendar,meeting_password,meeting_start_time,meeting_end_time,event_id,meeting_desc
                 FROM bd_meeting  
-                WHERE meeting_host_user_id = ' . $this->user->getId() . ' AND meeting_status = ' . $status . '
+                WHERE meeting_host_user_id = ' . $this->user->getId() . ' AND meeting_status = ' . $status . ' 
                 ORDER BY meeting_id DESC LIMIT ' . $fromPage . ',' . $size;
 
-//        $arr = array();
-//        $arr[0] = $this->user->getId();
-//        $arr[1] = $status;
-//        $arr[2] = $fromPage;
-//        $arr[3] = $size;
 
-        $rows = $this->db->select2($sql);
-        return $rows;
+            $rows = $this->db->select2($sql);
+            return $rows;
+        }
+        return false;//更新失败
 
 
     }

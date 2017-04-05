@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.lzy.okgo.OkGo;
@@ -76,6 +77,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
     private EditText mEtGivenName;
     private EditText mEtPassword;
     private Button mBtnComplete;
+    private ImageView mBtnBack;
     private LodingDialog.Builder mlodingDialog;
 
     //数据
@@ -99,7 +101,14 @@ public class SetUserInfoActivity extends SwipeBackActivity {
 
     private void init() {
         mContext = this;
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+        mBtnBack = (ImageView) findViewById(R.id.img_setuserinfo_goback);
+        mBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();

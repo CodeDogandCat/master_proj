@@ -195,6 +195,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     int res = 0;
     AnimationDrawable animationDrawable = null;
     private ImageView animView;
+    private ImageView mBtnBack;
 
 
     @Override
@@ -262,10 +263,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
      * meeting 页面的 初始化
      */
     public void initMeeting() {
-        View decorView = getWindow().getDecorView();
-        // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
+
 
         mRlMember.setVisibility(View.GONE);
         mRlMeeting.setVisibility(View.VISIBLE);
@@ -370,11 +368,18 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
      * 参与者页面的 初始化
      */
     public void initMember() {
-        View decorView = getWindow().getDecorView();
-        // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
-        decorView.setSystemUiVisibility(uiOptions);
-
+        mBtnBack = (ImageView) findViewById(R.id.img_member_goback);
+        mBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                recycleMember();
+            }
+        });
         mRlMeeting.setVisibility(View.GONE);
         mRlMember.setVisibility(View.VISIBLE);
         //资源释放

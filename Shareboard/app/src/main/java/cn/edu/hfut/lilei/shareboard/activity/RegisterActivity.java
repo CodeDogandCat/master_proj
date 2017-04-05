@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
@@ -48,6 +49,7 @@ public class RegisterActivity extends SwipeBackActivity {
     //上下文参数
     private Context mContext;
     private String userEmail = null;
+    private ImageView mBtnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,13 @@ public class RegisterActivity extends SwipeBackActivity {
 
     private void init() {
         mContext = this;
+        mBtnBack = (ImageView) findViewById(R.id.img_register_goback);
+        mBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }

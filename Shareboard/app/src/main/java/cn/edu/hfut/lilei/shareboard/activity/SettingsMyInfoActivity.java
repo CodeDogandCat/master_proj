@@ -81,6 +81,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
 
     //上下文参数
     private Context mContext;
+    private ImageView mBtnBack;
 
 
     @Override
@@ -143,6 +144,13 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
     private void init() {
 
         mContext = this;
+        mBtnBack = (ImageView) findViewById(R.id.img_setmyinfo_goback);
+        mBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }

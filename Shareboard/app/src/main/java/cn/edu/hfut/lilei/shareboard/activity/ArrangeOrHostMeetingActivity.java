@@ -76,6 +76,7 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
 
     //上下文参数
     private Context mContext;
+    private ImageView mBtnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +90,13 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void init() {
         mContext = this;
+        mBtnBack = (ImageView) findViewById(R.id.img_hostmeeting_goback);
+        mBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }

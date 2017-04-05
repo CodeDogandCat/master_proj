@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.lzy.okgo.OkGo;
 
@@ -55,6 +56,7 @@ public class AlterPasswordActivity extends SwipeBackActivity {
 
     //上下文参数
     private Context mContext;
+    private ImageView mBtnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,14 @@ public class AlterPasswordActivity extends SwipeBackActivity {
 
     private void init() {
         mContext = this;
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+        mBtnBack = (ImageView) findViewById(R.id.img_alterpassword_goback);
+        mBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         mSwipeBackLayout = getSwipeBackLayout();

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -94,6 +95,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
     private String[] am_pm = {"上午", "下午"};
     //上下文参数
     private Context mContext;
+    private ImageView mBtnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +149,13 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
      */
     private void init() {
         mContext = this;
+        mBtnBack = (ImageView) findViewById(R.id.img_arrange_meeting_goback);
+        mBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }

@@ -11,7 +11,7 @@
 
 
         <ImageView
-            android:id="@+id/img_setmyinfo_goback"
+            android:id="@+id/img_about_goback"
             style="@style/actionbar_goback"/>
 
         <TextView

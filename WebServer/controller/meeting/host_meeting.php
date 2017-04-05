@@ -264,25 +264,6 @@ if (isset($_REQUEST[post_need_feature])) {
                 printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
             }
             break;
-//        case 'get_members':
-//            if (isset($_REQUEST[post_meeting_id]) &&
-//                isset($_REQUEST[post_user_email])
-//            ) {
-//                $user = new User($_REQUEST[post_user_email]);
-//                $meeting = new Meeting(null, null, null, null, null, null, null, null, null);
-//                $meeting->setId($_REQUEST[post_meeting_id]);
-//                $meetingOp = new MeetingOp($user, $meeting);
-//                if (($members = $meetingOp->unlockMeeting()) != false) {
-//
-//                    printResult(SUCCESS, '获取参与者成功', $result_arr);
-//
-//                } else {
-//                    printResult(GET_MEETING_MEMBERS_ERROR, '获取参与者失败', -1);
-//                }
-//            } else {
-//                printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
-//            }
-//            break;
 
 
         default:
