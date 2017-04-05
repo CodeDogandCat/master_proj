@@ -16,6 +16,7 @@ import com.lzy.okgo.OkGo;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.models.CommonJson;
+import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
@@ -143,7 +144,7 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                         .toString()
                         .trim()
                         .replaceAll("-", "");
-
+                MyAppUtil.changeBtnDisable(mBtnJoinMeeting);
                 new AsyncTask<Void, Void, Integer>() {
 
                     @Override
@@ -248,6 +249,8 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                                  } else {
                                                      //提示所有错误
                                                      mlodingDialog.cancle();
+                                                     MyAppUtil.changeBtnClickable(mBtnJoinMeeting,
+                                                             R.drawable.btn_yellow);
                                                      showToast(mContext, o.getMsg());
                                                  }
 
@@ -258,6 +261,8 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                                                  Exception e) {
                                                  super.onError(call, response, e);
                                                  mlodingDialog.cancle();
+                                                 MyAppUtil.changeBtnClickable(mBtnJoinMeeting,
+                                                         R.drawable.btn_yellow);
                                                  showToast(mContext, R.string.system_error);
                                              }
                                          }
@@ -272,6 +277,7 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                     protected void onPostExecute(Integer integer) {
                         super.onPostExecute(integer);
                         mlodingDialog.cancle();
+                        MyAppUtil.changeBtnClickable(mBtnJoinMeeting, R.drawable.btn_yellow);
                         switch (integer) {
                             case NET_DISCONNECT:
                                 //弹出对话框，让用户开启网络

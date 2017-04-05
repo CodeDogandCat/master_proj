@@ -22,6 +22,7 @@ import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
 import cn.edu.hfut.lilei.shareboard.models.MeetingJson;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
+import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
@@ -148,7 +149,8 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
             @Override
             public void onClick(View view) {
 
-                mlodingDialog = loding(mContext, R.string.arranging);
+                mlodingDialog = loding(mContext, R.string.entering);
+                MyAppUtil.changeBtnDisable(mBtnStartMeeting);
 
                 new AsyncTask<Void, Void, Integer>() {
 
@@ -230,7 +232,7 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                                      /**
                                                       * 跳到登录界面
                                                       */
-                                                     mlodingDialog.cancle();
+
 //                                                     showToast(mContext, o.getMsg());
                                                      Intent intent = new Intent();
                                                      intent.setClass(ArrangeOrHostMeetingActivity.this,
@@ -247,11 +249,17 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                                              valueList2.get(0) == 1);
                                                      intent.putExtras(b);
                                                      startActivity(intent);
+                                                     mlodingDialog.cancle();
+                                                     MyAppUtil.changeBtnClickable
+                                                             (mBtnStartMeeting, R.drawable.btn_yellow);
+
 
                                                  } else {
                                                      //提示所有错误
                                                      mlodingDialog.cancle();
                                                      showToast(mContext, o.getMsg());
+                                                     MyAppUtil.changeBtnClickable
+                                                             (mBtnStartMeeting, R.drawable.btn_yellow);
                                                  }
 
                                              }
@@ -262,6 +270,8 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                                  super.onError(call, response, e);
                                                  mlodingDialog.cancle();
                                                  showToast(mContext, R.string.system_error);
+                                                 mlodingDialog.cancle();
+                                                 MyAppUtil.changeBtnClickable(mBtnStartMeeting,R.drawable.btn_yellow);
                                              }
                                          }
                                 );
@@ -275,6 +285,7 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                     protected void onPostExecute(Integer integer) {
                         super.onPostExecute(integer);
                         mlodingDialog.cancle();
+                        MyAppUtil.changeBtnClickable(mBtnStartMeeting,R.drawable.btn_yellow);
                         switch (integer) {
                             case NET_DISCONNECT:
                                 //弹出对话框，让用户开启网络

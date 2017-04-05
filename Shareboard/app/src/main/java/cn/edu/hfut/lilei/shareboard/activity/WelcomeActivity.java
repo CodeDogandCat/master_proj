@@ -18,6 +18,7 @@ import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NO_TOKEN_FOUND;
@@ -41,11 +42,6 @@ public class WelcomeActivity extends Activity {
         shouldCallUpdate = true;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        shouldCallUpdate = true;
-    }
 
     @Override
     protected void onResume() {
@@ -55,9 +51,13 @@ public class WelcomeActivity extends Activity {
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
+//        }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_welcome);
@@ -80,7 +80,7 @@ public class WelcomeActivity extends Activity {
 
     private void init() {
         mContext = this;
-//        mlodingDialog = loding(mContext, R.string.loding);
+        mlodingDialog = loding(mContext, R.string.loding);
         new AsyncTask<Void, Void, Integer>() {
 
             @Override
@@ -119,19 +119,21 @@ public class WelcomeActivity extends Activity {
                                     SharedPrefUtil.getInstance()
                                             .deleteData(share_token);
 
-//                                    mlodingDialog.cancle();
+                                    mlodingDialog.cancle();
                                     /**
                                      * 4.跳到登录界面
                                      */
                                     Intent intent = new Intent();
                                     intent.setClass(WelcomeActivity.this, LoginActivity.class);
                                     startActivity(intent);
+
+                                    beforeFinish();
                                     finish();
                                 } else {
                                     /**
                                      * 5.自动登录成功,不会返回可打印信息,直接跳转
                                      */
-//                                    mlodingDialog.cancle();
+                                    mlodingDialog.cancle();
                                     Intent intent = new Intent();
 //                                    intent.setClass(WelcomeActivity.this,
 //                                            MeetingTestActivity.class);
@@ -140,7 +142,8 @@ public class WelcomeActivity extends Activity {
                                     intent.setClass(WelcomeActivity.this,
                                             MainActivity.class);
                                     startActivity(intent);
-//                                    finish();
+                                    beforeFinish();
+                                    finish();
                                 }
                             }
 
@@ -175,22 +178,20 @@ public class WelcomeActivity extends Activity {
                         break;
 
                     default:
-//                        Intent intent2 = new Intent();
-//                        intent2.setClass(WelcomeActivity.this, LoginActivity.class);
-//                        startActivity(intent2);
-//                        finish();
-//                        showToast(mContext, R.string.system_error);
 
                         break;
                 }
             }
         }.execute();
-//        Intent intent = new Intent();
-//        intent.setClass(WelcomeActivity.this, SetUserInfoActivity.class);
-//        startActivity(intent);
-//        finish();
 
 
+    }
+
+    public void beforeFinish() {
+        getWindow().setFlags(WindowManager
+                        .LayoutParams
+                        .FLAG_FORCE_NOT_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
     }
 
 }

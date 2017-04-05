@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:background="@color/my_black"
+              android:background="@color/my_transparent"
               android:orientation="horizontal">
 
     <cn.edu.hfut.lilei.shareboard.widget.customdialog.LoadingPopPoint
@@ -18,7 +18,7 @@
         android:layout_marginEnd="20dp"
         android:gravity="center_vertical"
         android:text="@string/arranging"
-        android:textColor="@color/my_white"
+        android:textColor="@color/my_yellow"
         android:textSize="@dimen/super_small_text_size"/>
 
 

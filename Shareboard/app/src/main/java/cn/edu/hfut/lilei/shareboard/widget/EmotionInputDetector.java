@@ -29,14 +29,9 @@ import cn.edu.hfut.lilei.shareboard.utils.AudioRecoderUtils;
 import cn.edu.hfut.lilei.shareboard.utils.PopupWindowFactory;
 import cn.edu.hfut.lilei.shareboard.utils.Utils;
 
-/**
- * 作者：Rance on 2016/12/13 15:19
- * 邮箱：rance935@163.com
- * 输入框管理类
- */
 public class EmotionInputDetector {
 
-    private static final String SHARE_PREFERENCE_NAME = "com.dss886.emotioninputdetector";
+    private static final String SHARE_PREFERENCE_NAME = "com.lilei.emotioninputdetector";
     private static final String SHARE_PREFERENCE_TAG = "soft_input_height";
 
     private Activity mActivity;
@@ -61,8 +56,10 @@ public class EmotionInputDetector {
     public static EmotionInputDetector with(Activity activity) {
         EmotionInputDetector emotionInputDetector = new EmotionInputDetector();
         emotionInputDetector.mActivity = activity;
-        emotionInputDetector.mInputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        emotionInputDetector.sp = activity.getSharedPreferences(SHARE_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        emotionInputDetector.mInputManager =
+                (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        emotionInputDetector.sp =
+                activity.getSharedPreferences(SHARE_PREFERENCE_NAME, Context.MODE_PRIVATE);
         return emotionInputDetector;
     }
 
@@ -189,8 +186,10 @@ public class EmotionInputDetector {
                 mAddButton.setVisibility(View.VISIBLE);
                 mSendButton.setVisibility(View.GONE);
                 MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setContent(mEditText.getText().toString());
-                EventBus.getDefault().post(messageInfo);
+                messageInfo.setContent(mEditText.getText()
+                        .toString());
+                EventBus.getDefault()
+                        .post(messageInfo);
                 mEditText.setText("");
             }
         });
@@ -203,8 +202,10 @@ public class EmotionInputDetector {
             public void onClick(View v) {
                 hideEmotionLayout(false);
                 hideSoftInput();
-                mVoiceText.setVisibility(mVoiceText.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-                mEditText.setVisibility(mVoiceText.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                mVoiceText.setVisibility(
+                        mVoiceText.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                mEditText.setVisibility(
+                        mVoiceText.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
             }
         });
         return this;
@@ -241,7 +242,8 @@ public class EmotionInputDetector {
                         break;
                     case MotionEvent.ACTION_UP:
                         mVoicePop.dismiss();
-                        if (mVoiceText.getTag().equals("2")) {
+                        if (mVoiceText.getTag()
+                                .equals("2")) {
                             //取消录音（删除录音文件）
                             mAudioRecoderUtils.cancelRecord();
                         } else {
@@ -283,8 +285,9 @@ public class EmotionInputDetector {
     }
 
     public EmotionInputDetector build() {
-        mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN |
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mActivity.getWindow()
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN |
+                        WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         hideSoftInput();
         mAudioRecoderUtils = new AudioRecoderUtils();
 
@@ -296,31 +299,34 @@ public class EmotionInputDetector {
         final TextView mTextView = (TextView) view.findViewById(R.id.tv_recording_time);
         mPopVoiceText = (TextView) view.findViewById(R.id.tv_recording_text);
         //录音回调
-        mAudioRecoderUtils.setOnAudioStatusUpdateListener(new AudioRecoderUtils.OnAudioStatusUpdateListener() {
+        mAudioRecoderUtils.setOnAudioStatusUpdateListener(
+                new AudioRecoderUtils.OnAudioStatusUpdateListener() {
 
-            //录音中....db为声音分贝，time为录音时长
-            @Override
-            public void onUpdate(double db, long time) {
-                mImageView.getDrawable().setLevel((int) (3000 + 6000 * db / 100));
-                mTextView.setText(Utils.long2String(time));
-            }
+                    //录音中....db为声音分贝，time为录音时长
+                    @Override
+                    public void onUpdate(double db, long time) {
+                        mImageView.getDrawable()
+                                .setLevel((int) (3000 + 6000 * db / 100));
+                        mTextView.setText(Utils.long2String(time));
+                    }
 
-            //录音结束，filePath为保存路径
-            @Override
-            public void onStop(long time, String filePath) {
-                mTextView.setText(Utils.long2String(0));
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setFilepath(filePath);
-                messageInfo.setVoiceTime(time);
-                EventBus.getDefault().post(messageInfo);
-            }
+                    //录音结束，filePath为保存路径
+                    @Override
+                    public void onStop(long time, String filePath) {
+                        mTextView.setText(Utils.long2String(0));
+                        MessageInfo messageInfo = new MessageInfo();
+                        messageInfo.setFilepath(filePath);
+                        messageInfo.setVoiceTime(time);
+                        EventBus.getDefault()
+                                .post(messageInfo);
+                    }
 
-            @Override
-            public void onError() {
-                mVoiceText.setVisibility(View.GONE);
-                mEditText.setVisibility(View.VISIBLE);
-            }
-        });
+                    @Override
+                    public void onError() {
+                        mVoiceText.setVisibility(View.GONE);
+                        mEditText.setVisibility(View.VISIBLE);
+                    }
+                });
         return this;
     }
 
@@ -333,13 +339,15 @@ public class EmotionInputDetector {
     }
 
     private void showEmotionLayout() {
+        hideSoftInput();
         int softInputHeight = getSupportSoftInputHeight();
         if (softInputHeight == 0) {
             softInputHeight = sp.getInt(SHARE_PREFERENCE_TAG, 787);
         }
-        hideSoftInput();
+
         mEmotionLayout.getLayoutParams().height = softInputHeight;
         mEmotionLayout.setVisibility(View.VISIBLE);
+
     }
 
     public void hideEmotionLayout(boolean showSoftInput) {
@@ -352,7 +360,8 @@ public class EmotionInputDetector {
     }
 
     private void lockContentHeight() {
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mContentView.getLayoutParams();
+        LinearLayout.LayoutParams params =
+                (LinearLayout.LayoutParams) mContentView.getLayoutParams();
         params.height = mContentView.getHeight();
         params.weight = 0.0F;
     }
@@ -386,8 +395,14 @@ public class EmotionInputDetector {
 
     private int getSupportSoftInputHeight() {
         Rect r = new Rect();
-        mActivity.getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
-        int screenHeight = mActivity.getWindow().getDecorView().getRootView().getHeight();
+        mActivity.getWindow()
+                .getDecorView()
+                .getWindowVisibleDisplayFrame(r);
+        int screenHeight = mActivity.getWindow()
+                .getDecorView()
+                .getRootView()
+                .getHeight();
+
         int softInputHeight = screenHeight - r.bottom;
         if (Build.VERSION.SDK_INT >= 20) {
             // When SDK Level >= 20 (Android L), the softInputHeight will contain the height of softButtonsBar (if has)
@@ -397,7 +412,9 @@ public class EmotionInputDetector {
             Log.w("EmotionInputDetector", "Warning: value of softInputHeight is below zero!");
         }
         if (softInputHeight > 0) {
-            sp.edit().putInt(SHARE_PREFERENCE_TAG, softInputHeight).apply();
+            sp.edit()
+                    .putInt(SHARE_PREFERENCE_TAG, softInputHeight)
+                    .apply();
         }
         return softInputHeight;
     }
@@ -405,9 +422,15 @@ public class EmotionInputDetector {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private int getSoftButtonsBarHeight() {
         DisplayMetrics metrics = new DisplayMetrics();
-        mActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        mActivity.getWindowManager()
+                .getDefaultDisplay()
+                .getMetrics(metrics);
+
         int usableHeight = metrics.heightPixels;
-        mActivity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+        mActivity.getWindowManager()
+                .getDefaultDisplay()
+                .getRealMetrics(metrics);
+
         int realHeight = metrics.heightPixels;
         if (realHeight > usableHeight) {
             return realHeight - usableHeight;

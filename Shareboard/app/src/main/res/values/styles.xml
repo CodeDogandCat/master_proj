@@ -3,9 +3,17 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorPrimaryDark">@color/my_deepyellow</item>
+        <item name="colorAccent">@color/text_title</item>
+    </style>
+
+    <style name="MeetingTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorPrimaryDark">@color/my_deepyellow</item>
+        <item name="colorAccent">@color/text_title</item>
     </style>
 
     <style name="text_subhead_black">
@@ -33,9 +41,8 @@
     </style>
 
     <style name="NoActionBarTheme" parent="android:Theme.Holo.NoActionBar">
-        <!-- Customize your tvMeetingTheme here. -->
-        <!--<item name="android:windowAnimationStyle">@style/default_animation</item>-->
         <item name="android:windowIsTranslucent">true</item>
+
     </style>
 
     <!-- 默认Activity跳转动画 -->
@@ -46,22 +53,13 @@
     <!--<item name="android:activityCloseExitAnimation">@anim/default_anim_out</item>-->
     <!--</style>-->
 
-    <style name="WelcomeTheme" parent="@android:style/Theme.Holo">
+    <style name="WelcomeTheme" parent="@android:style/Theme.Holo.NoActionBar.Fullscreen">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="MeetingTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="colorPrimary">#4A0958</item>
-        <item name="colorPrimaryDark">#4A0958</item>
-        <item name="colorAccent">@color/my_yellow</item>
-    </style>
 
     <style name="BigButton">
         <item name="android:layout_width">match_parent</item>

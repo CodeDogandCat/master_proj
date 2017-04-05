@@ -207,7 +207,7 @@ if (
                      */
                     case 'login':
                         //{"type":"login","client_id":xxx,"client_name":"xxx","client_list":"[...]","time":"xxx"}
-                        console.log(data['client_name'] + "登录成功");
+                        console.log(name + "登录成功");
                         if (data['client_email']) {
                             if (check_in_type == 1 && email == data['client_email']) {
                                 getInitCanvasData();

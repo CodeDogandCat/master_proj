@@ -11,9 +11,11 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.List;
@@ -353,6 +355,23 @@ public class MyAppUtil {
             Log.e("VersionInfo", "Exception", e);
         }
         return versioncode;
+    }
+
+
+    public static void changeBtnDisable(Button btn) {
+        btn.setClickable(
+                false);//按钮不可点击
+        btn.setBackgroundResource(R.drawable.bg_identify_code_press);
+    }
+
+    public static void changeBtnClickable(final Button btn, final int drawable) {
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+
+                btn.setClickable(true);//按钮可点击
+                btn.setBackgroundResource(drawable);
+            }
+        }, 2000);
     }
 
 }

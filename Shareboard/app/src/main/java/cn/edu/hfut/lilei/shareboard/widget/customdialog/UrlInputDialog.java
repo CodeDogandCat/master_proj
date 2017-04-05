@@ -23,7 +23,7 @@ import static cn.edu.hfut.lilei.shareboard.R.id.tvAlertDialogMessage;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 
-public class UrlInputDialog extends Dialog {
+public class    UrlInputDialog extends Dialog {
 
 
     public UrlInputDialog(Context context) {
