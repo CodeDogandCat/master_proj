@@ -2,10 +2,11 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
        android:shape="rectangle">
 
-    <solid android:color="@color/divider_line"/>
+    <solid android:color="@color/my_black"/>
 
     <corners
-            android:radius="5.0dip"/>
+            android:radius="5.0dip"
+            android:color="@color/my_yellow"/>
 
     <padding
             android:bottom="1.0dip"

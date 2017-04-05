@@ -112,7 +112,7 @@ public class ScreenUtil {
         ((Activity) context).getWindowManager()
                 .getDefaultDisplay()
                 .getMetrics(localDisplayMetrics);
-        return localDisplayMetrics.heightPixels - getStatusBarHeight(context);
+        return localDisplayMetrics.heightPixels - getStatusBarHeight(context)-getToolbarHeight(context);
     }
 
     /**

@@ -3,6 +3,7 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             android:fitsSystemWindows="true"
              android:orientation="vertical">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,7 +12,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:visibility="gone"
         >
 
         <RelativeLayout
@@ -185,19 +185,19 @@
                 </LinearLayout>
 
                 <!--<RelativeLayout-->
-                    <!--android:id="@+id/rl_master"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:background="@color/my_transparent"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:visibility="gone">-->
+                <!--android:id="@+id/rl_master"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/my_transparent"-->
+                <!--android:orientation="vertical"-->
+                <!--android:visibility="gone">-->
 
-                    <!--<ImageView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:background="@color/my_transparent"-->
-                        <!--android:src="@drawable/camera"-->
-                        <!--/>-->
+                <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/my_transparent"-->
+                <!--android:src="@drawable/camera"-->
+                <!--/>-->
                 <!--</RelativeLayout>-->
 
 
@@ -228,7 +228,8 @@
                     android:id="@+id/rl_member"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
+                    android:visibility="gone"
+                    android:background="@color/my_black"
         >
 
         <RelativeLayout
@@ -295,4 +296,29 @@
 
 
     </RelativeLayout>
+
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+                  <!--xmlns:tools="http://schemas.android.com/tools"-->
+                  <!--android:id="@+id/ll_chat"-->
+                  <!--android:layout_width="match_parent"-->
+                  <!--android:layout_height="match_parent"-->
+                  <!--android:fitsSystemWindows="true"-->
+                  <!--android:orientation="vertical"-->
+                  <!--android:visibility="gone"-->
+                  <!--tools:context=".activity.ChatActivity"-->
+        <!--&gt;-->
+
+        <!--<com.jude.easyrecyclerview.EasyRecyclerView-->
+            <!--android:id="@+id/chat_list"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@color/my_black"/>-->
+
+        <!--<include-->
+            <!--layout="@layout/include_reply_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+    <!--</LinearLayout>-->
+
 </FrameLayout>

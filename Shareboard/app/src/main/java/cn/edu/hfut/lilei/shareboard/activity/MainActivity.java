@@ -58,6 +58,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         init();
         selectPage(0); // 默认选中首页
@@ -108,8 +109,8 @@ public class MainActivity extends FragmentActivity implements
         // 将所有的tab的icon变成灰色的
         for (int i = 0; i < mRadioGroup.getChildCount(); i++) {
             Drawable gray = getResources().getDrawable(unselectedIconIds[i]);
-            gray.setBounds(0, 0, 80,
-                    80);
+            gray.setBounds(0, 0, 100,
+                    100);
 
             RadioButton child = (RadioButton) mRadioGroup.getChildAt(i);
             child.setCompoundDrawables(null, gray, null, null);
@@ -122,8 +123,8 @@ public class MainActivity extends FragmentActivity implements
         mViewPager.setCurrentItem(position, false);
         // 改变图标
         Drawable yellow = getResources().getDrawable(selectedIconIds[position]);
-        yellow.setBounds(0, 0, 80,
-                80);
+        yellow.setBounds(0, 0, 100,
+                100);
         RadioButton select = (RadioButton) mRadioGroup.getChildAt(position);
         select.setCompoundDrawables(null, yellow, null, null);
         select.setTextColor(getResources().getColor(

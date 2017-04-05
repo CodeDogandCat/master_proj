@@ -60,6 +60,7 @@ public class LodingDialog extends Dialog {
                     .findViewById(R.id.tvAlertDialogTitle);
             tvAlertTitle.setText(mTitle);
 
+
             return inviteChooserDialog;
         }
 
@@ -71,6 +72,7 @@ public class LodingDialog extends Dialog {
 
         public LodingDialog show() {
             dialog = create();
+            dialog.setCanceledOnTouchOutside(false);
             dialog.show();
             return dialog;
         }

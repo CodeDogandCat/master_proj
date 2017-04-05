@@ -61,7 +61,7 @@
                     style="@style/text_subhead_black"
                     android:layout_marginRight="@dimen/content_horizontal_margin"
                     android:padding="@dimen/content_vertical_margin"
-                    android:textColor="@color/white" />
+                   />
 
                 <ImageView
                     android:id="@+id/chat_item_voice"

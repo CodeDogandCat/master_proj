@@ -21,13 +21,15 @@
 
 
     <color name="my_yellow">#EACB3C</color>
-    <color name="my_black">#191919</color>
+    <!--<color name="my_black">#191919</color>-->
+    <color name="my_black">#000000</color>
     <color name="my_white">#F9F9F9</color>
     <color name="my_lightgray">#E5E5E5</color>
     <color name="my_deepyellow">#D6AC18</color>
     <color name="my_transparent">#00000000</color>
     <color name="my_deepgray">#3d3e40</color>
-    <color name="my_barblack">#18191E</color>
+    <color name="my_barblack">#1E2327</color>
+    <!--<color name="my_barblack">#18191E</color>-->
     <color name="my_red">#cc0000</color>
     <color name="transparent">#00000000</color><!--透明色 -->
     <color name="white">#FFFFFF</color><!--白色 -->

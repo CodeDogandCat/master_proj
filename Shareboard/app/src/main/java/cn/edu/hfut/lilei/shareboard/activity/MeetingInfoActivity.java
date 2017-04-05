@@ -206,6 +206,24 @@ public class MeetingInfoActivity extends SwipeBackActivity {
 
     }
 
+    public void disableAllBtn() {
+        MyAppUtil.changeBtnDisable(mBtnStart);
+
+        MyAppUtil.changeBtnDisable(mBtnDelete);
+        MyAppUtil.changeBtnDisable(mBtnAddInvite);
+        MyAppUtil.changeBtnDisable(mBtnAddToCalendar);
+        mBtnEdit.setClickable(false);
+    }
+
+    public void clickableAllBtn() {
+        MyAppUtil.changeBtnClickable(mBtnStart, R.drawable.btn_yellow);
+
+        MyAppUtil.changeBtnClickable(mBtnDelete, R.drawable.btn_black);
+        MyAppUtil.changeBtnClickable(mBtnAddInvite, R.drawable.btn_black);
+        MyAppUtil.changeBtnClickable(mBtnAddToCalendar, R.drawable.btn_black);
+        mBtnEdit.setClickable(true);
+    }
+
 
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
@@ -334,6 +352,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                  * 删除数据库记录
                                  */
                                 mlodingDialog = loding(mContext, R.string.deleting);
+                                disableAllBtn();
 
                                 new AsyncTask<Void, Void, Integer>() {
 
@@ -392,11 +411,13 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                                                              ArrangeOrHostMeetingActivity.class);
                                                                      mlodingDialog.cancle();
                                                                      mContext.startActivity(intent);
+                                                                     clickableAllBtn();
                                                                      ((Activity) mContext).finish();
 
                                                                  } else {
                                                                      //提示所有错误
                                                                      mlodingDialog.cancle();
+                                                                     clickableAllBtn();
                                                                      showToast(mContext, o.getMsg());
                                                                  }
 
@@ -408,6 +429,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                                                                  Exception e) {
                                                                  super.onError(call, response, e);
                                                                  mlodingDialog.cancle();
+                                                                 clickableAllBtn();
                                                                  showToast(mContext, R.string.system_error);
                                                              }
                                                          }
@@ -422,6 +444,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                     protected void onPostExecute(Integer integer) {
                                         super.onPostExecute(integer);
                                         mlodingDialog.cancle();
+                                        clickableAllBtn();
                                         switch (integer) {
                                             case NET_DISCONNECT:
                                                 //弹出对话框，让用户开启网络
@@ -448,11 +471,14 @@ public class MeetingInfoActivity extends SwipeBackActivity {
 
     }
 
+
     /**
      * 进入会议
      */
     private void startMeeting() {
         mlodingDialog = loding(mContext, R.string.entering);
+        disableAllBtn();
+
 
         new AsyncTask<Void, Void, Integer>() {
 
@@ -518,11 +544,14 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                              b.putBoolean(post_meeting_is_talkable, isTalkable);
                                              intent.putExtras(b);
                                              startActivity(intent);
+                                             mlodingDialog.cancle();
+                                             clickableAllBtn();
 
                                          } else {
                                              //提示所有错误
-                                             mlodingDialog.cancle();
                                              showToast(mContext, o.getMsg());
+                                             mlodingDialog.cancle();
+                                             clickableAllBtn();
                                          }
 
                                      }
@@ -533,6 +562,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                          super.onError(call, response, e);
                                          mlodingDialog.cancle();
                                          showToast(mContext, R.string.system_error);
+                                         clickableAllBtn();
                                      }
                                  }
                         );
@@ -546,6 +576,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
                 mlodingDialog.cancle();
+                clickableAllBtn();
                 switch (integer) {
                     case NET_DISCONNECT:
                         //弹出对话框，让用户开启网络

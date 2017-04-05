@@ -144,9 +144,9 @@ public class MyApplication extends Application {
     }
 
 
-    public static Context getInstance() {
-        return mInstance;
-    }
+//    public static Context getInstance() {
+//        return mInstance;
+//    }
 
     /**
      * 初始化当前设备屏幕宽高
