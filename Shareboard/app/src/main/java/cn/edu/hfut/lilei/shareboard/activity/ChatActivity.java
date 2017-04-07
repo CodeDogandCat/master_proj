@@ -9,9 +9,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +39,7 @@ import cn.edu.hfut.lilei.shareboard.enity.FullImageInfo;
 import cn.edu.hfut.lilei.shareboard.enity.MessageFromOtherInfo;
 import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
 import cn.edu.hfut.lilei.shareboard.enity.MessageSuccessInfo;
+import cn.edu.hfut.lilei.shareboard.enity.TalkPermissionChange;
 import cn.edu.hfut.lilei.shareboard.fragment.ChatEmotionFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.ChatFunctionFragment;
 import cn.edu.hfut.lilei.shareboard.utils.Constants;
@@ -51,6 +54,8 @@ import cn.edu.hfut.lilei.shareboard.widget.NoScrollViewPager;
 import cn.edu.hfut.lilei.shareboard.widget.StateButton;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_in_type;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_talkable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_avatar;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
@@ -80,6 +85,8 @@ public class ChatActivity extends AppCompatActivity {
     NoScrollViewPager viewpager;
     @Bind(R.id.emotion_layout)
     RelativeLayout emotionLayout;
+    @Bind(R.id.reply_bar)
+    LinearLayout replyBar;
 
     private EmotionInputDetector mDetector;
     private ArrayList<Fragment> fragments;
@@ -102,6 +109,8 @@ public class ChatActivity extends AppCompatActivity {
     private Timer timer;
     private TimerTask task;
     private String name, familyName, GivenName, avatar;
+    private boolean istalkable;
+    private int check_in_type = -1;
 
 
     @Override
@@ -114,6 +123,10 @@ public class ChatActivity extends AppCompatActivity {
         lodingDialog = MyAppUtil.loding(this, R.string.init);
         my_email = getIntent().getExtras()
                 .getString(post_user_email);
+        istalkable = getIntent().getExtras()
+                .getBoolean(post_meeting_is_talkable);
+        check_in_type = getIntent().getExtras()
+                .getInt(post_meeting_check_in_type);
         ArrayList<String> keyList = new ArrayList<>();
         ArrayList<String> valueList = new ArrayList<>();
         keyList.add(share_family_name);
@@ -149,6 +162,13 @@ public class ChatActivity extends AppCompatActivity {
         // 0，延时0秒后执行。
         // 2000，每隔2秒执行1次task。
         timer.schedule(task, 0, 2000);
+
+        //不可说的 情况
+        if (check_in_type == 1) {
+            if (!istalkable) {
+                replyBar.setVisibility(View.GONE);
+            }
+        }
 
 
         fragments = new ArrayList<>();
@@ -273,6 +293,30 @@ public class ChatActivity extends AppCompatActivity {
                     });
                 }
             };
+
+    /**
+     * 接受 可说 权限改变的 消息
+     *
+     * @param info
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void listenTalkPermissionChange(final TalkPermissionChange info) {
+        if (check_in_type == 1) {
+            if (info.istalkable() != istalkable) {//发生了改变
+                istalkable = info.istalkable();
+                if (info.istalkable()) {
+
+                    replyBar.setVisibility(View.VISIBLE);
+                } else {
+                    replyBar.setVisibility(View.GONE);
+                }
+
+
+            }
+        }
+
+
+    }
 
 
     /**
@@ -430,6 +474,48 @@ public class ChatActivity extends AppCompatActivity {
                 .removeStickyEvent(this);
         EventBus.getDefault()
                 .unregister(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (!istalkable) {
+                //数据是使用Intent返回
+                Intent intent = new Intent();
+                //把返回数据存入Intent
+                intent.putExtra(post_meeting_is_talkable, istalkable);
+                //设置返回数据
+                ChatActivity.this.setResult(RESULT_OK, intent);
+                //关闭Activity
+                ChatActivity.this.finish();
+            } else
+                if (mDetector.isSoftInputShown()) {
+
+                    mDetector.hideSoftInput();
+
+                } else
+                    if (mDetector.isEmotionLayoutShown()) {
+
+                        mDetector.hideEmotionLayout(false);
+
+                    } else {
+                        //数据是使用Intent返回
+                        Intent intent = new Intent();
+                        //把返回数据存入Intent
+                        intent.putExtra(post_meeting_is_talkable, istalkable);
+                        //设置返回数据
+                        ChatActivity.this.setResult(RESULT_OK, intent);
+                        //关闭Activity
+                        ChatActivity.this.finish();
+                    }
+
+
+            return false;
+        }
+
+        return super.
+
+                onKeyDown(keyCode, event);
     }
 }
 

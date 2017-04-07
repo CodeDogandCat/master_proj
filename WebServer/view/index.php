@@ -316,8 +316,8 @@ if (
 
                         }
                         break;
-                    //转发主持人修改的会议权限
-                    case 'alter_permission':
+                    //转发主持人修改的画板权限
+                    case 'alter_draw_permission':
                         if (data['from_client_email'] != email) {
                             //通知native
                             if (data['is_drawable'] == "false") {
@@ -332,7 +332,15 @@ if (
                                 getInitCanvasData();
 
                             }
-                            window.board.alterPermission(data['is_drawable'], data['is_talkable']);
+                            window.board.alterDrawPermission(data['is_drawable']);
+
+                        }
+                        break;
+                    //转发主持人修改的聊天权限
+                    case 'alter_talk_permission':
+                        if (data['from_client_email'] != email) {
+
+                            window.board.alterTalkPermission(data['is_talkable']);
 
                         }
                         break;
@@ -428,18 +436,34 @@ if (
 
             }
             /**
-             *用socket 转发主持人修改权限的消息
+             *用socket 转发主持人修改画板权限的消息
              * 主持人 native来调用
              */
-            function alterUserPermission(to_client_email, is_drawable, is_talkable) {
+            function alterDrawPermission(to_client_email, is_drawable) {
 
-                var sync_data = '{"type":"alter_permission","from_client_email":"' + email
+                var sync_data = '{"type":"alter_draw_permission","from_client_email":"' + email
                     + '","to_client_email":"' + to_client_email
                     + '","is_drawable":"' + is_drawable
+                    + '"}';
+
+
+                console.log("alterDrawPermission 转发主持人修改画板权限的消息");
+                console.log(sync_data);
+
+                ws.send(sync_data);
+            }
+            /**
+             *用socket 转发主持人修改 聊天权限的消息
+             * 主持人 native来调用
+             */
+            function alterTalkPermission(to_client_email, is_talkable) {
+
+                var sync_data = '{"type":"alter_talk_permission","from_client_email":"' + email
+                    + '","to_client_email":"' + to_client_email
                     + '","is_talkable":"' + is_talkable + '"}';
 
 
-                console.log("alterUserPermission用socket 转发主持人修改权限的消息");
+                console.log("alterTalkPermission 转发主持人修改  聊天权限的消息");
                 console.log(sync_data);
 
                 ws.send(sync_data);

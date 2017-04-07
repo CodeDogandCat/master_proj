@@ -101,9 +101,9 @@ public class MemberListAdapter extends BaseAdapter implements View.OnClickListen
                     (ImageView) convertView.findViewById(R.id.img_item_member_talk);
 
             //与会者看不到列表中的 权限控制按钮
-            if (check_in_type == 1) {
-                holder.btnDraw.setVisibility(View.GONE);
-                holder.btnTalk.setVisibility(View.GONE);
+            if (check_in_type == 2) {
+                holder.btnDraw.setVisibility(View.VISIBLE);
+                holder.btnTalk.setVisibility(View.VISIBLE);
             }
 
 
@@ -124,11 +124,16 @@ public class MemberListAdapter extends BaseAdapter implements View.OnClickListen
         //描述
         holder.tvDesc.setText("");
         if (member.client_type.equals("1")) {
-            if (mEmail.equals(member.getClient_email())) {
-                holder.tvDesc.setText("(我)");
-            }
+            //给 管理者看的
             holder.btnDraw.setVisibility(View.VISIBLE);
             holder.btnTalk.setVisibility(View.VISIBLE);
+            if (mEmail.equals(member.getClient_email())) {
+                holder.tvDesc.setText("(我)");
+                //如果你是  普通加会人,不能看
+                holder.btnDraw.setVisibility(View.GONE);
+                holder.btnTalk.setVisibility(View.GONE);
+            }
+
         } else
             if (member.client_type.equals("2")) {
                 if (mEmail.equals(member.getClient_email())) {
@@ -136,6 +141,7 @@ public class MemberListAdapter extends BaseAdapter implements View.OnClickListen
                 } else {
                     holder.tvDesc.setText("(主持人)");
                 }
+                //主持人的权限不能改变,也不显示按钮
                 holder.btnDraw.setVisibility(View.GONE);
                 holder.btnTalk.setVisibility(View.GONE);
 

@@ -69,7 +69,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_unmutinging"/>
+            android:src="@drawable/ic_unmutinging"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/img_item_member_draw"
@@ -79,7 +80,8 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_toStartOf="@+id/img_item_member_talk"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_draw"/>
+            android:src="@drawable/ic_draw"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

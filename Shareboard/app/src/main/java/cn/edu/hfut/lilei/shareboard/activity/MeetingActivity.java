@@ -52,6 +52,7 @@ import cn.edu.hfut.lilei.shareboard.enity.MessageFromMeInfo;
 import cn.edu.hfut.lilei.shareboard.enity.MessageFromOtherInfo;
 import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
 import cn.edu.hfut.lilei.shareboard.enity.MessageSuccessInfo;
+import cn.edu.hfut.lilei.shareboard.enity.TalkPermissionChange;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.models.CommonJson;
 import cn.edu.hfut.lilei.shareboard.models.MemberJson;
@@ -226,50 +227,14 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 }
                 break;
             case CHAT_REQUEST_CODE:
+                isTalkable = data.getExtras()
+                        .getBoolean(post_meeting_is_talkable);
                 break;
             default:
                 break;
         }
     }
 
-
-    /**
-     * 构造聊天数据
-     */
-    private void LoadData() {
-
-
-//        MessageInfo messageInfo = new MessageInfo();
-//        messageInfo.setContent("你好，欢迎使用Rance的聊天界面框架");
-//        messageInfo.setType(Constants.CHAT_ITEM_TYPE_LEFT);
-//        messageInfo.setHeader("http://tupian.enterdesk.com/2014/mxy/11/2/1/12.jpg");
-//        messageInfos.add(messageInfo);
-//
-//        MessageInfo messageInfo1 = new MessageInfo();
-//        messageInfo1.setFilepath("http://www.trueme.net/bb_midi/welcome.wav");
-//        messageInfo1.setVoiceTime(3000);
-//        messageInfo1.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
-//        messageInfo1.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
-//        messageInfo1.setHeader(
-//                "http://img.dongqiudi.com/uploads/avatar/2014/10/20/8MCTb0WBFG_thumb_1413805282863.jpg");
-//        messageInfos.add(messageInfo1);
-//
-//        MessageInfo messageInfo2 = new MessageInfo();
-//        messageInfo2.setImageUrl(
-//                "http://img4.imgtn.bdimg.com/it/u=1800788429,176707229&fm=21&gp=0.jpg");
-//        messageInfo2.setType(Constants.CHAT_ITEM_TYPE_LEFT);
-//        messageInfo2.setHeader("http://tupian.enterdesk.com/2014/mxy/11/2/1/12.jpg");
-//        messageInfos.add(messageInfo2);
-//
-//        MessageInfo messageInfo3 = new MessageInfo();
-//        messageInfo3.setContent("[微笑][色][色][色]");
-//        messageInfo3.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
-//        messageInfo3.setSendState(Constants.CHAT_ITEM_SEND_ERROR);
-//        messageInfo3.setHeader(
-//                "http://img.dongqiudi.com/uploads/avatar/2014/10/20/8MCTb0WBFG_thumb_1413805282863.jpg");
-//        messageInfos.add(messageInfo3);
-
-    }
 
     /**
      * 监听chatActivity 是否初始化
@@ -624,7 +589,10 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 Intent intent = new Intent(mContext, ChatActivity.class);
                 Bundle b = new Bundle();
                 b.putString(post_user_email, my_email);
+                b.putBoolean(post_meeting_is_talkable, isTalkable);
+                b.putInt(post_meeting_check_in_type, check_in_type);
                 intent.putExtras(b);
+
                 startActivityForResult(intent, CHAT_REQUEST_CODE);
                 break;
 
@@ -661,13 +629,12 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                     ImageUtil.load(mContext, R.drawable.ic_undraw, R.drawable.ic_undraw,
                             (ImageView) v);
                     if (client_email.equals(my_email)) {
-                        isDrawable = false;
+//                        isDrawable = false;
                         showToast(mContext, getString(R.string.forbid_draw));
                     } else {
                         //js 通知当事人
-                        String call = "javascript:alterUserPermission('" + client_email + "','" +
-                                false + "','" + null
-                                + "')";
+                        String call = "javascript:alterDrawPermission('" + client_email + "','" +
+                                false + "')";
                         //调用js函数
                         mWvCanvas.loadUrl(call);
                     }
@@ -683,13 +650,12 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                     ImageUtil.load(mContext, R.drawable.ic_draw, R.drawable.ic_draw,
                             (ImageView) v);
                     if (client_email.equals(my_email)) {
-                        isDrawable = true;
+//                        isDrawable = true;
                         showToast(mContext, getString(R.string.allow_draw));
                     } else {
                         //js 通知当事人
-                        String call = "javascript:alterUserPermission('" + client_email + "','" +
-                                true + "','" + null
-                                + "')";
+                        String call = "javascript:alterDrawPermission('" + client_email + "','" +
+                                true + "')";
                         //调用js函数
                         mWvCanvas.loadUrl(call);
                     }
@@ -710,13 +676,13 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                 (ImageView) v);
 
                         if (client_email.equals(my_email)) {
-                            isTalkable = false;
+//                            isTalkable = false;
                             showToast(mContext, getString(R.string.forbid_talk));
                         } else {
                             //js 通知当事人
                             String call =
-                                    "javascript:alterUserPermission('" + client_email + "','" +
-                                            null + "','" + false
+                                    "javascript:alterTalkPermission('" + client_email + "','" +
+                                            false
                                             + "')";
                             //调用js函数
                             mWvCanvas.loadUrl(call);
@@ -735,13 +701,12 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                 (ImageView) v);
 
                         if (client_email.equals(my_email)) {
-                            isTalkable = true;
+//                            isTalkable = true;
                             showToast(mContext, getString(R.string.allow_talk));
                         } else {
                             //js 通知当事人
                             String call =
-                                    "javascript:alterUserPermission('" + client_email + "','" +
-                                            null + "','" + true
+                                    "javascript:alterTalkPermission('" + client_email + "','" + true
                                             + "')";
                             //调用js函数
                             mWvCanvas.loadUrl(call);
@@ -1639,14 +1604,14 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     }
 
     /**
-     * 接受 主持人 修改权限的消息
+     * 接受 主持人 修改 画板权限的消息
      */
     @android.webkit.JavascriptInterface
-    public void alterPermission(final String is_Drawable, final String is_Talkable) {
+    public void alterDrawPermission(final String is_Drawable) {
         runOnUiThread(new Runnable() {
                           @Override
                           public void run() {
-                              showLog("接受 主持人 修改权限的消息");
+                              showLog("接受 主持人 修改画板权限的消息");
                               boolean tmpIsDrawable, tmpIsTalkable;
                               if (!is_Drawable.equals("null")) {
                                   tmpIsDrawable = Boolean.valueOf(is_Drawable);
@@ -1662,6 +1627,29 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
                                   }
                               }
+
+
+                          }
+
+
+                      }
+
+
+        );
+
+    }
+
+    /**
+     * 接受 主持人 修改 聊天权限的消息
+     */
+    @android.webkit.JavascriptInterface
+    public void alterTalkPermission(final String is_Talkable) {
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              showLog("接受 主持人 修改聊天权限的消息");
+                              boolean tmpIsDrawable, tmpIsTalkable;
+
                               if (!is_Talkable.equals("null")) {
                                   tmpIsTalkable = Boolean.valueOf(is_Talkable);
 
@@ -1672,9 +1660,15 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                       isTalkable = tmpIsTalkable;
                                       if (tmpIsTalkable) {
                                           showToast(mContext, getString(R.string.host_allow_talk));
+
                                       } else {
                                           showToast(mContext, getString(R.string.host_forbid_talk));
                                       }
+                                      TalkPermissionChange tmp = new TalkPermissionChange
+                                              (tmpIsTalkable);
+                                      //实时通知聊天页面
+                                      EventBus.getDefault()
+                                              .post(tmp);
                                   }
                               }
 

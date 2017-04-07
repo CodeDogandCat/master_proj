@@ -209,9 +209,18 @@ class Events
                 $room_id = $_SESSION['room_id'];
                 return Gateway::sendToGroup($room_id, $message);
                 break;
-            //主持人修改权限
-            case 'alter_permission':
-                echo "alterUserPermission用socket 转发主持人修改权限的消息\n";
+            //主持人修改 画板 权限
+            case 'alter_draw_permission':
+                echo "alter_draw_permission用socket 转发主持人修改 画板 权限\n";
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                Gateway::sendToUid($message_data['to_client_email'], $message);
+                break;
+            //主持人修改 聊天权限
+            case 'alter_talk_permission':
+                echo "alter_talk_permission用socket 转发主持人修改 聊天权限\n";
                 // 非法请求
                 if (!isset($_SESSION['room_id'])) {
                     throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");

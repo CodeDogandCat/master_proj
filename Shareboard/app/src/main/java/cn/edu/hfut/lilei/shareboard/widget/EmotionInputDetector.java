@@ -50,6 +50,7 @@ public class EmotionInputDetector {
     private PopupWindowFactory mVoicePop;
     private TextView mPopVoiceText;
 
+
     private EmotionInputDetector() {
     }
 
@@ -338,6 +339,10 @@ public class EmotionInputDetector {
         return false;
     }
 
+    public boolean isEmotionLayoutShown() {
+        return mEmotionLayout.isShown();
+    }
+
     private void showEmotionLayout() {
         hideSoftInput();
         int softInputHeight = getSupportSoftInputHeight();
@@ -389,7 +394,7 @@ public class EmotionInputDetector {
         mInputManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
     }
 
-    private boolean isSoftInputShown() {
+    public boolean isSoftInputShown() {
         return getSupportSoftInputHeight() != 0;
     }
 
