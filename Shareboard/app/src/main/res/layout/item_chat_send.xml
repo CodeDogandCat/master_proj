@@ -1,33 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/content_vertical_margin">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="@dimen/content_vertical_margin">
 
     <TextView
         android:id="@+id/chat_item_date"
         style="@style/text_body"
         android:layout_gravity="center_horizontal"
-        android:visibility="gone" />
+        android:textSize="12sp"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
 
-        <ImageView
+        <!--<ImageView-->
+        <!--android:id="@+id/chat_item_header"-->
+        <!--android:layout_width="48dp"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:scaleType="fitCenter"/>-->
+        <cn.carbs.android.avatarimageview.library.AvatarImageView
             android:id="@+id/chat_item_header"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentRight="true"
-            android:scaleType="fitCenter" />
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            app:aiv_BoarderWidth="0dp"
+            app:aiv_ShowBoarder="false"
+            app:aiv_TextSizeRatio="0.3"/>
+
+        <TextView
+            android:id="@+id/chat_item_name"
+            style="@style/text_body"
+            android:layout_alignTop="@id/chat_item_header"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/chat_item_header"
+            android:textColor="@color/text_title"
+            android:maxLength="12"
+            android:textSize="13sp"
+            android:maxLines="1"
+            />
 
         <RelativeLayout
             android:id="@+id/chat_item_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/chat_item_header">
+            android:layout_below="@id/chat_item_name"
+            android:layout_toLeftOf="@id/chat_item_header"
+            android:layout_marginTop="5dp">
 
             <cn.edu.hfut.lilei.shareboard.widget.BubbleImageView
                 android:id="@+id/chat_item_content_image"
@@ -39,7 +66,7 @@
                 app:arrowHeight="8dp"
                 app:arrowLocation="right"
                 app:arrowPosition="15dp"
-                app:arrowWidth="10dp" />
+                app:arrowWidth="10dp"/>
 
             <cn.edu.hfut.lilei.shareboard.widget.BubbleLinearLayout
                 android:id="@+id/chat_item_layout_content"
@@ -54,33 +81,33 @@
                 app:arrowLocation="right"
                 app:arrowPosition="10dp"
                 app:arrowWidth="8dp"
-                app:bubbleColor="@color/divider_line">
+                app:bubbleColor="#F0B24F">
 
                 <cn.edu.hfut.lilei.shareboard.widget.GifTextView
                     android:id="@+id/chat_item_content_text"
                     style="@style/text_subhead_black"
                     android:layout_marginRight="@dimen/content_horizontal_margin"
                     android:padding="@dimen/content_vertical_margin"
-                   />
+                    />
 
                 <ImageView
                     android:id="@+id/chat_item_voice"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:src="@mipmap/icon_voice_right3"
                     android:scaleType="fitCenter"
-                    android:visibility="gone" />
+                    android:src="@mipmap/icon_voice_right3"
+                    android:visibility="gone"/>
             </cn.edu.hfut.lilei.shareboard.widget.BubbleLinearLayout>
         </RelativeLayout>
 
         <TextView
             android:id="@+id/chat_item_voice_time"
             style="@style/text_body"
-            android:visibility="gone"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/content_vertical_margin"
-            android:layout_toLeftOf="@+id/chat_item_layout" />
+            android:layout_toLeftOf="@+id/chat_item_layout"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/chat_item_fail"
@@ -89,9 +116,9 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/content_vertical_margin"
             android:layout_toLeftOf="@+id/chat_item_voice_time"
-            android:src="@drawable/msg_state_fail_resend"
             android:focusable="false"
-            android:visibility="gone" />
+            android:src="@drawable/msg_state_fail_resend"
+            android:visibility="gone"/>
 
         <ProgressBar
             android:id="@+id/chat_item_progress"
@@ -101,7 +128,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/content_vertical_margin"
             android:layout_toLeftOf="@+id/chat_item_voice_time"
-            android:visibility="gone" />
+            android:visibility="gone"/>
     </RelativeLayout>
 
 </LinearLayout>

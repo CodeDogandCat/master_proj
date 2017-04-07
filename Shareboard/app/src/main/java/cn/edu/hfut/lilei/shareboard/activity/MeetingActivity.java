@@ -8,16 +8,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,7 +24,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -36,27 +32,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.lzy.okgo.OkGo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.ButterKnife;
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.adapter.ChatAdapter;
-import cn.edu.hfut.lilei.shareboard.adapter.CommonFragmentPagerAdapter;
 import cn.edu.hfut.lilei.shareboard.adapter.MemberListAdapter;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
+import cn.edu.hfut.lilei.shareboard.enity.ChatActivityInitInfo;
 import cn.edu.hfut.lilei.shareboard.enity.MeetingMemberInfo;
+import cn.edu.hfut.lilei.shareboard.enity.MessageFromMeInfo;
+import cn.edu.hfut.lilei.shareboard.enity.MessageFromOtherInfo;
 import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
-import cn.edu.hfut.lilei.shareboard.fragment.ChatEmotionFragment;
-import cn.edu.hfut.lilei.shareboard.fragment.ChatFunctionFragment;
+import cn.edu.hfut.lilei.shareboard.enity.MessageSuccessInfo;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.models.CommonJson;
 import cn.edu.hfut.lilei.shareboard.models.MemberJson;
 import cn.edu.hfut.lilei.shareboard.models.MemberListJson;
+import cn.edu.hfut.lilei.shareboard.utils.Constants;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -66,9 +66,6 @@ import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.hugeimageutil.HugeImageRegionLoader;
 import cn.edu.hfut.lilei.shareboard.utils.hugeimageutil.TileDrawable;
 import cn.edu.hfut.lilei.shareboard.widget.DragFloatActionButton;
-import cn.edu.hfut.lilei.shareboard.widget.EmotionInputDetector;
-import cn.edu.hfut.lilei.shareboard.widget.NoScrollViewPager;
-import cn.edu.hfut.lilei.shareboard.widget.StateButton;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.CommonAlertDialog;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.ShareChooseDialog;
@@ -83,6 +80,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.ALBUM_REQUEST_CODE;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CHAT_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.HOST_CHECK_IN;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
@@ -159,50 +157,15 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     private ListView listContent = null;
     private MemberListAdapter memberListAdapter;
 
-    /**
-     * 聊天页面的 变量
-     */
-    @Bind(R.id.chat_list)
-    EasyRecyclerView chatList;
-    @Bind(R.id.emotion_voice)
-    ImageView emotionVoice;
-    @Bind(R.id.edit_text)
-    EditText editText;
-    @Bind(R.id.voice_text)
-    TextView voiceText;
-    @Bind(R.id.emotion_button)
-    ImageView emotionButton;
-    @Bind(R.id.emotion_add)
-    ImageView emotionAdd;
-    @Bind(R.id.emotion_send)
-    StateButton emotionSend;
-    @Bind(R.id.viewpager)
-    NoScrollViewPager viewpager;
-    @Bind(R.id.emotion_layout)
-    RelativeLayout emotionLayout;
-    private LinearLayout mLlChat;
-    private EmotionInputDetector mDetector;
-    private ArrayList<Fragment> fragments;
-    private ChatEmotionFragment chatEmotionFragment;
-    private ChatFunctionFragment chatFunctionFragment;
-    private CommonFragmentPagerAdapter fragmentPagerAdapter;
-
-    private ChatAdapter chatAdapter;
-    private LinearLayoutManager layoutManager;
-    private List<MessageInfo> messageInfos;
-    //录音相关
-    int animationRes = 0;
-    int res = 0;
-    AnimationDrawable animationDrawable = null;
-    private ImageView animView;
     private ImageView mBtnBack;
+    private List<MessageInfo> messageInfos;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_meeting_test);
         init();
@@ -231,30 +194,206 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         if (mTileDrawable != null) {
             mTileDrawable.recycle();
         }
+        ButterKnife.unbind(this);
+        EventBus.getDefault()
+                .unregister(this);
     }
 
+    /**
+     * 得到返回结果状态码
+     *
+     * @param requestCode
+     * @param resultCode  结果状态
+     * @param data
+     */
     @Override
-    public void onBackPressed() {
-        if (!mDetector.interceptBackPress()) {
-            super.onBackPressed();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK)
+            return;
+
+        switch (requestCode) {
+            case ALBUM_REQUEST_CODE:
+                if (data == null) {
+                    showLog("相册返回为空");
+                    return;
+                }
+                mRlAvatar.setVisibility(View.GONE);
+                mRlSharePic.setVisibility(View.VISIBLE);
+                setShareImage(pinchImageView, data.getData());
+                shareType = 1;
+                if (check_in_type == 2) {
+                    changeToSelected(mBtnShare, 1, getString(R.string.end_share));
+                }
+                break;
+            case CHAT_REQUEST_CODE:
+                break;
+            default:
+                break;
         }
     }
 
-    public void beforeFinish() {
-        getWindow().setFlags(WindowManager
-                        .LayoutParams
-                        .FLAG_FORCE_NOT_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+
+    /**
+     * 构造聊天数据
+     */
+    private void LoadData() {
+
+
+//        MessageInfo messageInfo = new MessageInfo();
+//        messageInfo.setContent("你好，欢迎使用Rance的聊天界面框架");
+//        messageInfo.setType(Constants.CHAT_ITEM_TYPE_LEFT);
+//        messageInfo.setHeader("http://tupian.enterdesk.com/2014/mxy/11/2/1/12.jpg");
+//        messageInfos.add(messageInfo);
+//
+//        MessageInfo messageInfo1 = new MessageInfo();
+//        messageInfo1.setFilepath("http://www.trueme.net/bb_midi/welcome.wav");
+//        messageInfo1.setVoiceTime(3000);
+//        messageInfo1.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
+//        messageInfo1.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+//        messageInfo1.setHeader(
+//                "http://img.dongqiudi.com/uploads/avatar/2014/10/20/8MCTb0WBFG_thumb_1413805282863.jpg");
+//        messageInfos.add(messageInfo1);
+//
+//        MessageInfo messageInfo2 = new MessageInfo();
+//        messageInfo2.setImageUrl(
+//                "http://img4.imgtn.bdimg.com/it/u=1800788429,176707229&fm=21&gp=0.jpg");
+//        messageInfo2.setType(Constants.CHAT_ITEM_TYPE_LEFT);
+//        messageInfo2.setHeader("http://tupian.enterdesk.com/2014/mxy/11/2/1/12.jpg");
+//        messageInfos.add(messageInfo2);
+//
+//        MessageInfo messageInfo3 = new MessageInfo();
+//        messageInfo3.setContent("[微笑][色][色][色]");
+//        messageInfo3.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
+//        messageInfo3.setSendState(Constants.CHAT_ITEM_SEND_ERROR);
+//        messageInfo3.setHeader(
+//                "http://img.dongqiudi.com/uploads/avatar/2014/10/20/8MCTb0WBFG_thumb_1413805282863.jpg");
+//        messageInfos.add(messageInfo3);
+
     }
+
+    /**
+     * 监听chatActivity 是否初始化
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void listenChatInitOK(final ChatActivityInitInfo initInfo) {
+        if (initInfo.getType() == 1) {
+
+            //发布初始化 消息列表
+            EventBus.getDefault()
+                    .post(messageInfos);
+        }
+    }
+
+
+    /**
+     * 监听自己的聊天消息,并且通过 js 广播
+     *
+     * @param messageMeInfo
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void listenMyMsg(final MessageFromMeInfo messageMeInfo) {
+
+
+        messageInfos.add(messageMeInfo.toMessageInfo());
+        messageMeInfo.setIndexOfList(messageInfos.size() - 1);
+
+        showLog("发送消息...");
+        //通过 js 发送 messageInfo
+        Gson gson = new Gson();
+        String jsonObject = gson.toJson(messageMeInfo); // {"name":"怪盗kidou","age":24}
+        String call = "javascript:sendMsg('" + jsonObject + "')";
+        //调用js函数
+        mWvCanvas.loadUrl(call);
+
+
+//        new Handler().postDelayed(new Runnable() {
+//            public void run() {
+//                MessageFromOtherInfo message = new MessageFromOtherInfo();
+//                message.setContent("这是模拟消息回复");
+//                message.setType(Constants.CHAT_ITEM_TYPE_LEFT);
+//                message.setHeader("http://tupian.enterdesk.com/2014/mxy/11/2/1/12.jpg");
+//                messageInfos.add(message.toMessageInfo());
+//                showLog("消息条数" + messageInfos.size());
+//                EventBus.getDefault()
+//                        .post(message);
+//
+//            }
+//        }, 2000);
+    }
+
+    /**
+     * 接受js 发来我的聊天消息 的返回状态
+     *
+     * @param str 消息json
+     */
+    @android.webkit.JavascriptInterface
+    public void listenMyMsgStatus(final String str) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //处理json
+                Gson gson = new Gson();
+                MessageSuccessInfo msg = gson.fromJson(str, MessageSuccessInfo.class);
+                //更新list中消息的状态
+                int position = msg.getIndexOfList();
+                if (position < messageInfos.size() && position >= 0) {
+                    MessageInfo tmp = messageInfos.get(position);
+                    //判断是否一致
+                    if (tmp.getMsgId()
+                            .equals(msg.getMsgId())) {
+                        tmp.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+                    }
+                }
+
+                //eventbus 通知聊天页面
+                EventBus.getDefault()
+                        .post(msg);
+
+
+            }
+        });
+
+    }
+
+    /**
+     * 接受js 发来的 其他人的聊天消息
+     *
+     * @param str 消息json
+     */
+    @android.webkit.JavascriptInterface
+    public void postOthenMsg(final String str) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //处理json  生成 Message
+                Gson gson = new Gson();
+                MessageFromOtherInfo msg = gson.fromJson(str, MessageFromOtherInfo.class);
+                msg.setType(Constants.CHAT_ITEM_TYPE_LEFT);
+                msg.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+                //放到 list
+                messageInfos.add(msg.toMessageInfo());
+                // 发布到 chat页面
+                EventBus.getDefault()
+                        .post(msg);
+
+            }
+        });
+
+    }
+
 
     /**
      * 公共部分的初始化
      */
     public void init() {
         mContext = this;
+        ButterKnife.bind(this);
+        EventBus.getDefault()
+                .register(this);
+        messageInfos = new ArrayList<>();
         mRlMeeting = (RelativeLayout) findViewById(R.id.rl_meeting);
         mRlMember = (RelativeLayout) findViewById(R.id.rl_member);
-//        mLlChat = (LinearLayout) findViewById(R.id.ll_chat);
+        messageInfos = new ArrayList<>();
 
     }
 
@@ -404,76 +543,6 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
     }
 
-    /**
-     * 聊天页面初始化
-     */
-//    public void initChat() {
-//        View decorView = getWindow().getDecorView();
-//        // Hide the status bar.
-//        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
-//        decorView.setSystemUiVisibility(uiOptions);
-//
-//        ButterKnife.bind(this);
-//        EventBus.getDefault()
-//                .register(this);
-//        fragments = new ArrayList<>();
-//        chatEmotionFragment = new ChatEmotionFragment();
-//        fragments.add(chatEmotionFragment);
-//        chatFunctionFragment = new ChatFunctionFragment();
-//        fragments.add(chatFunctionFragment);
-//        fragmentPagerAdapter =
-//                new CommonFragmentPagerAdapter(getSupportFragmentManager(), fragments);
-//        viewpager.setAdapter(fragmentPagerAdapter);
-//        viewpager.setCurrentItem(0);
-//
-//        mDetector = EmotionInputDetector.with(this)
-//                .setEmotionView(emotionLayout)
-//                .setViewPager(viewpager)
-//                .bindToContent(chatList)
-//                .bindToEditText(editText)
-//                .bindToEmotionButton(emotionButton)
-//                .bindToAddButton(emotionAdd)
-//                .bindToSendButton(emotionSend)
-//                .bindToVoiceButton(emotionVoice)
-//                .bindToVoiceText(voiceText)
-//                .build();
-//
-//        GlobalOnItemClickManagerUtils globalOnItemClickListener =
-//                GlobalOnItemClickManagerUtils.getInstance(this);
-//        globalOnItemClickListener.attachToEditText(editText);
-//
-//        chatAdapter = new ChatAdapter(this);
-//        layoutManager = new LinearLayoutManager(this);
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        chatList.setLayoutManager(layoutManager);
-//        chatList.setAdapter(chatAdapter);
-//        chatList.setOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                switch (newState) {
-//                    case RecyclerView.SCROLL_STATE_IDLE:
-//                        chatAdapter.handler.removeCallbacksAndMessages(null);
-//                        chatAdapter.notifyDataSetChanged();
-//                        break;
-//                    case RecyclerView.SCROLL_STATE_DRAGGING:
-//                        chatAdapter.handler.removeCallbacksAndMessages(null);
-//                        mDetector.hideEmotionLayout(false);
-//                        mDetector.hideSoftInput();
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//            }
-//        });
-//        chatAdapter.addItemClickListener(itemClickListener);
-//        LoadData();
-//    }
-
 
     /**
      * 销毁参与者页面的资源
@@ -491,28 +560,6 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         mRlMember.setVisibility(View.GONE);
     }
 
-    /**
-     * 释放聊天界面的资源
-     */
-//    public void recycleChat() {
-//        fragments = null;
-//        chatEmotionFragment = null;
-//        chatFunctionFragment = null;
-//        fragmentPagerAdapter = null;
-//        mDetector = null;
-//        chatAdapter = null;
-//        layoutManager = null;
-//        chatList = null;
-//        System.gc();
-//
-//        ButterKnife.unbind(this);
-//        EventBus.getDefault()
-//                .removeStickyEvent(this);
-//        EventBus.getDefault()
-//                .unregister(this);
-//        mRlMember.setVisibility(View.VISIBLE);
-//        mLlChat.setVisibility(View.GONE);
-//    }
 
     /**
      * 按钮监听器
@@ -574,16 +621,17 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 leaveMeetingAction();
                 break;
             case R.id.btn_member_chat:
-                //打开聊天界面
-//                mRlMember.setVisibility(View.GONE);
-//                mLlChat.setVisibility(View.VISIBLE);
-//                initChat();
-                startActivity(new Intent(mContext, ChatActivity.class));
+                Intent intent = new Intent(mContext, ChatActivity.class);
+                Bundle b = new Bundle();
+                b.putString(post_user_email, my_email);
+                intent.putExtras(b);
+                startActivityForResult(intent, CHAT_REQUEST_CODE);
                 break;
 
         }
 
     }
+
 
     /**
      * memberListAdapter 的callback: 修改与会者的权限
@@ -767,24 +815,13 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
             } else
                 if (mRlMember.getVisibility() == View.VISIBLE) {
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(200);
                         recycleMember();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
-                }
-//                else
-//                    if (mLlChat.getVisibility() == View.VISIBLE) {
-//                        try {
-//                            Thread.sleep(100);
-//                            recycleChat();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-                else {
+                } else {
                     // 监控返回键
                     leaveMeetingAction();
                 }
@@ -823,137 +860,6 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         }
     }
 
-
-    /**
-     * item点击事件
-     */
-//    private ChatAdapter.onItemClickListener itemClickListener =
-//            new ChatAdapter.onItemClickListener() {
-//                @Override
-//                public void onHeaderClick(int position) {
-//                    Toast.makeText(MeetingActivity.this, "onHeaderClick", Toast.LENGTH_SHORT)
-//                            .show();
-//                }
-//
-//                @Override
-//                public void onImageClick(View view, int position) {
-//                    int location[] = new int[2];
-//                    view.getLocationOnScreen(location);
-//                    FullImageInfo fullImageInfo = new FullImageInfo();
-//                    fullImageInfo.setLocationX(location[0]);
-//                    fullImageInfo.setLocationY(location[1]);
-//                    fullImageInfo.setWidth(view.getWidth());
-//                    fullImageInfo.setHeight(view.getHeight());
-//                    fullImageInfo.setImageUrl(messageInfos.get(position)
-//                            .getImageUrl());
-//                    EventBus.getDefault()
-//                            .postSticky(fullImageInfo);
-//                    startActivity(new Intent(mContext, FullImageActivity.class));
-//                    overridePendingTransition(0, 0);
-//                }
-//
-//                @Override
-//                public void onVoiceClick(final ImageView imageView, final int position) {
-//                    if (animView != null) {
-//                        animView.setImageResource(res);
-//                        animView = null;
-//                    }
-//                    switch (messageInfos.get(position)
-//                            .getType()) {
-//                        case 1:
-//                            animationRes = R.drawable.voice_left;
-//                            res = R.mipmap.icon_voice_left3;
-//                            break;
-//                        case 2:
-//                            animationRes = R.drawable.voice_right;
-//                            res = R.mipmap.icon_voice_right3;
-//                            break;
-//                    }
-//                    animView = imageView;
-//                    animView.setImageResource(animationRes);
-//                    animationDrawable = (AnimationDrawable) imageView.getDrawable();
-//                    animationDrawable.start();
-//                    MediaManager.playSound(messageInfos.get(position)
-//                            .getFilepath(), new MediaPlayer.OnCompletionListener() {
-//                        @Override
-//                        public void onCompletion(MediaPlayer mp) {
-//                            animView.setImageResource(res);
-//                        }
-//                    });
-//                }
-//            };
-
-    /**
-     * 构造聊天数据
-     */
-//    private void LoadData() {
-//        messageInfos = new ArrayList<>();
-//
-//        MessageInfo messageInfo = new MessageInfo();
-//        messageInfo.setContent("你好，欢迎使用Rance的聊天界面框架");
-//        messageInfo.setType(Constants.CHAT_ITEM_TYPE_LEFT);
-//        messageInfo.setHeader("http://tupian.enterdesk.com/2014/mxy/11/2/1/12.jpg");
-//        messageInfos.add(messageInfo);
-//
-//        MessageInfo messageInfo1 = new MessageInfo();
-//        messageInfo1.setFilepath("http://www.trueme.net/bb_midi/welcome.wav");
-//        messageInfo1.setVoiceTime(3000);
-//        messageInfo1.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
-//        messageInfo1.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
-//        messageInfo1.setHeader(
-//                "http://img.dongqiudi.com/uploads/avatar/2014/10/20/8MCTb0WBFG_thumb_1413805282863.jpg");
-//        messageInfos.add(messageInfo1);
-//
-//        MessageInfo messageInfo2 = new MessageInfo();
-//        messageInfo2.setImageUrl(
-//                "http://img4.imgtn.bdimg.com/it/u=1800788429,176707229&fm=21&gp=0.jpg");
-//        messageInfo2.setType(Constants.CHAT_ITEM_TYPE_LEFT);
-//        messageInfo2.setHeader("http://tupian.enterdesk.com/2014/mxy/11/2/1/12.jpg");
-//        messageInfos.add(messageInfo2);
-//
-//        MessageInfo messageInfo3 = new MessageInfo();
-//        messageInfo3.setContent("[微笑][色][色][色]");
-//        messageInfo3.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
-//        messageInfo3.setSendState(Constants.CHAT_ITEM_SEND_ERROR);
-//        messageInfo3.setHeader(
-//                "http://img.dongqiudi.com/uploads/avatar/2014/10/20/8MCTb0WBFG_thumb_1413805282863.jpg");
-//        messageInfos.add(messageInfo3);
-//
-//        chatAdapter.addAll(messageInfos);
-//    }
-//
-//    /**
-//     * 处理聊天消息逻辑
-//     *
-//     * @param messageInfo
-//     */
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void MessageEventBus(final MessageInfo messageInfo) {
-//        messageInfo.setHeader(
-//                "http://img.dongqiudi.com/uploads/avatar/2014/10/20/8MCTb0WBFG_thumb_1413805282863.jpg");
-//        messageInfo.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
-//        messageInfo.setSendState(Constants.CHAT_ITEM_SENDING);
-//        messageInfos.add(messageInfo);
-//        chatAdapter.add(messageInfo);
-//        chatList.scrollToPosition(chatAdapter.getCount() - 1);
-//        new Handler().postDelayed(new Runnable() {
-//            public void run() {
-//                messageInfo.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
-//                chatAdapter.notifyDataSetChanged();
-//            }
-//        }, 2000);
-//        new Handler().postDelayed(new Runnable() {
-//            public void run() {
-//                MessageInfo message = new MessageInfo();
-//                message.setContent("这是模拟消息回复");
-//                message.setType(Constants.CHAT_ITEM_TYPE_LEFT);
-//                message.setHeader("http://tupian.enterdesk.com/2014/mxy/11/2/1/12.jpg");
-//                messageInfos.add(message);
-//                chatAdapter.add(message);
-//                chatList.scrollToPosition(chatAdapter.getCount() - 1);
-//            }
-//        }, 3000);
-//    }
 
     /**
      * 初始化主持人设置
@@ -1343,36 +1249,6 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
     }
 
-    /**
-     * 得到返回结果状态码
-     *
-     * @param requestCode
-     * @param resultCode  结果状态
-     * @param data
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK)
-            return;
-
-        switch (requestCode) {
-            case ALBUM_REQUEST_CODE:
-                if (data == null) {
-                    showLog("相册返回为空");
-                    return;
-                }
-                mRlAvatar.setVisibility(View.GONE);
-                mRlSharePic.setVisibility(View.VISIBLE);
-                setShareImage(pinchImageView, data.getData());
-                shareType = 1;
-                if (check_in_type == 2) {
-                    changeToSelected(mBtnShare, 1, getString(R.string.end_share));
-                }
-                break;
-            default:
-                break;
-        }
-    }
 
     /**
      * 设置要share的图片
@@ -1915,15 +1791,6 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         }
     }
 
-//    /**
-//     * 共享图片
-//     */
-//    public void sharePic() {
-//        shareType = 1;
-//        mRlSharePic.setVisibility(View.VISIBLE);
-//
-//    }
-
 
     /**
      * 新加会的加会者接收共享的图片
@@ -2174,15 +2041,17 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                               //关闭页面
                               beforeFinish();
                               finish();
-
-
                           }
 
                       }
-
         );
 
     }
 
-
+    public void beforeFinish() {
+        getWindow().setFlags(WindowManager
+                        .LayoutParams
+                        .FLAG_FORCE_NOT_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+    }
 }

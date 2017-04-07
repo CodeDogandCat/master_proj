@@ -554,7 +554,6 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                              intent.putExtras(b);
                                              startActivity(intent);
                                              mlodingDialog.cancle();
-                                             clickableAllBtn();
                                              finish();
 
                                          } else {

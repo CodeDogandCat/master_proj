@@ -227,6 +227,16 @@ class Events
                 }
                 Gateway::sendToUid($message_data['to_client_email'], $message);
                 break;
+            //发消息
+            case 'sendmsg':
+                echo "sendmsg用socket发消息\n";
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                $room_id = $_SESSION['room_id'];
+                return Gateway::sendToGroup($room_id, $message);
+                break;
 
 
         }

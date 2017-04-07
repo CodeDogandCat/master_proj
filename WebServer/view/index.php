@@ -348,8 +348,32 @@ if (
 
                         }
                         break;
+                    //发消息
+                    case 'sendmsg':
+                        if (data['from_client_email'] != email) {
+                            //通知native
+                            window.board.postOthenMsg(data['content'].replace(/&quot;/g, '"').replace(/425D8E69BF45B845CB7CF50FA43D64C68D379A46/g, '\\"'));
+                        }
+
+                        break;
 
                 }
+            }
+
+
+            /**
+             * native  发消息
+             * native来调用
+             */
+            function sendMsg(jsondata) {
+                var sync_data = '{"type":"sendmsg","from_client_email":"' + email + '","to_client_email":"all ","content":"' + jsondata.replace(/\\"/g, '425D8E69BF45B845CB7CF50FA43D64C68D379A46').replace(/"/g, '\\"')
+                        .replace(/\n/g, '\\n').replace(/\r/g, '\\r') + '"}';
+                console.log("发消息...");
+                ws.send(sync_data);
+                //通知native
+                window.board.listenMyMsgStatus(jsondata);
+
+
             }
 
             /**

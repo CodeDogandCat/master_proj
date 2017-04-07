@@ -117,6 +117,8 @@ public class SettingUtil {
     public static final int ALBUM_REQUEST_CODE = 1;//相册请求代码
     public static final int CAMERA_REQUEST_CODE = 2;//相机请求代码
     public static final int CROP_REQUEST_CODE = 4;//裁剪请求代码
+    public static final int CHAT_REQUEST_CODE = 7;//聊天界面请求代码
+    public static final int MEETING_REQUEST_CODE = 8;//会议界面请求代码
     public static final String PERMISSION_REQUEST_TITLE = "帮助";//权限请求提示框标题
     public static final String PERMISSION_REQUEST_CONTENT =
             "当前应用缺少必要权限。\n \n 请点击 \"设置\"-\"权限\"-打开所需权限。";//权限请求提示框内容

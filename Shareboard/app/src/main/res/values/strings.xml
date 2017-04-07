@@ -188,4 +188,5 @@
     <string name="you_kick_out">你被主持人提出</string>
     <string name="member_manage">参会人员管理</string>
     <string name="should_get_to_share">应用需要该权限才能共享</string>
+    <string name="init">初始化...</string>
 </resources>

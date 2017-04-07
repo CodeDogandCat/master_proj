@@ -15,25 +15,25 @@ import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ChatAdapter;
 import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
 import cn.edu.hfut.lilei.shareboard.utils.Constants;
+import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.Utils;
 import cn.edu.hfut.lilei.shareboard.widget.BubbleImageView;
 import cn.edu.hfut.lilei.shareboard.widget.BubbleLinearLayout;
 import cn.edu.hfut.lilei.shareboard.widget.GifTextView;
 
-/**
- * 作者：Rance on 2016/11/29 10:47
- * 邮箱：rance935@163.com
- */
 public class ChatSendViewHolder extends BaseViewHolder<MessageInfo> {
 
     @Bind(R.id.chat_item_date)
     TextView chatItemDate;
+    @Bind(R.id.chat_item_name)
+    TextView chatItemName;
     @Bind(R.id.chat_item_header)
-    ImageView chatItemHeader;
+    AvatarImageView chatItemHeader;
     @Bind(R.id.chat_item_content_text)
     GifTextView chatItemContentText;
     @Bind(R.id.chat_item_content_image)
@@ -63,7 +63,11 @@ public class ChatSendViewHolder extends BaseViewHolder<MessageInfo> {
 
     @Override
     public void setData(MessageInfo data) {
-        chatItemDate.setText(data.getTime() != null ? data.getTime() : "");
+        chatItemName.setText(data.getFamilyName() + " " + data.getGivenyName());
+        chatItemDate.setText(data.getTime() != null ?
+                DateTimeUtil.getChatDateTime(Long.valueOf(data.getTime())) : "");
+        chatItemHeader.setTextAndColor(data.getGivenyName(), R.color.burlywood);
+
         Glide.with(getContext()).load(data.getHeader()).into(chatItemHeader);
         chatItemHeader.setOnClickListener(new View.OnClickListener() {
             @Override

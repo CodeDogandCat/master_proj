@@ -1,10 +1,10 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,22 +24,37 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ChatAdapter;
 import cn.edu.hfut.lilei.shareboard.adapter.CommonFragmentPagerAdapter;
+import cn.edu.hfut.lilei.shareboard.enity.ChatActivityInitInfo;
 import cn.edu.hfut.lilei.shareboard.enity.FullImageInfo;
+import cn.edu.hfut.lilei.shareboard.enity.MessageFromOtherInfo;
 import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
+import cn.edu.hfut.lilei.shareboard.enity.MessageSuccessInfo;
 import cn.edu.hfut.lilei.shareboard.fragment.ChatEmotionFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.ChatFunctionFragment;
 import cn.edu.hfut.lilei.shareboard.utils.Constants;
+import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.GlobalOnItemClickManagerUtils;
 import cn.edu.hfut.lilei.shareboard.utils.MediaManager;
+import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
+import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
+import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.widget.EmotionInputDetector;
 import cn.edu.hfut.lilei.shareboard.widget.NoScrollViewPager;
 import cn.edu.hfut.lilei.shareboard.widget.StateButton;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
+
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_avatar;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
 
 /**
  * 作者：Rance on 2016/11/29 10:47
@@ -75,11 +90,19 @@ public class ChatActivity extends AppCompatActivity {
     private ChatAdapter chatAdapter;
     private LinearLayoutManager layoutManager;
     private List<MessageInfo> messageInfos;
+    private MessageInfo messageInfo;
     //录音相关
     int animationRes = 0;
     int res = 0;
     AnimationDrawable animationDrawable = null;
+    private LodingDialog.Builder lodingDialog;
     private ImageView animView;
+    private String my_email;
+    private Context mContext;
+    private Timer timer;
+    private TimerTask task;
+    private String name, familyName, GivenName, avatar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +111,46 @@ public class ChatActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         EventBus.getDefault()
                 .register(this);
+        lodingDialog = MyAppUtil.loding(this, R.string.init);
+        my_email = getIntent().getExtras()
+                .getString(post_user_email);
+        ArrayList<String> keyList = new ArrayList<>();
+        ArrayList<String> valueList = new ArrayList<>();
+        keyList.add(share_family_name);
+        keyList.add(share_given_name);
+        keyList.add(share_avatar);
+
+
+        valueList = SharedPrefUtil.getInstance()
+                .getStringDatas(keyList);
+        familyName = valueList.get(0);
+        GivenName = valueList.get(1);
+        avatar = valueList.get(2);
+        name = familyName + " " + GivenName;
+
+        mContext = this;
         initWidget();
     }
 
     private void initWidget() {
+
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                if (!NetworkUtil.isNetworkConnected(mContext)) {
+                    //网络连接不可用
+                    NetworkUtil.setNetworkMethod(mContext);
+                }
+            }
+        };
+
+        timer = new Timer();
+        // 参数：
+        // 0，延时0秒后执行。
+        // 2000，每隔2秒执行1次task。
+        timer.schedule(task, 0, 2000);
+
+
         fragments = new ArrayList<>();
         chatEmotionFragment = new ChatEmotionFragment();
         fragments.add(chatEmotionFragment);
@@ -146,8 +205,15 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         chatAdapter.addItemClickListener(itemClickListener);
-        LoadData();
+        //发布init状态
+        ChatActivityInitInfo status = new ChatActivityInitInfo();
+        status.setType(1);
+        EventBus.getDefault()
+                .post(status);
+
+
     }
+
 
     /**
      * item点击事件
@@ -208,71 +274,145 @@ public class ChatActivity extends AppCompatActivity {
                 }
             };
 
+
     /**
-     * 构造聊天数据
+     * 接受初始化的 消息
+     *
+     * @param initList
      */
-    private void LoadData() {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void listenInitMsg(final List<MessageInfo> initList) {
         messageInfos = new ArrayList<>();
-
-        MessageInfo messageInfo = new MessageInfo();
-        messageInfo.setContent("你好，欢迎使用Rance的聊天界面框架");
-        messageInfo.setType(Constants.CHAT_ITEM_TYPE_LEFT);
-        messageInfo.setHeader("http://tupian.enterdesk.com/2014/mxy/11/2/1/12.jpg");
-        messageInfos.add(messageInfo);
-
-        MessageInfo messageInfo1 = new MessageInfo();
-        messageInfo1.setFilepath("http://www.trueme.net/bb_midi/welcome.wav");
-        messageInfo1.setVoiceTime(3000);
-        messageInfo1.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
-        messageInfo1.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
-        messageInfo1.setHeader(
-                "http://img.dongqiudi.com/uploads/avatar/2014/10/20/8MCTb0WBFG_thumb_1413805282863.jpg");
-        messageInfos.add(messageInfo1);
-
-        MessageInfo messageInfo2 = new MessageInfo();
-        messageInfo2.setImageUrl(
-                "http://img4.imgtn.bdimg.com/it/u=1800788429,176707229&fm=21&gp=0.jpg");
-        messageInfo2.setType(Constants.CHAT_ITEM_TYPE_LEFT);
-        messageInfo2.setHeader("http://tupian.enterdesk.com/2014/mxy/11/2/1/12.jpg");
-        messageInfos.add(messageInfo2);
-
-        MessageInfo messageInfo3 = new MessageInfo();
-        messageInfo3.setContent("[微笑][色][色][色]");
-        messageInfo3.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
-        messageInfo3.setSendState(Constants.CHAT_ITEM_SEND_ERROR);
-        messageInfo3.setHeader(
-                "http://img.dongqiudi.com/uploads/avatar/2014/10/20/8MCTb0WBFG_thumb_1413805282863.jpg");
-        messageInfos.add(messageInfo3);
-
+        messageInfos.addAll(initList);
         chatAdapter.addAll(messageInfos);
+        chatList.scrollToPosition(chatAdapter.getCount() - 1);
+        lodingDialog.cancle();
+
     }
 
+    /**
+     * 接受他人的 消息
+     *
+     * @param Info
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void MessageEventBus(final MessageInfo messageInfo) {
-        messageInfo.setHeader(
-                "http://img.dongqiudi.com/uploads/avatar/2014/10/20/8MCTb0WBFG_thumb_1413805282863.jpg");
-        messageInfo.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
-        messageInfo.setSendState(Constants.CHAT_ITEM_SENDING);
+    public void listenOtherMsg(final MessageFromOtherInfo Info) {
+
+        messageInfo = Info.toMessageInfo();
+
         messageInfos.add(messageInfo);
         chatAdapter.add(messageInfo);
         chatList.scrollToPosition(chatAdapter.getCount() - 1);
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                messageInfo.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+
+
+    }
+
+    /**
+     * 更新自己发送的 消息的状态 为成功发送
+     * <p>
+     * 情况1: 没有关闭页面,那么 原来消息在 listview中的位置不会变,仍然是  IndexOfAdapter
+     * <p>
+     * 情况2: 关闭的页面, 但是会议页面 接收到了 success 消息,那么只能先保存在 meeting 页面的list中,
+     * 下次再打开页面的时候, 原来消息在 listview中的位置 就是之前在list 中的位置,状态早已经修
+     * 改为成功啦,不必担心
+     * <p>
+     * 情况3: 关闭页面,再打开页面,之后 原来消息的 success消息 传回来啦,当然也是先保存在 meeting页面
+     * 的list中,但是 是通过 eventbus 通知当前页面 更新listview的,这时候 原来消息在 listview
+     * 中的位置 就是之前在list 中的位置, 需要用 IndexOfList 来更新
+     * <p>
+     * 为了保证不会更新错  ,还要在更新前 比较msgid
+     *
+     * @param Info
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void changeMyMsgStatus(final MessageSuccessInfo Info) {
+        boolean flag = false;
+
+        /**
+         * 情况1
+         */
+        //原来消息在 listview中的位置
+        int position = Info.getIndexOfAdapter();
+        if (position < chatAdapter.getCount() && position >= 0) {
+            MessageInfo tmp = chatAdapter.getItem(position);
+            //判断是否一致
+            if (tmp.getMsgId()
+                    .equals(Info.getMsgId())) {
+                tmp.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
                 chatAdapter.notifyDataSetChanged();
+
+                //界面更新完了,在更新list,始终保持一致,不在判断msgid ,有问题直接覆盖,始终朝adapter看齐
+                messageInfos.get(position)
+                        .setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+                flag = true;
+
+
             }
-        }, 2000);
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                MessageInfo message = new MessageInfo();
-                message.setContent("这是模拟消息回复");
-                message.setType(Constants.CHAT_ITEM_TYPE_LEFT);
-                message.setHeader("http://tupian.enterdesk.com/2014/mxy/11/2/1/12.jpg");
-                messageInfos.add(message);
-                chatAdapter.add(message);
-                chatList.scrollToPosition(chatAdapter.getCount() - 1);
+        }
+        /**
+         * 情况3
+         */
+        if (!flag) {
+            //原来消息在 list 中的位置
+            int position2 = Info.getIndexOfList();
+            if (position2 < chatAdapter.getCount() && position2 >= 0) {
+                MessageInfo tmp = chatAdapter.getItem(position2);
+                //判断是否一致
+                if (tmp.getMsgId()
+                        .equals(Info.getMsgId())) {
+                    tmp.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+                    chatAdapter.notifyDataSetChanged();
+
+                    //界面更新完了,在更新list,始终保持一致,不在判断msgid ,有问题直接覆盖,始终朝adapter看齐
+                    messageInfos.get(position2)
+                            .setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+
+
+                }
             }
-        }, 3000);
+        }
+
+
+    }
+
+    /**
+     * 模拟消息发出 的状态(转圈...)
+     *
+     * @param messageInfo
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void sendMsgLocal(final MessageInfo messageInfo) {
+
+        if (!NetworkUtil.isNetworkConnected(mContext)) {
+            //网络连接不可用
+            NetworkUtil.setNetworkMethod(mContext);
+        }
+        messageInfo.setHeader(avatar);
+        messageInfo.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
+        messageInfo.setSendState(Constants.CHAT_ITEM_SENDING);
+        long now = DateTimeUtil.millisNow();
+        messageInfo.setTime(now + "");
+        messageInfo.setMsgId(my_email + now);
+        messageInfo.setFamilyName(familyName);
+        messageInfo.setGivenyName(GivenName);
+
+
+        messageInfos.add(messageInfo);
+        chatAdapter.add(messageInfo);
+
+        chatList.scrollToPosition(chatAdapter.getCount() - 1);
+
+        //发给 meeting页面
+        EventBus.getDefault()
+                .post(messageInfo.toMessageFromMeInfo(chatAdapter.getCount() - 1, -1));
+
+
+//        new Handler().postDelayed(new Runnable() {
+//            public void run() {
+//
+//            }
+//        }, 1000);
+
     }
 
     @Override

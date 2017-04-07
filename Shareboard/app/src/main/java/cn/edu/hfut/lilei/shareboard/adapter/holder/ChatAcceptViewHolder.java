@@ -14,9 +14,11 @@ import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ChatAdapter;
 import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
+import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.Utils;
 import cn.edu.hfut.lilei.shareboard.widget.BubbleImageView;
 import cn.edu.hfut.lilei.shareboard.widget.BubbleLinearLayout;
@@ -30,8 +32,10 @@ public class ChatAcceptViewHolder extends BaseViewHolder<MessageInfo> {
 
     @Bind(R.id.chat_item_date)
     TextView chatItemDate;
+    @Bind(R.id.chat_item_name)
+    TextView chatItemName;
     @Bind(R.id.chat_item_header)
-    ImageView chatItemHeader;
+    AvatarImageView chatItemHeader;
     @Bind(R.id.chat_item_content_text)
     GifTextView chatItemContentText;
     @Bind(R.id.chat_item_content_image)
@@ -46,7 +50,9 @@ public class ChatAcceptViewHolder extends BaseViewHolder<MessageInfo> {
     private Handler handler;
     private RelativeLayout.LayoutParams layoutParams;
 
-    public ChatAcceptViewHolder(ViewGroup parent, ChatAdapter.onItemClickListener onItemClickListener, Handler handler) {
+    public ChatAcceptViewHolder(ViewGroup parent,
+                                ChatAdapter.onItemClickListener onItemClickListener,
+                                Handler handler) {
         super(parent, R.layout.item_chat_accept);
         ButterKnife.bind(this, itemView);
         this.onItemClickListener = onItemClickListener;
@@ -56,8 +62,15 @@ public class ChatAcceptViewHolder extends BaseViewHolder<MessageInfo> {
 
     @Override
     public void setData(MessageInfo data) {
-        chatItemDate.setText(data.getTime() != null ? data.getTime() : "");
-        Glide.with(getContext()).load(data.getHeader()).into(chatItemHeader);
+
+        chatItemName.setText(data.getFamilyName() + " " + data.getGivenyName());
+
+        chatItemDate.setText(data.getTime() != null ?
+                DateTimeUtil.getChatDateTime(Long.valueOf(data.getTime())) : "");
+        chatItemHeader.setTextAndColor(data.getGivenyName(), R.color.lightgreen);
+        Glide.with(getContext())
+                .load(data.getHeader())
+                .into(chatItemHeader);
         chatItemHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,8 +86,10 @@ public class ChatAcceptViewHolder extends BaseViewHolder<MessageInfo> {
             chatItemContentImage.setVisibility(View.GONE);
             TextPaint paint = chatItemContentText.getPaint();
             // 计算textview在屏幕上占多宽
-            int len = (int) paint.measureText(chatItemContentText.getText().toString().trim());
-            if (len < Utils.dp2px(getContext(), 200)){
+            int len = (int) paint.measureText(chatItemContentText.getText()
+                    .toString()
+                    .trim());
+            if (len < Utils.dp2px(getContext(), 200)) {
                 layoutParams.width = len + Utils.dp2px(getContext(), 30);
                 layoutParams.height = Utils.dp2px(getContext(), 48);
             } else {
@@ -82,38 +97,42 @@ public class ChatAcceptViewHolder extends BaseViewHolder<MessageInfo> {
                 layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
             }
             chatItemLayoutContent.setLayoutParams(layoutParams);
-        } else if (data.getImageUrl() != null) {
-            chatItemVoice.setVisibility(View.GONE);
-            chatItemLayoutContent.setVisibility(View.GONE);
-            chatItemVoiceTime.setVisibility(View.GONE);
-            chatItemContentText.setVisibility(View.GONE);
-            chatItemContentImage.setVisibility(View.VISIBLE);
-            Glide.with(getContext()).load(data.getImageUrl()).into(chatItemContentImage);
-            chatItemContentImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemClickListener.onImageClick(chatItemContentImage, getDataPosition());
+        } else
+            if (data.getImageUrl() != null) {
+                chatItemVoice.setVisibility(View.GONE);
+                chatItemLayoutContent.setVisibility(View.GONE);
+                chatItemVoiceTime.setVisibility(View.GONE);
+                chatItemContentText.setVisibility(View.GONE);
+                chatItemContentImage.setVisibility(View.VISIBLE);
+                Glide.with(getContext())
+                        .load(data.getImageUrl())
+                        .into(chatItemContentImage);
+                chatItemContentImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onItemClickListener.onImageClick(chatItemContentImage, getDataPosition());
+                    }
+                });
+                layoutParams.width = Utils.dp2px(getContext(), 120);
+                layoutParams.height = Utils.dp2px(getContext(), 48);
+                chatItemLayoutContent.setLayoutParams(layoutParams);
+            } else
+                if (data.getFilepath() != null) {
+                    chatItemVoice.setVisibility(View.VISIBLE);
+                    chatItemLayoutContent.setVisibility(View.VISIBLE);
+                    chatItemContentText.setVisibility(View.GONE);
+                    chatItemVoiceTime.setVisibility(View.VISIBLE);
+                    chatItemContentImage.setVisibility(View.GONE);
+                    chatItemVoiceTime.setText(Utils.formatTime(data.getVoiceTime()));
+                    chatItemLayoutContent.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onItemClickListener.onVoiceClick(chatItemVoice, getDataPosition());
+                        }
+                    });
+                    layoutParams.width = Utils.dp2px(getContext(), 120);
+                    layoutParams.height = Utils.dp2px(getContext(), 48);
+                    chatItemLayoutContent.setLayoutParams(layoutParams);
                 }
-            });
-            layoutParams.width = Utils.dp2px(getContext(), 120);
-            layoutParams.height = Utils.dp2px(getContext(), 48);
-            chatItemLayoutContent.setLayoutParams(layoutParams);
-        } else if (data.getFilepath() != null) {
-            chatItemVoice.setVisibility(View.VISIBLE);
-            chatItemLayoutContent.setVisibility(View.VISIBLE);
-            chatItemContentText.setVisibility(View.GONE);
-            chatItemVoiceTime.setVisibility(View.VISIBLE);
-            chatItemContentImage.setVisibility(View.GONE);
-            chatItemVoiceTime.setText(Utils.formatTime(data.getVoiceTime()));
-            chatItemLayoutContent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemClickListener.onVoiceClick(chatItemVoice, getDataPosition());
-                }
-            });
-            layoutParams.width = Utils.dp2px(getContext(), 120);
-            layoutParams.height = Utils.dp2px(getContext(), 48);
-            chatItemLayoutContent.setLayoutParams(layoutParams);
-        }
     }
 }

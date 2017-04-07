@@ -2,7 +2,7 @@ package cn.edu.hfut.lilei.shareboard.enity;
 
 import com.google.gson.Gson;
 
-public class MessageInfo {
+public class MessageFromMeInfo {
     public int type;
     public String content;
     public String filepath;
@@ -12,6 +12,8 @@ public class MessageInfo {
     public String imageUrl;
     public long voiceTime;
     public String msgId;
+    public int indexOfAdapter;
+    public int indexOfList;
     public String familyName;
     public String givenyName;
 
@@ -31,16 +33,26 @@ public class MessageInfo {
         this.givenyName = givenyName;
     }
 
-    public MessageFromMeInfo toMessageFromMeInfo(int indexOfAdapter, int indexOfList) {
-        MessageFromMeInfo tmp = new MessageFromMeInfo(type, content, filepath, sendState, time,
-                header, imageUrl,
-                voiceTime, msgId, indexOfAdapter, indexOfList, familyName, givenyName);
-        return tmp;
+    public int getIndexOfAdapter() {
+        return indexOfAdapter;
     }
 
-    public MessageInfo(int type, String content, String filepath, int sendState, String time,
-                       String header, String imageUrl, long voiceTime, String msgId,
-                       String familyName, String givenyName) {
+    public void setIndexOfAdapter(int indexOfAdapter) {
+        this.indexOfAdapter = indexOfAdapter;
+    }
+
+    public int getIndexOfList() {
+        return indexOfList;
+    }
+
+    public void setIndexOfList(int indexOfList) {
+        this.indexOfList = indexOfList;
+    }
+
+    public MessageFromMeInfo(int type, String content, String filepath, int sendState,
+                             String time, String header, String imageUrl, long voiceTime,
+                             String msgId, int indexOfAdapter, int indexOfList,
+                             String familyName, String givenyName) {
         this.type = type;
         this.content = content;
         this.filepath = filepath;
@@ -50,12 +62,19 @@ public class MessageInfo {
         this.imageUrl = imageUrl;
         this.voiceTime = voiceTime;
         this.msgId = msgId;
+        this.indexOfAdapter = indexOfAdapter;
+        this.indexOfList = indexOfList;
         this.familyName = familyName;
         this.givenyName = givenyName;
     }
 
-    public MessageInfo() {
+    public MessageFromMeInfo() {
 
+    }
+
+    public MessageInfo toMessageInfo() {
+        return new MessageInfo(type, content, filepath, sendState, time, header, imageUrl,
+                voiceTime, msgId, familyName, givenyName);
     }
 
     public int getType() {
