@@ -18,6 +18,17 @@ public class SettingUtil {
     //头像
     public static final String URL_AVATAR =
             "http://118.89.102.238/assets/avatar";
+    //聊天中的图片
+    public static final String URL_CHAT_IMG =
+            "http://118.89.102.238/assets/chat/image";
+    //聊天中的语音文件
+    public static final String URL_CHAT_VOICE =
+            "http://118.89.102.238/assets/chat/voice";
+
+    //发送 聊天中的图片,语音文件
+    public static final String URL_SEND_CHAT_FILE =
+            "http://118.89.102.238/controller/meeting/send_chat_data.php";
+
     //更新
     public static final String URL_UPDATE_SETTINGS =
             "http://118.89.102.238/controller/settings/update_info.php";
@@ -72,7 +83,7 @@ public class SettingUtil {
     public static final String post_meeting_event_id = "300133";//日历事件ID
     public static final String post_meeting_desc = "300134";//会议描述
     public static final String post_meeting_host_email = "300135";//会议主持人email
-
+    public static final String post_chat_data = "300136";//聊天文件
 
     //sharepreference name 参数
     public static final String share_user_email = "400101";

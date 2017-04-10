@@ -28,6 +28,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.COMMON_CHECK_IN;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
@@ -101,17 +102,23 @@ public class JoinMeetingActivity extends SwipeBackActivity {
         //监听输入字符,格式化输出
 
         mEtMeetingUrl.addTextChangedListener(new TextWatcher() {
-                                                 private boolean isAdd;
+                                                 private int isAdd;
 
                                                  @Override
                                                  public void beforeTextChanged(
                                                          CharSequence s, int start,
                                                          int count, int after) {
                                                      if (after == 1) {//增加
-                                                         isAdd = true;
-                                                     } else {
-                                                         isAdd = false;
-                                                     }
+                                                         isAdd = 1;
+                                                         showLog("增加,,,");
+                                                     } else
+                                                         if (after == 12) {
+                                                             isAdd = 2;
+                                                             showLog("复制粘贴,,,");
+                                                         } else {
+                                                             isAdd = 0;
+                                                             showLog("减少,,,");
+                                                         }
                                                  }
 
                                                  @Override
@@ -123,7 +130,7 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                                  @Override
                                                  public void afterTextChanged(
                                                          Editable s) {
-                                                     if (isAdd) {
+                                                     if (isAdd == 1) {
                                                          if (null != mEtMeetingUrl) {
                                                              String str = s.toString();
                                                              if (!str.endsWith(" ")) {
@@ -136,7 +143,21 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                                                  }
                                                              }
                                                          }
-                                                     }
+                                                     } else
+                                                         if (isAdd == 2) {
+                                                             String str = s.toString();
+                                                             if (str.length() == 12) {
+                                                                 //分成3串数字
+                                                                 String part1 = str.substring(0, 4);
+                                                                 String part2 = str.substring(4, 8);
+                                                                 String part3 = str.substring(8,
+                                                                         12);
+                                                                 String finalStr = part1 + "-" + part2 + "-" + part3;
+                                                                 //手动添加-
+                                                                 mEtMeetingUrl.setText(finalStr);
+                                                                 mEtMeetingUrl.setSelection(finalStr.length());//光标移到最右边
+                                                             }
+                                                         }
                                                  }
                                              }
 

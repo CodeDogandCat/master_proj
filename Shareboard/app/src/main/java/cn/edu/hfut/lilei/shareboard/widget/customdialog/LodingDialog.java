@@ -81,7 +81,10 @@ public class LodingDialog extends Dialog {
          * 消失
          */
         public void cancle() {
-            dialog.dismiss();
+            if (dialog != null) {
+                dialog.dismiss();
+            }
+
         }
 
 

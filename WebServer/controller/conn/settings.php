@@ -56,6 +56,7 @@ define('post_meeting_page', '300132');//请求的会议列表的页码
 define('post_meeting_event_id', '300133');//日历事件ID
 define('post_meeting_desc', '300134');//会议描述
 define('post_meeting_host_email', '300135');//会议主持人email
+define('post_chat_data', '300136');//聊天文件
 
 
 /**
@@ -88,6 +89,7 @@ define("BINDING_ERROR", 4021);//绑定失败
 define("LOCK_MEETING_ERROR", 4022);//锁定会议失败
 define("UNLOCK_MEETING_ERROR", 4023);//解锁会议失败
 define("GET_MEETING_MEMBERS_ERROR", 4024);//获取参与者失败
+define("SEND_CHAT_FILE_ERROR", 4025);//发送聊天文件失败
 
 /**
  * 数据库连接信息

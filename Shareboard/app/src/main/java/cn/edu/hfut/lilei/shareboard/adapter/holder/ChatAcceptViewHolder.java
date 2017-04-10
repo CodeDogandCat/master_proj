@@ -78,7 +78,15 @@ public class ChatAcceptViewHolder extends BaseViewHolder<MessageInfo> {
             }
         });
         if (data.getContent() != null) {
+
+//            System.out.println("【解密前】：" + data.getContent());
+//            byte[] myMsgArr = DES3Utils.decryptMode(data.getContent()
+//                    .getBytes());
+//            showLog("数组长度" + myMsgArr.length);
+//            String tmp = new String(myMsgArr);
+//            System.out.println("【解密后】：" + tmp);
             chatItemContentText.setSpanText(handler, data.getContent(), true);
+
             chatItemVoice.setVisibility(View.GONE);
             chatItemContentText.setVisibility(View.VISIBLE);
             chatItemLayoutContent.setVisibility(View.VISIBLE);
@@ -97,6 +105,8 @@ public class ChatAcceptViewHolder extends BaseViewHolder<MessageInfo> {
                 layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
             }
             chatItemLayoutContent.setLayoutParams(layoutParams);
+
+
         } else
             if (data.getImageUrl() != null) {
                 chatItemVoice.setVisibility(View.GONE);

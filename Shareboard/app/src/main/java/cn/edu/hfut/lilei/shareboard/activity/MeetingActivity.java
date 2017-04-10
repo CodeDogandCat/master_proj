@@ -57,6 +57,8 @@ import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.models.CommonJson;
 import cn.edu.hfut.lilei.shareboard.models.MemberJson;
 import cn.edu.hfut.lilei.shareboard.models.MemberListJson;
+import cn.edu.hfut.lilei.shareboard.models.MessageListReceiveJson;
+import cn.edu.hfut.lilei.shareboard.models.MessageListSendJson;
 import cn.edu.hfut.lilei.shareboard.utils.Constants;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
@@ -103,6 +105,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_given_nam
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_avatar;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
@@ -271,19 +274,6 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         mWvCanvas.loadUrl(call);
 
 
-//        new Handler().postDelayed(new Runnable() {
-//            public void run() {
-//                MessageFromOtherInfo message = new MessageFromOtherInfo();
-//                message.setContent("这是模拟消息回复");
-//                message.setType(Constants.CHAT_ITEM_TYPE_LEFT);
-//                message.setHeader("http://tupian.enterdesk.com/2014/mxy/11/2/1/12.jpg");
-//                messageInfos.add(message.toMessageInfo());
-//                showLog("消息条数" + messageInfos.size());
-//                EventBus.getDefault()
-//                        .post(message);
-//
-//            }
-//        }, 2000);
     }
 
     /**
@@ -299,6 +289,14 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 //处理json
                 Gson gson = new Gson();
                 MessageSuccessInfo msg = gson.fromJson(str, MessageSuccessInfo.class);
+                //增加判断
+                if (!msg.getClient_email()
+                        .equals(my_email)) {
+                    msg.setType(Constants.CHAT_ITEM_TYPE_LEFT);
+                } else {
+                    msg.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
+                }
+
                 //更新list中消息的状态
                 int position = msg.getIndexOfList();
                 if (position < messageInfos.size() && position >= 0) {
@@ -333,13 +331,104 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 //处理json  生成 Message
                 Gson gson = new Gson();
                 MessageFromOtherInfo msg = gson.fromJson(str, MessageFromOtherInfo.class);
-                msg.setType(Constants.CHAT_ITEM_TYPE_LEFT);
+                //增加判断
+                if (!msg.getClient_email()
+                        .equals(my_email)) {
+                    msg.setType(Constants.CHAT_ITEM_TYPE_LEFT);
+                } else {
+                    msg.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
+                }
+
                 msg.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
                 //放到 list
                 messageInfos.add(msg.toMessageInfo());
                 // 发布到 chat页面
                 EventBus.getDefault()
                         .post(msg);
+
+            }
+        });
+
+    }
+
+    /**
+     * 接受js 发来的 主持人的聊天记录
+     *
+     * @param str 消息json
+     */
+    @android.webkit.JavascriptInterface
+    public void initChatData(final String str) {
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              if (check_in_type == 1) {
+                                  showLog("initChatData" + str);
+
+                                  //处理json  生成 Message
+                                  Gson gson = new Gson();
+                                  MessageListReceiveJson msg =
+                                          gson.fromJson(str, MessageListReceiveJson.class);
+
+                                  //处理list 修改type
+                                  for (int i = 0; i < msg.getChat_list()
+                                          .size(); i++) {
+                                      if (msg.getChat_list()
+                                              .get(i)
+                                              .getClient_email()
+                                              .equals(my_email)) {
+                                          msg.getChat_list()
+                                                  .get(i)
+                                                  .setType(Constants.CHAT_ITEM_TYPE_RIGHT);
+                                      } else {
+                                          msg.getChat_list()
+                                                  .get(i)
+                                                  .setType(Constants.CHAT_ITEM_TYPE_LEFT);
+                                      }
+
+                                      msg.getChat_list()
+                                              .get(i)
+                                              .setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+                                  }
+                                  //放到 list
+                                  messageInfos.addAll(msg.getChat_list());
+                                  if (mlodingDialog != null) {
+                                      mlodingDialog.cancle();
+                                  }
+                              }
+
+
+                          }
+
+
+                      }
+
+        );
+
+    }
+
+
+    /**
+     * 新加会的人 请求聊天消息
+     *
+     * @param client_email 发送者
+     */
+    @android.webkit.JavascriptInterface
+    public void getChatData(final String client_email) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (check_in_type == 2) {
+                    MessageListSendJson jsonObject = new MessageListSendJson();
+                    jsonObject.setData(messageInfos);
+                    String json = new Gson().toJson(jsonObject, MessageListSendJson.class);
+                    showLog(json);
+
+                    String call = "javascript:syncChatToNewer('" + client_email + "','" + json
+                            + "')";
+
+                    showLog("javascript:syncChatToNewer native call长度" + call.length());
+                    mWvCanvas.loadUrl(call);
+                }
 
             }
         });
@@ -995,7 +1084,11 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 // 网页加载完成时处理  如：让 加载对话框 消失
-                mlodingDialog.cancle();
+                //如果是主持人的话
+                if (check_in_type == 2) {
+                    mlodingDialog.cancle();
+                }
+
             }
 
             @Override
@@ -1011,6 +1104,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                         "text/html",
                         "utf-8",
                         null);
+                showToast(mContext, "出现了点问题,稍后重启试试~~");
                 beforeFinish();
                 finish();
             }
@@ -1023,6 +1117,10 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 .getInt(post_meeting_check_in_type);
         meeting_url = getIntent().getExtras()
                 .getLong(post_meeting_url);
+
+        SharedPrefUtil.getInstance()
+                .saveData(share_meeting_url, meeting_url);
+
         isDrawable = getIntent().getExtras()
                 .getBoolean(post_meeting_is_drawable);
         isTalkable = getIntent().getExtras()

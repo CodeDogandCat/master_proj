@@ -4,10 +4,11 @@ import android.content.Context;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.Handler;
-import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
+
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 
 /**
  * 作者：Rance on 2016/11/29 10:47
@@ -31,8 +32,9 @@ public class AudioRecoderUtils {
      */
     public AudioRecoderUtils() {
 
+
         //默认保存路径为/sdcard/record/下
-        this(Environment.getExternalStorageDirectory() + "/cadyd/record/");
+        this(Environment.getExternalStorageDirectory() + "/shareboard/");
     }
 
     public AudioRecoderUtils(String filePath) {
@@ -84,19 +86,20 @@ public class AudioRecoderUtils {
             /* 获取开始时间* */
             startTime = System.currentTimeMillis();
             updateMicStatus();
-            Log.e("fan", "startTime" + startTime);
+            showLog("startTime" + startTime);
         } catch (IllegalStateException e) {
             audioStatusUpdateListener.onError();
-            Log.i(TAG, "call startAmr(File mRecAudioFile) failed!" + e.getMessage());
+            showLog("call startAmr(File mRecAudioFile) failed!" + e.getMessage());
         } catch (IOException e) {
             audioStatusUpdateListener.onError();
-            Log.i(TAG, "call startAmr(File mRecAudioFile) failed!" + e.getMessage());
+            showLog("call startAmr(File mRecAudioFile) failed!" + e.getMessage());
         }
     }
 
     /**
      * 停止录音
      */
+
     public long stopRecord() {
         if (mMediaRecorder == null)
             return 0L;
@@ -107,11 +110,11 @@ public class AudioRecoderUtils {
         try {
             mMediaRecorder.stop();
         } catch (IllegalStateException e) {
-            Log.d("stopRecord", e.getMessage());
+            showLog(e.getMessage());
         } catch (RuntimeException e) {
-            Log.d("stopRecord", e.getMessage());
+            showLog(e.getMessage());
         } catch (Exception e) {
-            Log.d("stopRecord", e.getMessage());
+            showLog(e.getMessage());
         }
         mMediaRecorder.reset();
         mMediaRecorder.release();
@@ -150,7 +153,8 @@ public class AudioRecoderUtils {
     private int BASE = 1;
     private int SPACE = 50;// 间隔取样时间
 
-    public void setOnAudioStatusUpdateListener(OnAudioStatusUpdateListener audioStatusUpdateListener) {
+    public void setOnAudioStatusUpdateListener(
+            OnAudioStatusUpdateListener audioStatusUpdateListener) {
         this.audioStatusUpdateListener = audioStatusUpdateListener;
     }
 

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
@@ -21,13 +22,39 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
+
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
+import cn.edu.hfut.lilei.shareboard.models.CommonJson;
 import cn.edu.hfut.lilei.shareboard.utils.AudioRecoderUtils;
+import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
+import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PopupWindowFactory;
+import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.Utils;
+import okhttp3.Call;
+import okhttp3.Response;
+
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_CHAT_VOICE;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_SEND_CHAT_FILE;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_chat_data;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_url;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
 public class EmotionInputDetector {
 
@@ -49,12 +76,18 @@ public class EmotionInputDetector {
     private AudioRecoderUtils mAudioRecoderUtils;
     private PopupWindowFactory mVoicePop;
     private TextView mPopVoiceText;
+    private static String email;
 
 
     private EmotionInputDetector() {
     }
 
     public static EmotionInputDetector with(Activity activity) {
+        email = (String) SharedPrefUtil.getInstance()
+                .getData(share_user_email, "空");
+        if (email.equals("空")) {
+            return null;
+        }
         EmotionInputDetector emotionInputDetector = new EmotionInputDetector();
         emotionInputDetector.mActivity = activity;
         emotionInputDetector.mInputManager =
@@ -187,11 +220,31 @@ public class EmotionInputDetector {
                 mAddButton.setVisibility(View.VISIBLE);
                 mSendButton.setVisibility(View.GONE);
                 MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setContent(mEditText.getText()
-                        .toString());
+                String content = mEditText.getText()
+                        .toString();
+                showLog("加密前" + content);
+
+
+//                byte[] secretArr = DES3Utils.encryptMode(content.getBytes());
+//                showLog("加密后数组长度" + secretArr.length);
+//                String tmp = new String(secretArr);
+//                System.out.println("【加密后】：" + tmp);
+//
+//
+//                byte[] myMsgArr = DES3Utils.decryptMode(tmp
+//                        .getBytes());
+//                showLog("数组长度" + myMsgArr.length);
+//                System.out.println("【当场解密后】：" + new String(myMsgArr));
+
+                messageInfo.setContent(content);
+
+
+                messageInfo.setClient_email(email);
+
                 EventBus.getDefault()
                         .post(messageInfo);
                 mEditText.setText("");
+
             }
         });
         return this;
@@ -290,7 +343,19 @@ public class EmotionInputDetector {
                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN |
                         WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         hideSoftInput();
-        mAudioRecoderUtils = new AudioRecoderUtils();
+
+        //设置录音保存的路径
+        String baseDir = "";
+        if (FileUtil.isExternalStorageWritable()) {
+            baseDir = mActivity.getExternalFilesDir("")
+                    .getAbsolutePath() + "/shareboard/voice/";
+            showLog("isExternalStorageWritable");
+        } else {
+            baseDir = mActivity.getFilesDir()
+                    .getAbsolutePath() + "/shareboard/voice/";
+            showLog("isExternalStorage not Writable");
+        }
+        mAudioRecoderUtils = new AudioRecoderUtils(baseDir);
 
         View view = View.inflate(mActivity, R.layout.layout_microphone, null);
         mVoicePop = new PopupWindowFactory(mActivity, view);
@@ -309,17 +374,23 @@ public class EmotionInputDetector {
                         mImageView.getDrawable()
                                 .setLevel((int) (3000 + 6000 * db / 100));
                         mTextView.setText(Utils.long2String(time));
+                        if (time >= 1000 * 60 * 30) {
+                            //结束录音（保存录音文件）
+                            showToast(mActivity, mActivity.getString(R.string.max_voice_length));
+                            mAudioRecoderUtils.stopRecord();
+                        }
+
+
                     }
 
                     //录音结束，filePath为保存路径
                     @Override
                     public void onStop(long time, String filePath) {
-                        mTextView.setText(Utils.long2String(0));
-                        MessageInfo messageInfo = new MessageInfo();
-                        messageInfo.setFilepath(filePath);
-                        messageInfo.setVoiceTime(time);
-                        EventBus.getDefault()
-                                .post(messageInfo);
+
+                        //上传操作
+                        sendChatVoiceFile(filePath, mTextView, time);
+
+
                     }
 
                     @Override
@@ -329,6 +400,129 @@ public class EmotionInputDetector {
                     }
                 });
         return this;
+    }
+
+    /**
+     * 发送语音文件
+     *
+     * @param path
+     * @param mTextView
+     * @param time
+     */
+    public void sendChatVoiceFile(final String path, final TextView mTextView, final long time) {
+        new AsyncTask<Void, Void, Integer>() {
+
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                /**
+                 * 1.检查网络状态并提醒
+                 */
+                if (!NetworkUtil.isNetworkConnected(mActivity)) {
+                    //网络连接不可用
+                    return NET_DISCONNECT;
+                }
+                /**
+                 * 2.构造参数
+                 */
+
+                final String email = (String) SharedPrefUtil.getInstance()
+                        .getData(share_user_email, "空");
+                if (email.equals("空")) {
+                    return -2;
+                }
+                final String token = (String) SharedPrefUtil.getInstance()
+                        .getData(share_token, "空");
+                if (token.equals("空")) {
+                    return -2;
+                }
+                long meeting_url = (long) SharedPrefUtil.getInstance()
+                        .getData(share_meeting_url, -1L);
+                if (meeting_url == -1) {
+                    return -2;
+                }
+                final String meeting_url_str = String.valueOf(meeting_url);
+
+                /**
+                 *3.上传
+                 */
+                File chatFile = new File(path);
+                showLog("录音路径" + path);
+                showLog("录音" + chatFile.canRead());
+                showLog("录音" + chatFile.isFile());
+                showLog("录音" + chatFile.exists());
+                showLog("录音" + chatFile.length());
+
+                OkGo.post(URL_SEND_CHAT_FILE)
+                        .tag(this)
+                        .isMultipart(true)
+                        .params(post_chat_data, chatFile)
+                        .params(post_need_feature, "voice")
+                        .params(post_token, token)
+                        .params(post_user_email, email)
+                        .params(post_meeting_url, meeting_url_str)
+                        .execute(new JsonCallback<CommonJson>() {
+                            @Override
+                            public void onSuccess(CommonJson o, Call call,
+                                                  Response response) {
+                                if (o.getCode() == SUCCESS) {
+                                    /**
+                                     * 4.上传成功,显示
+                                     */
+
+                                    mTextView.setText(Utils.long2String(0));
+                                    MessageInfo messageInfo = new MessageInfo();
+                                    messageInfo.setClient_email(email);
+                                    messageInfo.setFilepath(URL_CHAT_VOICE + o.getMsg());
+                                    messageInfo.setVoiceTime(time);
+                                    EventBus.getDefault()
+                                            .post(messageInfo);
+
+
+                                } else {
+                                    //提示所有错误
+                                    showLog(o.getMsg());
+                                    showToast(mActivity, mActivity.getResources()
+                                            .getString(R
+                                                    .string
+                                                    .send_error));
+                                }
+                            }
+
+                            @Override
+                            public void onError(Call call, Response response,
+                                                Exception e) {
+                                super.onError(call, response, e);
+                                //提示所有错误
+                                showLog("系统错误");
+                                showToast(mActivity, mActivity.getResources()
+                                        .getString(R.string.send_error));
+                            }
+                        });
+
+                return -1;
+            }
+
+            @Override
+            protected void onPostExecute(Integer integer) {
+                super.onPostExecute(integer);
+                switch (integer) {
+                    case NET_DISCONNECT:
+                        //弹出对话框，让用户开启网络
+                        NetworkUtil.setNetworkMethod(mActivity);
+                        break;
+                    case -1:
+                        break;
+                    case -2:
+                        showToast(mActivity, R.string.please_relogin);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }.execute();
+
+
     }
 
     public boolean interceptBackPress() {

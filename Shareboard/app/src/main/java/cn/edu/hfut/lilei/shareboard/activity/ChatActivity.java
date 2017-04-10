@@ -54,6 +54,7 @@ import cn.edu.hfut.lilei.shareboard.widget.NoScrollViewPager;
 import cn.edu.hfut.lilei.shareboard.widget.StateButton;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_in_type;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_talkable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
@@ -191,6 +192,10 @@ public class ChatActivity extends AppCompatActivity {
                 .bindToVoiceButton(emotionVoice)
                 .bindToVoiceText(voiceText)
                 .build();
+        if (mDetector == null) {
+            showToast(this, R.string.please_relogin);
+            finish();
+        }
 
         GlobalOnItemClickManagerUtils globalOnItemClickListener =
                 GlobalOnItemClickManagerUtils.getInstance(this);
@@ -431,31 +436,29 @@ public class ChatActivity extends AppCompatActivity {
             //网络连接不可用
             NetworkUtil.setNetworkMethod(mContext);
         }
-        messageInfo.setHeader(avatar);
-        messageInfo.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
-        messageInfo.setSendState(Constants.CHAT_ITEM_SENDING);
-        long now = DateTimeUtil.millisNow();
-        messageInfo.setTime(now + "");
-        messageInfo.setMsgId(my_email + now);
-        messageInfo.setFamilyName(familyName);
-        messageInfo.setGivenyName(GivenName);
+        if (messageInfo.getSendState() != Constants.CHAT_ITEM_SEND_ERROR) {
+
+            messageInfo.setHeader(avatar);
+            messageInfo.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
+            messageInfo.setSendState(Constants.CHAT_ITEM_SENDING);
+            long now = DateTimeUtil.millisNow();
+            messageInfo.setTime(now + "");
+            messageInfo.setMsgId(my_email + now);
+            messageInfo.setFamilyName(familyName);
+            messageInfo.setGivenyName(GivenName);
+            messageInfo.setClient_email(my_email);
 
 
-        messageInfos.add(messageInfo);
-        chatAdapter.add(messageInfo);
+            messageInfos.add(messageInfo);
+            chatAdapter.add(messageInfo);
 
-        chatList.scrollToPosition(chatAdapter.getCount() - 1);
+            chatList.scrollToPosition(chatAdapter.getCount() - 1);
 
-        //发给 meeting页面
-        EventBus.getDefault()
-                .post(messageInfo.toMessageFromMeInfo(chatAdapter.getCount() - 1, -1));
+            //发给 meeting页面
+            EventBus.getDefault()
+                    .post(messageInfo.toMessageFromMeInfo(chatAdapter.getCount() - 1, -1));
+        }
 
-
-//        new Handler().postDelayed(new Runnable() {
-//            public void run() {
-//
-//            }
-//        }, 1000);
 
     }
 

@@ -47,7 +47,7 @@ public class CheckPermissionUtils {
         if (audioRecord.getRecordingState() != AudioRecord.RECORDSTATE_RECORDING) {
             new AlertDialog.Builder(context)
                     .setTitle("提示")
-                    .setMessage("经检测语音权限未开启，设置方法：三方手机管理(应用宝、360)->安全->权限管理程序->应用程序->勾选语音权限。或去设置中心找到应用设置权限")
+                    .setMessage("经检测语音权限未开启，设置方法: 设置中心->应用程序权限设置->勾选语音权限。")
                     .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

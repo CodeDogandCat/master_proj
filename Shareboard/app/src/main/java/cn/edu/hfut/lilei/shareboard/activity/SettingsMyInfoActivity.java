@@ -34,8 +34,8 @@ import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
-import cn.edu.hfut.lilei.shareboard.widget.customdialog.AlterHeadDialog;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.AddContactDialog;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.AlterHeadDialog;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.NameInputDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
@@ -78,6 +78,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
     private Uri cropUri;
     private boolean shouldCallUpdate = false;
     private String baseDir = "";
+    private File srcFile, targetFile;
 
     //上下文参数
     private Context mContext;
@@ -151,7 +152,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                 finish();
             }
         });
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         if (FileUtil.isExternalStorageWritable()) {
@@ -344,118 +345,132 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                 Log.i(SettingUtil.TAG, "相册裁剪成功");
                 //小米手机返回为空intent{}，所以不能用这种方法取得，用目标路径的uri取得
                 Log.i(SettingUtil.TAG, "裁剪以后 [ " + data + " ]");
-
                 mlodingDialog = loding(mContext, R.string.saving);
 
-                new AsyncTask<Void, Void, Integer>() {
+                final String avatarPath =
+                        ImageUtil.getImageAbsolutePath19(mContext, cropUri);
 
-                    @Override
-                    protected Integer doInBackground(Void... voids) {
-                        /**
-                         * 1.检查网络状态并提醒
-                         */
-                        if (!NetworkUtil.isNetworkConnected(mContext)) {
-                            //网络连接不可用
-                            return NET_DISCONNECT;
-                        }
-/**
- * 2.构造参数
- */
-                        final String avatarPath =
-                                ImageUtil.getImageAbsolutePath19(mContext, cropUri);
+                srcFile = new File(avatarPath);
+                targetFile = new File(avatarPath.substring(0, avatarPath.lastIndexOf(".")
+                ) + "compressed.jpeg");
 
-                        final String email = (String) SharedPrefUtil.getInstance()
-                                .getData(share_user_email, "空");
-                        if (email.equals("空")) {
-                            return -2;
-                        }
-                        final String token = (String) SharedPrefUtil.getInstance()
-                                .getData(share_token, "空");
-                        if (token.equals("空")) {
-                            return -2;
-                        }
-                        /**
-                         *3.上传
-                         */
-                        showLog("ready...");
-                        File avatarFile = new File(avatarPath);
-                        OkGo.post(URL_UPDATE_SETTINGS)
-                                .tag(this)
-                                .isMultipart(true)
-                                .params(post_need_feature, update_avatar)
-                                .params(post_user_email, email)
-                                .params(post_token, token)
-                                .params(post_user_avatar, avatarFile)
-                                .execute(new JsonCallback<RegisterJson>() {
-                                    @Override
-                                    public void onSuccess(RegisterJson o, Call call,
-                                                          Response response) {
-                                        if (o.getCode() == SUCCESS) {
-                                            /**
-                                             * 4.更新成功,显示
-                                             */
-                                            SharedPrefUtil.getInstance()
-                                                    .saveData(share_avatar, URL_AVATAR + o
-                                                            .getData()
-                                                            .getAvatar());
-                                            mlodingDialog.cancle();
-                                            update();
-                                            showToast(mContext, o.getMsg());
+                ImageUtil.compressImage(srcFile, targetFile, null, false);
+
+//                final File avatarFile = new File(avatarPath);
+
+                if (targetFile.length() > 1024 * 1024 * 6)// 6M  照片最大限制
+                {
+                    showToast(mContext, getString(R.string.image_too_large));
+                } else {
 
 
-                                        } else {
-                                            mlodingDialog.cancle();
-                                            //提示所有错误
-                                            showLog(o.getMsg());
-                                            showToast(mContext, o.getMsg());
+                    new AsyncTask<Void, Void, Integer>() {
+
+                        @Override
+                        protected Integer doInBackground(Void... voids) {
+                            /**
+                             * 1.检查网络状态并提醒
+                             */
+                            if (!NetworkUtil.isNetworkConnected(mContext)) {
+                                //网络连接不可用
+                                return NET_DISCONNECT;
+                            }
+                            /**
+                             * 2.构造参数
+                             */
+
+
+                            final String email = (String) SharedPrefUtil.getInstance()
+                                    .getData(share_user_email, "空");
+                            if (email.equals("空")) {
+                                return -2;
+                            }
+                            final String token = (String) SharedPrefUtil.getInstance()
+                                    .getData(share_token, "空");
+                            if (token.equals("空")) {
+                                return -2;
+                            }
+                            /**
+                             *3.上传
+                             */
+                            showLog("ready...");
+                            OkGo.post(URL_UPDATE_SETTINGS)
+                                    .tag(this)
+                                    .isMultipart(true)
+                                    .params(post_need_feature, update_avatar)
+                                    .params(post_user_email, email)
+                                    .params(post_token, token)
+                                    .params(post_user_avatar, targetFile)
+                                    .execute(new JsonCallback<RegisterJson>() {
+                                        @Override
+                                        public void onSuccess(RegisterJson o, Call call,
+                                                              Response response) {
+                                            if (o.getCode() == SUCCESS) {
+                                                /**
+                                                 * 4.更新成功,显示
+                                                 */
+                                                SharedPrefUtil.getInstance()
+                                                        .saveData(share_avatar, URL_AVATAR + o
+                                                                .getData()
+                                                                .getAvatar());
+                                                mlodingDialog.cancle();
+                                                update();
+                                                showToast(mContext, o.getMsg());
+
+
+                                            } else {
+                                                mlodingDialog.cancle();
+                                                //提示所有错误
+                                                showLog(o.getMsg());
+                                                showToast(mContext, o.getMsg());
+                                            }
                                         }
-                                    }
 
-                                    @Override
-                                    public void onError(Call call, Response response,
-                                                        Exception e) {
-                                        super.onError(call, response, e);
-                                        mlodingDialog.cancle();
-                                        showToast(mContext, R.string.system_error);
-                                    }
-                                });
+                                        @Override
+                                        public void onError(Call call, Response response,
+                                                            Exception e) {
+                                            super.onError(call, response, e);
+                                            mlodingDialog.cancle();
+                                            showToast(mContext, R.string.system_error);
+                                        }
+                                    });
 
-                        return -1;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Integer integer) {
-                        super.onPostExecute(integer);
-                        mlodingDialog.cancle();
-                        switch (integer) {
-                            case NET_DISCONNECT:
-                                //弹出对话框，让用户开启网络
-                                NetworkUtil.setNetworkMethod(mContext);
-                                break;
-                            case -1:
-                                break;
-                            case -2:
-                                showToast(mContext, R.string.please_relogin);
-                                break;
-
-                            default:
-//                                showToast(mContext, R.string.system_error);
-                                break;
+                            return -1;
                         }
-                    }
+
+                        @Override
+                        protected void onPostExecute(Integer integer) {
+                            super.onPostExecute(integer);
+                            mlodingDialog.cancle();
+                            switch (integer) {
+                                case NET_DISCONNECT:
+                                    //弹出对话框，让用户开启网络
+                                    NetworkUtil.setNetworkMethod(mContext);
+                                    break;
+                                case -1:
+                                    break;
+                                case -2:
+                                    showToast(mContext, R.string.please_relogin);
+                                    break;
+
+                                default:
+//                                showToast(mContext, R.string.system_error);
+                                    break;
+                            }
+                        }
 //                try {
 //                    photo = BitmapFactory.decodeStream(this.getContentResolver()
 //                            .openInputStream(cropUri));
 //                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
 //                    photo.compress(Bitmap.CompressFormat.JPEG, 50, stream);// (0-100)压缩文件
-//                    //此处可以把Bitmap保存到sd卡中，具体看：http://www.cnblogs.com/linjiqin/archive/2011/12/28/2304940.html
 //                    mPhoto.setImageBitmap(photo); //把图片显示在ImageView控件上
 
 
 //                } catch (Exception e) {
 //                    e.printStackTrace();
 //                }
-                }.execute();
+                    }.execute();
+                }
             default:
                 break;
         }

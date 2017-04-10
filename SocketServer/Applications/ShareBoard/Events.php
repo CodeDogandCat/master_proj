@@ -31,7 +31,7 @@ class Events
         $message_data = json_decode($message, true);
         if (!$message_data) {
             echo "格式不合法\nmessage 长度" . strlen($message);
-
+            echo $message;
             return;
         }
 
@@ -245,6 +245,25 @@ class Events
                 }
                 $room_id = $_SESSION['room_id'];
                 return Gateway::sendToGroup($room_id, $message);
+                break;
+            //新加会的人请求 聊天记录
+            case 'getInitChatData':
+                echo "getInitChatData 新加会的人请求 聊天记录\n";
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                Gateway::sendToUid($message_data['to_client_email'], $message);
+                break;
+            //转发主持人chat ->新加会的那个人
+            case 'ChatData':
+                echo "ChatData 转发主持人chat ->新加会的那个人\n";
+                // 非法请求
+                if (!isset($_SESSION['room_id'])) {
+                    throw new \Exception("\$_SESSION['room_id'] not set. client_ip:{$_SERVER['REMOTE_ADDR']}");
+                }
+                echo $message_data['chat_list'];
+                Gateway::sendToUid($message_data['to_client_email'], $message);
                 break;
 
 

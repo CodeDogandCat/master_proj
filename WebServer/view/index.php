@@ -298,6 +298,9 @@ if (
                         if (check_in_type == 1) {
                             //调用加会者 native 函数
                             window.board.initShareContent(data['content']);
+                            //请求聊天数据
+                            getInitChatData();
+
                         }
                         break;
                     //加会者离会
@@ -364,8 +367,66 @@ if (
                         }
 
                         break;
+                    //新加会的人请求 聊天记录
+                    case 'getInitChatData':
+                        console.log("新加会的人请求 聊天记录");
+
+                        if (check_in_type == 2) {
+                            //调用主持人 native 函数
+                            window.board.getChatData(data['from_client_email']);
+                        }
+                        break;
+                    //新加会的人接受 聊天记录
+                    case 'ChatData':
+                        console.log("新加会的人接受聊天记录 ");
+                        if (check_in_type == 1) {
+                            //调用 native 函数,发送数据给native
+                            console.log(data['chat_list']);
+                            window.board.initChatData(e.data);
+                        }
+                        break;
+
 
                 }
+            }
+
+            /**
+             *用socket 转发主持人chat ->新加会的那个人
+             * 主持人 native来调用
+             */
+            function syncChatToNewer(to_client_email, base64Str) {
+
+                console.log("syncChatToNewer用socket 转发主持人chat ->新加会的那个人");
+                console.log(base64Str);
+
+                var chat_data = JSON.parse(base64Str);
+                var chat_list = chat_data['data'];//一个数组
+
+                var json = {
+                    "type": "ChatData",
+                    "from_client_email": email,
+                    "to_client_email": to_client_email,
+                    "chat_list": []
+                };
+                json.chat_list = chat_list;
+
+
+                var chat_list_str = JSON.stringify(json);
+                console.log("用socket 转发主持人chat ->新加会的那个人");
+                console.log(chat_list_str);
+
+                ws.send(chat_list_str);
+
+            }
+            /**
+             *用socket 转发初始 chat数据请求->主持人
+             *js来调用
+             */
+            function getInitChatData() {
+                console.log("getInitChatData 转发初始 chat数据请求->主持人");
+                var login_data = '{"type":"getInitChatData","from_client_email":"' + email + '","to_client_email":"' + host_email + '"}';
+                console.log("向主持人请求初始chat数据请求" + login_data);
+                ws.send(login_data);
             }
 
 

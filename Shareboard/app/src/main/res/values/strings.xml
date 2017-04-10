@@ -189,4 +189,7 @@
     <string name="member_manage">参会人员管理</string>
     <string name="should_get_to_share">应用需要该权限才能共享</string>
     <string name="init">初始化...</string>
+    <string name="send_error">发送失败</string>
+    <string name="image_too_large">图片过大</string>
+    <string name="max_voice_length">最长语音时间为30分钟</string>
 </resources>

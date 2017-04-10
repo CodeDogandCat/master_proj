@@ -16,6 +16,15 @@ public class MessageSuccessInfo {
     public int indexOfList;
     public String familyName;
     public String givenyName;
+    public String client_email;//参与者邮箱
+
+    public String getClient_email() {
+        return client_email;
+    }
+
+    public void setClient_email(String client_email) {
+        this.client_email = client_email;
+    }
 
     public String getFamilyName() {
         return familyName;
@@ -49,10 +58,12 @@ public class MessageSuccessInfo {
         this.indexOfList = indexOfList;
     }
 
-    public MessageSuccessInfo(int type, String content, String filepath, int sendState,
+    public MessageSuccessInfo(String client_email, int type, String content, String filepath, int
+            sendState,
                               String time, String header, String imageUrl, long voiceTime,
                               String msgId, int indexOfAdapter, int indexOfList,
                               String familyName, String givenyName) {
+        this.client_email = client_email;
         this.type = type;
         this.content = content;
         this.filepath = filepath;
@@ -73,7 +84,8 @@ public class MessageSuccessInfo {
     }
 
     public MessageInfo toMessageInfo() {
-        return new MessageInfo(type, content, filepath, sendState, time, header, imageUrl,
+        return new MessageInfo(client_email, type, content, filepath, sendState, time, header,
+                imageUrl,
                 voiceTime, msgId, familyName, givenyName);
     }
 

@@ -14,6 +14,15 @@ public class MessageInfo {
     public String msgId;
     public String familyName;
     public String givenyName;
+    public String client_email;//参与者邮箱
+
+    public String getClient_email() {
+        return client_email;
+    }
+
+    public void setClient_email(String client_email) {
+        this.client_email = client_email;
+    }
 
     public String getFamilyName() {
         return familyName;
@@ -32,15 +41,18 @@ public class MessageInfo {
     }
 
     public MessageFromMeInfo toMessageFromMeInfo(int indexOfAdapter, int indexOfList) {
-        MessageFromMeInfo tmp = new MessageFromMeInfo(type, content, filepath, sendState, time,
-                header, imageUrl,
-                voiceTime, msgId, indexOfAdapter, indexOfList, familyName, givenyName);
+        MessageFromMeInfo tmp =
+                new MessageFromMeInfo(client_email, type, content, filepath, sendState, time,
+                        header, imageUrl,
+                        voiceTime, msgId, indexOfAdapter, indexOfList, familyName, givenyName);
         return tmp;
     }
 
-    public MessageInfo(int type, String content, String filepath, int sendState, String time,
+    public MessageInfo(String client_email, int type, String content, String filepath, int
+            sendState, String time,
                        String header, String imageUrl, long voiceTime, String msgId,
                        String familyName, String givenyName) {
+        this.client_email = client_email;
         this.type = type;
         this.content = content;
         this.filepath = filepath;
