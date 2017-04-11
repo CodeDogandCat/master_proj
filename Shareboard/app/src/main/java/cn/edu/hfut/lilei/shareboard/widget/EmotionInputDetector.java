@@ -10,6 +10,7 @@ import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -37,6 +38,7 @@ import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PopupWindowFactory;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
+import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import cn.edu.hfut.lilei.shareboard.utils.Utils;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -225,25 +227,25 @@ public class EmotionInputDetector {
                 showLog("加密前" + content);
 
 
-//                byte[] secretArr = DES3Utils.encryptMode(content.getBytes());
-//                showLog("加密后数组长度" + secretArr.length);
-//                String tmp = new String(secretArr);
-//                System.out.println("【加密后】：" + tmp);
-//
-//
-//                byte[] myMsgArr = DES3Utils.decryptMode(tmp
-//                        .getBytes());
-//                showLog("数组长度" + myMsgArr.length);
-//                System.out.println("【当场解密后】：" + new String(myMsgArr));
+                try {
+                    String masterPassword = "L1x#tvh_";
 
-                messageInfo.setContent(content);
+                    String encryptingCode = StringUtil.encrypt_security(masterPassword, content);
+                    String enToStr =
+                            Base64.encodeToString(encryptingCode.getBytes(), Base64.NO_WRAP);
+                    showLog("加密后" + enToStr);
 
+                    messageInfo.setContent(enToStr);
+                    messageInfo.setClient_email(email);
 
-                messageInfo.setClient_email(email);
+                    EventBus.getDefault()
+                            .post(messageInfo);
+                    mEditText.setText("");
 
-                EventBus.getDefault()
-                        .post(messageInfo);
-                mEditText.setText("");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
             }
         });

@@ -7,10 +7,22 @@ import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 
 public class StringUtil {
     /**
@@ -435,6 +447,157 @@ public class StringUtil {
             return true;
         }
         return false;
+    }
+
+    ////////////////////////////////////////////////////////////////////
+
+    /**
+     * des 加密
+     *
+     * @param data
+     * @param password
+     * @return
+     */
+    public static byte[] encrypt(byte[] data, byte[] password) {
+        byte[] ret = null;
+        //判断参数是否符合条件
+        if (data != null && data.length > 0) {
+            if (password != null && password.length == 8) {
+                try {
+                    //1、创造加密引擎
+                    Cipher cipher = Cipher.getInstance("DES");
+                    //2、初始化
+                    SecretKeySpec key = new SecretKeySpec(password, "DES");
+                    cipher.init(Cipher.ENCRYPT_MODE, key);
+                    //3、对数据进行加密
+                    ret = cipher.doFinal(data);
+                    showLog("加密完成");
+
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * des  解密
+     *
+     * @param data
+     * @param password
+     * @return
+     */
+    public static byte[] decrypt(byte[] data, byte[] password) {
+        byte[] ret = null;
+
+        if (data != null && data.length > 0) {
+            if (password != null && password.length == 8) {
+                try {
+                    //1、获取解密引擎
+                    Cipher cipher = Cipher.getInstance("DES");
+
+                    //2、初始化
+                    SecretKeySpec key = new SecretKeySpec(password, "DES");
+
+                    cipher.init(Cipher.DECRYPT_MODE, key);
+
+                    //3、解密
+                    ret = cipher.doFinal(data);
+
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
+        return ret;
+    }
+
+    ////////////////////////////////////////////////////////////////////
+    // AES  加密
+    ////////////////////////////////////////////////////////////////////
+
+    public static String encrypt_security(String seed, String cleartext)
+            throws Exception {
+        byte[] rawKey = getRawKey(seed.getBytes());
+        byte[] result = encrypt_bytes(rawKey, cleartext.getBytes());
+        return toHex(result);
+    }
+
+    private static byte[] encrypt_bytes(byte[] raw, byte[] clear) throws Exception {
+        SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+        byte[] encrypted = cipher.doFinal(clear);
+        return encrypted;
+    }
+
+    private static String toHex(byte[] buf) {
+        final String HEX = "0123456789ABCDEF";
+        if (buf == null)
+            return "";
+        StringBuffer result = new StringBuffer(2 * buf.length);
+        for (int i = 0; i < buf.length; i++) {
+            result.append(HEX.charAt((buf[i] >> 4) & 0x0f))
+                    .append(
+                            HEX.charAt(buf[i] & 0x0f));
+        }
+        return result.toString();
+    }
+
+    public static String decrypt_security(String seed, String encrypted)
+            throws Exception {
+        byte[] rawKey = getRawKey(seed.getBytes());
+        byte[] enc = toByte(encrypted);
+        byte[] result = decrypt_bytes(rawKey, enc);
+        return new String(result);
+    }
+
+    private static byte[] decrypt_bytes(byte[] raw, byte[] encrypted)
+            throws Exception {
+        SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+        byte[] decrypted = cipher.doFinal(encrypted);
+        return decrypted;
+    }
+
+    private static byte[] toByte(String hexString) {
+        int len = hexString.length() / 2;
+        byte[] result = new byte[len];
+        for (int i = 0; i < len; i++)
+            result[i] = Integer.valueOf(hexString.substring(2 * i, 2 * i + 2),
+                    16)
+                    .byteValue();
+        return result;
+    }
+
+    private static byte[] getRawKey(byte[] seed) throws Exception {
+        KeyGenerator kgen = KeyGenerator.getInstance("AES");
+        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");
+        sr.setSeed(seed);
+        kgen.init(128, sr); // 192 and 256 bits may not be available
+        SecretKey skey = kgen.generateKey();
+        byte[] raw = skey.getEncoded();
+        return raw;
     }
 
 

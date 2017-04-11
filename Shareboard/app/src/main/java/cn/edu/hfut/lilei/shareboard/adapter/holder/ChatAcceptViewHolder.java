@@ -2,6 +2,8 @@ package cn.edu.hfut.lilei.shareboard.adapter.holder;
 
 import android.os.Handler;
 import android.text.TextPaint;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ChatAdapter;
 import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
+import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import cn.edu.hfut.lilei.shareboard.utils.Utils;
 import cn.edu.hfut.lilei.shareboard.widget.BubbleImageView;
 import cn.edu.hfut.lilei.shareboard.widget.BubbleLinearLayout;
@@ -79,32 +82,42 @@ public class ChatAcceptViewHolder extends BaseViewHolder<MessageInfo> {
         });
         if (data.getContent() != null) {
 
-//            System.out.println("【解密前】：" + data.getContent());
-//            byte[] myMsgArr = DES3Utils.decryptMode(data.getContent()
-//                    .getBytes());
-//            showLog("数组长度" + myMsgArr.length);
-//            String tmp = new String(myMsgArr);
-//            System.out.println("【解密后】：" + tmp);
-            chatItemContentText.setSpanText(handler, data.getContent(), true);
 
-            chatItemVoice.setVisibility(View.GONE);
-            chatItemContentText.setVisibility(View.VISIBLE);
-            chatItemLayoutContent.setVisibility(View.VISIBLE);
-            chatItemVoiceTime.setVisibility(View.GONE);
-            chatItemContentImage.setVisibility(View.GONE);
-            TextPaint paint = chatItemContentText.getPaint();
-            // 计算textview在屏幕上占多宽
-            int len = (int) paint.measureText(chatItemContentText.getText()
-                    .toString()
-                    .trim());
-            if (len < Utils.dp2px(getContext(), 200)) {
-                layoutParams.width = len + Utils.dp2px(getContext(), 30);
-                layoutParams.height = Utils.dp2px(getContext(), 48);
-            } else {
-                layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
-                layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+            try {
+
+
+                String encryptingCode = new String(Base64.decode(data.getContent()
+                        .getBytes(), Base64.NO_WRAP));
+
+                String masterPassword = "L1x#tvh_";
+                String decryptingCode =
+                        StringUtil.decrypt_security(masterPassword, encryptingCode);
+                Log.i("解密结果", decryptingCode);
+                chatItemContentText.setSpanText(handler, decryptingCode, true);
+
+                chatItemVoice.setVisibility(View.GONE);
+                chatItemContentText.setVisibility(View.VISIBLE);
+                chatItemLayoutContent.setVisibility(View.VISIBLE);
+                chatItemVoiceTime.setVisibility(View.GONE);
+                chatItemContentImage.setVisibility(View.GONE);
+                TextPaint paint = chatItemContentText.getPaint();
+                // 计算textview在屏幕上占多宽
+                int len = (int) paint.measureText(chatItemContentText.getText()
+                        .toString()
+                        .trim());
+                if (len < Utils.dp2px(getContext(), 200)) {
+                    layoutParams.width = len + Utils.dp2px(getContext(), 30);
+                    layoutParams.height = Utils.dp2px(getContext(), 48);
+                } else {
+                    layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                }
+                chatItemLayoutContent.setLayoutParams(layoutParams);
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            chatItemLayoutContent.setLayoutParams(layoutParams);
 
 
         } else
