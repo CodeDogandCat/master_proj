@@ -24,10 +24,6 @@ import cn.edu.hfut.lilei.shareboard.utils.GlobalOnItemClickManagerUtils;
 import cn.edu.hfut.lilei.shareboard.utils.Utils;
 import cn.edu.hfut.lilei.shareboard.widget.IndicatorView;
 
-/**
- * 作者：Rance on 2016/12/13 16:01
- * 邮箱：rance935@163.com
- */
 public class ChatEmotionFragment extends BaseFragment {
     @Bind(R.id.fragment_chat_vp)
     ViewPager fragmentChatVp;

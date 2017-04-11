@@ -12,12 +12,8 @@ import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import cn.edu.hfut.lilei.shareboard.adapter.holder.ChatAcceptViewHolder;
 import cn.edu.hfut.lilei.shareboard.adapter.holder.ChatSendViewHolder;
 import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
-import cn.edu.hfut.lilei.shareboard.utils.Constants;
+import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 
-/**
- * 作者：Rance on 2016/11/29 10:46
- * 邮箱：rance935@163.com
- */
 public class ChatAdapter extends RecyclerArrayAdapter<MessageInfo> {
 
     private onItemClickListener onItemClickListener;
@@ -32,10 +28,10 @@ public class ChatAdapter extends RecyclerArrayAdapter<MessageInfo> {
     public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
         BaseViewHolder viewHolder = null;
         switch (viewType) {
-            case Constants.CHAT_ITEM_TYPE_LEFT:
+            case SettingUtil.CHAT_ITEM_TYPE_LEFT:
                 viewHolder = new ChatAcceptViewHolder(parent, onItemClickListener, handler);
                 break;
-            case Constants.CHAT_ITEM_TYPE_RIGHT:
+            case SettingUtil.CHAT_ITEM_TYPE_RIGHT:
                 viewHolder = new ChatSendViewHolder(parent, onItemClickListener, handler);
                 break;
         }

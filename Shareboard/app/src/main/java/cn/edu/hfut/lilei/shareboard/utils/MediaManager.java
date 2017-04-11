@@ -4,11 +4,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
-
-/**
- * 作者：Rance on 2016/12/15 15:11
- * 邮箱：rance935@163.com
- */
 public class MediaManager {
 
     private static MediaPlayer mMediaPlayer;

@@ -59,7 +59,7 @@ import cn.edu.hfut.lilei.shareboard.models.MemberJson;
 import cn.edu.hfut.lilei.shareboard.models.MemberListJson;
 import cn.edu.hfut.lilei.shareboard.models.MessageListReceiveJson;
 import cn.edu.hfut.lilei.shareboard.models.MessageListSendJson;
-import cn.edu.hfut.lilei.shareboard.utils.Constants;
+import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -171,7 +171,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.activity_meeting_test);
+        setContentView(R.layout.activity_meeting);
         init();
         initMeeting();
 
@@ -292,9 +292,9 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 //增加判断
                 if (!msg.getClient_email()
                         .equals(my_email)) {
-                    msg.setType(Constants.CHAT_ITEM_TYPE_LEFT);
+                    msg.setType(SettingUtil.CHAT_ITEM_TYPE_LEFT);
                 } else {
-                    msg.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
+                    msg.setType(SettingUtil.CHAT_ITEM_TYPE_RIGHT);
                 }
 
                 //更新list中消息的状态
@@ -304,7 +304,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                     //判断是否一致
                     if (tmp.getMsgId()
                             .equals(msg.getMsgId())) {
-                        tmp.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+                        tmp.setSendState(SettingUtil.CHAT_ITEM_SEND_SUCCESS);
                     }
                 }
 
@@ -334,12 +334,12 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 //增加判断
                 if (!msg.getClient_email()
                         .equals(my_email)) {
-                    msg.setType(Constants.CHAT_ITEM_TYPE_LEFT);
+                    msg.setType(SettingUtil.CHAT_ITEM_TYPE_LEFT);
                 } else {
-                    msg.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
+                    msg.setType(SettingUtil.CHAT_ITEM_TYPE_RIGHT);
                 }
 
-                msg.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+                msg.setSendState(SettingUtil.CHAT_ITEM_SEND_SUCCESS);
                 //放到 list
                 messageInfos.add(msg.toMessageInfo());
                 // 发布到 chat页面
@@ -378,16 +378,16 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                               .equals(my_email)) {
                                           msg.getChat_list()
                                                   .get(i)
-                                                  .setType(Constants.CHAT_ITEM_TYPE_RIGHT);
+                                                  .setType(SettingUtil.CHAT_ITEM_TYPE_RIGHT);
                                       } else {
                                           msg.getChat_list()
                                                   .get(i)
-                                                  .setType(Constants.CHAT_ITEM_TYPE_LEFT);
+                                                  .setType(SettingUtil.CHAT_ITEM_TYPE_LEFT);
                                       }
 
                                       msg.getChat_list()
                                               .get(i)
-                                              .setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+                                              .setSendState(SettingUtil.CHAT_ITEM_SEND_SUCCESS);
                                   }
                                   //放到 list
                                   messageInfos.addAll(msg.getChat_list());

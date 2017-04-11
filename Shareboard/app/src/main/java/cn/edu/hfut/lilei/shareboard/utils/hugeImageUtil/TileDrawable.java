@@ -16,10 +16,6 @@ import android.widget.ImageView;
 
 import cn.edu.hfut.lilei.shareboard.widget.imageview.PinchImageView;
 
-
-/**
- * Created by clifford on 16/4/6.
- */
 public class TileDrawable extends Drawable {
 
     ////////////////////////////////overrides////////////////////////////////

@@ -3,9 +3,6 @@ package cn.edu.hfut.lilei.shareboard.utils.hugeimageutil;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
-/**
- * Created by clifford on 16/4/6.
- */
 public abstract class ImageRegionLoader {
 
     abstract public void init();

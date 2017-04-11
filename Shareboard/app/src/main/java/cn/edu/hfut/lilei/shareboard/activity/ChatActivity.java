@@ -42,12 +42,12 @@ import cn.edu.hfut.lilei.shareboard.enity.MessageSuccessInfo;
 import cn.edu.hfut.lilei.shareboard.enity.TalkPermissionChange;
 import cn.edu.hfut.lilei.shareboard.fragment.ChatEmotionFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.ChatFunctionFragment;
-import cn.edu.hfut.lilei.shareboard.utils.Constants;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.GlobalOnItemClickManagerUtils;
 import cn.edu.hfut.lilei.shareboard.utils.MediaManager;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
+import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.widget.EmotionInputDetector;
 import cn.edu.hfut.lilei.shareboard.widget.NoScrollViewPager;
@@ -62,10 +62,6 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_avatar;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
 
-/**
- * 作者：Rance on 2016/11/29 10:47
- * 邮箱：rance935@163.com
- */
 public class ChatActivity extends AppCompatActivity {
 
     @Bind(R.id.chat_list)
@@ -387,12 +383,12 @@ public class ChatActivity extends AppCompatActivity {
             //判断是否一致
             if (tmp.getMsgId()
                     .equals(Info.getMsgId())) {
-                tmp.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+                tmp.setSendState(SettingUtil.CHAT_ITEM_SEND_SUCCESS);
                 chatAdapter.notifyDataSetChanged();
 
                 //界面更新完了,在更新list,始终保持一致,不在判断msgid ,有问题直接覆盖,始终朝adapter看齐
                 messageInfos.get(position)
-                        .setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+                        .setSendState(SettingUtil.CHAT_ITEM_SEND_SUCCESS);
                 flag = true;
 
 
@@ -409,12 +405,12 @@ public class ChatActivity extends AppCompatActivity {
                 //判断是否一致
                 if (tmp.getMsgId()
                         .equals(Info.getMsgId())) {
-                    tmp.setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+                    tmp.setSendState(SettingUtil.CHAT_ITEM_SEND_SUCCESS);
                     chatAdapter.notifyDataSetChanged();
 
                     //界面更新完了,在更新list,始终保持一致,不在判断msgid ,有问题直接覆盖,始终朝adapter看齐
                     messageInfos.get(position2)
-                            .setSendState(Constants.CHAT_ITEM_SEND_SUCCESS);
+                            .setSendState(SettingUtil.CHAT_ITEM_SEND_SUCCESS);
 
 
                 }
@@ -436,11 +432,11 @@ public class ChatActivity extends AppCompatActivity {
             //网络连接不可用
             NetworkUtil.setNetworkMethod(mContext);
         }
-        if (messageInfo.getSendState() != Constants.CHAT_ITEM_SEND_ERROR) {
+        if (messageInfo.getSendState() != SettingUtil.CHAT_ITEM_SEND_ERROR) {
 
             messageInfo.setHeader(avatar);
-            messageInfo.setType(Constants.CHAT_ITEM_TYPE_RIGHT);
-            messageInfo.setSendState(Constants.CHAT_ITEM_SENDING);
+            messageInfo.setType(SettingUtil.CHAT_ITEM_TYPE_RIGHT);
+            messageInfo.setSendState(SettingUtil.CHAT_ITEM_SENDING);
             long now = DateTimeUtil.millisNow();
             messageInfo.setTime(now + "");
             messageInfo.setMsgId(my_email + now);

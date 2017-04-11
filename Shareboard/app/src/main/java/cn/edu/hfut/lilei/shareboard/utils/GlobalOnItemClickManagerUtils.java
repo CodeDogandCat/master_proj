@@ -10,8 +10,6 @@ import cn.edu.hfut.lilei.shareboard.adapter.EmotionGridViewAdapter;
 
 
 /**
- * 作者：Rance on 2016/11/29 10:47
- * 邮箱：rance935@163.com
  * 点击表情的全局监听管理类
  */
 public class GlobalOnItemClickManagerUtils {

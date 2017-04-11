@@ -11,8 +11,6 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.utils.Utils;
 
 /**
- * 作者：Rance on 2016/11/29 10:47
- * 邮箱：rance935@163.com
  * 自定义表情底部指示器
  */
 public class IndicatorView extends LinearLayout {

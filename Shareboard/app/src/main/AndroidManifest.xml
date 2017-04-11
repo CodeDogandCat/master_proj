@@ -112,18 +112,6 @@
             android:windowSoftInputMode="adjustPan"
             />
         <activity
-            android:name=".activity.MeetingTestActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MeetingTheme"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity
-            android:name=".activity.JsAvtivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MeetingTheme"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity
             android:name=".activity.FullImageActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:screenOrientation="portrait"

@@ -10,10 +10,6 @@ import java.io.IOException;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 
-/**
- * 作者：Rance on 2016/11/29 10:47
- * 邮箱：rance935@163.com
- */
 public class AudioRecoderUtils {
 
     //文件路径

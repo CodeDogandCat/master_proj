@@ -16,8 +16,6 @@ import cn.edu.hfut.lilei.shareboard.R;
 
 
 /**
- * 作者：Rance on 2016/12/15 10:49
- * 邮箱：rance935@163.com
  * 自定义聊天气泡图片
  */
 public class BubbleImageView extends ImageView {

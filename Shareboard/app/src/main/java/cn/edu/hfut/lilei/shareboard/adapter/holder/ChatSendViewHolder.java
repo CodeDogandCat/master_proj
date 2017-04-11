@@ -21,7 +21,7 @@ import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ChatAdapter;
 import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
-import cn.edu.hfut.lilei.shareboard.utils.Constants;
+import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import cn.edu.hfut.lilei.shareboard.utils.Utils;
@@ -157,15 +157,15 @@ public class ChatSendViewHolder extends BaseViewHolder<MessageInfo> {
                     chatItemLayoutContent.setLayoutParams(layoutParams);
                 }
         switch (data.getSendState()) {
-            case Constants.CHAT_ITEM_SENDING:
+            case SettingUtil.CHAT_ITEM_SENDING:
                 chatItemProgress.setVisibility(View.VISIBLE);
                 chatItemFail.setVisibility(View.GONE);
                 break;
-            case Constants.CHAT_ITEM_SEND_ERROR:
+            case SettingUtil.CHAT_ITEM_SEND_ERROR:
                 chatItemProgress.setVisibility(View.GONE);
                 chatItemFail.setVisibility(View.VISIBLE);
                 break;
-            case Constants.CHAT_ITEM_SEND_SUCCESS:
+            case SettingUtil.CHAT_ITEM_SEND_SUCCESS:
                 chatItemProgress.setVisibility(View.GONE);
                 chatItemFail.setVisibility(View.GONE);
                 break;

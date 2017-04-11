@@ -4,10 +4,6 @@ import java.util.Comparator;
 
 import cn.edu.hfut.lilei.shareboard.enity.GroupMemberInfo;
 
-/**
- * 
- *
- */
 public class PinyinComparatorUtil implements Comparator<GroupMemberInfo> {
 
 	public int compare(GroupMemberInfo o1, GroupMemberInfo o2) {

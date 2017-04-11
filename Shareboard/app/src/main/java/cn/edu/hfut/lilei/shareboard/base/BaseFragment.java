@@ -11,10 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-/**
- * 作者：Rance on 2016/11/18 15:19
- * 邮箱：rance935@163.com
- */
 public class BaseFragment extends Fragment {
     public Activity mActivity;
 

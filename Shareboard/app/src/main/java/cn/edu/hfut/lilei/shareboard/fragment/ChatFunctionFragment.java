@@ -51,10 +51,6 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
-/**
- * 作者：Rance on 2016/12/13 16:01
- * 邮箱：rance935@163.com
- */
 public class ChatFunctionFragment extends BaseFragment {
     private View rootView;
     private static final int CROP_PHOTO = 2;

@@ -132,10 +132,6 @@ public class WelcomeActivity extends Activity {
                                      */
                                     mlodingDialog.cancle();
                                     Intent intent = new Intent();
-//                                    intent.setClass(WelcomeActivity.this,
-//                                            MeetingTestActivity.class);
-//                                    intent.setClass(WelcomeActivity.this,
-//                                            JsAvtivity.class);
                                     intent.setClass(WelcomeActivity.this,
                                             MainActivity.class);
                                     startActivity(intent);
