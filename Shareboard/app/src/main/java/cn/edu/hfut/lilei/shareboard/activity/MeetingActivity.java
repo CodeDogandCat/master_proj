@@ -1,20 +1,30 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +37,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -59,12 +70,13 @@ import cn.edu.hfut.lilei.shareboard.models.MemberJson;
 import cn.edu.hfut.lilei.shareboard.models.MemberListJson;
 import cn.edu.hfut.lilei.shareboard.models.MessageListReceiveJson;
 import cn.edu.hfut.lilei.shareboard.models.MessageListSendJson;
-import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
+import cn.edu.hfut.lilei.shareboard.service.RecordService;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ScreenUtil;
+import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.hugeimageutil.HugeImageRegionLoader;
 import cn.edu.hfut.lilei.shareboard.utils.hugeimageutil.TileDrawable;
@@ -86,6 +98,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.ALBUM_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CHAT_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.HOST_CHECK_IN;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.RECORD_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_HOST_MEETING;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_LEAVE_MEETING;
@@ -128,6 +141,17 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     private Button mBtnLeave;
     private TextView mTvMeetingUrl;
     private RadioButton mBtnMember, mBtnShare, mBtnLock;
+    //录屏
+    private MediaProjectionManager projectionManager;
+    private MediaProjection mediaProjection;
+    private RecordService recordService;
+    //悬浮菜单
+    private PopupWindow mMenuPop;
+    private int rotate = 0;
+    private int rotation = 225;
+    private boolean rotateDirection = true;
+    private int PopWidth;
+    private int PopHeight;
 
     //数据
     //按钮的没选中显示的图标
@@ -148,6 +172,8 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     private boolean leaveForHostLeave = false;//因为主持人离开了,我必须离开
     private List<MeetingMemberInfo> memberInfoList = new ArrayList<>();
     private boolean isTalkable, isDrawable;
+    private boolean isRecording = false;
+
 
     //上下文参数
     private Context mContext;
@@ -201,6 +227,9 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         ButterKnife.unbind(this);
         EventBus.getDefault()
                 .unregister(this);
+
+        //录屏
+        unbindService(connection);
     }
 
     /**
@@ -233,6 +262,13 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 isTalkable = data.getExtras()
                         .getBoolean(post_meeting_is_talkable);
                 break;
+
+            case RECORD_REQUEST_CODE:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mediaProjection = projectionManager.getMediaProjection(resultCode, data);
+                    recordService.setMediaProject(mediaProjection);
+                    recordService.startRecord();
+                }
             default:
                 break;
         }
@@ -449,6 +485,9 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         mRlMember = (RelativeLayout) findViewById(R.id.rl_member);
         messageInfos = new ArrayList<>();
 
+        //录屏
+        Intent intent = new Intent(this, RecordService.class);
+        bindService(intent, connection, BIND_AUTO_CREATE);
     }
 
 
@@ -637,7 +676,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
             case R.id.btn_meeting_share:
                 if (shareType == 0) {
                     //弹出选择框
-                    requestPermission();
+                    requestStoragePermission();
 
                 } else {
                     //退出共享
@@ -932,61 +971,16 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     //如果主持人进入画板,再同步图片一遍了
                     if (!isDrawing) {
-
-
-                        Bitmap bmp = null;
-                        /**
-                         * 同步共享
-                         */
-                        if (shareType == 1) {
-                            //共享的是图片
-                            pinchImageView.setDrawingCacheEnabled(true);
-                            bmp = Bitmap.createBitmap(pinchImageView.getDrawingCache());
-                            pinchImageView.setDrawingCacheEnabled(false);
-                        } else
-                            if (shareType == 2) {
-                                //共享的是网页
-                                mRlShareWeb.setVisibility(View.VISIBLE);//可见
-                                mWvShareWeb.setDrawingCacheEnabled(true);
-                                bmp = Bitmap.createBitmap(mWvShareWeb.getDrawingCache());
-                                mWvShareWeb.setDrawingCacheEnabled(false);
-                            } else {
-                                mRlAvatar.setVisibility(View.GONE);
-                            }
-
-                        String base64 = "nothing";
-
-                        if (bmp != null) {
-                            //从bitmap获取base64
-                            base64 = ImageUtil.bitmapToBase64(bmp);
-                            showLog("native base64长度" + base64.length());
-                        }
-                        String call = "javascript:syncPic('" + base64 + "')";
-
-                        showLog("native call长度" + call.length());
-//                            showLog(call);
-
-                        //调用js函数
-                        mWvCanvas.loadUrl(call);
-
-
+                        showLevitateMenu(0);//显示  进入画板
                     } else {
-
-                        //退出画板界面
-                        fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
-                        fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
-                        if (shareType == 0) {
-                            mRlAvatar.setVisibility(View.VISIBLE);
+                        if (isRecording) {
+                            showLevitateMenu(2);//显示 停止录制
+                        } else {
+                            showLevitateMenu(1);//显示 退出画板,录制
                         }
-                        mLlWebviewCanvas.setVisibility(View.GONE);
-                        mRlActionbar.setVisibility(View.VISIBLE);
-                        mLlActionGroup.setVisibility(View.VISIBLE);
-                        isDrawing = false;
-                        mLlMeetingStage.setBackgroundColor(
-                                getResources().getColor(R.color.my_black));
+
                     }
                 }
             });
@@ -1009,49 +1003,16 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     //如果进入画板
                     if (!isDrawing) {
-                        /**
-                         * 设置悬浮按钮的活动范围
-                         */
-                        fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
-                        fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 60));
-                        /**
-                         * 设置布局的可见性
-                         */
-                        mRlAvatar.setVisibility(View.GONE);
-                        mLlWebviewCanvas.setVisibility(View.VISIBLE);
-                        mRlSharePic.setVisibility(View.VISIBLE);//无论主持人在没在共享
-
-                        mRlActionbar.setVisibility(View.GONE);
-                        mLlActionGroup.setVisibility(View.GONE);
-                        isDrawing = true;
-                        /**
-                         * 改变舞台的背景色
-                         */
-                        mLlMeetingStage.setBackgroundColor(
-                                getResources().getColor(R.color.my_white));
-
-
+                        showLevitateMenu(0);//显示  进入画板
                     } else {
-                        fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
-                        fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
-
-                        mLlWebviewCanvas.setVisibility(View.GONE);
-
-                        /**
-                         * 设置布局的可见性
-                         */
-                        mRlAvatar.setVisibility(View.VISIBLE);
-                        mLlWebviewCanvas.setVisibility(View.GONE);
-                        mRlSharePic.setVisibility(View.GONE);//无论主持人在没在共享
-
-                        mRlActionbar.setVisibility(View.VISIBLE);
-                        mLlActionGroup.setVisibility(View.VISIBLE);
-                        isDrawing = false;
-                        mLlMeetingStage.setBackgroundColor(
-                                getResources().getColor(R.color.my_black));
-
+                        if (isRecording) {
+                            showLevitateMenu(2);//显示 停止录制
+                        } else {
+                            showLevitateMenu(1);//显示 退出画板,录制
+                        }
 
                     }
                 }
@@ -1207,7 +1168,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     /**
      * 获取权限
      */
-    public void requestPermission() {
+    public void requestStoragePermission() {
         PermissionsUtil.TipInfo tip =
                 new PermissionsUtil.TipInfo(null,
                         getString(R.string.should_get_to_share), null,
@@ -2145,5 +2106,443 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                         .LayoutParams
                         .FLAG_FORCE_NOT_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+    }
+
+
+    /////////////////////////////////////////////////////
+    ///////录屏 支持5.0以上系统
+    ////////////////////////////////////////////////////
+
+    /**
+     * 获取权限
+     */
+    public void requestScreenRecorderPermission() {
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            PermissionsUtil.TipInfo tip =
+                    new PermissionsUtil.TipInfo(null,
+                            getString(R.string.should_get_to_screen_record), null,
+                            null);
+
+            if (PermissionsUtil
+                    .hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) &&
+                    PermissionsUtil.hasPermission(this, Manifest.permission.RECORD_AUDIO)) {
+                screenRecord();
+
+            } else {
+                PermissionsUtil.requestPermission(this, new PermissionListener() {
+                    @Override
+                    public void permissionGranted(@NonNull String[] permissions) {
+                        createShareChooseDialog();
+                    }
+
+                    @Override
+                    public void permissionDenied(@NonNull String[] permissions) {
+                    }
+                }, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.RECORD_AUDIO}, true, tip);
+            }
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void screenRecord() {
+        projectionManager =
+                (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+
+        if (recordService.isRunning()) {
+            recordService.stopRecord();
+        } else {
+            Intent captureIntent = projectionManager.createScreenCaptureIntent();
+            startActivityForResult(captureIntent, RECORD_REQUEST_CODE);
+        }
+
+
+    }
+
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay()
+                    .getMetrics(metrics);
+            RecordService.RecordBinder binder = (RecordService.RecordBinder) service;
+            recordService = binder.getRecordService();
+            recordService.setConfig(metrics.widthPixels, metrics.heightPixels, metrics.densityDpi);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+        }
+    };
+
+    ////////////////////////////////////////////////////////////
+    //悬浮菜单
+    ////////////////////////////////////////////////////////////////
+
+    /**
+     * 显示悬浮菜单
+     */
+    private void showLevitateMenu(int type) {
+
+        //创建popwindow
+        if (getPopMenu(type)) {
+
+
+//            if (mMenuPop != null) {
+//                mMenuPop.showAtLocation(fab, Gravity.NO_GRAVITY,
+//                        fab.getLeft() - PopWidth + fab.getWidth() / 4,
+//                        y + fab.getHeight() / 2 - PopHeight / 2);
+//            }
+            if (mMenuPop != null) {
+
+
+                //动画
+                mRotate(fab);
+                //获取ImageView控件在手机屏幕的位置
+                int[] location = new int[2];
+                fab.getLocationOnScreen(location);
+                int x = location[0];
+                int y = location[1];
+                showLog("########## fab y" + y);
+
+                /**
+                 * popwindow显示的位置
+                 * 参数一：基于某控件，一般在popupWindow.showAsDropDown()中比较有用，该处作用不大
+                 * 参数二：见名知意，写默认即可
+                 * 参数三：popupWindow在屏幕上显示位置的x坐标
+                 * 参数四：popupWindow在屏幕上显示位置的y左边*/
+
+                //贴在右边
+                mMenuPop.showAtLocation(fab, Gravity.NO_GRAVITY,
+                        fab.getLeft() - PopWidth,
+                        y + fab.getHeight() / 2 - PopHeight / 2);
+
+
+            }
+
+        }
+
+
+    }
+
+
+    /**
+     * 悬浮菜单动画效果
+     *
+     * @param v
+     */
+    private void mRotate(View v) {
+
+        ObjectAnimator animator;
+
+        int[] location = new int[2];
+        v.getLocationOnScreen(location);
+        int x = location[0];
+        int y = location[1];
+        showLog("###旋转之前#### fab y" + y);
+
+
+        //判断是顺时针旋转还是逆时针旋转
+        if (rotateDirection) {
+            animator = ObjectAnimator.ofFloat(v, "rotation", rotate, rotate - rotation);
+            rotate = rotate + rotation;
+
+        } else {
+            animator = ObjectAnimator.ofFloat(v, "rotation", rotate, rotate + rotation);
+            rotate = rotate - rotation;
+        }
+
+        //持续时间
+//        animator.setDuration(350);
+//        animator.start();
+
+
+        location = new int[2];
+        v.getLocationOnScreen(location);
+        x = location[0];
+        y = location[1];
+        showLog("###旋转之后#### fab y" + y);
+
+        rotateDirection = !rotateDirection;
+    }
+
+
+    /**
+     * 获取PopupWindow实例 .分类
+     */
+    private Boolean getPopMenu(int type) {
+
+//        if (null != mMenuPop) {//关闭
+//
+//            //动画
+//            mRotate(fab);
+//            //关闭
+//            mMenuPop.dismiss();
+//            mMenuPop = null;
+//            return;
+//        }
+
+        if (mMenuPop != null && mMenuPop.isShowing()) {
+            mRotate(fab);
+            mMenuPop.dismiss();
+            mMenuPop = null;
+            return false;
+        } else {
+            //初始化popupWindow弹窗
+            initMenuPop(type);
+            return true;
+        }
+    }
+
+    public void setPopWindow(View view) {
+
+        //测量view的宽高，由于popupwindow没有测量的方法，只能测量内部view的宽高
+        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        view.measure(w, h);
+        PopWidth = view.getMeasuredWidth();
+        PopHeight = view.getMeasuredHeight();
+
+        //下面这两个必须有！！
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+        // PopupWindow(布局，宽度，高度) 注意，此处宽高应为-2也就是wrap_content
+        mMenuPop = new PopupWindow(view, -2, -2, true);
+
+        // 重写onKeyListener,按返回键消失
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                    mRotate(fab);
+                    mMenuPop.dismiss();
+                    mMenuPop = null;
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //点击其他地方消失
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mMenuPop != null && mMenuPop.isShowing()) {
+                    mRotate(fab);
+                    mMenuPop.dismiss();
+                    mMenuPop = null;
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * 初始化popWindow
+     */
+    private void initMenuPop(int type) {
+        // 获取自定义布局文件pop.xml的视图
+        View view = View.inflate(mContext, R.layout.item_pop_levitate_menu, null);
+
+
+        final TextView tv_enter = (TextView) view.findViewById(R.id.tv_enter);
+        final TextView tv_line = (TextView) view.findViewById(R.id.tv_line);
+        final TextView tv_record = (TextView) view.findViewById(R.id.tv_record);
+
+        switch (type) {
+            case 0:
+                tv_enter.setVisibility(View.VISIBLE);
+                tv_line.setVisibility(View.GONE);
+                tv_record.setVisibility(View.GONE);
+
+                setPopWindow(view);
+
+                tv_enter.setText(R.string.enter_board);
+                tv_enter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+//                        showToast(mContext, "点击了" + tv_enter.getText()
+//                                .toString());
+                        if (check_in_type == 1) {
+                            fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
+                            fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 60));
+                            /**
+                             * 设置布局的可见性
+                             */
+                            mRlAvatar.setVisibility(View.GONE);
+                            mLlWebviewCanvas.setVisibility(View.VISIBLE);
+                            mRlSharePic.setVisibility(View.VISIBLE);//无论主持人在没在共享
+
+                            mRlActionbar.setVisibility(View.GONE);
+                            mLlActionGroup.setVisibility(View.GONE);
+                            isDrawing = true;
+                            /**
+                             * 改变舞台的背景色
+                             */
+                            mLlMeetingStage.setBackgroundColor(
+                                    getResources().getColor(R.color.my_white));
+                        } else
+                            if (check_in_type == 2) {
+
+                                Bitmap bmp = null;
+                                /**
+                                 * 同步共享
+                                 */
+                                if (shareType == 1) {
+                                    //共享的是图片
+                                    pinchImageView.setDrawingCacheEnabled(true);
+                                    bmp = Bitmap.createBitmap(pinchImageView.getDrawingCache());
+                                    pinchImageView.setDrawingCacheEnabled(false);
+                                } else
+                                    if (shareType == 2) {
+                                        //共享的是网页
+                                        mRlShareWeb.setVisibility(View.VISIBLE);//可见
+                                        mWvShareWeb.setDrawingCacheEnabled(true);
+                                        bmp = Bitmap.createBitmap(mWvShareWeb.getDrawingCache());
+                                        mWvShareWeb.setDrawingCacheEnabled(false);
+                                    } else {
+                                        mRlAvatar.setVisibility(View.GONE);
+                                    }
+
+                                String base64 = "nothing";
+
+                                if (bmp != null) {
+                                    //从bitmap获取base64
+                                    base64 = ImageUtil.bitmapToBase64(bmp);
+                                    showLog("native base64长度" + base64.length());
+                                }
+                                String call = "javascript:syncPic('" + base64 + "')";
+
+                                showLog("native call长度" + call.length());
+//                            showLog(call);
+
+                                //调用js函数
+                                mWvCanvas.loadUrl(call);
+
+
+                            }
+                        mRotate(fab);
+                        mMenuPop.dismiss();
+                        mMenuPop = null;
+
+                    }
+                });
+
+
+                break;
+            case 1:
+                tv_enter.setVisibility(View.VISIBLE);
+                tv_line.setVisibility(View.VISIBLE);
+                tv_record.setVisibility(View.VISIBLE);
+
+                setPopWindow(view);
+
+                tv_enter.setText(R.string.quit_board);
+                tv_record.setText(R.string.start_record_screen);
+
+                tv_enter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+//                        showToast(mContext, "点击了" + tv_enter.getText()
+//                                .toString());
+                        if (check_in_type == 1) {
+
+                            fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
+                            fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
+
+                            mLlWebviewCanvas.setVisibility(View.GONE);
+
+                            /**
+                             * 设置布局的可见性
+                             */
+                            mRlAvatar.setVisibility(View.VISIBLE);
+                            mLlWebviewCanvas.setVisibility(View.GONE);
+                            mRlSharePic.setVisibility(View.GONE);//无论主持人在没在共享
+
+                            mRlActionbar.setVisibility(View.VISIBLE);
+                            mLlActionGroup.setVisibility(View.VISIBLE);
+                            isDrawing = false;
+                            mLlMeetingStage.setBackgroundColor(
+                                    getResources().getColor(R.color.my_black));
+
+                        } else
+                            if (check_in_type == 2) {
+                                //退出画板界面
+                                fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
+                                fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
+                                if (shareType == 0) {
+                                    mRlAvatar.setVisibility(View.VISIBLE);
+                                }
+                                mLlWebviewCanvas.setVisibility(View.GONE);
+                                mRlActionbar.setVisibility(View.VISIBLE);
+                                mLlActionGroup.setVisibility(View.VISIBLE);
+                                isDrawing = false;
+                                mLlMeetingStage.setBackgroundColor(
+                                        getResources().getColor(R.color.my_black));
+                            }
+                        mRotate(fab);
+                        mMenuPop.dismiss();
+                        mMenuPop = null;
+
+                    }
+                });
+
+                tv_record.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+//                        showToast(mContext, "点击了" + tv_record.getText()
+//                                .toString());
+                        //录屏
+                        requestScreenRecorderPermission();
+                        isRecording = true;
+                        mRotate(fab);
+                        mMenuPop.dismiss();
+                        mMenuPop = null;
+
+                    }
+                });
+
+                break;
+            case 2:
+                tv_enter.setVisibility(View.GONE);
+                tv_line.setVisibility(View.GONE);
+                tv_record.setVisibility(View.VISIBLE);
+
+                setPopWindow(view);
+
+                tv_record.setText(R.string.stop_record_screen);
+
+                tv_record.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//
+//                        showToast(mContext, "点击了" + tv_record.getText()
+//                                .toString());
+                        //录屏
+                        requestScreenRecorderPermission();
+                        isRecording = false;
+
+                        mRotate(fab);
+                        mMenuPop.dismiss();
+                        mMenuPop = null;
+
+                    }
+                });
+
+                break;
+            default:
+                break;
+        }
+
+
     }
 }

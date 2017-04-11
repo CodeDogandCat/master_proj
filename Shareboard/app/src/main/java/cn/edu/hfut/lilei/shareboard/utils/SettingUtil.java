@@ -130,15 +130,23 @@ public class SettingUtil {
     public static final int CROP_REQUEST_CODE = 4;//裁剪请求代码
     public static final int CHAT_REQUEST_CODE = 7;//聊天界面请求代码
     public static final int MEETING_REQUEST_CODE = 8;//会议界面请求代码
+
+    public static final int RECORD_REQUEST_CODE  = 101;
+
+
     public static final String PERMISSION_REQUEST_TITLE = "帮助";//权限请求提示框标题
     public static final String PERMISSION_REQUEST_CONTENT =
             "当前应用缺少必要权限。\n \n 请点击 \"设置\"-\"权限\"-打开所需权限。";//权限请求提示框内容
     public static final String PERMISSION_REQUEST_CANCEL = "取消";//权限请求提示框-取消
     public static final String PERMISSION_REQUEST_ENSURE = "设置";//权限请求提示框-允许
-    /** 0x001-接受消息  0x002-发送消息**/
+    /**
+     * 0x001-接受消息  0x002-发送消息
+     **/
     public static final int CHAT_ITEM_TYPE_LEFT = 0x001;
     public static final int CHAT_ITEM_TYPE_RIGHT = 0x002;
-    /** 0x003-发送中  0x004-发送失败  0x005-发送成功**/
+    /**
+     * 0x003-发送中  0x004-发送失败  0x005-发送成功
+     **/
     public static final int CHAT_ITEM_SENDING = 0x003;
     public static final int CHAT_ITEM_SEND_ERROR = 0x004;
     public static final int CHAT_ITEM_SEND_SUCCESS = 0x005;
@@ -146,6 +154,7 @@ public class SettingUtil {
     //文件路径参数
     public static final String IMG_PATH_FOR_CAMERA = "shareboard_image.jpeg";
     public static final String IMG_PATH_FOR_CROP = "shareboard_image.jpeg";
+    public static final String MP4_PATH_FOR_SCREEN_RECORD = "shareboard_screen_record";
 
     //字符串常量
     public static final String TIMEZONE = "GTM+8";

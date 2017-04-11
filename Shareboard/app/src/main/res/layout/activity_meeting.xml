@@ -206,12 +206,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center_vertical"
-                    android:src="@drawable/ic_default_draw"
+                    android:src="@drawable/new_bj"
                     app:backgroundTint="@color/my_transparent"
                     app:backgroundTintMode="screen"
                     app:borderWidth="1dp"
                     app:elevation="12dp"
-                    app:fabSize="normal"
+                    app:fabSize="mini"
                     app:layout_anchor="@id/ll_meeting_stage"
                     app:layout_anchorGravity="right|center_vertical"
                     app:pressedTranslationZ="5dp"
@@ -228,8 +228,8 @@
                     android:id="@+id/rl_member"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
                     android:background="@color/my_black"
+                    android:visibility="gone"
         >
 
         <RelativeLayout
@@ -298,27 +298,27 @@
     </RelativeLayout>
 
     <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-                  <!--xmlns:tools="http://schemas.android.com/tools"-->
-                  <!--android:id="@+id/ll_chat"-->
-                  <!--android:layout_width="match_parent"-->
-                  <!--android:layout_height="match_parent"-->
-                  <!--android:fitsSystemWindows="true"-->
-                  <!--android:orientation="vertical"-->
-                  <!--android:visibility="gone"-->
-                  <!--tools:context=".activity.ChatActivity"-->
-        <!--&gt;-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:id="@+id/ll_chat"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:fitsSystemWindows="true"-->
+    <!--android:orientation="vertical"-->
+    <!--android:visibility="gone"-->
+    <!--tools:context=".activity.ChatActivity"-->
+    <!--&gt;-->
 
-        <!--<com.jude.easyrecyclerview.EasyRecyclerView-->
-            <!--android:id="@+id/chat_list"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="@color/my_black"/>-->
+    <!--<com.jude.easyrecyclerview.EasyRecyclerView-->
+    <!--android:id="@+id/chat_list"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@color/my_black"/>-->
 
-        <!--<include-->
-            <!--layout="@layout/include_reply_layout"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"/>-->
+    <!--<include-->
+    <!--layout="@layout/include_reply_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"/>-->
     <!--</LinearLayout>-->
 
 </FrameLayout>

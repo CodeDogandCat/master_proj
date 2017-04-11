@@ -2,6 +2,7 @@ package cn.edu.hfut.lilei.shareboard.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.util.DisplayMetrics;
 
 import com.lzy.okgo.OkGo;
@@ -11,6 +12,7 @@ import com.lzy.okgo.cookie.store.PersistentCookieStore;
 
 import java.util.logging.Level;
 
+import cn.edu.hfut.lilei.shareboard.service.RecordService;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_add_to_calendar;
@@ -58,6 +60,8 @@ public class MyApplication extends Application {
         mContext = getApplicationContext();
         mInstance = this;
         initScreenSize();
+        // 启动 Marvel service
+        startService(new Intent(this, RecordService.class));
         /**
          * 初始化 sharepreference
          */
@@ -159,5 +163,10 @@ public class MyApplication extends Application {
         screenDensity = curMetrics.density;
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        mInstance = this;
+    }
 
 }

@@ -162,7 +162,8 @@ public class SetUserInfoActivity extends SwipeBackActivity {
 
 //                final File avatarFile = new File(avatarPath);
 
-                if (targetFile.length() > 1024 * 1024 * 6)// 6M  照片最大限制
+
+                if (targetFile != null && targetFile.length() > 1024 * 1024 * 6)// 6M  照片最大限制
                 {
                     showToast(mContext, getString(R.string.image_too_large));
                 } else {
@@ -233,6 +234,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                     /**
                                                      * 5.注册成功,缓存token ,姓,名
                                                      */
+                                                    targetFile.delete();
                                                     SharedPrefUtil.getInstance()
                                                             .saveData(share_token, o.getData()
                                                                     .getToken());
@@ -257,6 +259,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
 
 
                                                 } else {
+                                                    targetFile.delete();
                                                     mlodingDialog.cancle();
                                                     //提示所有错误
                                                     showLog(o.getMsg());
@@ -268,6 +271,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                             public void onError(Call call, Response response,
                                                                 Exception e) {
                                                 super.onError(call, response, e);
+                                                targetFile.delete();
                                                 mlodingDialog.cancle();
                                                 showToast(mContext, R.string.system_error);
                                             }
@@ -331,6 +335,9 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                         @Override
                         protected void onPostExecute(Integer integer) {
                             super.onPostExecute(integer);
+                            if (targetFile != null) {
+                                targetFile.delete();
+                            }
                             mlodingDialog.cancle();
                             switch (integer) {
                                 case NET_DISCONNECT:
@@ -401,19 +408,32 @@ public class SetUserInfoActivity extends SwipeBackActivity {
      * 构造更改头像弹出窗口
      */
     private void createAlterHeadDialog() {
-
-
         //构造一个目标URI
-        File cropImage = new File(baseDir,
-                IMG_PATH_FOR_CROP);
 
+        String baseDir = "";
+        if (FileUtil.isExternalStorageWritable()) {
+            baseDir = this.getExternalFilesDir("")
+                    .getAbsolutePath() + "/shareboard/";
+        } else {
+            baseDir = this.getFilesDir()
+                    .getAbsolutePath() + "/shareboard/";
+        }
+
+        File file = new File(baseDir,
+                "image");//拍照后保存的路径
+
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        File cropImage = new File(file.getAbsolutePath(),
+                IMG_PATH_FOR_CROP);
         try {
             if (cropImage.exists()) {
                 cropImage.delete();
             }
             cropImage.createNewFile();
             cropUri = Uri.fromFile(cropImage);
-            new AlterHeadDialog.Builder(SetUserInfoActivity.this)
+            new AlterHeadDialog.Builder(mContext)
                     .setTitle(getString(R.string.choose_head))
                     .show();
         } catch (IOException e) {

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/levitate_menu_bj"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="6dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="6dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_enter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="进入画板"
+            android:textColor="@color/my_black"
+            android:textSize="14sp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/tv_line"
+            android:layout_width="1dp"
+            android:layout_height="14dp"
+            android:layout_marginLeft="5dp"
+            android:background="@color/my_black"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/tv_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="开始录屏"
+            android:textColor="@color/my_black"
+            android:textSize="14sp"
+            android:visibility="gone"
+            />
+
+
+    </LinearLayout>
+
+</LinearLayout>

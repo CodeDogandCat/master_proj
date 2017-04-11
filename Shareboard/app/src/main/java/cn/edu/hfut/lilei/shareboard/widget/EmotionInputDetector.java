@@ -79,6 +79,7 @@ public class EmotionInputDetector {
     private PopupWindowFactory mVoicePop;
     private TextView mPopVoiceText;
     private static String email;
+    private File chatFile;
 
 
     private EmotionInputDetector() {
@@ -412,6 +413,14 @@ public class EmotionInputDetector {
      * @param time
      */
     public void sendChatVoiceFile(final String path, final TextView mTextView, final long time) {
+
+        chatFile = new File(path);
+        showLog("录音路径" + path);
+        showLog("录音" + chatFile.canRead());
+        showLog("录音" + chatFile.isFile());
+        showLog("录音" + chatFile.exists());
+        showLog("录音" + chatFile.length());
+
         new AsyncTask<Void, Void, Integer>() {
 
             @Override
@@ -447,12 +456,6 @@ public class EmotionInputDetector {
                 /**
                  *3.上传
                  */
-                File chatFile = new File(path);
-                showLog("录音路径" + path);
-                showLog("录音" + chatFile.canRead());
-                showLog("录音" + chatFile.isFile());
-                showLog("录音" + chatFile.exists());
-                showLog("录音" + chatFile.length());
 
                 OkGo.post(URL_SEND_CHAT_FILE)
                         .tag(this)
@@ -470,7 +473,7 @@ public class EmotionInputDetector {
                                     /**
                                      * 4.上传成功,显示
                                      */
-
+                                    chatFile.delete();
                                     mTextView.setText(Utils.long2String(0));
                                     MessageInfo messageInfo = new MessageInfo();
                                     messageInfo.setClient_email(email);
@@ -482,6 +485,7 @@ public class EmotionInputDetector {
 
                                 } else {
                                     //提示所有错误
+                                    chatFile.delete();
                                     showLog(o.getMsg());
                                     showToast(mActivity, mActivity.getResources()
                                             .getString(R
@@ -494,6 +498,7 @@ public class EmotionInputDetector {
                             public void onError(Call call, Response response,
                                                 Exception e) {
                                 super.onError(call, response, e);
+                                chatFile.delete();
                                 //提示所有错误
                                 showLog("系统错误");
                                 showToast(mActivity, mActivity.getResources()
@@ -507,6 +512,7 @@ public class EmotionInputDetector {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
+                chatFile.delete();
                 switch (integer) {
                     case NET_DISCONNECT:
                         //弹出对话框，让用户开启网络

@@ -192,4 +192,12 @@
     <string name="send_error">发送失败</string>
     <string name="image_too_large">图片过大</string>
     <string name="max_voice_length">最长语音时间为30分钟</string>
+    <string name="should_get_to_screen_record">需要获取权限才能开启录制屏幕功能</string>
+    <string name="start_record">开始录制</string>
+    <string name="save_to">保存到</string>
+    <string name="record_fail">" 录制失败"</string>
+    <string name="enter_board">进入白板</string>
+    <string name="stop_record_screen">停止录屏</string>
+    <string name="quit_board">退出白板</string>
+    <string name="start_record_screen">录制屏幕</string>
 </resources>

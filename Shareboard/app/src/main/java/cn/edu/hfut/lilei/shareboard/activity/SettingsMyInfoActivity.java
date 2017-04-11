@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -296,7 +295,23 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
      */
     private void createAlterHeadDialog() {
         //构造一个目标URI
-        File cropImage = new File(Environment.getExternalStorageDirectory(),
+
+        String baseDir = "";
+        if (FileUtil.isExternalStorageWritable()) {
+            baseDir = this.getExternalFilesDir("")
+                    .getAbsolutePath() + "/shareboard/";
+        } else {
+            baseDir = this.getFilesDir()
+                    .getAbsolutePath() + "/shareboard/";
+        }
+
+        File file = new File(baseDir,
+                "image");//拍照后保存的路径
+
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        File cropImage = new File(file.getAbsolutePath(),
                 IMG_PATH_FOR_CROP);
         try {
             if (cropImage.exists()) {
@@ -409,6 +424,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                                 /**
                                                  * 4.更新成功,显示
                                                  */
+                                                targetFile.delete();
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_avatar, URL_AVATAR + o
                                                                 .getData()
@@ -419,6 +435,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
 
 
                                             } else {
+                                                targetFile.delete();
                                                 mlodingDialog.cancle();
                                                 //提示所有错误
                                                 showLog(o.getMsg());
@@ -430,6 +447,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                         public void onError(Call call, Response response,
                                                             Exception e) {
                                             super.onError(call, response, e);
+                                            targetFile.delete();
                                             mlodingDialog.cancle();
                                             showToast(mContext, R.string.system_error);
                                         }
@@ -441,6 +459,8 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                         @Override
                         protected void onPostExecute(Integer integer) {
                             super.onPostExecute(integer);
+
+                            targetFile.delete();
                             mlodingDialog.cancle();
                             switch (integer) {
                                 case NET_DISCONNECT:

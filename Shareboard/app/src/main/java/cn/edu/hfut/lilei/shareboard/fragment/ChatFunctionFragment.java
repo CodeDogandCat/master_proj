@@ -134,7 +134,7 @@ public class ChatFunctionFragment extends BaseFragment {
         output = new File(file, System.currentTimeMillis() + ".jpeg");
 
         /**
-         * 如果该文件夹已经存在，则删除它，否则创建一个
+         * 如果该文件已经存在，则删除它，否则创建一个
          */
         try {
             if (output.exists()) {
@@ -278,6 +278,7 @@ public class ChatFunctionFragment extends BaseFragment {
                                         /**
                                          * 4.上传成功,显示
                                          */
+                                        targetFile.delete();
                                         MessageInfo messageInfo = new MessageInfo();
                                         messageInfo.setImageUrl(URL_CHAT_IMG + o.getMsg());
                                         messageInfo.setClient_email(email);
@@ -287,6 +288,7 @@ public class ChatFunctionFragment extends BaseFragment {
 
                                     } else {
                                         //提示所有错误
+                                        targetFile.delete();
                                         showLog(o.getMsg());
                                         showToast(mContext,
                                                 getString(R.string.send_error));
@@ -297,6 +299,7 @@ public class ChatFunctionFragment extends BaseFragment {
                                 public void onError(Call call, Response response,
                                                     Exception e) {
                                     super.onError(call, response, e);
+                                    targetFile.delete();
                                     //提示所有错误
                                     showLog("系统错误");
                                     showToast(mContext, getString(R.string.send_error));
@@ -309,6 +312,7 @@ public class ChatFunctionFragment extends BaseFragment {
                 @Override
                 protected void onPostExecute(Integer integer) {
                     super.onPostExecute(integer);
+                    targetFile.delete();
                     switch (integer) {
                         case NET_DISCONNECT:
                             //弹出对话框，让用户开启网络
