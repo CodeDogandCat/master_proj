@@ -18,6 +18,7 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.models.LoginJson;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
+import cn.edu.hfut.lilei.shareboard.utils.JpushUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
@@ -70,7 +71,7 @@ public class LoginActivity extends Activity {
 
     private void init() {
         mContext = this;
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         mImgEmail = (ImageView) findViewById(R.id.img_login_email);
@@ -206,6 +207,7 @@ public class LoginActivity extends Activity {
                                                      /**
                                                       * 4.登陆成功,缓存token,email,姓,名
                                                       */
+
                                                      SharedPrefUtil.getInstance()
                                                              .saveData(share_token, o.getData()
                                                                      .getToken()
@@ -224,6 +226,11 @@ public class LoginActivity extends Activity {
                                                              .saveData(share_avatar, URL_AVATAR + o
                                                                      .getData()
                                                                      .getAvatar());
+
+
+                                                     //设置推送的别名
+                                                     JpushUtil util = new JpushUtil(mContext);
+                                                     util.setAlias();
                                                      mlodingDialog.cancle();
 
                                                      /**

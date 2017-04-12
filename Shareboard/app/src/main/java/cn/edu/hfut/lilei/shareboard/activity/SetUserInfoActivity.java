@@ -29,6 +29,7 @@ import cn.edu.hfut.lilei.shareboard.models.CommonJson;
 import cn.edu.hfut.lilei.shareboard.models.RegisterJson;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
+import cn.edu.hfut.lilei.shareboard.utils.JpushUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
@@ -247,6 +248,13 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                             .saveData(share_avatar, URL_AVATAR + o
                                                                     .getData()
                                                                     .getAvatar());
+
+
+                                                    //设置推送的别名
+                                                    JpushUtil util = new JpushUtil(mContext);
+                                                    util.setAlias();
+
+
                                                     mlodingDialog.cancle();
                                                     /**
                                                      * 6.跳转
@@ -298,6 +306,10 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                                     familyName);
                                                     SharedPrefUtil.getInstance()
                                                             .saveData(share_given_name, givenName);
+
+                                                    //设置推送的别名
+                                                    JpushUtil util = new JpushUtil(mContext);
+                                                    util.setAlias();
 
                                                     mlodingDialog.cancle();
                                                     /**

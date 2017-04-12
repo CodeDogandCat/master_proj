@@ -19,6 +19,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets.main.jniLibs.srcDirs = ['libs']
 }
 //greendao
 buildscript {
@@ -64,4 +65,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile files('libs/jpush-android-2.2.0.jar')
 }

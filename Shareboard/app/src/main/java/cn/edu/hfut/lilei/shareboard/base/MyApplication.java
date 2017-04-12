@@ -14,6 +14,7 @@ import java.util.logging.Level;
 
 import cn.edu.hfut.lilei.shareboard.service.RecordService;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
+import cn.jpush.android.api.JPushInterface;
 
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_add_to_calendar;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_drawable;
@@ -62,6 +63,9 @@ public class MyApplication extends Application {
         initScreenSize();
         // 启动 Marvel service
         startService(new Intent(this, RecordService.class));
+        //启动jpush 推送服务
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         /**
          * 初始化 sharepreference
          */
