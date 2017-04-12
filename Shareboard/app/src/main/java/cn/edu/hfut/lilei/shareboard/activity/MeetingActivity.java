@@ -2438,56 +2438,42 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
                 break;
             case 1:
-                tv_enter.setVisibility(View.VISIBLE);
-                tv_line.setVisibility(View.VISIBLE);
-                tv_record.setVisibility(View.VISIBLE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    tv_enter.setVisibility(View.VISIBLE);
+                    tv_line.setVisibility(View.VISIBLE);
+                    tv_record.setVisibility(View.VISIBLE);
+                    tv_record.setText(R.string.start_record_screen);
+                    tv_record.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+//                        showToast(mContext, "点击了" + tv_record.getText()
+//                                .toString());
+                            //录屏
+                            requestScreenRecorderPermission();
+                            isRecording = true;
+                            mRotate(fab);
+                            mMenuPop.dismiss();
+                            mMenuPop = null;
+
+                        }
+                    });
+                } else {
+                    tv_enter.setVisibility(View.VISIBLE);
+                    tv_line.setVisibility(View.GONE);
+                    tv_record.setVisibility(View.GONE);
+                }
+
 
                 setPopWindow(view);
-
                 tv_enter.setText(R.string.quit_board);
-                tv_record.setText(R.string.start_record_screen);
-
                 tv_enter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
 //                        showToast(mContext, "点击了" + tv_enter.getText()
 //                                .toString());
-                        if (check_in_type == 1) {
-
-                            fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
-                            fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
-
-                            mLlWebviewCanvas.setVisibility(View.GONE);
-
-                            /**
-                             * 设置布局的可见性
-                             */
-                            mRlAvatar.setVisibility(View.VISIBLE);
-                            mLlWebviewCanvas.setVisibility(View.GONE);
-                            mRlSharePic.setVisibility(View.GONE);//无论主持人在没在共享
-
-                            mRlActionbar.setVisibility(View.VISIBLE);
-                            mLlActionGroup.setVisibility(View.VISIBLE);
-                            isDrawing = false;
-                            mLlMeetingStage.setBackgroundColor(
-                                    getResources().getColor(R.color.my_black));
-
-                        } else
-                            if (check_in_type == 2) {
-                                //退出画板界面
-                                fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
-                                fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
-                                if (shareType == 0) {
-                                    mRlAvatar.setVisibility(View.VISIBLE);
-                                }
-                                mLlWebviewCanvas.setVisibility(View.GONE);
-                                mRlActionbar.setVisibility(View.VISIBLE);
-                                mLlActionGroup.setVisibility(View.VISIBLE);
-                                isDrawing = false;
-                                mLlMeetingStage.setBackgroundColor(
-                                        getResources().getColor(R.color.my_black));
-                            }
+                        quitBoard();
                         mRotate(fab);
                         mMenuPop.dismiss();
                         mMenuPop = null;
@@ -2495,48 +2481,55 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                     }
                 });
 
-                tv_record.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-//                        showToast(mContext, "点击了" + tv_record.getText()
-//                                .toString());
-                        //录屏
-                        requestScreenRecorderPermission();
-                        isRecording = true;
-                        mRotate(fab);
-                        mMenuPop.dismiss();
-                        mMenuPop = null;
-
-                    }
-                });
 
                 break;
             case 2:
-                tv_enter.setVisibility(View.GONE);
-                tv_line.setVisibility(View.GONE);
-                tv_record.setVisibility(View.VISIBLE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    tv_enter.setVisibility(View.GONE);
+                    tv_line.setVisibility(View.GONE);
+                    tv_record.setVisibility(View.VISIBLE);
 
-                setPopWindow(view);
+                    setPopWindow(view);
 
-                tv_record.setText(R.string.stop_record_screen);
+                    tv_record.setText(R.string.stop_record_screen);
 
-                tv_record.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                    tv_record.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 //
 //                        showToast(mContext, "点击了" + tv_record.getText()
 //                                .toString());
-                        //录屏
-                        requestScreenRecorderPermission();
-                        isRecording = false;
+                            //录屏
+                            requestScreenRecorderPermission();
+                            isRecording = false;
 
-                        mRotate(fab);
-                        mMenuPop.dismiss();
-                        mMenuPop = null;
+                            mRotate(fab);
+                            mMenuPop.dismiss();
+                            mMenuPop = null;
 
-                    }
-                });
+                        }
+                    });
+                } else {
+                    tv_enter.setVisibility(View.VISIBLE);
+                    tv_line.setVisibility(View.GONE);
+                    tv_record.setVisibility(View.GONE);
+                    setPopWindow(view);
+                    tv_enter.setText(R.string.quit_board);
+                    tv_enter.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+//                        showToast(mContext, "点击了" + tv_enter.getText()
+//                                .toString());
+                            quitBoard();
+                            mRotate(fab);
+                            mMenuPop.dismiss();
+                            mMenuPop = null;
+
+                        }
+                    });
+                }
+
 
                 break;
             default:
@@ -2544,5 +2537,43 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         }
 
 
+    }
+
+    public void quitBoard() {
+        if (check_in_type == 1) {
+
+            fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
+            fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
+
+            mLlWebviewCanvas.setVisibility(View.GONE);
+
+            /**
+             * 设置布局的可见性
+             */
+            mRlAvatar.setVisibility(View.VISIBLE);
+            mLlWebviewCanvas.setVisibility(View.GONE);
+            mRlSharePic.setVisibility(View.GONE);//无论主持人在没在共享
+
+            mRlActionbar.setVisibility(View.VISIBLE);
+            mLlActionGroup.setVisibility(View.VISIBLE);
+            isDrawing = false;
+            mLlMeetingStage.setBackgroundColor(
+                    getResources().getColor(R.color.my_black));
+
+        } else
+            if (check_in_type == 2) {
+                //退出画板界面
+                fab.setTitleBarSize(ScreenUtil.convertDpToPx(mContext, 40));
+                fab.setBottomBarSize(ScreenUtil.convertDpToPx(mContext, 120));
+                if (shareType == 0) {
+                    mRlAvatar.setVisibility(View.VISIBLE);
+                }
+                mLlWebviewCanvas.setVisibility(View.GONE);
+                mRlActionbar.setVisibility(View.VISIBLE);
+                mLlActionGroup.setVisibility(View.VISIBLE);
+                isDrawing = false;
+                mLlMeetingStage.setBackgroundColor(
+                        getResources().getColor(R.color.my_black));
+            }
     }
 }
