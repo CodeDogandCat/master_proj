@@ -201,4 +201,7 @@
     <string name="quit_board">退出白板</string>
     <string name="start_record_screen">录制屏幕</string>
     <string name="inner_error_relogin">内部错误,请重新登录</string>
+    <string name="can_not_make_friend_yourself">不能和自己加好友</string>
+    <string name="add_contact">添加联系人</string>
+    <string name="delete_contact_confirm">你是否要删除该联系人</string>
 </resources>

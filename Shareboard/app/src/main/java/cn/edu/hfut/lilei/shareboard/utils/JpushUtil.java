@@ -32,7 +32,7 @@ public class JpushUtil {
             // 调用 Handler 来异步设置别名
             mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, alias));
         } else {
-            showToast(mContext, mContext.getString(R.string.inner_error_relogin));
+            showToast(mContext, mContext.getString(R.string.please_relogin));
         }
 
     }

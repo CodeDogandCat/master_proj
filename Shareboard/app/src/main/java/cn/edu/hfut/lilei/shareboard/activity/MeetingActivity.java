@@ -713,6 +713,9 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
             case R.id.btn_meeting_leave:
                 leaveMeetingAction();
                 break;
+            /**
+             * 聊天
+             */
             case R.id.btn_member_chat:
                 Intent intent = new Intent(mContext, ChatActivity.class);
                 Bundle b = new Bundle();
@@ -2135,7 +2138,9 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 PermissionsUtil.requestPermission(this, new PermissionListener() {
                     @Override
                     public void permissionGranted(@NonNull String[] permissions) {
-                        createShareChooseDialog();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            screenRecord();
+                        }
                     }
 
                     @Override

@@ -30,6 +30,7 @@ import cn.edu.hfut.lilei.shareboard.models.RegisterJson;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.JpushUtil;
+import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
@@ -48,8 +49,6 @@ import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.ALBUM_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CAMERA_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CROP_REQUEST_CODE;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CAMERA;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CROP;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
@@ -226,7 +225,8 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                         .params(post_user_family_name, familyName)
                                         .params(post_user_given_name, givenName)
                                         .params(post_user_login_password, passEncrypted)
-                                        .params(post_user_avatar, targetFile)
+                                        .params(post_user_avatar, srcFile)
+//                                        .params(post_user_avatar, targetFile)
                                         .execute(new JsonCallback<RegisterJson>() {
                                             @Override
                                             public void onSuccess(RegisterJson o, Call call,
@@ -422,23 +422,11 @@ public class SetUserInfoActivity extends SwipeBackActivity {
     private void createAlterHeadDialog() {
         //构造一个目标URI
 
-        String baseDir = "";
-        if (FileUtil.isExternalStorageWritable()) {
-            baseDir = this.getExternalFilesDir("")
-                    .getAbsolutePath() + "/shareboard/";
-        } else {
-            baseDir = this.getFilesDir()
-                    .getAbsolutePath() + "/shareboard/";
-        }
 
-        File file = new File(baseDir,
-                "image");//拍照后保存的路径
+        File cropImage = new File(MyAppUtil.getsaveDirectory(this, "Image"),
+                System.currentTimeMillis
+                        () + ".jpeg");
 
-        if (!file.exists()) {
-            file.mkdir();
-        }
-        File cropImage = new File(file.getAbsolutePath(),
-                IMG_PATH_FOR_CROP);
         try {
             if (cropImage.exists()) {
                 cropImage.delete();
@@ -477,7 +465,9 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                 break;
             case CAMERA_REQUEST_CODE:
                 Log.i(SettingUtil.TAG, "相机, 开始裁剪");
-                picture = new File(baseDir, IMG_PATH_FOR_CAMERA);//拍照后保存的路径
+                picture = new File(MyAppUtil.getsaveDirectory(this, "Image"),
+                        System.currentTimeMillis
+                                () + ".jpeg");
                 ImageUtil.startCrop(this, Uri.fromFile(picture),
                         cropUri, 200, 200);
                 break;

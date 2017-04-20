@@ -519,7 +519,9 @@ public class ImageUtil {
     }
 
     public static int compressBitmapToStream(Bitmap image, OutputStream stream) {
-        if (image == null || stream == null) return 0;
+        if (image == null || stream == null) {
+            Log.i("shareboard","image == null || stream == null");
+            return 0;}
         try {
             Bitmap.CompressFormat format = Bitmap.CompressFormat.JPEG;
             int size = getSize(image);
@@ -529,7 +531,8 @@ public class ImageUtil {
             int quality = getQuality(size);//根据图像的大小得到合适的有损压缩质量  
             Log.i("shareboard", "目前适用的有损压缩率是" + quality);
             long startTime = System.currentTimeMillis();
-            image.compress(format, quality, stream);//压缩文件并且输出  
+            image.compress(format, quality, stream);//压缩文件并且输出
+            stream.close();
             if (image != null) {
                 image.recycle();//此处把bitmap从内存中移除  
                 image = null;

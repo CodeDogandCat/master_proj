@@ -139,12 +139,12 @@ public class MainActivity extends FragmentActivity implements
                             @Override
                             public void onClick(View view) {
                                 new AddContactDialog.Builder(MainActivity.this)
-                                        .setTitle(getString(R.string.add_friend))
+                                        .setTitle(getString(R.string.add_contact))
                                         .setHint(R.string.search_contacts_by_email)
                                         .setPositiveButton(
                                                 getString(R.string.confirm),
                                                 null)
-                                        .setPositiveButton(getString(R.string.cancel), null)
+                                        .setNegativeButton(getString(R.string.cancel), null)
                                         .show();
                             }
                         }

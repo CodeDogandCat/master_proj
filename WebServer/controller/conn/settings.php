@@ -35,9 +35,11 @@ define('update_name', '300110');//请求更新姓名
 define('update_password', '300111');//请求更新密码
 define('post_user_login_password_old', '300112');//旧密码
 define('post_user_login_password_new', '300113');//新密码
+
 define('post_to_user_email', '300114');//消息的目标用户
 define('post_to_meeting_url', '300115');//消息的目标会议群组
-define('post_meeting_message', '300116');//聊天消息
+define('post_message_data', '300116');//通知消息
+
 define('post_board_data', '300117');//白板内容
 define('post_meeting_url', '300118');//会议url
 define('post_meeting_theme', '300119');//会议主题
@@ -91,12 +93,19 @@ define("UNLOCK_MEETING_ERROR", 4023);//解锁会议失败
 define("GET_MEETING_MEMBERS_ERROR", 4024);//获取参与者失败
 define("SEND_CHAT_FILE_ERROR", 4025);//发送聊天文件失败
 
+
+define("REQUEST_ADD_FRIEND_ERROR", 4025);//请求添加好友失败
+define("ALREADY_FRIEND_ERROR", 4026);//请求添加好友失败 :已经是好友
+define("NOT_EXIST_USER_ERROR", 4027);//请求添加好友失败 :不存在这个用户
+define("FRIEND_SELF_ERROR", 4028);//请求添加好友失败 :想和自己加好友
+
+
 /**
  * 数据库连接信息
  */
 
 define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
+define('DB_USER', 'lilei');
 define('DB_PWD', 'lilei123');
 define('DB_NAME', 'board');
 define('DBMS', 'mysql');

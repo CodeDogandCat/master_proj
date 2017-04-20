@@ -9,7 +9,6 @@ import android.media.MediaRecorder;
 import android.media.projection.MediaProjection;
 import android.os.Binder;
 import android.os.Build;
-import android.os.Environment;
 import android.os.HandlerThread;
 import android.os.IBinder;
 
@@ -17,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
+import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.MP4_PATH_FOR_SCREEN_RECORD;
@@ -123,9 +122,11 @@ public class RecordService extends Service {
         /**
          * 这里将时间作为不同照片的名称
          */
-        output = new File(getsaveDirectory(), MP4_PATH_FOR_SCREEN_RECORD + "_" + System
-                .currentTimeMillis
-                        () + ".mp4");
+        output = new File(MyAppUtil.getsaveDirectory(this, "ScreenRecord"),
+                MP4_PATH_FOR_SCREEN_RECORD + "_" +
+                        System
+                                .currentTimeMillis
+                                        () + ".mp4");
 
         /**
          * 如果该文件夹已经存在，则删除它，否则创建一个
@@ -153,42 +154,6 @@ public class RecordService extends Service {
         }
     }
 
-    public String getsaveDirectory() {
-
-
-        if (Environment.getExternalStorageState()
-                .equals(Environment.MEDIA_MOUNTED)) {
-            String rootDir = Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() +
-                    "/DCIM/ShareBoard/";
-
-            File file = new File(rootDir);
-            if (!file.exists()) {
-                if (!file.mkdirs()) {
-                    return null;
-                }
-            }
-
-            return rootDir;
-        } else {
-            String baseDir = "";
-            if (FileUtil.isExternalStorageWritable()) {
-                baseDir = this.getExternalFilesDir("")
-                        .getAbsolutePath() + "/shareboard/";
-            } else {
-                baseDir = this.getFilesDir()
-                        .getAbsolutePath() + "/shareboard/";
-            }
-
-            File file = new File(baseDir,
-                    "ScreenRecord");//拍照后保存的路径
-
-            if (!file.exists()) {
-                file.mkdir();
-            }
-            return file.getAbsolutePath();
-        }
-    }
 
     public class RecordBinder extends Binder {
         public RecordService getRecordService() {

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
@@ -372,6 +374,44 @@ public class MyAppUtil {
                 btn.setBackgroundResource(drawable);
             }
         }, 2000);
+    }
+
+
+    public static String getsaveDirectory(Context context,String name) {
+
+
+        if (Environment.getExternalStorageState()
+                .equals(Environment.MEDIA_MOUNTED)) {
+            String rootDir = Environment.getExternalStorageDirectory()
+                    .getAbsolutePath() +
+                    "/DCIM/ShareBoard/";
+
+            File file = new File(rootDir);
+            if (!file.exists()) {
+                if (!file.mkdirs()) {
+                    return null;
+                }
+            }
+
+            return rootDir;
+        } else {
+            String baseDir = "";
+            if (FileUtil.isExternalStorageWritable()) {
+                baseDir = context.getExternalFilesDir("")
+                        .getAbsolutePath() + "/shareboard/";
+            } else {
+                baseDir = context.getFilesDir()
+                        .getAbsolutePath() + "/shareboard/";
+            }
+
+            File file = new File(baseDir,
+                    name);//拍照后保存的路径
+
+            if (!file.exists()) {
+                file.mkdir();
+            }
+            return file.getAbsolutePath();
+        }
     }
 
 }

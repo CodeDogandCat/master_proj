@@ -65,12 +65,34 @@ class Login
     }
 
     /**
+     * 核对用户登录信息（加好友,邀请时候用）
+     * @return bool
+     */
+    public function checkUserByEmail()
+    {
+        $sql = 'SELECT user_family_name,user_given_name,user_id FROM bd_user WHERE user_email =? ';
+        $arr = array();
+        $arr[0] = $this->user->getEmail();
+        $rows = $this->db->select($sql, $arr);
+
+        if (count($rows) == 1) {//存在且只存在一个这样的用户
+            $family_name = $rows[0]['user_family_name'];
+            $given_name = $rows[0]['user_given_name'];
+            $id = $rows[0]['user_id'];
+            $data = array("familyName" => $family_name, "givenName" => $given_name, "id" => $id);
+            return $data;//存在,返回
+        }
+
+
+        return false;//不存在
+    }
+
+    /**
      * 在数据库中匹配 token（token拦截器 用）
      * @param $tmpToken
      * @return bool
      */
-    public
-    function findTokenInDB($tmpToken)
+    public function findTokenInDB($tmpToken)
     {
         $sql = 'SELECT user_id FROM bd_user WHERE user_token =?';
         $arr = array();

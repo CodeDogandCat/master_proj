@@ -35,6 +35,9 @@ public class SettingUtil {
     //主持会议(安排)
     public static final String URL_HOST_MEETING =
             "http://118.89.102.238/controller/meeting/host_meeting.php";
+    //好友
+    public static final String URL_FRIEND =
+            "http://118.89.102.238/controller/friend/friend.php";
     //进入会议
     public static final String URL_ENTER_MEETING =
             "http://118.89.102.238/controller/meeting/enter_meeting.php";
@@ -64,7 +67,7 @@ public class SettingUtil {
     public static final String post_user_login_password_new = "300113";//新密码
     public static final String post_to_user_email = "300114";//消息的目标用户
     public static final String post_to_meeting_url = "300115";//消息的目标会议群组
-    public static final String post_meeting_message = "300116";//聊天消息
+    public static final String post_message_data = "300116";//通知消息
     public static final String post_board_data = "300117";//白板内容
     public static final String post_meeting_url = "300118";//会议url
     public static final String post_meeting_theme = "300119";//会议主题
@@ -131,7 +134,7 @@ public class SettingUtil {
     public static final int CHAT_REQUEST_CODE = 7;//聊天界面请求代码
     public static final int MEETING_REQUEST_CODE = 8;//会议界面请求代码
 
-    public static final int RECORD_REQUEST_CODE  = 101;
+    public static final int RECORD_REQUEST_CODE = 101;
 
 
     public static final String PERMISSION_REQUEST_TITLE = "帮助";//权限请求提示框标题
