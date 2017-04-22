@@ -204,4 +204,10 @@
     <string name="can_not_make_friend_yourself">不能和自己加好友</string>
     <string name="add_contact">添加联系人</string>
     <string name="delete_contact_confirm">你是否要删除该联系人</string>
+    <string name="wait_check">等待验证</string>
+    <string name="already_friends">已成为好友</string>
+    <string name="friend_request_rejected">好友申请已被对方拒绝</string>
+    <string name="already_reject">已拒绝</string>
+    <string name="invalid">失效</string>
+    <string name="message_list">消息列表</string>
 </resources>

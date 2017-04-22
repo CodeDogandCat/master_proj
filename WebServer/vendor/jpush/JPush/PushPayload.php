@@ -321,8 +321,8 @@ class PushPayload {
             $payload['sms_message'] = $this->smsMessage;
         }
 
-        if (count($this->options) <= 0) {
-            $this->options(array('apns_production' => false));
+        if (is_null($this->options)) {
+            $this->options();
         }
 
         $payload['options'] = $this->options;
@@ -332,7 +332,6 @@ class PushPayload {
 
     public function toJSON() {
         $payload = $this->build();
-        $this->clearAll();
         return json_encode($payload);
     }
 
@@ -343,43 +342,16 @@ class PushPayload {
 
     public function send() {
         $url = PushPayload::PUSH_URL;
-        return Http::post($this->client, $url, $this->toJSON());
+        return Http::post($this->client, $url, $this->build());
     }
 
     public function validate() {
         $url = PushPayload::PUSH_VALIDATE_URL;
-        return Http::post($this->client, $url, $this->toJSON());
-    }
-
-    public function clearAudience() {
-        $this->audience = null;
-        $this->tags = null;
-        $this->tagAnds = null;
-        $this->alias = null;
-        $this->registrationIds = null;
-    }
-    public function clearNotification() {
-        $this->notificationAlert = null;
-        $this->iosNotification = null;
-        $this->androidNotification = null;
-        $this->winPhoneNotification = null;
-    }
-    public function clearPlatform() { $this->platform = null; }
-    public function clearMessage() { $this->message = null; }
-    public function clearSmsMessage() { $this->smsMessage = null; }
-    public function clearOptions() { $this->options = null; }
-
-    public function clearAll() {
-        $this->clearPlatform();
-        $this->clearAudience();
-        $this->clearNotification();
-        $this->clearMessage();
-        $this->clearSmsMessage();
-        $this->clearOptions();
+        return Http::post($this->client, $url, $this->build());
     }
 
     private function generateSendno() {
-        return rand(100000, 4294967294);
+        return rand(100000, getrandmax());
     }
 
     # new methods
@@ -418,18 +390,36 @@ class PushPayload {
     }
 
     public function androidNotification($alert = '', array $notification = array()) {
-        # $required_keys = array('title', 'build_id', 'extras');
+        # $required_keys = array('title', 'builder_id', 'extras');
         $android = array();
         $android['alert'] = is_string($alert) ? $alert : '';
         if (!empty($notification)) {
             if (isset($notification['title']) && is_string($notification['title'])) {
                 $android['title'] = $notification['title'];
             }
-            if (isset($notification['build_id']) && is_int($notification['build_id'])) {
-                $android['build_id'] = $notification['build_id'];
+            if (isset($notification['builder_id']) && is_int($notification['builder_id'])) {
+                $android['builder_id'] = $notification['builder_id'];
             }
             if (isset($notification['extras']) && is_array($notification['extras']) && !empty($notification['extras'])) {
                 $android['extras'] = $notification['extras'];
+            }
+            if (isset($notification['priority']) && is_int($notification['priority'])) {
+                $android['priority'] = $notification['priority'];
+            }
+            if (isset($notification['category']) && is_string($notification['category'])) {
+                $android['category'] = $notification['category`'];
+            }
+            if (isset($notification['style']) && is_int($notification['style'])) {
+                $android['style'] = $notification['style'];
+            }
+            if (isset($notification['big_text']) && is_string($notification['big_text'])) {
+                $android['big_text'] = $notification['big_text'];
+            }
+            if (isset($notification['inbox']) && is_array($notification['inbox'])) {
+                $android['inbox'] = $notification['inbox'];
+            }
+            if (isset($notification['big_pic_path']) && is_string($notification['big_pic_path'])) {
+                $android['big_pic_path'] = $notification['big_pic_path'];
             }
         }
         $this->androidNotification = $android;
@@ -459,27 +449,28 @@ class PushPayload {
 
     public function options(array $opts = array()) {
         # $required_keys = array('sendno', 'time_to_live', 'override_msg_id', 'apns_production', 'big_push_duration');
-        if (!empty($opts)) {
-            $options = array();
-            if (isset($opts['sendno']) && is_int($opts['sendno'])) {
-                $options['sendno'] = $opts['sendno'];
-            }
-            if (isset($opts['time_to_live']) && is_int($opts['time_to_live']) && $opts['time_to_live'] <= 864000 && $opts['time_to_live'] >= 0) {
-                $options['time_to_live'] = $opts['time_to_live'];
-            }
-            if (isset($opts['override_msg_id']) && is_long($opts['override_msg_id'])) {
-                $options['override_msg_id'] = $opts['override_msg_id'];
-            }
-            if (isset($opts['apns_production']) && is_bool($opts['apns_production'])) {
-                $options['apns_production'] = $opts['apns_production'];
-            } else {
-                $options['apns_production'] = false;
-            }
-            if (isset($opts['big_push_duration']) && is_int($opts['big_push_duration']) && $opts['big_push_duration'] <= 1400 && $opts['big_push_duration'] >= 0) {
-                $options['big_push_duration'] = $opts['big_push_duration'];
-            }
-            $this->options = $options;
+        $options = array();
+        if (isset($opts['sendno']) && is_int($opts['sendno'])) {
+            $options['sendno'] = $opts['sendno'];
+        } else {
+            $options['sendno'] = $this->generateSendno();
         }
+        if (isset($opts['time_to_live']) && is_int($opts['time_to_live']) && $opts['time_to_live'] <= 864000 && $opts['time_to_live'] >= 0) {
+            $options['time_to_live'] = $opts['time_to_live'];
+        }
+        if (isset($opts['override_msg_id']) && is_long($opts['override_msg_id'])) {
+            $options['override_msg_id'] = $opts['override_msg_id'];
+        }
+        if (isset($opts['apns_production']) && is_bool($opts['apns_production'])) {
+            $options['apns_production'] = $opts['apns_production'];
+        } else {
+            $options['apns_production'] = false;
+        }
+        if (isset($opts['big_push_duration']) && is_int($opts['big_push_duration']) && $opts['big_push_duration'] <= 1400 && $opts['big_push_duration'] >= 0) {
+            $options['big_push_duration'] = $opts['big_push_duration'];
+        }
+        $this->options = $options;
+
         return $this;
     }
 

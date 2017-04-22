@@ -27,7 +27,6 @@ if (isset($_REQUEST[post_need_feature]) &&
     $feature = $_REQUEST[post_need_feature];
     $user1 = new User($_REQUEST[post_user_email]);
     $user2 = new User($_REQUEST[post_to_user_email]);
-
     $user1_login = new Login($user1);
     $user1_info = $user1_login->checkUserByEmail();
     if ($user1_info == false) {
@@ -42,9 +41,11 @@ if (isset($_REQUEST[post_need_feature]) &&
     $user1->setId($user1_info['id']);
     $user1->setFamilyName($user1_info['familyName']);
     $user1->setGivenName($user1_info['givenName']);
+    $user1->setAvatar($user1_info['avatar']);
     $user2->setId($user2_info['id']);
     $user2->setFamilyName($user2_info['familyName']);
     $user2->setGivenName($user2_info['givenName']);
+    $user2->setAvatar($user2_info['avatar']);
 
 
     switch ($feature) {
@@ -53,14 +54,14 @@ if (isset($_REQUEST[post_need_feature]) &&
             /**
              * 请求加好友
              */
-
-            $Op = new FriendOp($user1, $user2, $_REQUEST[post_message_data]);
+            $friendOp = new FriendOp($user1, $user2, $_REQUEST[post_message_data]);
             //1.当前确定 是不是好友好友关系
-            if ($op->isFriendNow()) {
+            if ($friendOp->isFriendNow()) {
                 printResult(ALREADY_FRIEND_ERROR, '你和他已经是好友了', -1);
             }
             //2.申请加为好友
-            if (($result = $Op->requestAddFriend()) != false) {
+            if (($result = $friendOp->requestAddFriend()) != false) {
+
 
                 printResult(SUCCESS, '请求发送成功', -1);
 
@@ -73,6 +74,20 @@ if (isset($_REQUEST[post_need_feature]) &&
             /**
              * 删除好友
              */
+            $friendOp = new FriendOp($user1, $user2, $_REQUEST[post_message_data]);
+            //1.当前确定 是不是好友好友关系
+            if ($friendOp->isFriendNow()) {
+                if ($friendOp->requestDelFriend()) {
+                    printResult(SUCCESS, '删除联系人成功', -1);
+                } else {
+                    printResult(REQUEST_DEL_FRIEND_ERROR, '请求删除联系人失败', -1);
+                }
+
+            } else {
+                printResult(SUCCESS, '移除该联系人成功', -1);
+            }
+
+            break;
 
 
     }

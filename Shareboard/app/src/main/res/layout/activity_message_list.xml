@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout style="@style/actionbar">
+
+
+        <ImageView
+            android:id="@+id/img_message_list_goback"
+            style="@style/actionbar_goback"/>
+
+        <TextView
+            android:id="@+id/tv_message_list_title"
+            style="@style/navbar_title_textview_style"
+            android:text="@string/message_list"/>
+
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

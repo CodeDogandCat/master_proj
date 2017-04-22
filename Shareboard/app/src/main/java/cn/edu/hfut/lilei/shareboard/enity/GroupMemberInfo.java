@@ -8,6 +8,15 @@ public class GroupMemberInfo {
     private String sortLetters;  //
     private Drawable photo;
     private String status;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Drawable getPhoto() {
         return photo;

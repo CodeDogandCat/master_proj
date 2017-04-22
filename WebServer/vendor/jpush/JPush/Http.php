@@ -23,7 +23,7 @@ final class Http {
     }
 
     private static function sendRequest($client, $url, $method, $body=null, $times=1) {
-        self::log($client, "Send " . $method . " " . $url . ", body:" . $body . ", times:" . $times);
+        self::log($client, "Send " . $method . " " . $url . ", body:" . json_encode($body) . ", times:" . $times);
         if (!defined('CURL_HTTP_VERSION_2_0')) {
             define('CURL_HTTP_VERSION_2_0', 3);
         }
@@ -51,7 +51,7 @@ final class Http {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         }
         if (!is_null($body)) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
         }
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -62,18 +62,33 @@ final class Http {
         $output = curl_exec($ch);
         $response = array();
         $errorCode = curl_errno($ch);
+
+        // $msg = '';
+        // $data = json_decode($body, true);
+        // if (isset($data['options']['sendno'])) {
+        //     $sendno = $data['options']['sendno'];
+        //     $msg = 'sendno: ' . $sendno;
+        // }
+
+        $msg = '';
+        if (isset($body['options']['sendno'])) {
+            $sendno = $body['options']['sendno'];
+            $msg = 'sendno: ' . $sendno;
+        }
+
+
         if ($errorCode) {
             $retries = $client->getRetryTimes();
             if ($times < $retries) {
                 return self::sendRequest($client, $url, $method, $body, ++$times);
             } else {
                 if ($errorCode === 28) {
-                    throw new APIConnectionException("Response timeout. Your request has probably be received by JPush Server,please check that whether need to be pushed again.");
+                    throw new APIConnectionException($msg . "Response timeout. Your request has probably be received by JPush Server,please check that whether need to be pushed again." );
                 } elseif ($errorCode === 56) {
                 // resolve error[56 Problem (2) in the Chunked-Encoded data]
-                    throw new APIConnectionException("Response timeout, maybe cause by old CURL version. Your request has probably be received by JPush Server, please check that whether need to be pushed again.");
+                    throw new APIConnectionException($msg . "Response timeout, maybe cause by old CURL version. Your request has probably be received by JPush Server, please check that whether need to be pushed again.");
                 } else {
-                    throw new APIConnectionException("Connect timeout. Please retry later. Error:" . $errorCode . " " . curl_error($ch));
+                    throw new APIConnectionException("$msg . Connect timeout. Please retry later. Error:" . $errorCode . " " . curl_error($ch));
                 }
             }
         } else {
@@ -101,12 +116,13 @@ final class Http {
     }
 
     public static function processResp($response) {
-        if($response['http_code'] === 200) {
+        $data = json_decode($response['body'], true);
+
+        if (is_null($data)) {
+            throw new ServiceNotAvaliable($response);
+        } elseif ($response['http_code'] === 200) {
             $result = array();
-            $data = json_decode($response['body'], true);
-            if (!is_null($data)) {
-                $result['body'] = $data;
-            }
+            $result['body'] = $data;
             $result['http_code'] = $response['http_code'];
             $result['headers'] = $response['headers'];
             return $result;

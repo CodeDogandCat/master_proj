@@ -23,8 +23,7 @@
     <dimen name="text_body">15sp</dimen>
     <dimen name="text_caption">13sp</dimen>
     <dimen name="line_height">1dp</dimen>
-
-
+    <dimen name="common_size">14sp</dimen>
 
 
 </resources>

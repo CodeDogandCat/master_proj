@@ -21,16 +21,6 @@ android {
     }
     sourceSets.main.jniLibs.srcDirs = ['libs']
 }
-//greendao
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.1'
-        classpath 'com.android.tools.build:gradle:2.2.3'
-    }
-}
 greendao {
     schemaVersion 1
     daoPackage 'cn.edu.hfut.lilei.shareboard.greendao.gen'
@@ -66,4 +56,6 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile files('libs/jpush-android-2.2.0.jar')
+    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.2'
 }

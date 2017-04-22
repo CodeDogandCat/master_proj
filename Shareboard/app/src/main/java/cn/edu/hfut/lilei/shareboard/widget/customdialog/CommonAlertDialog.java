@@ -2,6 +2,7 @@ package cn.edu.hfut.lilei.shareboard.widget.customdialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ public class CommonAlertDialog extends Dialog {
     public static class Builder {
         private Context mContext;
         private String mTitle, mMessage;
+        private SpannableString mMsg;
         private String mPositiveButtonText, mNegativeButtonText;
 
         private OnClickListener mPositiveButtonClickListener,
@@ -45,6 +47,7 @@ public class CommonAlertDialog extends Dialog {
             return this;
         }
 
+
         public Builder setMessage(int resId) {
             mMessage = (String) mContext.getText(resId);
             return this;
@@ -52,6 +55,11 @@ public class CommonAlertDialog extends Dialog {
 
         public Builder setMessage(String message) {
             mMessage = message;
+            return this;
+        }
+
+        public Builder setMessage(SpannableString message) {
+            mMsg = message;
             return this;
         }
 
@@ -98,10 +106,15 @@ public class CommonAlertDialog extends Dialog {
             tvAlertTitle.setText(mTitle);
 
 
-            if (!TextUtils.isEmpty(mMessage)) {
+            if (!TextUtils.isEmpty(mMessage) || !TextUtils.isEmpty(mMsg)) {
                 TextView tvAlertMessage = (TextView) view
                         .findViewById(R.id.tvAlertDialogMessage);
-                tvAlertMessage.setText(mMessage);
+                if (TextUtils.isEmpty(mMsg)) {
+                    tvAlertMessage.setText(mMessage);
+                } else {
+                    tvAlertMessage.setText(mMsg);
+                }
+
                 tvAlertMessage.setVisibility(View.VISIBLE);
             }
 

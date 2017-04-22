@@ -66,11 +66,11 @@ class Login
 
     /**
      * 核对用户登录信息（加好友,邀请时候用）
-     * @return bool
+     * @return mixed
      */
     public function checkUserByEmail()
     {
-        $sql = 'SELECT user_family_name,user_given_name,user_id FROM bd_user WHERE user_email =? ';
+        $sql = 'SELECT * FROM bd_user WHERE user_email =? ';
         $arr = array();
         $arr[0] = $this->user->getEmail();
         $rows = $this->db->select($sql, $arr);
@@ -79,7 +79,8 @@ class Login
             $family_name = $rows[0]['user_family_name'];
             $given_name = $rows[0]['user_given_name'];
             $id = $rows[0]['user_id'];
-            $data = array("familyName" => $family_name, "givenName" => $given_name, "id" => $id);
+            $avatar = $rows[0]['user_avatar'];
+            $data = array("familyName" => $family_name, "givenName" => $given_name, "id" => $id, "avatar" => $avatar);
             return $data;//存在,返回
         }
 

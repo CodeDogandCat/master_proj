@@ -3,6 +3,7 @@ package cn.edu.hfut.lilei.shareboard.widget.customdialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,7 @@ public class AddContactDialog extends Dialog {
         private Context mContext;
         private String mTitle, mMessage, mHint;
         private String mPositiveButtonText, mNegativeButtonText;
+        private SpannableString mtitle;
         private LodingDialog.Builder mlodingDialog;
 
         private OnClickListener mPositiveButtonClickListener,
@@ -70,6 +72,11 @@ public class AddContactDialog extends Dialog {
 
         public Builder setTitle(String title) {
             mTitle = title;
+            return this;
+        }
+
+        public Builder setTitle(SpannableString title) {
+            mtitle = title;
             return this;
         }
 
@@ -137,7 +144,14 @@ public class AddContactDialog extends Dialog {
                     ViewGroup.LayoutParams.WRAP_CONTENT));
             TextView tvAlertTitle = (TextView) view
                     .findViewById(R.id.tvAlertDialogTitle);
-            tvAlertTitle.setText(mTitle);
+
+            if (mtitle == null) {
+
+                tvAlertTitle.setText(mTitle);
+            } else {
+                tvAlertTitle.setText(mtitle);
+
+            }
             final EditText tvAlertDialogMessage = (EditText) view
                     .findViewById(R.id.tvAlertDialogMessage);
 
@@ -224,7 +238,7 @@ public class AddContactDialog extends Dialog {
                                                 .params(post_user_email, valueList.get(1))
                                                 .params(post_to_user_email, toEmail)
                                                 .params(post_message_data,
-                                                        "")
+                                                        "lalala")
 
                                                 .execute(new JsonCallback<CommonJson>() {
                                                              @Override

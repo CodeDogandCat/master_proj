@@ -1,12 +1,18 @@
 package cn.edu.hfut.lilei.shareboard.fragment;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +39,7 @@ import cn.edu.hfut.lilei.shareboard.utils.PinyinComparatorUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.widget.ClearEditText;
 import cn.edu.hfut.lilei.shareboard.widget.SideBar;
-import cn.edu.hfut.lilei.shareboard.widget.customdialog.AddContactDialog;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.CommonAlertDialog;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
@@ -115,11 +120,12 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
                                     int position, long id) {
 
 
-                Toast.makeText(
-                        getActivity().getApplication(),
-                        ((GroupMemberInfo) adapter.getItem(position)).getName(),
-                        Toast.LENGTH_SHORT)
-                        .show();
+//                Toast.makeText(
+//                        getActivity().getApplication(),
+//                        ((GroupMemberInfo) adapter.getItem(position)).getName(),
+//                        Toast.LENGTH_SHORT)
+//                        .show();
+                deleteFriend((GroupMemberInfo) adapter.getItem(position));
 
 
             }
@@ -290,10 +296,19 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
     /**
      * 删除好友
      */
-    private void deleteFriend() {
+    private void deleteFriend(GroupMemberInfo contact) {
+        final SpannableString title = new SpannableString(contact.getName());
+        title.setSpan(new ForegroundColorSpan(Color.RED), 0, title.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        title.setSpan(new StyleSpan(Typeface.BOLD), 0, title.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        title.setSpan(new RelativeSizeSpan(0.8f), tmp.indexOf("\n")
+//                , tmp.length(),
+//                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        new AddContactDialog.Builder(getActivity())
+        new CommonAlertDialog.Builder(getActivity())
                 .setTitle(getString(R.string.delete_contact_confirm))
+                .setMessage(title)
                 .setPositiveButton(
                         getActivity().getString(R.string.confirm),
                         new DialogInterface.OnClickListener() {

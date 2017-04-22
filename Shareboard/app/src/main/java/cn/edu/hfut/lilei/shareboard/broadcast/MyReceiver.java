@@ -25,6 +25,27 @@ public class MyReceiver extends BroadcastReceiver {
                     .show();
 //            showToast(context, "收到消息");
 
+
+            /**
+             * 存入本地数据库
+             */
+
+            /**
+             * 状态栏显示
+             */
+
+            /**
+             *点击状态栏,触发事件
+             * 系统消息页面分类:
+             * 左滑删除
+             * 1 加好友申请 :a.xx请求加好友[同意,拒绝]->点击同意:你们已经是好友了
+             * 2 对方同意了你的好友申请,你们已经是好友了
+             * 3 对方拒绝了你的好友申请
+             * 4 对方把你移除了好友列表->本地数据库 同步云端数据
+             * 5 对方邀请你加会 点击加会
+             */
+
+
         } else
             if (intent.getAction()
                     .equals(JPushInterface.ACTION_NOTIFICATION_RECEIVED)) {

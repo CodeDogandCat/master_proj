@@ -13,6 +13,7 @@ import com.lzy.okgo.cookie.store.PersistentCookieStore;
 import java.util.logging.Level;
 
 import cn.edu.hfut.lilei.shareboard.service.RecordService;
+import cn.edu.hfut.lilei.shareboard.utils.GreenDaoManager;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.jpush.android.api.JPushInterface;
 
@@ -78,7 +79,7 @@ public class MyApplication extends Application {
 
 
         //初始化数据库
-//        GreenDaoManager.getInstance();
+        GreenDaoManager.getInstance();
 
         //请求权限
 
