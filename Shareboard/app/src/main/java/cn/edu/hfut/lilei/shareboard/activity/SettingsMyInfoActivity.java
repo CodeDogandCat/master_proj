@@ -26,7 +26,7 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
-import cn.edu.hfut.lilei.shareboard.models.RegisterJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.RegisterJson;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;

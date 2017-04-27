@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ChatAdapter;
-import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
+import cn.edu.hfut.lilei.shareboard.model.MessageInfo;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import cn.edu.hfut.lilei.shareboard.utils.Utils;

@@ -36,7 +36,7 @@
             <LinearLayout
                 android:id="@+id/ll_title"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/ivAvatar"
@@ -48,21 +48,31 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLength="12"
+                    android:maxLength="16"
                     android:maxLines="1"
                     android:textColor="@color/my_white"
-                    android:textSize="@dimen/common_size"
+                    android:textSize="@dimen/small_text_size"
+                    android:textStyle="bold"
                     tools:text="李磊"/>
 
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLength="12"
+                    android:maxLength="16"
                     android:maxLines="1"
                     android:textColor="@color/gray_8f"
-                    android:textSize="@dimen/super_small_text_size"
+                    android:textSize="@dimen/common_size"
                     tools:text="对方请求添加你为好友"/>
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="@color/gray_8f"
+                    android:textSize="10sp"
+                    tools:text="2017-4-11 12:22:00"/>
 
 
             </LinearLayout>
@@ -72,58 +82,60 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
                 android:gravity="center"
                 android:maxLength="12"
                 android:maxLines="1"
                 android:textColor="@color/gray_8f"
                 android:textSize="@dimen/super_small_text_size"
-                tools:text="已添加"
                 android:visibility="gone"
-               />
+                tools:text="已添加"
+                />
 
             <Button
                 android:id="@+id/btn_accept"
+                style="@style/BigButtonBlack"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="70dp"
                 android:gravity="center"
                 android:maxLength="12"
                 android:maxLines="1"
-                style="@style/BigButtonBlack"
-                android:layout_centerVertical="true"
                 android:textColor="@color/my_white"
                 android:textSize="@dimen/super_small_text_size"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="70dp"
                 tools:text="接受"/>
+
             <Button
                 android:id="@+id/btn_reject"
+                style="@style/BigButtonBlack"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
                 android:gravity="center"
                 android:maxLength="12"
                 android:maxLines="1"
-                style="@style/BigButtonBlack"
-                android:layout_centerVertical="true"
                 android:textColor="@color/my_white"
                 android:textSize="@dimen/super_small_text_size"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
                 tools:text="拒绝"/>
+
             <Button
                 android:id="@+id/btn_enter_meeting"
+                style="@style/BigButtonBlack"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
                 android:gravity="center"
                 android:maxLength="12"
                 android:maxLines="1"
-                style="@style/BigButtonBlack"
-                android:layout_centerVertical="true"
                 android:textColor="@color/my_white"
                 android:textSize="@dimen/super_small_text_size"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
                 tools:text="加会"/>
 
 

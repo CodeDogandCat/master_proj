@@ -1,8 +1,8 @@
-package cn.edu.hfut.lilei.shareboard.enity;
+package cn.edu.hfut.lilei.shareboard.model;
 
 import com.google.gson.Gson;
 
-public class MessageFromMeInfo {
+public class MessageFromOtherInfo {
     public int type;
     public String content;
     public String filepath;
@@ -58,11 +58,12 @@ public class MessageFromMeInfo {
         this.indexOfList = indexOfList;
     }
 
-    public MessageFromMeInfo(String client_email, int type, String content, String filepath,
-                             int sendState,
-                             String time, String header, String imageUrl, long voiceTime,
-                             String msgId, int indexOfAdapter, int indexOfList,
-                             String familyName, String givenyName) {
+    public MessageFromOtherInfo(String client_email, int type, String content, String filepath,
+                                int sendState,
+                                String time, String header, String imageUrl, long voiceTime,
+                                String msgId, int indexOfAdapter, int indexOfList,
+                                String familyName, String givenyName) {
+
         this.client_email = client_email;
         this.type = type;
         this.content = content;
@@ -79,12 +80,13 @@ public class MessageFromMeInfo {
         this.givenyName = givenyName;
     }
 
-    public MessageFromMeInfo() {
+    public MessageFromOtherInfo() {
 
     }
 
     public MessageInfo toMessageInfo() {
-        return new MessageInfo(client_email,type, content, filepath, sendState, time, header, imageUrl,
+        return new MessageInfo(client_email, type, content, filepath, sendState, time, header,
+                imageUrl,
                 voiceTime, msgId, familyName, givenyName);
     }
 

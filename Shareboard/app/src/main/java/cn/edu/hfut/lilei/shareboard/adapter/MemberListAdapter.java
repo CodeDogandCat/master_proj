@@ -13,7 +13,7 @@ import java.util.List;
 
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.enity.MeetingMemberInfo;
+import cn.edu.hfut.lilei.shareboard.model.MeetingMemberInfo;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 
 public class MemberListAdapter extends BaseAdapter implements View.OnClickListener {

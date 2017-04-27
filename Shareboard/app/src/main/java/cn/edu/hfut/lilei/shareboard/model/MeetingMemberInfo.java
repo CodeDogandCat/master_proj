@@ -1,4 +1,4 @@
-package cn.edu.hfut.lilei.shareboard.enity;
+package cn.edu.hfut.lilei.shareboard.model;
 
 public class MeetingMemberInfo {
 

@@ -1,10 +1,10 @@
-package cn.edu.hfut.lilei.shareboard.models;
+package cn.edu.hfut.lilei.shareboard.JsonEnity;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.hfut.lilei.shareboard.enity.MeetingMemberInfo;
+import cn.edu.hfut.lilei.shareboard.model.MeetingMemberInfo;
 
 public class MemberListJson {
 

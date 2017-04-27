@@ -210,4 +210,6 @@
     <string name="already_reject">已拒绝</string>
     <string name="invalid">失效</string>
     <string name="message_list">消息列表</string>
+    <string name="you_request_to_add_friend">你请求添加对方为好友</string>
+    <string name="he_request_add_friend">对方请求添加你为好友</string>
 </resources>

@@ -1,9 +1,9 @@
-package cn.edu.hfut.lilei.shareboard.models;
+package cn.edu.hfut.lilei.shareboard.JsonEnity;
 
 
 import java.util.List;
 
-import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
+import cn.edu.hfut.lilei.shareboard.model.MessageInfo;
 
 public class MessageListSendJson {
     public List<MessageInfo> data;

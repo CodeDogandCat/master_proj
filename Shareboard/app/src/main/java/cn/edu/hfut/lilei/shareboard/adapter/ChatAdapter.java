@@ -11,7 +11,7 @@ import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 
 import cn.edu.hfut.lilei.shareboard.adapter.holder.ChatAcceptViewHolder;
 import cn.edu.hfut.lilei.shareboard.adapter.holder.ChatSendViewHolder;
-import cn.edu.hfut.lilei.shareboard.enity.MessageInfo;
+import cn.edu.hfut.lilei.shareboard.model.MessageInfo;
 import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 
 public class ChatAdapter extends RecyclerArrayAdapter<MessageInfo> {

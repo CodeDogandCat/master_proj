@@ -38,6 +38,8 @@ if (isset($_REQUEST[post_need_feature]) &&
         printResult(NOT_EXIST_USER_ERROR, '不存在该用户', -1);
     }
 
+    $tag = $_REQUEST[post_message_data];
+
     $user1->setId($user1_info['id']);
     $user1->setFamilyName($user1_info['familyName']);
     $user1->setGivenName($user1_info['givenName']);
@@ -59,16 +61,37 @@ if (isset($_REQUEST[post_need_feature]) &&
             if ($friendOp->isFriendNow()) {
                 printResult(ALREADY_FRIEND_ERROR, '你和他已经是好友了', -1);
             }
+
             //2.申请加为好友
-            if (($result = $friendOp->requestAddFriend()) != false) {
+            if (($result = $friendOp->requestAddFriend($tag)) != false) {
 
+                $data = array(
+                    "email" => $user2->getEmail(), "familyName" => $user2->getFamilyName(),
+                    "givenName" => $user2->getGivenName(), "avatar" => $user2->getAvatar()
 
-                printResult(SUCCESS, '请求发送成功', -1);
+                );
+
+                printResult(SUCCESS, '请求发送成功', $data);
 
             } else {
-                printResult(REQUEST_ADD_FRIEND_ERROR, '请求添加好友失败', -1);
+                $data = array(
+                    "email" => "", "familyName" => "",
+                    "givenName" => "", "avatar" => ""
+
+                );
+
+                printResult(REQUEST_ADD_FRIEND_ERROR, '请求添加好友失败', $data);
             }
             break;
+
+
+        case 'acceptFriend':
+            break;
+
+        case 'rejectFriend':
+
+            break;
+
 
         case 'deleteFriend':
             /**

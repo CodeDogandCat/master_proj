@@ -7,11 +7,12 @@ android {
     buildToolsVersion "24.0.1"
     defaultConfig {
         applicationId "cn.edu.hfut.lilei.shareboard"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {

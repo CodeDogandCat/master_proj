@@ -1,8 +1,8 @@
-package cn.edu.hfut.lilei.shareboard.enity;
+package cn.edu.hfut.lilei.shareboard.model;
 
 import com.google.gson.Gson;
 
-public class MessageFromOtherInfo {
+public class MessageInfo {
     public int type;
     public String content;
     public String filepath;
@@ -12,8 +12,6 @@ public class MessageFromOtherInfo {
     public String imageUrl;
     public long voiceTime;
     public String msgId;
-    public int indexOfAdapter;
-    public int indexOfList;
     public String familyName;
     public String givenyName;
     public String client_email;//参与者邮箱
@@ -42,28 +40,18 @@ public class MessageFromOtherInfo {
         this.givenyName = givenyName;
     }
 
-    public int getIndexOfAdapter() {
-        return indexOfAdapter;
+    public MessageFromMeInfo toMessageFromMeInfo(int indexOfAdapter, int indexOfList) {
+        MessageFromMeInfo tmp =
+                new MessageFromMeInfo(client_email, type, content, filepath, sendState, time,
+                        header, imageUrl,
+                        voiceTime, msgId, indexOfAdapter, indexOfList, familyName, givenyName);
+        return tmp;
     }
 
-    public void setIndexOfAdapter(int indexOfAdapter) {
-        this.indexOfAdapter = indexOfAdapter;
-    }
-
-    public int getIndexOfList() {
-        return indexOfList;
-    }
-
-    public void setIndexOfList(int indexOfList) {
-        this.indexOfList = indexOfList;
-    }
-
-    public MessageFromOtherInfo(String client_email, int type, String content, String filepath,
-                                int sendState,
-                                String time, String header, String imageUrl, long voiceTime,
-                                String msgId, int indexOfAdapter, int indexOfList,
-                                String familyName, String givenyName) {
-
+    public MessageInfo(String client_email, int type, String content, String filepath, int
+            sendState, String time,
+                       String header, String imageUrl, long voiceTime, String msgId,
+                       String familyName, String givenyName) {
         this.client_email = client_email;
         this.type = type;
         this.content = content;
@@ -74,20 +62,12 @@ public class MessageFromOtherInfo {
         this.imageUrl = imageUrl;
         this.voiceTime = voiceTime;
         this.msgId = msgId;
-        this.indexOfAdapter = indexOfAdapter;
-        this.indexOfList = indexOfList;
         this.familyName = familyName;
         this.givenyName = givenyName;
     }
 
-    public MessageFromOtherInfo() {
+    public MessageInfo() {
 
-    }
-
-    public MessageInfo toMessageInfo() {
-        return new MessageInfo(client_email, type, content, filepath, sendState, time, header,
-                imageUrl,
-                voiceTime, msgId, familyName, givenyName);
     }
 
     public int getType() {

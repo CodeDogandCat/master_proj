@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.enity.AppInfo;
+import cn.edu.hfut.lilei.shareboard.model.AppInfo;
 
 public class ApplicationInfoAdapter extends BaseAdapter {
 

@@ -32,7 +32,7 @@ import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.SortGroupMemberAdapter;
-import cn.edu.hfut.lilei.shareboard.enity.GroupMemberInfo;
+import cn.edu.hfut.lilei.shareboard.model.GroupMemberInfo;
 import cn.edu.hfut.lilei.shareboard.utils.CharacterUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PinyinComparatorUtil;

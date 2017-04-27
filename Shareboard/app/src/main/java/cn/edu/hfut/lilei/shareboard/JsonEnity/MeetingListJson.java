@@ -1,23 +1,24 @@
-package cn.edu.hfut.lilei.shareboard.models;
+package cn.edu.hfut.lilei.shareboard.JsonEnity;
 
 
-public class MeetingJson {
+import java.util.List;
+
+public class MeetingListJson {
     public int code;//返回码
     public String msg;//提示信息
-    public ServerModel data;
+    public List<ServerModel> data;
 
-    public ServerModel getData() {
+    public List<ServerModel> getData() {
         return data;
     }
 
-    public void setData(ServerModel data) {
+    public void setData(List<ServerModel> data) {
         this.data = data;
     }
 
     public class ServerModel {
         public int meeting_id;
         public Long meeting_url;
-        public Long event_id;
         public String meeting_theme;
         public int meeting_is_drawable;
         public int meeting_is_talkable;
@@ -25,6 +26,7 @@ public class MeetingJson {
         public String meeting_password;
         public long meeting_start_time;
         public long meeting_end_time;
+        public Long event_id;
         public String meeting_desc;
 
         public String getMeeting_desc() {

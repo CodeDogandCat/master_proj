@@ -18,7 +18,7 @@ import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ApplicationInfoAdapter;
-import cn.edu.hfut.lilei.shareboard.enity.AppInfo;
+import cn.edu.hfut.lilei.shareboard.model.AppInfo;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 

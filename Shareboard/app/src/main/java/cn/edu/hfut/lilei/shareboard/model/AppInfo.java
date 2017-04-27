@@ -1,4 +1,4 @@
-package cn.edu.hfut.lilei.shareboard.enity;
+package cn.edu.hfut.lilei.shareboard.model;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;

@@ -23,7 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.enity.FullImageInfo;
+import cn.edu.hfut.lilei.shareboard.model.FullImageInfo;
 
 public class FullImageActivity extends Activity {
 

@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.enity.AppInfo;
+import cn.edu.hfut.lilei.shareboard.model.AppInfo;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.InviteChooserDialog;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 

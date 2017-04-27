@@ -16,7 +16,7 @@ import com.lzy.okgo.OkGo;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.models.CommonJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;

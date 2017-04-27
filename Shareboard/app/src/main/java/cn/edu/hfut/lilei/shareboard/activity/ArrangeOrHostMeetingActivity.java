@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
-import cn.edu.hfut.lilei.shareboard.models.MeetingJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.MeetingJson;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;

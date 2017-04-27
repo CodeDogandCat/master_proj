@@ -1,7 +1,7 @@
-package cn.edu.hfut.lilei.shareboard.models;
+package cn.edu.hfut.lilei.shareboard.JsonEnity;
 
 
-public class RegisterJson {
+public class LoginJson {
     public int code;//返回码
     public String msg;//提示信息
     public ServerModel data;
@@ -16,7 +16,17 @@ public class RegisterJson {
 
     public class ServerModel {
         public String token;
+        public String familyName;
+        public String givenName;
         public String avatar;
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
 
         public String getToken() {
             return token;
@@ -26,12 +36,20 @@ public class RegisterJson {
             this.token = token;
         }
 
-        public String getAvatar() {
-            return avatar;
+        public String getFamilyName() {
+            return familyName;
         }
 
-        public void setAvatar(String avatar) {
-            this.avatar = avatar;
+        public void setFamilyName(String familyName) {
+            this.familyName = familyName;
+        }
+
+        public String getGivenName() {
+            return givenName;
+        }
+
+        public void setGivenName(String givenName) {
+            this.givenName = givenName;
         }
     }
 

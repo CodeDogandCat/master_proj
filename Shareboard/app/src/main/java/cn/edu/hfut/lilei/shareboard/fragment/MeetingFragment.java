@@ -17,13 +17,15 @@ import java.util.Map;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.activity.ArrangeOrHostMeetingActivity;
 import cn.edu.hfut.lilei.shareboard.activity.JoinMeetingActivity;
+import cn.edu.hfut.lilei.shareboard.activity.MessageListActivity;
 import cn.edu.hfut.lilei.shareboard.adapter.MeetingIndexAdapter;
 
 public class MeetingFragment extends Fragment {
 
     private ListView listView;
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meeting_index, container, false);
         listView = (ListView) view.findViewById(R.id.lv_meeting);
         List<Map<String, Object>> list = getData();
@@ -32,7 +34,7 @@ public class MeetingFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 //				Toast.makeText(getActivity(),"你单击了："+i,Toast.LENGTH_SHORT).show();
-                Intent intent=null;
+                Intent intent = null;
                 switch (i) {
                     case 0:
                         intent = new Intent(getActivity(), JoinMeetingActivity.class);//
@@ -40,6 +42,10 @@ public class MeetingFragment extends Fragment {
                         break;
                     case 1:
                         intent = new Intent(getActivity(), ArrangeOrHostMeetingActivity.class);//
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        intent = new Intent(getActivity(), MessageListActivity.class);//
                         startActivity(intent);
                         break;
                 }

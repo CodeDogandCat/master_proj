@@ -4,13 +4,26 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import cn.edu.hfut.lilei.shareboard.JsonEnity.JpushFriendJson;
+import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.activity.MainActivity;
+import cn.edu.hfut.lilei.shareboard.greendao.entity.Msg;
+import cn.edu.hfut.lilei.shareboard.greendao.gen.MsgDao;
+import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
+import cn.edu.hfut.lilei.shareboard.utils.GreenDaoManager;
 import cn.jpush.android.api.JPushInterface;
+
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 
 public class MyReceiver extends BroadcastReceiver {
     private Bundle bundle_startmeeting = new Bundle();
+    private MsgDao msgDao = GreenDaoManager.getInstance()
+            .getSession()
+            .getMsgDao();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -19,20 +32,45 @@ public class MyReceiver extends BroadcastReceiver {
             Bundle bundle = intent.getExtras();
             String title = bundle.getString(JPushInterface.EXTRA_TITLE);
             String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-            String message2 = bundle.getString(JPushInterface.EXTRA_EXTRA);
-            Toast.makeText(context, "msg title:" + title + "content:" + message + "@@@:" + message2,
-                    Toast.LENGTH_LONG)
-                    .show();
-//            showToast(context, "收到消息");
+            String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
+
+            showLog("msg title:" + title + "content:" + message + "@@@:" + extra);
+
+            Gson gson = new Gson();
+            JpushFriendJson o = gson.fromJson(extra, JpushFriendJson.class);
+            switch (o.getFeature()) {
+                case "requestAddFriend":
+                    /**
+                     * 存入本地数据库
+                     */
+                    //新建msg
+                    Msg tmp =
+                            new Msg(null, o.getEmail(), o.getFamilyName() + " " + o.getGivenName(),
+                                    context.getString(R.string.he_request_add_friend),
+                                    o.getFamilyName(), o
+                                    .getGivenName(), o.getFeature(), o.getAvatar(), 0, DateTimeUtil
+                                    .millisNow(), o.getTag());
+                    msgDao.insert(tmp);
+
+                    /**
+                     * 状态栏显示
+                     */
+
+                    showToast(context, "收到message");
 
 
-            /**
-             * 存入本地数据库
-             */
+                    break;
 
-            /**
-             * 状态栏显示
-             */
+                case "deleteFriend":
+                    break;
+
+                case "acceptFriend":
+                    break;
+
+                case "rejectFriend":
+                    break;
+            }
+
 
             /**
              *点击状态栏,触发事件

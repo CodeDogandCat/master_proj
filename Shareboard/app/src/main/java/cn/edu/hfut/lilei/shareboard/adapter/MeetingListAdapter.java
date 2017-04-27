@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.models.MeetingListJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.MeetingListJson;
 
 public class MeetingListAdapter extends BaseAdapter implements View.OnClickListener {
     private List<MeetingListJson.ServerModel> data = new ArrayList<>();

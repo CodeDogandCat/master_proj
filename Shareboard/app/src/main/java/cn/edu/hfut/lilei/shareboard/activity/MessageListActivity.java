@@ -4,16 +4,19 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.jude.easyrecyclerview.EasyRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.adapter.MsgAdapter;
+import cn.edu.hfut.lilei.shareboard.adapter.MessageListAdapter;
 import cn.edu.hfut.lilei.shareboard.greendao.entity.Msg;
+import cn.edu.hfut.lilei.shareboard.greendao.gen.MsgDao;
+import cn.edu.hfut.lilei.shareboard.utils.GreenDaoManager;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
@@ -21,11 +24,10 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 public class MessageListActivity extends SwipeBackActivity {
     //控件
     private static final String TAG = "shareboard";
-    private RecyclerView mRv;
-    private MsgAdapter mAdapter;
-    private LinearLayoutManager mManager;
+    private EasyRecyclerView mRv;
+    private MessageListAdapter mAdapter;
     private List<Msg> mDatas = new ArrayList<>();
-
+    private MsgDao msgDao;
 
     //上下文参数
     private Context mContext;
@@ -47,6 +49,9 @@ public class MessageListActivity extends SwipeBackActivity {
      */
     private void init() {
         mContext = this;
+        msgDao = GreenDaoManager.getInstance()
+                .getSession()
+                .getMsgDao();
         mBtnBack = (ImageView) findViewById(R.id.img_message_list_goback);
         mBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,21 +79,18 @@ public class MessageListActivity extends SwipeBackActivity {
             }
         });
 
-        mAdapter = new MsgAdapter(this, mDatas);
+        mRv = (EasyRecyclerView) findViewById(R.id.rv);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRv.setLayoutManager(manager);
+
+        mDatas = msgDao.loadAll();
+        mAdapter = new MessageListAdapter(this);
+        mAdapter.addAll(mDatas);
         mRv.setAdapter(mAdapter);
 
 
     }
-
-
-    private View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-
-            }
-        }
-    };
 
 
 }

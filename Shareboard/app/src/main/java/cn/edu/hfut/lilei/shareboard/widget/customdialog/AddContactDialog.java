@@ -17,9 +17,13 @@ import com.lzy.okgo.OkGo;
 
 import java.util.ArrayList;
 
+import cn.edu.hfut.lilei.shareboard.JsonEnity.FriendJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.models.CommonJson;
+import cn.edu.hfut.lilei.shareboard.greendao.entity.Msg;
+import cn.edu.hfut.lilei.shareboard.greendao.gen.MsgDao;
+import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
+import cn.edu.hfut.lilei.shareboard.utils.GreenDaoManager;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
@@ -200,6 +204,7 @@ public class AddContactDialog extends Dialog {
                                             .can_not_make_friend_yourself));
                                     return;
                                 }
+                                final String tag = myEmail + DateTimeUtil.millisNow();// 全局标记
 
                                 //2.发送请求
                                 mlodingDialog = loding(mContext, R.string.sending);
@@ -238,15 +243,53 @@ public class AddContactDialog extends Dialog {
                                                 .params(post_user_email, valueList.get(1))
                                                 .params(post_to_user_email, toEmail)
                                                 .params(post_message_data,
-                                                        "lalala")
+                                                        tag)
 
-                                                .execute(new JsonCallback<CommonJson>() {
+                                                .execute(new JsonCallback<FriendJson>() {
                                                              @Override
-                                                             public void onSuccess(CommonJson o, Call call,
+                                                             public void onSuccess(FriendJson o, Call call,
                                                                                    Response response) {
                                                                  if (o.getCode() == SUCCESS) {
 
                                                                      showToast(mContext, "请求已发送");
+
+                                                                     //添加msg  到本地数据库
+                                                                     MsgDao msgDao = GreenDaoManager
+                                                                             .getInstance()
+                                                                             .getSession()
+                                                                             .getMsgDao();
+                                                                     //新建msg
+//                                                                     feature waitAddFriend
+//                                                                     status 0://等待验证
+//                                                                     tag  Uid
+//                                                                       email 请求的对象
+
+                                                                     Msg tmp = new Msg();
+                                                                     tmp.setStatus(0);
+                                                                     tmp.setEmail(o.getData()
+                                                                             .getEmail());
+                                                                     tmp.setFamilyName(o.getData
+                                                                             ()
+                                                                             .getFamilyName());
+                                                                     tmp.setGivenName(o.getData()
+                                                                             .getGivenName());
+                                                                     tmp.setAvatar(o.getData()
+                                                                             .getAvatar());
+                                                                     tmp.setTitle(o.getData
+                                                                             ()
+                                                                             .getFamilyName() + " " +
+                                                                             o.getData()
+                                                                                     .getGivenName());
+                                                                     tmp.setContent(mContext.getString(
+                                                                             R.string.you_request_to_add_friend));
+                                                                     tmp.setFeature("waitAddFriend");
+                                                                     tmp.setMsgTime(DateTimeUtil
+                                                                             .millisNow());
+                                                                     tmp.setTag(tag);
+                                                                     //插入数据库
+                                                                     msgDao.insert(tmp);
+
+
                                                                      mlodingDialog.cancle();
                                                                      addContactDialog.dismiss();
 

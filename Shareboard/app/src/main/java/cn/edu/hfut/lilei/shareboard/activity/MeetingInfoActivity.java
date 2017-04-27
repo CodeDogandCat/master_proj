@@ -24,9 +24,9 @@ import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.enity.AppInfo;
+import cn.edu.hfut.lilei.shareboard.model.AppInfo;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
-import cn.edu.hfut.lilei.shareboard.models.CommonJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;

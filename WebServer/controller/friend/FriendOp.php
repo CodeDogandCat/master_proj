@@ -121,7 +121,7 @@ class FriendOp
      * 请求加好友
      * @return bool
      */
-    public function requestAddFriend()
+    public function requestAddFriend($tag)
     {
 
 
@@ -133,6 +133,7 @@ class FriendOp
             'givenName' => $this->user1->getGivenName(),
             'email' => $this->user1->getEmail(),
             'avatar' => $this->user1->getAvatar(),
+            'tag' => $tag,
             "feature" => "requestAddFriend");
         $data['extras'] = $extras;
 

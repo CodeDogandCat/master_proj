@@ -2,7 +2,7 @@ package cn.edu.hfut.lilei.shareboard.utils;
 
 import java.util.Comparator;
 
-import cn.edu.hfut.lilei.shareboard.enity.GroupMemberInfo;
+import cn.edu.hfut.lilei.shareboard.model.GroupMemberInfo;
 
 public class PinyinComparatorUtil implements Comparator<GroupMemberInfo> {
 
