@@ -34,11 +34,12 @@ public class Msg {
     private Long msgTime;
     private String tag;
 
-    @Generated(hash = 897771730)
-    public Msg(Long id, String title, String familyName, String givenName,
-               String feature, String avatar, int status, Long msgTime, String tag) {
+    @Generated(hash = 759086094)
+    public Msg(Long id, String title, String content, String familyName, String givenName,
+            String feature, String avatar, int status, Long msgTime, String tag) {
         this.id = id;
         this.title = title;
+        this.content = content;
         this.familyName = familyName;
         this.givenName = givenName;
         this.feature = feature;
@@ -122,6 +123,14 @@ public class Msg {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public String getContent() {
+        return this.content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
 }
