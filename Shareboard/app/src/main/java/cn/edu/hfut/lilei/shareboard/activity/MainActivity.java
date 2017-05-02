@@ -17,6 +17,10 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +29,13 @@ import cn.edu.hfut.lilei.shareboard.adapter.TabPageAdapter;
 import cn.edu.hfut.lilei.shareboard.fragment.ContactsFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.MeetingFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.SettingsFragment;
+import cn.edu.hfut.lilei.shareboard.listener.FragmentListener;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.AddContactDialog;
 
 
 public class MainActivity extends FragmentActivity implements
-        OnPageChangeListener, OnCheckedChangeListener {
+        OnPageChangeListener, OnCheckedChangeListener, FragmentListener {
     //控件
     private LinearLayout mLlActionbarRight;
     private LinearLayout.LayoutParams mlp;
@@ -39,6 +44,7 @@ public class MainActivity extends FragmentActivity implements
     private RadioGroup mRadioGroup;
     private TextView mTvTitle;
     private ImageView mImgAddContact;
+    private int msgCount;
 
     //数据
     //按钮的没选中显示的图标
@@ -52,6 +58,7 @@ public class MainActivity extends FragmentActivity implements
     private int[] pageTitles = {R.string.meeting, R.string.contacts, R.string.settings};
     private List<Fragment> fragments = new ArrayList<Fragment>();
     private boolean hasAddContactIcon;
+    private TabPageAdapter tabPageAdapter;
     //上下文参数
     private Context mContext;
 
@@ -60,6 +67,8 @@ public class MainActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        EventBus.getDefault()
+                .register(this);
         init();
         selectPage(0); // 默认选中首页
     }
@@ -83,7 +92,7 @@ public class MainActivity extends FragmentActivity implements
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mRadioGroup.setOnCheckedChangeListener(this);
-        TabPageAdapter tabPageAdapter = new TabPageAdapter(
+        tabPageAdapter = new TabPageAdapter(
                 getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(tabPageAdapter);
         mViewPager.setOnPageChangeListener(this);
@@ -120,7 +129,7 @@ public class MainActivity extends FragmentActivity implements
         //切换页面标题
         mTvTitle.setText(pageTitles[position]);
         // 切换页面
-        mViewPager.setCurrentItem(position, false);
+        mViewPager.setCurrentItem(position, true);
         // 改变图标
         Drawable yellow = getResources().getDrawable(selectedIconIds[position]);
         yellow.setBounds(0, 0, 100,
@@ -130,36 +139,41 @@ public class MainActivity extends FragmentActivity implements
         select.setTextColor(getResources().getColor(
                 R.color.my_yellow));
 
-        //联系人页面特定
-        if (position == 1) {
+        if (position == 0) {
+            //会议操作页面
 
-            if (hasAddContactIcon == false) {
-                mImgAddContact.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                new AddContactDialog.Builder(MainActivity.this)
-                                        .setTitle(getString(R.string.add_contact))
-                                        .setHint(R.string.search_contacts_by_email)
-                                        .setPositiveButton(
-                                                getString(R.string.confirm),
-                                                null)
-                                        .setNegativeButton(getString(R.string.cancel), null)
-                                        .show();
+
+        } else
+            //联系人页面特定
+            if (position == 1) {
+
+                if (hasAddContactIcon == false) {
+                    mImgAddContact.setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new AddContactDialog.Builder(MainActivity.this)
+                                            .setTitle(getString(R.string.add_contact))
+                                            .setHint(R.string.search_contacts_by_email)
+                                            .setPositiveButton(
+                                                    getString(R.string.confirm),
+                                                    null)
+                                            .setNegativeButton(getString(R.string.cancel), null)
+                                            .show();
+                                }
                             }
-                        }
-                );
-                mLlActionbarRight.addView(mImgAddContact, mlp);
-                hasAddContactIcon = true;
-            }
+                    );
+                    mLlActionbarRight.addView(mImgAddContact, mlp);
+                    hasAddContactIcon = true;
+                }
 
 
-        } else {
-            if (hasAddContactIcon) {
-                mLlActionbarRight.removeView(mImgAddContact);
-                hasAddContactIcon = false;
+            } else {
+                if (hasAddContactIcon) {
+                    mLlActionbarRight.removeView(mImgAddContact);
+                    hasAddContactIcon = false;
+                }
             }
-        }
     }
 
     @Override
@@ -193,4 +207,21 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
+
+    @Override
+    public void onFragmentUpdateListener(int item) {
+        tabPageAdapter.update(item);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void updateUnreadMsgNum(Integer num) {
+        onFragmentUpdateListener(0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault()
+                .unregister(this);
+    }
 }

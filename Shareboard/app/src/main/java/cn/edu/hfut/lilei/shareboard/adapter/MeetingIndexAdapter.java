@@ -14,6 +14,9 @@ import java.util.Map;
 
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
+import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
+
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_new_msg_num;
 
 public class MeetingIndexAdapter extends BaseAdapter {
     private List<Map<String, Object>> data;
@@ -33,7 +36,7 @@ public class MeetingIndexAdapter extends BaseAdapter {
         public ImageView image;
         public TextView title;
         public Button view;
-        public TextView info;
+        public TextView msg_num;
     }
 
     @Override
@@ -65,7 +68,9 @@ public class MeetingIndexAdapter extends BaseAdapter {
             //获得组件，实例化组件
             convertView = layoutInflater.inflate(R.layout.listitem_meeting_index, null);
             zujian.image = (ImageView) convertView.findViewById(R.id.image);
-            zujian.title = (TextView) convertView.findViewById(R.id.title);
+            zujian.title = (TextView) convertView.findViewById(R.id.tv_title);
+            zujian.msg_num = (TextView) convertView.findViewById(R.id.tv_msg_num);
+
             convertView.setTag(zujian);
         } else {
             zujian = (Zujian) convertView.getTag();
@@ -76,6 +81,25 @@ public class MeetingIndexAdapter extends BaseAdapter {
                 .get("image"), zujian.image);
         zujian.title.setText((String) data.get(position)
                 .get("tvMeetingTheme"));
+        if (position == 2) {//系统消息栏
+//            SharedPrefUtil.getInstance()
+//                    .deleteData(share_new_msg_num);
+            int currenUnreadNews = (int) SharedPrefUtil.getInstance()
+                    .getData(share_new_msg_num, 0);
+            if (currenUnreadNews == 0) {
+                zujian.msg_num.setVisibility(View.GONE);
+            } else {
+                zujian.msg_num.setVisibility(View.VISIBLE);
+                if (currenUnreadNews < 100) {
+                    zujian.msg_num.setText(currenUnreadNews + "");
+                } else {
+                    zujian.msg_num.setText("99+");
+                }
+            }
+        }
+
+
         return convertView;
     }
+
 }

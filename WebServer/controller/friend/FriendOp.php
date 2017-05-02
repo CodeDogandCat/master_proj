@@ -184,6 +184,140 @@ class FriendOp
         return false;//插入失败
     }
 
+    /**
+     * 同意加好友
+     * @return bool
+     */
+    public function acceptAddFriend($tag)
+    {
+
+
+        $content = $this->user1->getFamilyName() . $this->user1->getGivenName() . "同意加你为好友";
+        $data = array();
+        $data['title'] = "好友回复";
+        $data['content_type'] = 'text';
+        $extras = array('familyName' => $this->user1->getFamilyName(),
+            'givenName' => $this->user1->getGivenName(),
+            'email' => $this->user1->getEmail(),
+            'avatar' => $this->user1->getAvatar(),
+            'tag' => $tag,
+            "feature" => "acceptFriend");
+        $data['extras'] = $extras;
+
+        //1.判断是否有历史
+        if ($this->hasHistory() == false) {
+            //插入
+            $sql = 'INSERT INTO bd_friend (response_status,message_time,bd_user_user_id,bd_user_user_id1) 
+                VALUES (?,?,?,?)';
+
+            $tmp = $this->compare($this->user1->getId(), $this->user2->getId());
+            $dt = new DateTime();
+            $arr = array();
+            $arr[0] = 3;//同意
+            $arr[1] = $dt->format('Y-m-d H:i:s');
+            $arr[2] = $tmp[0];
+            $arr[3] = $tmp[1];
+
+            if ($this->db->insert($sql, $arr) != false) {
+                //推送
+                if (Jpush::pushMsg($this->user2->getEmail(), $content, $data) == true) {
+                    return true;
+                }
+            }
+
+        } else {
+            //更新
+            $sql = 'UPDATE  bd_friend SET   response_status = ?,message_time= ? WHERE bd_user_user_id =? AND bd_user_user_id1=?';
+
+            $tmp = $this->compare($this->user1->getId(), $this->user2->getId());
+            $dt = new DateTime();
+            $arr = array();
+            $arr[0] = 3;//同意
+            $arr[1] = $dt->format('Y-m-d H:i:s');
+            $arr[2] = $tmp[0];
+            $arr[3] = $tmp[1];
+
+            if ($this->db->update($sql, $arr) != false) {
+                //推送
+                if (Jpush::pushMsg($this->user2->getEmail(), $content, $data) == true) {
+                    return true;
+                }
+
+            }
+
+        }
+
+
+        return false;//插入失败
+    }
+
+    /**
+     * 拒绝加好友
+     * @return bool
+     */
+    public function rejectAddFriend($tag)
+    {
+
+
+        $content = $this->user1->getFamilyName() . $this->user1->getGivenName() . "拒绝加你为好友";
+        $data = array();
+        $data['title'] = "好友回复";
+        $data['content_type'] = 'text';
+        $extras = array('familyName' => $this->user1->getFamilyName(),
+            'givenName' => $this->user1->getGivenName(),
+            'email' => $this->user1->getEmail(),
+            'avatar' => $this->user1->getAvatar(),
+            'tag' => $tag,
+            "feature" => "rejectFriend");
+        $data['extras'] = $extras;
+
+        //1.判断是否有历史
+        if ($this->hasHistory() == false) {
+            //插入
+            $sql = 'INSERT INTO bd_friend (response_status,message_time,bd_user_user_id,bd_user_user_id1) 
+                VALUES (?,?,?,?)';
+
+            $tmp = $this->compare($this->user1->getId(), $this->user2->getId());
+            $dt = new DateTime();
+            $arr = array();
+            $arr[0] = 2;//拒绝
+            $arr[1] = $dt->format('Y-m-d H:i:s');
+            $arr[2] = $tmp[0];
+            $arr[3] = $tmp[1];
+
+            if ($this->db->insert($sql, $arr) != false) {
+                //推送
+                if (Jpush::pushMsg($this->user2->getEmail(), $content, $data) == true) {
+                    return true;
+                }
+            }
+
+        } else {
+            //更新
+            $sql = 'UPDATE  bd_friend SET   response_status = ?,message_time= ? WHERE bd_user_user_id =? AND bd_user_user_id1=?';
+
+            $tmp = $this->compare($this->user1->getId(), $this->user2->getId());
+            $dt = new DateTime();
+            $arr = array();
+            $arr[0] = 2;//拒绝
+            $arr[1] = $dt->format('Y-m-d H:i:s');
+            $arr[2] = $tmp[0];
+            $arr[3] = $tmp[1];
+
+            if ($this->db->update($sql, $arr) != false) {
+                //推送
+                if (Jpush::pushMsg($this->user2->getEmail(), $content, $data) == true) {
+                    return true;
+                }
+
+            }
+
+        }
+
+
+        return false;//插入失败
+    }
+
 
     /**
      * 请求删除好友
@@ -195,13 +329,13 @@ class FriendOp
 
         $content = $this->user1->getFamilyName() . $this->user1->getGivenName() . "把你从好友列表中移除";
         $data = array();
-        $data['title'] = "移除联系人";
+        $data['title'] = "删除好友";
         $data['content_type'] = 'text';
         $extras = array('familyName' => $this->user1->getFamilyName(),
             'givenName' => $this->user1->getGivenName(),
             'email' => $this->user1->getEmail(),
             'avatar' => $this->user1->getAvatar(),
-            "feature" => "requestDelFriend");
+            "feature" => "deleteFriend");
         $data['extras'] = $extras;
 
         //更新

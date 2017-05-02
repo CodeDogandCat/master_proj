@@ -104,6 +104,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="70dp"
+            android:focusable="false"
             android:gravity="center"
             android:maxLength="12"
             android:maxLines="1"
@@ -118,6 +119,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:focusable="false"
             android:gravity="center"
             android:maxLength="12"
             android:maxLines="1"
@@ -132,6 +134,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:focusable="false"
             android:gravity="center"
             android:maxLength="12"
             android:maxLines="1"
@@ -144,7 +147,7 @@
 
 </LinearLayout>
 
-<!--<Button-->
+    <!--<Button-->
     <!--android:id="@+id/btnDel"-->
     <!--android:layout_width="120dp"-->
     <!--android:layout_height="60dp"-->

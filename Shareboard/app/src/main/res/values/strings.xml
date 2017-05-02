@@ -212,4 +212,9 @@
     <string name="message_list">消息列表</string>
     <string name="you_request_to_add_friend">你请求添加对方为好友</string>
     <string name="he_request_add_friend">对方请求添加你为好友</string>
+    <string name="no_msgs">没有消息哦~</string>
+    <string name="request_to_be_your_friend">请求添加你为好友</string>
+    <string name="other_accept_your_friend_request">同意了你的好友申请</string>
+    <string name="other_reject_your_friend_request">拒绝了你的好友申请</string>
+    <string name="other_remove_you_from_friend_list">把你从好友列表中移除</string>
 </resources>

@@ -101,6 +101,7 @@ define("FRIEND_SELF_ERROR", 4028);//请求添加好友失败 :想和自己加好
 
 
 define("REQUEST_DEL_FRIEND_ERROR", 4029);//请求删除好友失败
+define("ACCEPT_FRIEND_ERROR", 4030);//同意添加好友失败
 
 /**
  * 数据库连接信息

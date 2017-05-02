@@ -80,6 +80,7 @@ class Login
             $given_name = $rows[0]['user_given_name'];
             $id = $rows[0]['user_id'];
             $avatar = $rows[0]['user_avatar'];
+//            echo 'avatar' . $avatar;
             $data = array("familyName" => $family_name, "givenName" => $given_name, "id" => $id, "avatar" => $avatar);
             return $data;//存在,返回
         }

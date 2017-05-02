@@ -3,11 +3,15 @@ package cn.edu.hfut.lilei.shareboard.activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
@@ -18,10 +22,12 @@ import cn.edu.hfut.lilei.shareboard.adapter.MessageListAdapter;
 import cn.edu.hfut.lilei.shareboard.greendao.entity.Msg;
 import cn.edu.hfut.lilei.shareboard.greendao.gen.MsgDao;
 import cn.edu.hfut.lilei.shareboard.utils.GreenDaoManager;
+import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_new_msg_num;
 
 
 public class MessageListActivity extends SwipeBackActivity implements AdapterView.OnItemClickListener {
@@ -41,6 +47,8 @@ public class MessageListActivity extends SwipeBackActivity implements AdapterVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_list);
+        EventBus.getDefault()
+                .register(this);
         init();
 
 
@@ -52,6 +60,8 @@ public class MessageListActivity extends SwipeBackActivity implements AdapterVie
      */
     private void init() {
         mContext = this;
+
+
         msgDao = GreenDaoManager.getInstance()
                 .getSession()
                 .getMsgDao();
@@ -87,12 +97,24 @@ public class MessageListActivity extends SwipeBackActivity implements AdapterVie
 
         QueryBuilder<Msg> qb = msgDao.queryBuilder();
         qb.orderDesc(MsgDao.Properties.Id);
-//        mDatas = qb.list();
+        mDatas = qb.list();
 
         mAdapter = new MessageListAdapter(mContext);
-        mAdapter.addAll(qb.list());
+        mAdapter.addAll(mDatas);
         listContent.setAdapter(mAdapter);
         listContent.setOnItemClickListener(this);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mDatas.size() == 0) {
+                    showToast(mContext, getString(R.string.no_msgs));
+                }
+            }
+        }, 800);
+
+        SharedPrefUtil.getInstance()
+                .saveData(share_new_msg_num, 0);
+
     }
 
 
@@ -105,6 +127,20 @@ public class MessageListActivity extends SwipeBackActivity implements AdapterVie
         msgDao.deleteByKey(tmp.getId());
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault()
+                .postSticky(0);
+
+        EventBus.getDefault()
+                .unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void updateUnreadMsgNum(Integer num) {
     }
 
 }

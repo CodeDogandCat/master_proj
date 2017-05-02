@@ -1,5 +1,6 @@
 package cn.edu.hfut.lilei.shareboard.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,17 +20,33 @@ import cn.edu.hfut.lilei.shareboard.activity.ArrangeOrHostMeetingActivity;
 import cn.edu.hfut.lilei.shareboard.activity.JoinMeetingActivity;
 import cn.edu.hfut.lilei.shareboard.activity.MessageListActivity;
 import cn.edu.hfut.lilei.shareboard.adapter.MeetingIndexAdapter;
+import cn.edu.hfut.lilei.shareboard.listener.FragmentListener;
 
 public class MeetingFragment extends Fragment {
 
     private ListView listView;
+    private MeetingIndexAdapter mAdapter;
+    private FragmentListener listener;
+
+
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            listener = (FragmentListener) activity;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meeting_index, container, false);
         listView = (ListView) view.findViewById(R.id.lv_meeting);
         List<Map<String, Object>> list = getData();
-        listView.setAdapter(new MeetingIndexAdapter(getActivity(), list));
+        mAdapter = new MeetingIndexAdapter(getActivity(), list);
+        listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -55,6 +72,12 @@ public class MeetingFragment extends Fragment {
         });
         return view;
     }
+
+    public void update() {
+
+        mAdapter.notifyDataSetChanged();
+    }
+
 
     public List<Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();

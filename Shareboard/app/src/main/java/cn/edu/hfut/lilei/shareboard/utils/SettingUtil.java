@@ -103,6 +103,7 @@ public class SettingUtil {
     public static final String share_meeting_id = "400112";
     public static final String share_meeting_url = "400113";
     public static final String share_given_name = "400114";
+    public static final String share_new_msg_num = "400115";
 
 
     //系统调试参数
