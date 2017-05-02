@@ -35,6 +35,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_FRIEND;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_message_data;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
@@ -273,7 +274,8 @@ public class AddContactDialog extends Dialog {
                                                                              .getFamilyName());
                                                                      tmp.setGivenName(o.getData()
                                                                              .getGivenName());
-                                                                     tmp.setAvatar(o.getData()
+                                                                     tmp.setAvatar(URL_AVATAR + o
+                                                                             .getData()
                                                                              .getAvatar());
                                                                      tmp.setTitle(o.getData
                                                                              ()

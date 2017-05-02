@@ -30,6 +30,7 @@ import cn.edu.hfut.lilei.shareboard.fragment.ContactsFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.MeetingFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.SettingsFragment;
 import cn.edu.hfut.lilei.shareboard.listener.FragmentListener;
+import cn.edu.hfut.lilei.shareboard.model.Event;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.AddContactDialog;
 
@@ -139,41 +140,36 @@ public class MainActivity extends FragmentActivity implements
         select.setTextColor(getResources().getColor(
                 R.color.my_yellow));
 
-        if (position == 0) {
-            //会议操作页面
+        //联系人页面特定
+        if (position == 1) {
 
-
-        } else
-            //联系人页面特定
-            if (position == 1) {
-
-                if (hasAddContactIcon == false) {
-                    mImgAddContact.setOnClickListener(
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    new AddContactDialog.Builder(MainActivity.this)
-                                            .setTitle(getString(R.string.add_contact))
-                                            .setHint(R.string.search_contacts_by_email)
-                                            .setPositiveButton(
-                                                    getString(R.string.confirm),
-                                                    null)
-                                            .setNegativeButton(getString(R.string.cancel), null)
-                                            .show();
-                                }
+            if (hasAddContactIcon == false) {
+                mImgAddContact.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                new AddContactDialog.Builder(MainActivity.this)
+                                        .setTitle(getString(R.string.add_contact))
+                                        .setHint(R.string.search_contacts_by_email)
+                                        .setPositiveButton(
+                                                getString(R.string.confirm),
+                                                null)
+                                        .setNegativeButton(getString(R.string.cancel), null)
+                                        .show();
                             }
-                    );
-                    mLlActionbarRight.addView(mImgAddContact, mlp);
-                    hasAddContactIcon = true;
-                }
-
-
-            } else {
-                if (hasAddContactIcon) {
-                    mLlActionbarRight.removeView(mImgAddContact);
-                    hasAddContactIcon = false;
-                }
+                        }
+                );
+                mLlActionbarRight.addView(mImgAddContact, mlp);
+                hasAddContactIcon = true;
             }
+
+
+        } else {
+            if (hasAddContactIcon) {
+                mLlActionbarRight.removeView(mImgAddContact);
+                hasAddContactIcon = false;
+            }
+        }
     }
 
     @Override
@@ -214,7 +210,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void updateUnreadMsgNum(Integer num) {
+    public void updateUnreadMsgNum(Event num) {
         onFragmentUpdateListener(0);
     }
 

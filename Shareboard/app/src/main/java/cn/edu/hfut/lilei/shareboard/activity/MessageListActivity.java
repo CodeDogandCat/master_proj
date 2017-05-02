@@ -21,6 +21,7 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.MessageListAdapter;
 import cn.edu.hfut.lilei.shareboard.greendao.entity.Msg;
 import cn.edu.hfut.lilei.shareboard.greendao.gen.MsgDao;
+import cn.edu.hfut.lilei.shareboard.model.Event;
 import cn.edu.hfut.lilei.shareboard.utils.GreenDaoManager;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
@@ -132,15 +133,27 @@ public class MessageListActivity extends SwipeBackActivity implements AdapterVie
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Event e = new Event();
+        e.flag = 0;
+        SharedPrefUtil.getInstance()
+                .saveData(share_new_msg_num, 0);
         EventBus.getDefault()
-                .postSticky(0);
+                .postSticky(e);
 
         EventBus.getDefault()
                 .unregister(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void updateUnreadMsgNum(Integer num) {
+    public void updateUnreadMsgNum(Event e) {
+        if (e.flag == 1) {
+            QueryBuilder<Msg> qb = msgDao.queryBuilder();
+            qb.orderDesc(MsgDao.Properties.Id);
+            mDatas = qb.list();
+            mAdapter.clear();
+            mAdapter.addAll(mDatas);
+        }
+
     }
 
 }

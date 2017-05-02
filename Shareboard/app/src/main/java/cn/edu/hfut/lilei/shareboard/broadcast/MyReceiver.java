@@ -23,6 +23,7 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.activity.MainActivity;
 import cn.edu.hfut.lilei.shareboard.greendao.entity.Msg;
 import cn.edu.hfut.lilei.shareboard.greendao.gen.MsgDao;
+import cn.edu.hfut.lilei.shareboard.model.Event;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.GreenDaoManager;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
@@ -46,6 +47,9 @@ public class MyReceiver extends BroadcastReceiver {
 
 //        EventBus.getDefault()
 //                .register(this);
+
+        Event e = new Event();
+        e.flag = 1;
 
         if (intent.getAction()
                 .equals(JPushInterface.ACTION_MESSAGE_RECEIVED)) {
@@ -103,7 +107,7 @@ public class MyReceiver extends BroadcastReceiver {
                     SharedPrefUtil.getInstance()
                             .saveData(share_new_msg_num, currenUnreadNews + 1);
                     EventBus.getDefault()
-                            .postSticky(currenUnreadNews + 1);
+                            .postSticky(e);
 
                     break;
 
@@ -130,7 +134,7 @@ public class MyReceiver extends BroadcastReceiver {
                     SharedPrefUtil.getInstance()
                             .saveData(share_new_msg_num, currenUnreadNews + 1);
                     EventBus.getDefault()
-                            .postSticky(currenUnreadNews + 1);
+                            .postSticky(e);
 
                     break;
 
@@ -173,7 +177,7 @@ public class MyReceiver extends BroadcastReceiver {
                     SharedPrefUtil.getInstance()
                             .saveData(share_new_msg_num, currenUnreadNews + 1);
                     EventBus.getDefault()
-                            .postSticky(currenUnreadNews + 1);
+                            .postSticky(e);
                     break;
 
                 case "rejectFriend":
@@ -215,7 +219,7 @@ public class MyReceiver extends BroadcastReceiver {
                     SharedPrefUtil.getInstance()
                             .saveData(share_new_msg_num, currenUnreadNews + 1);
                     EventBus.getDefault()
-                            .postSticky(currenUnreadNews + 1);
+                            .postSticky(e);
 
                     break;
             }
@@ -271,6 +275,6 @@ public class MyReceiver extends BroadcastReceiver {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void updateUnreadMsgNum(Integer num) {
+    public void updateUnreadMsgNum(Event e) {
     }
 }
