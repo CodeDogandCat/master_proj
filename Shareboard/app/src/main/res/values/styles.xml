@@ -15,6 +15,12 @@
         <item name="colorPrimaryDark">@color/my_deepyellow</item>
         <item name="colorAccent">@color/text_title</item>
     </style>
+    <style name="MessageListTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorPrimaryDark">@color/my_deepyellow</item>
+        <item name="colorAccent">@color/text_title</item>
+    </style>
 
     <style name="text_subhead_black">
         <item name="android:layout_width">wrap_content</item>

@@ -447,6 +447,7 @@ public class NameInputDialog extends Dialog {
 
         public NameInputDialog show() {
             NameInputDialog dialog = create();
+            dialog.setCanceledOnTouchOutside(false);
             dialog.show();
             return dialog;
         }

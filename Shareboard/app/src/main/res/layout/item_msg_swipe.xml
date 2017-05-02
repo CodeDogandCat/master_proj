@@ -1,155 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mcxtzhang.swipemenulib.SwipeMenuLayout
+<!--<com.mcxtzhang.swipemenulib.SwipeMenuLayout-->
+<!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="60dp"-->
+<!--android:paddingLeft="10dp"-->
+<!--app:ios="false"-->
+<!--&gt;-->
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="15dp"
-    app:ios="false"
-    >
+    android:layout_height="60dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+    <RelativeLayout
+        android:id="@+id/ll_contacts_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:id="@+id/ll_contacts_photo"
+        <cn.carbs.android.avatarimageview.library.AvatarImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            app:aiv_BoarderWidth="1dp"
+            app:aiv_ShowBoarder="false"
+            app:aiv_TextSizeRatio="0.3"
+            />
+
+        <LinearLayout
+            android:id="@+id/ll_title"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <cn.carbs.android.avatarimageview.library.AvatarImageView
-                android:id="@+id/ivAvatar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                app:aiv_BoarderWidth="1dp"
-                app:aiv_ShowBoarder="false"
-                app:aiv_TextSizeRatio="0.2"
-                />
-
-            <LinearLayout
-                android:id="@+id/ll_title"
-                android:layout_width="wrap_content"
-                android:layout_height="70dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/ivAvatar"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                >
-
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLength="16"
-                    android:maxLines="1"
-                    android:textColor="@color/my_white"
-                    android:textSize="@dimen/small_text_size"
-                    android:textStyle="bold"
-                    tools:text="李磊"/>
-
-                <TextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLength="16"
-                    android:maxLines="1"
-                    android:textColor="@color/gray_8f"
-                    android:textSize="@dimen/common_size"
-                    tools:text="对方请求添加你为好友"/>
-
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:textColor="@color/gray_8f"
-                    android:textSize="10sp"
-                    tools:text="2017-4-11 12:22:00"/>
-
-
-            </LinearLayout>
+            android:layout_height="70dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/ivAvatar"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            >
 
             <TextView
-                android:id="@+id/tv_status"
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:gravity="center"
-                android:maxLength="12"
+                android:maxLength="16"
                 android:maxLines="1"
+                android:text="李磊"
+                android:textColor="@color/my_white"
+                android:textSize="@dimen/small_text_size"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLength="16"
+                android:maxLines="1"
+                android:text="对方请求添加你为好友"
                 android:textColor="@color/gray_8f"
-                android:textSize="@dimen/super_small_text_size"
-                android:visibility="gone"
-                tools:text="已添加"
-                />
+                android:textSize="@dimen/common_size"/>
 
-            <Button
-                android:id="@+id/btn_accept"
-                style="@style/BigButtonBlack"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="70dp"
-                android:gravity="center"
-                android:maxLength="12"
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:textColor="@color/my_white"
-                android:textSize="@dimen/super_small_text_size"
-                tools:text="接受"/>
-
-            <Button
-                android:id="@+id/btn_reject"
-                style="@style/BigButtonBlack"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:gravity="center"
-                android:maxLength="12"
-                android:maxLines="1"
-                android:textColor="@color/my_white"
-                android:textSize="@dimen/super_small_text_size"
-                tools:text="拒绝"/>
-
-            <Button
-                android:id="@+id/btn_enter_meeting"
-                style="@style/BigButtonBlack"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:gravity="center"
-                android:maxLength="12"
-                android:maxLines="1"
-                android:textColor="@color/my_white"
-                android:textSize="@dimen/super_small_text_size"
-                tools:text="加会"/>
+                android:text="2017-4-11 12:22:00"
+                android:textColor="@color/gray_8f"
+                android:textSize="10sp"/>
 
 
-        </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:maxLength="12"
+            android:maxLines="1"
+            android:textColor="@color/gray_8f"
+            android:textSize="@dimen/super_small_text_size"
+            android:visibility="gone"
+            tools:text="已添加"
+            />
+
+        <Button
+            android:id="@+id/btn_accept"
+            style="@style/SmallButtonBlack"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="70dp"
+            android:gravity="center"
+            android:maxLength="12"
+            android:maxLines="1"
+            android:text="接受"
+            android:textSize="@dimen/super_small_text_size"/>
+
+        <Button
+            android:id="@+id/btn_reject"
+            style="@style/SmallButtonBlack"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:maxLength="12"
+            android:maxLines="1"
+            android:text="拒绝"
+            android:textSize="@dimen/super_small_text_size"/>
+
+        <Button
+            android:id="@+id/btn_enter_meeting"
+            style="@style/SmallButtonBlack"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:maxLength="12"
+            android:maxLines="1"
+            android:text="加会"
+            android:textSize="@dimen/super_small_text_size"/>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <Button
-        android:id="@+id/btnDel"
-        android:layout_width="120dp"
-        android:layout_height="match_parent"
-        android:background="#ecd50a"
-        android:clickable="true"
-        android:text="删除"
-        android:textColor="@android:color/white"/>
-</com.mcxtzhang.swipemenulib.SwipeMenuLayout>
+
+</LinearLayout>
+
+<!--<Button-->
+    <!--android:id="@+id/btnDel"-->
+    <!--android:layout_width="120dp"-->
+    <!--android:layout_height="60dp"-->
+    <!--android:background="@color/my_yellow"-->
+    <!--android:clickable="true"-->
+    <!--android:text="删除"-->
+    <!--android:textColor="@color/my_red"/>-->
+    <!--</com.mcxtzhang.swipemenulib.SwipeMenuLayout>-->

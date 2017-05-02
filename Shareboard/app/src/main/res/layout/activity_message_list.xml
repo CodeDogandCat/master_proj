@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:focusable="true"
+              android:focusableInTouchMode="true"
               android:orientation="vertical">
 
     <RelativeLayout style="@style/actionbar">
@@ -19,12 +21,32 @@
 
     </RelativeLayout>
 
-    <com.jude.easyrecyclerview.EasyRecyclerView
-        android:id="@+id/rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+    <!--<android.support.design.widget.CoordinatorLayout-->
+    <!--android:id="@+id/coordinator_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--&gt;-->
 
-    </com.jude.easyrecyclerview.EasyRecyclerView>
+    <!--<com.jude.easyrecyclerview.EasyRecyclerView-->
+    <!--android:id="@+id/rv"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+
+    <!--&gt;-->
+
+    <!--</com.jude.easyrecyclerview.EasyRecyclerView>-->
+    <!--</android.support.design.widget.CoordinatorLayout>-->
+    <ListView
+        android:id="@+id/lv_message_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/my_transparent"
+        android:cacheColorHint="@color/my_transparent"
+        android:scrollbarSize="3dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbarThumbVertical="@drawable/scrollbar_vertical_thumb"
+        android:scrollbars="vertical">
+
+    </ListView>
 
 </LinearLayout>

@@ -18,12 +18,14 @@ import cn.jpush.android.api.JPushInterface;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
 
 public class MyReceiver extends BroadcastReceiver {
     private Bundle bundle_startmeeting = new Bundle();
     private MsgDao msgDao = GreenDaoManager.getInstance()
             .getSession()
             .getMsgDao();
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -48,15 +50,16 @@ public class MyReceiver extends BroadcastReceiver {
                             new Msg(null, o.getEmail(), o.getFamilyName() + " " + o.getGivenName(),
                                     context.getString(R.string.he_request_add_friend),
                                     o.getFamilyName(), o
-                                    .getGivenName(), o.getFeature(), o.getAvatar(), 0, DateTimeUtil
-                                    .millisNow(), o.getTag());
+                                    .getGivenName(), o.getFeature(), URL_AVATAR + o.getAvatar(), 0,
+                                    DateTimeUtil
+                                            .millisNow(), o.getTag());
                     msgDao.insert(tmp);
 
                     /**
                      * 状态栏显示
                      */
 
-                    showToast(context, "收到message");
+                    showToast(context, "收到message:" + new Gson().toJson(tmp));
 
 
                     break;

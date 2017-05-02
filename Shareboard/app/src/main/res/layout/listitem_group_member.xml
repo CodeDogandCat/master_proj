@@ -36,7 +36,7 @@
                     android:layout_gravity="center"
                     app:aiv_BoarderWidth="1dp"
                     app:aiv_ShowBoarder="false"
-                    app:aiv_TextSizeRatio="0.2"
+                    app:aiv_TextSizeRatio="0.3"
                     android:layout_centerInParent="true"
                     />
             </RelativeLayout>

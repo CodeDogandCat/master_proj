@@ -59,6 +59,7 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
     private ListView listContent = null;
     private LodingDialog.Builder mlodingDialog;
     private SwipeRefreshLayout mSwipeLayout;
+    private ImageView mBtnBack;
     //数据
     List<MeetingListJson.ServerModel> data = new ArrayList<>();
     private MeetingListAdapter adapter;
@@ -66,7 +67,7 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
     private int totalPage;
     //上下文参数
     private Context mContext;
-    private ImageView mBtnBack;
+
 
 
     @Override

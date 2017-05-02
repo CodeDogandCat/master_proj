@@ -22,11 +22,11 @@ import java.io.File;
 import java.io.IOException;
 
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.RegisterJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.RegisterJson;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -309,7 +309,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                 "image");//拍照后保存的路径
 
         if (!file.exists()) {
-            file.mkdir();
+            file.mkdirs();
         }
         File cropImage = new File(file.getAbsolutePath(),
                 IMG_PATH_FOR_CROP);

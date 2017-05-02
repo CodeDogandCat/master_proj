@@ -173,6 +173,7 @@ public class CommonAlertDialog extends Dialog {
 
         public CommonAlertDialog show() {
             CommonAlertDialog dialog = create();
+            dialog.setCanceledOnTouchOutside(false);
             dialog.show();
             return dialog;
         }

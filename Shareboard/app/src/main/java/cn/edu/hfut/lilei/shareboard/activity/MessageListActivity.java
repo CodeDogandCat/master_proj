@@ -3,11 +3,12 @@ package cn.edu.hfut.lilei.shareboard.activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 
-import com.jude.easyrecyclerview.EasyRecyclerView;
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,14 @@ import cn.edu.hfut.lilei.shareboard.utils.GreenDaoManager;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 
-public class MessageListActivity extends SwipeBackActivity {
+
+public class MessageListActivity extends SwipeBackActivity implements AdapterView.OnItemClickListener {
     //控件
     private static final String TAG = "shareboard";
-    private EasyRecyclerView mRv;
+    //    private EasyRecyclerView mRv;
+    private ListView listContent = null;
     private MessageListAdapter mAdapter;
     private List<Msg> mDatas = new ArrayList<>();
     private MsgDao msgDao;
@@ -32,7 +36,6 @@ public class MessageListActivity extends SwipeBackActivity {
     //上下文参数
     private Context mContext;
     private ImageView mBtnBack;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,18 +82,29 @@ public class MessageListActivity extends SwipeBackActivity {
             }
         });
 
-        mRv = (EasyRecyclerView) findViewById(R.id.rv);
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRv.setLayoutManager(manager);
+        listContent = (ListView) findViewById(R.id.lv_message_list);
 
-        mDatas = msgDao.loadAll();
-        mAdapter = new MessageListAdapter(this);
-        mAdapter.addAll(mDatas);
-        mRv.setAdapter(mAdapter);
+
+        QueryBuilder<Msg> qb = msgDao.queryBuilder();
+        qb.orderDesc(MsgDao.Properties.Id);
+//        mDatas = qb.list();
+
+        mAdapter = new MessageListAdapter(mContext);
+        mAdapter.addAll(qb.list());
+        listContent.setAdapter(mAdapter);
+        listContent.setOnItemClickListener(this);
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Msg tmp = mAdapter.getItem(i);
+        showToast(mContext, "删除");
+        //pop menu 删除
+        mAdapter.remove(i);
+        msgDao.deleteByKey(tmp.getId());
 
 
     }
-
 
 }

@@ -382,6 +382,7 @@ public class AddContactDialog extends Dialog {
 
         public AddContactDialog show() {
             AddContactDialog dialog = create();
+            dialog.setCanceledOnTouchOutside(false);
             dialog.show();
             return dialog;
         }

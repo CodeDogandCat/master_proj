@@ -270,6 +270,7 @@ public class    UrlInputDialog extends Dialog {
 
         public UrlInputDialog show() {
             UrlInputDialog dialog = create();
+            dialog.setCanceledOnTouchOutside(false);
             dialog.show();
             return dialog;
         }
