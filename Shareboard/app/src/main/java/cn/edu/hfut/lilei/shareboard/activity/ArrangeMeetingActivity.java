@@ -638,7 +638,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                                                     } else {
                                                         //提示所有错误
                                                         mlodingDialog.cancle();
-                                                        showToast(mContext, o.getMsg());
+//                                                        showToast(mContext, o.getMsg());
                                                     }
 
 
@@ -650,7 +650,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                                                                     Exception e) {
                                                     super.onError(call, response, e);
                                                     mlodingDialog.cancle();
-                                                    showToast(mContext, R.string.system_error);
+//                                                    showToast(mContext, R.string.system_error);
                                                 }
                                             }
                                 );
@@ -687,7 +687,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                                                             }
                                                             //提示所有错误
                                                             mlodingDialog.cancle();
-                                                            showToast(mContext, o.getMsg());
+//                                                            showToast(mContext, o.getMsg());
                                                         }
 
                                                     }
@@ -703,7 +703,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                                                             eventId = -1;
                                                         }
                                                         mlodingDialog.cancle();
-                                                        showToast(mContext, R.string.system_error);
+//                                                        showToast(mContext, R.string.system_error);
                                                     }
                                                 }
                                     );

@@ -9,9 +9,9 @@ import android.view.WindowManager;
 
 import com.lzy.okgo.OkGo;
 
+import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
@@ -19,7 +19,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
-import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NO_TOKEN_FOUND;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_CHECK_TOKEN;
@@ -150,7 +149,7 @@ public class WelcomeActivity extends Activity {
                             public void onError(Call call, Response response, Exception e) {
                                 super.onError(call, response, e);
                                 mlodingDialog.cancle();
-                                showToast(mContext, R.string.system_error);
+//                                showToast(mContext, R.string.system_error);
                             }
                         });
 

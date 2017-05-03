@@ -271,7 +271,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                     mlodingDialog.cancle();
                                                     //提示所有错误
                                                     showLog(o.getMsg());
-                                                    showToast(mContext, o.getMsg());
+//                                                    showToast(mContext, o.getMsg());
                                                 }
                                             }
 
@@ -281,7 +281,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                 super.onError(call, response, e);
                                                 targetFile.delete();
                                                 mlodingDialog.cancle();
-                                                showToast(mContext, R.string.system_error);
+//                                                showToast(mContext, R.string.system_error);
                                             }
                                         });
                             } else {
@@ -326,7 +326,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                     mlodingDialog.cancle();
                                                     //提示所有错误
                                                     showLog(o.getMsg());
-                                                    showToast(mContext, o.getMsg());
+//                                                    showToast(mContext, o.getMsg());
                                                 }
                                             }
 
@@ -335,7 +335,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                                 Exception e) {
                                                 super.onError(call, response, e);
                                                 mlodingDialog.cancle();
-                                                showToast(mContext, R.string.system_error);
+//                                                showToast(mContext, R.string.system_error);
                                             }
                                         });
                             }
@@ -375,7 +375,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                     break;
 
                                 default:
-                                    showToast(mContext, R.string.system_error);
+//                                    showToast(mContext, R.string.system_error);
                                     break;
                             }
                         }

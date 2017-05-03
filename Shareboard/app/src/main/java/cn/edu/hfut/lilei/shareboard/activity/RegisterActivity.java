@@ -157,7 +157,7 @@ public class RegisterActivity extends SwipeBackActivity {
                                                  } else {
                                                      //提示所有错误
                                                      mlodingDialog.cancle();
-                                                     showToast(mContext, o.getMsg());
+//                                                     showToast(mContext, o.getMsg());
                                                  }
 
                                              }
@@ -166,7 +166,7 @@ public class RegisterActivity extends SwipeBackActivity {
                                              public void onError(Call call, Response response, Exception e) {
                                                  super.onError(call, response, e);
                                                  mlodingDialog.cancle();
-                                                 showToast(mContext, R.string.system_error);
+//                                                 showToast(mContext, R.string.system_error);
                                              }
                                          }
                                 );
@@ -192,7 +192,7 @@ public class RegisterActivity extends SwipeBackActivity {
                             case -1:
                                 break;
                             default:
-                                showToast(mContext, R.string.system_error);
+//                                showToast(mContext, R.string.system_error);
                                 break;
                         }
                     }
@@ -252,7 +252,7 @@ public class RegisterActivity extends SwipeBackActivity {
                                             mlodingDialog.cancle();
                                             showLog(o.getMsg());
                                             //提示所有错误
-                                            showToast(mContext, o.getMsg());
+//                                            showToast(mContext, o.getMsg());
                                         }
                                     }
 
@@ -260,7 +260,7 @@ public class RegisterActivity extends SwipeBackActivity {
                                     public void onError(Call call, Response response, Exception e) {
                                         super.onError(call, response, e);
                                         mlodingDialog.cancle();
-                                        showToast(mContext, R.string.system_error);
+//                                        showToast(mContext, R.string.system_error);
                                     }
                                 });
 

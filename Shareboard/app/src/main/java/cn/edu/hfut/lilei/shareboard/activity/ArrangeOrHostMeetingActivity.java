@@ -265,7 +265,7 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                                  } else {
                                                      //提示所有错误
                                                      mlodingDialog.cancle();
-                                                     showToast(mContext, o.getMsg());
+//                                                     showToast(mContext, o.getMsg());
                                                      MyAppUtil.changeBtnClickable
                                                              (mBtnStartMeeting, R.drawable.btn_yellow);
                                                  }
@@ -277,7 +277,7 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                                                  Exception e) {
                                                  super.onError(call, response, e);
                                                  mlodingDialog.cancle();
-                                                 showToast(mContext, R.string.system_error);
+//                                                 showToast(mContext, R.string.system_error);
                                                  mlodingDialog.cancle();
                                                  MyAppUtil.changeBtnClickable(mBtnStartMeeting,
                                                          R.drawable.btn_yellow);

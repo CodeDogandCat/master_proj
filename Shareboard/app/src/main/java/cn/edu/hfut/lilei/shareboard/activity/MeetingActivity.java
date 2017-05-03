@@ -1415,7 +1415,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                          } else {
                                              //提示所有错误
                                              mlodingDialog.cancle();
-                                             showToast(mContext, o.getMsg());
+//                                             showToast(mContext, o.getMsg());
                                              //离开当前界面
                                              beforeFinish();
                                              finish();
@@ -1428,7 +1428,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                                          Exception e) {
                                          super.onError(call, response, e);
                                          mlodingDialog.cancle();
-                                         showToast(mContext, R.string.system_error);
+//                                         showToast(mContext, R.string.system_error);
                                          //离开当前界面
                                          beforeFinish();
                                          finish();
@@ -1556,7 +1556,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                              if (mlodingDialog != null) {
                                                  mlodingDialog.cancle();
                                              }
-                                             showToast(mContext, o.getMsg());
+//                                             showToast(mContext, o.getMsg());
                                          }
 
 
@@ -1570,7 +1570,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                          if (mlodingDialog != null) {
                                              mlodingDialog.cancle();
                                          }
-                                         showToast(mContext, R.string.system_error);
+//                                         showToast(mContext, R.string.system_error);
                                      }
                                  }
                         );

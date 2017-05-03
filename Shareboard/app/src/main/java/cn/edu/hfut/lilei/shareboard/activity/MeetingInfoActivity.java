@@ -427,7 +427,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                                                      //提示所有错误
                                                                      mlodingDialog.cancle();
                                                                      clickableAllBtn();
-                                                                     showToast(mContext, o.getMsg());
+//                                                                     showToast(mContext, o.getMsg());
                                                                  }
 
                                                              }
@@ -439,7 +439,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                                                  super.onError(call, response, e);
                                                                  mlodingDialog.cancle();
                                                                  clickableAllBtn();
-                                                                 showToast(mContext, R.string.system_error);
+//                                                                 showToast(mContext, R.string.system_error);
                                                              }
                                                          }
                                                 );
@@ -558,7 +558,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
 
                                          } else {
                                              //提示所有错误
-                                             showToast(mContext, o.getMsg());
+//                                             showToast(mContext, o.getMsg());
                                              mlodingDialog.cancle();
                                              clickableAllBtn();
                                          }
@@ -570,7 +570,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                                          Exception e) {
                                          super.onError(call, response, e);
                                          mlodingDialog.cancle();
-                                         showToast(mContext, R.string.system_error);
+//                                         showToast(mContext, R.string.system_error);
                                          clickableAllBtn();
                                      }
                                  }

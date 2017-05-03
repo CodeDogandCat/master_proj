@@ -250,7 +250,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                                                  public void onClick(DialogInterface dialogInterface, int i) {
                                                                      if (!SharedPrefUtil.getInstance()
                                                                              .deleteData(share_token)) {
-                                                                         showToast(mContext, R.string.logout_failed);
+//                                                                         showToast(mContext, R.string.logout_failed);
                                                                      } else {
                                                                          Intent intent = new Intent();
                                                                          intent.setClass(SettingsMyInfoActivity.this,
@@ -439,7 +439,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                                 mlodingDialog.cancle();
                                                 //提示所有错误
                                                 showLog(o.getMsg());
-                                                showToast(mContext, o.getMsg());
+//                                                showToast(mContext, o.getMsg());
                                             }
                                         }
 
@@ -449,7 +449,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                             super.onError(call, response, e);
                                             targetFile.delete();
                                             mlodingDialog.cancle();
-                                            showToast(mContext, R.string.system_error);
+//                                            showToast(mContext, R.string.system_error);
                                         }
                                     });
 

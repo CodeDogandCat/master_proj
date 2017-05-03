@@ -281,7 +281,7 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                                      mlodingDialog.cancle();
                                                      MyAppUtil.changeBtnClickable(mBtnJoinMeeting,
                                                              R.drawable.btn_yellow);
-                                                     showToast(mContext, o.getMsg());
+//                                                     showToast(mContext, o.getMsg());
                                                  }
 
                                              }
@@ -293,7 +293,7 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                                  mlodingDialog.cancle();
                                                  MyAppUtil.changeBtnClickable(mBtnJoinMeeting,
                                                          R.drawable.btn_yellow);
-                                                 showToast(mContext, R.string.system_error);
+//                                                 showToast(mContext, R.string.system_error);
                                              }
                                          }
                                 );

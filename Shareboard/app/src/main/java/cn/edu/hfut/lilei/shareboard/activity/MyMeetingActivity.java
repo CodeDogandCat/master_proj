@@ -226,7 +226,7 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                                      public void onError(Call call, Response response,
                                                          Exception e) {
                                          super.onError(call, response, e);
-                                         showToast(mContext, R.string.system_error);
+//                                         showToast(mContext, R.string.system_error);
                                      }
                                  }
 
@@ -326,7 +326,7 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                                      public void onError(Call call, Response response,
                                                          Exception e) {
                                          super.onError(call, response, e);
-                                         showToast(mContext, R.string.system_error);
+//                                         showToast(mContext, R.string.system_error);
                                      }
                                  }
                         );
@@ -490,7 +490,7 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                                          } else {
                                              //提示所有错误
                                              mlodingDialog.cancle();
-                                             showToast(mContext, o.getMsg());
+//                                             showToast(mContext, o.getMsg());
                                          }
 
                                      }

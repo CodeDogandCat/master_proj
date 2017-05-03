@@ -196,7 +196,7 @@ public class AlterPasswordActivity extends SwipeBackActivity {
                                                       * 跳到登录界面
                                                       */
                                                      mlodingDialog.cancle();
-                                                     showToast(mContext, o.getMsg());
+//                                                     showToast(mContext, o.getMsg());
 //                                                     Intent intent = new Intent();
 //                                                     intent.setClass(AlterPasswordActivity.this,
 //                                                             LoginActivity.class);
@@ -206,7 +206,7 @@ public class AlterPasswordActivity extends SwipeBackActivity {
                                                  } else {
                                                      //提示所有错误
                                                      mlodingDialog.cancle();
-                                                     showToast(mContext, o.getMsg());
+//                                                     showToast(mContext, o.getMsg());
                                                  }
 
                                              }
@@ -216,7 +216,7 @@ public class AlterPasswordActivity extends SwipeBackActivity {
                                                                  Exception e) {
                                                  super.onError(call, response, e);
                                                  mlodingDialog.cancle();
-                                                 showToast(mContext, R.string.system_error);
+//                                                 showToast(mContext, R.string.system_error);
                                              }
                                          }
                                 );

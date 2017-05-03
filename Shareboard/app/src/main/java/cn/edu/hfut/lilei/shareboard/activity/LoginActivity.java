@@ -247,7 +247,7 @@ public class LoginActivity extends Activity {
                                                      mlodingDialog.cancle();
                                                      //提示所有错误
                                                      showLog(o.getMsg());
-                                                     showToast(mContext, o.getMsg());
+//                                                     showToast(mContext, o.getMsg());
                                                  }
                                              }
 
@@ -255,7 +255,7 @@ public class LoginActivity extends Activity {
                                              public void onError(Call call, Response response, Exception e) {
                                                  super.onError(call, response, e);
                                                  mlodingDialog.cancle();
-                                                 showToast(mContext, R.string.system_error);
+//                                                 showToast(mContext, R.string.system_error);
                                              }
                                          }
 
