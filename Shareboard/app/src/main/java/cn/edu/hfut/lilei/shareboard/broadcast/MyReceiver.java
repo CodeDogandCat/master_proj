@@ -228,6 +228,12 @@ public class MyReceiver extends BroadcastReceiver {
                             .postSticky(e);
 
                     break;
+                case "invite":
+                    //只发到 通知栏,别的不管了
+
+
+
+                    break;
             }
 
 

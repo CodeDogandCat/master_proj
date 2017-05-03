@@ -4,10 +4,15 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,6 +43,13 @@ public class MessageListActivity extends SwipeBackActivity implements AdapterVie
     private ListView listContent = null;
     private MessageListAdapter mAdapter;
     private List<Msg> mDatas = new ArrayList<>();
+    //悬浮菜单
+    private PopupWindow mMenuPop;
+    private int rotate = 0;
+    private int rotation = 225;
+    private boolean rotateDirection = true;
+    private int PopWidth;
+    private int PopHeight;
     private MsgDao msgDao;
 
     //上下文参数
@@ -121,13 +133,121 @@ public class MessageListActivity extends SwipeBackActivity implements AdapterVie
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Msg tmp = mAdapter.getItem(i);
-        showToast(mContext, "删除");
-        //pop menu 删除
-        mAdapter.remove(i);
-        msgDao.deleteByKey(tmp.getId());
+
+        showLevitateMenu(i, view);
+    }
+
+    private void showLevitateMenu(int position, View view) {
+
+        //创建popwindow
+        if (getPopMenu(position)) {
+            if (mMenuPop != null) {
+
+                //获取ImageView控件在手机屏幕的位置
+                int[] location = new int[2];
+                view.getLocationOnScreen(location);
+                int x = location[0];
+                int y = location[1];
+
+                //贴在右边
+                mMenuPop.showAtLocation(view, Gravity.NO_GRAVITY,
+                        view.getWidth() / 2,
+                        y + view.getHeight() / 2 - PopHeight / 2);
+
+            }
+
+        }
 
 
+    }
+
+    /**
+     * 初始化popWindow
+     */
+    private void initMenuPop(final int position) {
+        // 获取自定义布局文件pop.xml的视图
+        View view = View.inflate(mContext, R.layout.item_pop_levitate_menu, null);
+
+        final TextView tv_enter = (TextView) view.findViewById(R.id.tv_enter);
+        final TextView tv_line = (TextView) view.findViewById(R.id.tv_line);
+        final TextView tv_record = (TextView) view.findViewById(R.id.tv_record);
+
+        tv_enter.setText(R.string.delete);
+        tv_enter.setVisibility(View.VISIBLE);
+        tv_line.setVisibility(View.GONE);
+        tv_record.setVisibility(View.GONE);
+
+        setPopWindow(view);
+
+        tv_enter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Msg tmp = mAdapter.getItem(position);
+//                showToast(mContext, "删除");
+                //pop menu 删除
+                mAdapter.remove(position);
+                msgDao.deleteByKey(tmp.getId());
+                mMenuPop.dismiss();
+            }
+        });
+    }
+
+    private Boolean getPopMenu(int position) {
+
+
+        if (mMenuPop != null && mMenuPop.isShowing()) {
+            mMenuPop.dismiss();
+            mMenuPop = null;
+            return false;
+        } else {
+            //初始化popupWindow弹窗
+            initMenuPop(position);
+            return true;
+        }
+    }
+
+
+    public void setPopWindow(View view) {
+
+        //测量view的宽高，由于popupwindow没有测量的方法，只能测量内部view的宽高
+        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        view.measure(w, h);
+        PopWidth = view.getMeasuredWidth();
+        PopHeight = view.getMeasuredHeight();
+
+        //下面这两个必须有！！
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+        // PopupWindow(布局，宽度，高度) 注意，此处宽高应为-2也就是wrap_content
+        mMenuPop = new PopupWindow(view, -2, -2, true);
+
+        // 重写onKeyListener,按返回键消失
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                    mMenuPop.dismiss();
+                    mMenuPop = null;
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //点击其他地方消失
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mMenuPop != null && mMenuPop.isShowing()) {
+                    mMenuPop.dismiss();
+                    mMenuPop = null;
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override

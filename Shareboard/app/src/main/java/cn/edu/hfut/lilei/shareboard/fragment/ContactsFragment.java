@@ -76,16 +76,10 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
     private LinearLayout titleLayout;
     private TextView title;
     private TextView tvNofriends;
-    /**
-     */
     private int lastFirstVisibleItem = -1;
-    /**
-     */
     private CharacterUtil characterUtil;
     private List<FriendInfo> SourceDateList = new ArrayList<>();
 
-    /**
-     */
     private PinyinComparatorUtil pinyinComparatorUtil;
     private View view;
     private FragmentListener listener;
@@ -147,7 +141,8 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
         sortListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                deleteFriend((FriendInfo) adapter.getItem(i), i);
+
+                deleteFriend(i);
                 return false;
             }
         });
@@ -159,6 +154,7 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
         sortListView.setAdapter(adapter);
         getAllFriend();
     }
+
 
     public void initListener() {
         sortListView.setOnScrollListener(null);
@@ -477,8 +473,12 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
     /**
      * 删除好友
      */
-    private void deleteFriend(final FriendInfo contact, final int position) {
+    private void deleteFriend(final int position) {
+
+        final FriendInfo contact = (FriendInfo) adapter.getItem(position);
+
         final SpannableString title = new SpannableString(contact.getName());
+
         title.setSpan(new ForegroundColorSpan(Color.RED), 0, title.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         title.setSpan(new StyleSpan(Typeface.BOLD), 0, title.length(),

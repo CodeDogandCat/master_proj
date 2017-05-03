@@ -219,4 +219,5 @@
     <string name="other_remove_you_from_friend_list">把你从好友列表中移除</string>
     <string name="you_have_no_friend_now">还没好友哦,赶快添加吧~</string>
     <string name="no_network">没有联网哦</string>
+    <string name="delete">删除</string>
 </resources>
