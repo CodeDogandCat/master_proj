@@ -607,16 +607,20 @@ class MeetingOp
         $time = explode(" ", microtime());
         $time = $time [1] . ($time [0] * 1000);
         $time2 = explode(".", $time);
-        $time = $time2[0];
+        $time = trim($time2[0]);
 
+
+//        echo 'before update time is' . $time;
         //更新会议状态
         $sql = 'UPDATE  bd_meeting SET   meeting_status = ? WHERE meeting_end_time < ? AND  meeting_status = ?';
         $arr = array();
         $arr[0] = 2;
         $arr[1] = $time;
+//        $arr[1] = doubleval($time);
         $arr[2] = 1;
 
-        if ($this->db->update($sql, $arr) != false) {
+        if ($this->db->update($sql, $arr) || true) {
+//            echo ' update true';
 
             $sql = 'SELECT meeting_id,meeting_url,meeting_theme,meeting_is_drawable,meeting_is_talkable,
                 meeting_is_add_to_calendar,meeting_password,meeting_start_time,meeting_end_time,event_id,meeting_desc
@@ -628,7 +632,8 @@ class MeetingOp
             $rows = $this->db->select2($sql);
             return $rows;
         }
-        return false;//更新失败
+//        echo ' update false';
+//        return false;//更新失败
 
 
     }
@@ -652,8 +657,14 @@ class MeetingOp
             /**
              * 获取指定 user_id 主持的会议, 且状态为 1 ,从 $pageFrom 开始的 $pageSize 条
              */
-
+//            echo "user id " . $user_id;
             $rows = $this->getMeetingByStatusAndPage(1, $pageFrom, $pageSize);
+
+//            if ($rows == false) {
+//                echo "rows is false ";
+//            } else {
+//                echo "rows size " . count($rows);
+//            }
 
             return $rows;
 
