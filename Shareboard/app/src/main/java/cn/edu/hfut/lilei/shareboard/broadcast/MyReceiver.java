@@ -131,8 +131,9 @@ public class MyReceiver extends BroadcastReceiver {
                     mBuilder.setContentIntent(pendingIntent4);
 
                     mNotificationManager.notify(222, mBuilder.build());
-                    SharedPrefUtil.getInstance()
-                            .saveData(share_new_msg_num, currenUnreadNews + 1);
+
+                    //更新好友列表
+                    e.flag = 2;
                     EventBus.getDefault()
                             .postSticky(e);
 
@@ -176,6 +177,11 @@ public class MyReceiver extends BroadcastReceiver {
                     mNotificationManager.notify(333, mBuilder.build());
                     SharedPrefUtil.getInstance()
                             .saveData(share_new_msg_num, currenUnreadNews + 1);
+                    //更新未读消息
+                    EventBus.getDefault()
+                            .postSticky(e);
+                    //更新好友列表
+                    e.flag = 2;
                     EventBus.getDefault()
                             .postSticky(e);
                     break;

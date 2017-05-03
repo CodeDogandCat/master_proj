@@ -2,11 +2,11 @@ package cn.edu.hfut.lilei.shareboard.utils;
 
 import java.util.Comparator;
 
-import cn.edu.hfut.lilei.shareboard.model.GroupMemberInfo;
+import cn.edu.hfut.lilei.shareboard.model.FriendInfo;
 
-public class PinyinComparatorUtil implements Comparator<GroupMemberInfo> {
+public class PinyinComparatorUtil implements Comparator<FriendInfo> {
 
-	public int compare(GroupMemberInfo o1, GroupMemberInfo o2) {
+	public int compare(FriendInfo o1, FriendInfo o2) {
 		if (o1.getSortLetters().equals("@")
 				|| o2.getSortLetters().equals("#")) {
 			return -1;

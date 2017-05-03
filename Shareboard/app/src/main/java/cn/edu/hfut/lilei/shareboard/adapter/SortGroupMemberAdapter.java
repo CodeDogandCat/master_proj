@@ -12,15 +12,17 @@ import java.util.List;
 
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.model.GroupMemberInfo;
+import cn.edu.hfut.lilei.shareboard.model.FriendInfo;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
+
 public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexer {
-    private List<GroupMemberInfo> list = null;
+    private List<FriendInfo> list = null;
     private Context mContext;
 
-    public SortGroupMemberAdapter(Context mContext, List<GroupMemberInfo> list) {
+    public SortGroupMemberAdapter(Context mContext, List<FriendInfo> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -28,7 +30,7 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
     /**
      * @param list
      */
-    public void updateListView(List<GroupMemberInfo> list) {
+    public void updateListView(List<FriendInfo> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -47,7 +49,7 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
 
     public View getView(final int position, View view, ViewGroup arg2) {
         ViewHolder viewHolder = null;
-        final GroupMemberInfo mContent = list.get(position);
+        final FriendInfo mContent = list.get(position);
         if (view == null) {
             //创建 viewholder
             viewHolder = new ViewHolder();
@@ -77,22 +79,27 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
         String name = this.list.get(position)
                 .getName();
         int length = StringUtil.length(name);
-        viewHolder.imgPhoto.setTextAndColor(StringUtil.substring(name, length - 2, length, "", ""),
-                R.color.mediumaquamarine);
-        String url;
-        if (position % 2 == 0) {
-            url = "http://img1.skqkw.cn:888/2014/12/06/14t/erha2fghuww-129662.png";
-        } else {
-            url = "http://img1.skqkw.cn:888/2014/12/06/14t/lileighuww-129662.png";
-        }
+        viewHolder.imgPhoto.setTextAndColorSeed(
+                StringUtil.substring(name, length - 2, length, "", ""),
+                name);
+
+
+        String url = null;
+        url = URL_AVATAR + this.list.get(position)
+                .getAvatar();
+//        if (position % 2 == 0) {
+//            url = "http://img1.skqkw.cn:888/2014/12/06/14t/erha2fghuww-129662.png";
+//        } else {
+//            url = "http://img1.skqkw.cn:888/2014/12/06/14t/lileighuww-129662.png";
+//        }
+
 
         ImageUtil.loadAvatar(mContext, url, viewHolder.imgPhoto);
 
         /**
-         * 2.加载其他用户的状态
+         * 2.加载其他用户的状态(暂时忽略)
          */
-        viewHolder.tvStatus.setText(this.list.get(position)
-                .getStatus());
+        viewHolder.tvStatus.setText("");
         /**
          * 3.加载邮箱
          */

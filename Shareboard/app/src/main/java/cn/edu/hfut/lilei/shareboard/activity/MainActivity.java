@@ -210,8 +210,16 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void updateUnreadMsgNum(Event num) {
-        onFragmentUpdateListener(0);
+    public void updateUnreadMsgNum(Event e) {
+        if (e.flag == 0 || e.flag == 1) {
+
+            onFragmentUpdateListener(0);
+            return;
+        }
+        if (e.flag == 2 || e.flag == 3) {
+            onFragmentUpdateListener(1);
+            return;
+        }
     }
 
     @Override

@@ -1,14 +1,20 @@
 package cn.edu.hfut.lilei.shareboard.model;
 
-import android.graphics.drawable.Drawable;
-
-public class GroupMemberInfo {
+public class FriendInfo {
 
     private String name;   //
     private String sortLetters;  //
-    private Drawable photo;
+    private String avatar;
     private String status;
     private String email;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getEmail() {
         return email;
@@ -18,13 +24,6 @@ public class GroupMemberInfo {
         this.email = email;
     }
 
-    public Drawable getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(Drawable photo) {
-        this.photo = photo;
-    }
 
     public String getStatus() {
         return status;

@@ -6,4 +6,5 @@ package cn.edu.hfut.lilei.shareboard.model;
 
 public class Event {
     public int flag;
+    public int position;
 }

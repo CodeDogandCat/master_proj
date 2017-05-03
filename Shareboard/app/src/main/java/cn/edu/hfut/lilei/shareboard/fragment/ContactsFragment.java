@@ -1,5 +1,6 @@
 package cn.edu.hfut.lilei.shareboard.fragment;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -20,20 +21,26 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import cn.edu.hfut.lilei.shareboard.JsonEnity.FriendJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.FriendListJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.SortGroupMemberAdapter;
-import cn.edu.hfut.lilei.shareboard.model.GroupMemberInfo;
+import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
+import cn.edu.hfut.lilei.shareboard.listener.FragmentListener;
+import cn.edu.hfut.lilei.shareboard.model.FriendInfo;
 import cn.edu.hfut.lilei.shareboard.utils.CharacterUtil;
+import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PinyinComparatorUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
@@ -41,10 +48,21 @@ import cn.edu.hfut.lilei.shareboard.widget.ClearEditText;
 import cn.edu.hfut.lilei.shareboard.widget.SideBar;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.CommonAlertDialog;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
+import okhttp3.Call;
+import okhttp3.Response;
 
+import static cn.edu.hfut.lilei.shareboard.R.string.contacts;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_FRIEND;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_FRIEND_GET;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_message_data;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_to_user_email;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
@@ -66,13 +84,25 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
     /**
      */
     private CharacterUtil characterUtil;
-    private List<GroupMemberInfo> SourceDateList;
+    private List<FriendInfo> SourceDateList;
 
     /**
      */
     private PinyinComparatorUtil pinyinComparatorUtil;
     private View view;
+    private FragmentListener listener;
+    private List<FriendListJson.ServerModel> serverdatas = new ArrayList<>();
 
+
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            listener = (FragmentListener) activity;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
 
     @Nullable
     @Override
@@ -113,25 +143,21 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
         });
 
         sortListView = (ListView) view.findViewById(R.id.lv_contacts_content);
-        sortListView.setOnItemClickListener(new OnItemClickListener() {
-
+        sortListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-
-//                Toast.makeText(
-//                        getActivity().getApplication(),
-//                        ((GroupMemberInfo) adapter.getItem(position)).getName(),
-//                        Toast.LENGTH_SHORT)
-//                        .show();
-                deleteFriend((GroupMemberInfo) adapter.getItem(position));
-
-
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                deleteFriend((FriendInfo) adapter.getItem(i));
+                return false;
             }
         });
 
-        SourceDateList = filledData(getResources().getStringArray(R.array.account));
+
+        getAllFriend();
+
+//        SourceDateList = filledData(getResources().getStringArray(R.array.account));
+        SourceDateList = convertDatas();
+
+
         // 根据a-z进行排序源数据
         Collections.sort(SourceDateList, pinyinComparatorUtil);
         adapter = new SortGroupMemberAdapter(view.getContext(), SourceDateList);
@@ -206,15 +232,43 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
         });
     }
 
+
+    private List<FriendInfo> convertDatas() {
+        List<FriendInfo> mSortList = new ArrayList<FriendInfo>();
+
+        for (int i = 0; i < contacts.length; i++) {
+            FriendInfo sortModel = new FriendInfo();
+//            sortModel.setPhoto(getResources().getDrawable(R.drawable.er));
+            sortModel.setName(contacts[i]);
+            sortModel.setStatus("空闲");
+            String pinyin = characterUtil.getSelling(contacts[i]);
+            String sortString = pinyin.substring(0, 1)
+                    .toUpperCase();
+
+            if (sortString.matches("[A-Z]")) {
+                sortModel.setSortLetters(sortString.toUpperCase());
+            } else {
+                sortModel.setSortLetters("#");
+            }
+
+            mSortList.add(sortModel);
+//            Log.i("hi", sortModel.getSortLetters() + " " + sortModel.getName());
+
+        }
+        return mSortList;
+
+    }
+
+
     /**
      * @param contacts
      * @return
      */
-    private List<GroupMemberInfo> filledData(String[] contacts) {
-        List<GroupMemberInfo> mSortList = new ArrayList<GroupMemberInfo>();
+    private List<FriendInfo> filledData(String[] contacts) {
+        List<FriendInfo> mSortList = new ArrayList<FriendInfo>();
 
         for (int i = 0; i < contacts.length; i++) {
-            GroupMemberInfo sortModel = new GroupMemberInfo();
+            FriendInfo sortModel = new FriendInfo();
 //            sortModel.setPhoto(getResources().getDrawable(R.drawable.er));
             sortModel.setName(contacts[i]);
             sortModel.setStatus("空闲");
@@ -240,14 +294,14 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
      * @param filterStr
      */
     private void filterData(String filterStr) {
-        List<GroupMemberInfo> filterDateList = new ArrayList<GroupMemberInfo>();
+        List<FriendInfo> filterDateList = new ArrayList<FriendInfo>();
 
         if (TextUtils.isEmpty(filterStr)) {
             filterDateList = SourceDateList;
             tvNofriends.setVisibility(View.GONE);
         } else {
             filterDateList.clear();
-            for (GroupMemberInfo sortModel : SourceDateList) {
+            for (FriendInfo sortModel : SourceDateList) {
                 String name = sortModel.getName();
                 if (name.indexOf(filterStr.toString()) != -1
                         || characterUtil.getSelling(name)
@@ -293,10 +347,101 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
         return -1;
     }
 
+
+    public void getAllFriend() {
+
+        new AsyncTask<Void, Void, Integer>() {
+
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                /**
+                 * 1.检查网络状态并提醒
+                 */
+                if (!NetworkUtil.isNetworkConnected(getContext())) {
+                    //网络连接不可用
+                    return NET_DISCONNECT;
+                }
+                /**
+                 * 2.获取会议设置
+                 */
+                ArrayList<String> keyList = new ArrayList<>();
+                ArrayList<String> valueList = new ArrayList<>();
+                keyList.add(share_token);
+                keyList.add(share_user_email);
+
+                valueList = SharedPrefUtil.getInstance()
+                        .getStringDatas(keyList);
+                if (valueList == null) {
+                    return -2;
+                }
+
+                /**
+                 * 3.发送
+                 */
+                OkGo.post(URL_FRIEND_GET)
+                        .tag(this)
+                        .params(post_token, valueList.get(0))
+                        .params(post_user_email, valueList.get(1))
+
+                        .execute(new JsonCallback<FriendListJson>() {
+                                     @Override
+                                     public void onSuccess(FriendListJson o,
+                                                           Call call,
+                                                           Response response) {
+                                         if (o.getCode() == SUCCESS) {
+
+                                             showToast(getContext(), "请求已发送");
+                                             //更新好友列表
+
+
+                                         } else {
+                                             //提示所有错误
+                                             showToast(getContext(), o.getMsg());
+                                         }
+
+                                     }
+
+                                     @Override
+                                     public void onError(Call call,
+                                                         Response response,
+                                                         Exception e) {
+                                         super.onError(call, response, e);
+                                         showToast(getContext(),
+                                                 R.string.system_error);
+                                     }
+                                 }
+                        );
+
+
+                return -1;
+
+            }
+
+            @Override
+            protected void onPostExecute(Integer integer) {
+                super.onPostExecute(integer);
+                switch (integer) {
+                    case NET_DISCONNECT:
+                        //弹出对话框，让用户开启网络
+                        NetworkUtil.setNetworkMethod(getContext());
+                        break;
+                    case -1:
+                        break;
+                    case -2:
+                        showToast(getContext(), R.string.please_relogin);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }.execute();
+    }
+
+
     /**
      * 删除好友
      */
-    private void deleteFriend(GroupMemberInfo contact) {
+    private void deleteFriend(final FriendInfo contact) {
         final SpannableString title = new SpannableString(contact.getName());
         title.setSpan(new ForegroundColorSpan(Color.RED), 0, title.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -319,6 +464,23 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
                                  */
                                 mlodingDialog = loding(getActivity(), R.string.deleting);
 
+                                //1.检验
+                                final String toEmail = contact.getEmail();
+
+
+                                String myEmail = (String) SharedPrefUtil.getInstance()
+                                        .getData(
+                                                share_user_email, "");
+                                if (myEmail.equals("")) {
+                                    showToast(getContext(),
+                                            getContext().getString(R.string.please_relogin));
+                                    return;
+                                }
+
+                                final String tag = myEmail + DateTimeUtil.millisNow();// 全局标记
+
+                                //2.发送请求
+                                mlodingDialog = loding(getContext(), R.string.sending);
                                 new AsyncTask<Void, Void, Integer>() {
 
                                     @Override
@@ -331,7 +493,7 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
                                             return NET_DISCONNECT;
                                         }
                                         /**
-                                         * 2.获取参数
+                                         * 2.获取会议设置
                                          */
                                         ArrayList<String> keyList = new ArrayList<>();
                                         ArrayList<String> valueList = new ArrayList<>();
@@ -347,56 +509,47 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
                                         /**
                                          * 3.发送
                                          */
+                                        OkGo.post(URL_FRIEND)
+                                                .tag(this)
+                                                .params(post_need_feature, "deleteFriend")
+                                                .params(post_token, valueList.get(0))
+                                                .params(post_user_email, valueList.get(1))
+                                                .params(post_to_user_email, toEmail)
+                                                .params(post_message_data,
+                                                        tag)
 
-//                                        OkGo.post(URL_HOST_MEETING)
-//                                                .tag(this)
-//                                                .params(post_need_feature, "delete")
-//                                                .params(post_token, valueList.get(0))
-//                                                .params(post_user_email, valueList.get(1))
-//                                                .params(post_meeting_id, meeting_id)
-//                                                .execute(new JsonCallback<CommonJson>() {
-//                                                             @Override
-//                                                             public void onSuccess(CommonJson o, Call call,
-//                                                                                   Response response) {
-//                                                                 if (o.getCode() == SUCCESS) {
-//
-//                                                                     /**
-//                                                                      * 删除指定的日历提醒时间
-//                                                                      */
-//
-//                                                                     MyAppUtil.delCalendarEvent(mContext,
-//                                                                             mEventID);
-//
-//                                                                     /**
-//                                                                      * 跳到界面
-//                                                                      */
-//
-//                                                                     Intent intent = new Intent();
-//                                                                     intent.setClass(mContext,
-//                                                                             ArrangeOrHostMeetingActivity.class);
-//                                                                     mlodingDialog.cancle();
-//                                                                     mContext.startActivity(intent);
-//                                                                     clickableAllBtn();
-//                                                                     ((Activity) mContext).finish();
-//
-//                                                                 } else {
-//                                                                     //提示所有错误
-//                                                                     mlodingDialog.cancle();
-//                                                                     showToast(mContext, o.getMsg());
-//                                                                 }
-//
-//                                                             }
-//
-//                                                             @Override
-//                                                             public void onError(Call call,
-//                                                                                 Response response,
-//                                                                                 Exception e) {
-//                                                                 super.onError(call, response, e);
-//                                                                 mlodingDialog.cancle();
-//                                                                 showToast(mContext, R.string.system_error);
-//                                                             }
-//                                                         }
-//                                                );
+                                                .execute(new JsonCallback<FriendJson>() {
+                                                             @Override
+                                                             public void onSuccess(FriendJson o,
+                                                                                   Call call,
+                                                                                   Response response) {
+                                                                 if (o.getCode() == SUCCESS) {
+
+                                                                     showToast(getContext(), "请求已发送");
+                                                                     //更新好友列表
+
+
+                                                                     mlodingDialog.cancle();
+
+                                                                 } else {
+                                                                     //提示所有错误
+                                                                     mlodingDialog.cancle();
+                                                                     showToast(getContext(), o.getMsg());
+                                                                 }
+
+                                                             }
+
+                                                             @Override
+                                                             public void onError(Call call,
+                                                                                 Response response,
+                                                                                 Exception e) {
+                                                                 super.onError(call, response, e);
+                                                                 mlodingDialog.cancle();
+                                                                 showToast(getContext(),
+                                                                         R.string.system_error);
+                                                             }
+                                                         }
+                                                );
 
 
                                         return -1;
@@ -410,12 +563,12 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
                                         switch (integer) {
                                             case NET_DISCONNECT:
                                                 //弹出对话框，让用户开启网络
-                                                NetworkUtil.setNetworkMethod(getActivity());
+                                                NetworkUtil.setNetworkMethod(getContext());
                                                 break;
                                             case -1:
                                                 break;
                                             case -2:
-                                                showToast(getActivity(), R.string.please_relogin);
+                                                showToast(getContext(), R.string.please_relogin);
                                                 break;
                                             default:
                                                 break;
@@ -429,6 +582,10 @@ public class ContactsFragment extends android.support.v4.app.Fragment implements
                         null)
                 .show();
 
+
+    }
+
+    public void update() {
 
     }
 

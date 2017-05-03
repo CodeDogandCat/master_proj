@@ -38,6 +38,9 @@ public class SettingUtil {
     //好友
     public static final String URL_FRIEND =
             "http://118.89.102.238/controller/friend/friend.php";
+    //好友
+    public static final String URL_FRIEND_GET =
+            "http://118.89.102.238/controller/friend/getFriend.php";
     //进入会议
     public static final String URL_ENTER_MEETING =
             "http://118.89.102.238/controller/meeting/enter_meeting.php";
