@@ -31,7 +31,6 @@ import cn.jpush.android.api.JPushInterface;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
-import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_new_msg_num;
 
@@ -90,7 +89,7 @@ public class MyReceiver extends BroadcastReceiver {
                      * 通知显示
                      */
                     showLog("收到message:" + new Gson().toJson(tmp));
-                    showToast(context, "收到message:" + new Gson().toJson(tmp));
+//                    showToast(context, "收到message:" + new Gson().toJson(tmp));
                     //设置通知栏显示内容
                     mBuilder.setContentTitle("好友申请")//设置通知栏标题
                             .setContentText(
@@ -116,7 +115,7 @@ public class MyReceiver extends BroadcastReceiver {
                      * 通知显示
                      */
                     showLog("收到message:" + extra);
-                    showToast(context, "收到message:" + extra);
+//                    showToast(context, "收到message:" + extra);
                     //设置通知栏显示内容
                     mBuilder.setContentTitle("好友移除")//设置通知栏标题
                             .setContentText(
@@ -133,9 +132,10 @@ public class MyReceiver extends BroadcastReceiver {
                     mNotificationManager.notify(222, mBuilder.build());
 
                     //更新好友列表
-                    e.flag = 2;
+                    e.flag = 3;
                     EventBus.getDefault()
                             .postSticky(e);
+                    showLog("deleteFriend e.flag = 3 EventBus.getDefault().postSticky(e)");
 
                     break;
 
@@ -160,7 +160,7 @@ public class MyReceiver extends BroadcastReceiver {
                      * 通知显示
                      */
                     showLog("收到message:" + extra);
-                    showToast(context, "收到message:" + extra);
+//                    showToast(context, "收到message:" + extra);
                     //设置通知栏显示内容
                     mBuilder.setContentTitle("好友申请")//设置通知栏标题
                             .setContentText(
@@ -207,7 +207,7 @@ public class MyReceiver extends BroadcastReceiver {
                      * 通知显示
                      */
                     showLog("收到message:" + extra);
-                    showToast(context, "收到message:" + extra);
+//                    showToast(context, "收到message:" + extra);
                     //设置通知栏显示内容
                     mBuilder.setContentTitle("好友申请")//设置通知栏标题
                             .setContentText(

@@ -34,6 +34,8 @@ import cn.edu.hfut.lilei.shareboard.model.Event;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.AddContactDialog;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
+
 
 public class MainActivity extends FragmentActivity implements
         OnPageChangeListener, OnCheckedChangeListener, FragmentListener {
@@ -212,11 +214,12 @@ public class MainActivity extends FragmentActivity implements
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void updateUnreadMsgNum(Event e) {
         if (e.flag == 0 || e.flag == 1) {
-
+            showLog("onFragmentUpdateListener  flag 0 1");
             onFragmentUpdateListener(0);
             return;
         }
         if (e.flag == 2 || e.flag == 3) {
+            showLog("onFragmentUpdateListener  flag 2 3");
             onFragmentUpdateListener(1);
             return;
         }

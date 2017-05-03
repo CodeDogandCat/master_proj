@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:focusable="true"
+              android:focusableInTouchMode="true"
+              android:orientation="vertical"
     >
 
     <cn.edu.hfut.lilei.shareboard.widget.ClearEditText
@@ -15,16 +15,17 @@
         android:background="@drawable/et_yellow"
         android:drawableLeft="@mipmap/search_bar_icon_normal"
         android:hint="请输入关键字"
+        android:maxLength="10"
+        android:maxLines="1"
         android:paddingLeft="5dp"
         android:singleLine="true"
-        android:textSize="@dimen/small_text_size"
-        android:maxLength="10"
-        android:maxLines="1"/>
+        android:textSize="@dimen/small_text_size"/>
 
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="1dp">
+
 
         <ListView
             android:id="@+id/lv_contacts_content"
@@ -32,7 +33,7 @@
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:divider="@null"
-            android:scrollbars="none" />
+            android:scrollbars="none"/>
 
         <TextView
             android:id="@+id/title_layout_no_friends"
@@ -43,7 +44,7 @@
             android:gravity="center_vertical"
             android:text="没有匹配的联系人"
             android:textColor="@color/my_yellow"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/title_layout"
@@ -52,7 +53,7 @@
             android:layout_gravity="right|top"
             android:background="@color/my_barblack"
             android:orientation="vertical"
-           >
+            >
 
             <TextView
                 android:id="@+id/title_layout_catalog"
@@ -61,7 +62,7 @@
                 android:background="@color/my_barblack"
                 android:paddingBottom="5dip"
                 android:paddingLeft="10dip"
-                android:textColor="@color/my_yellow" />
+                android:textColor="@color/my_yellow"/>
         </LinearLayout>
 
         <TextView
@@ -73,13 +74,24 @@
             android:gravity="center"
             android:textColor="@color/my_black"
             android:textSize="@dimen/big_tip_size"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
 
         <cn.edu.hfut.lilei.shareboard.widget.SideBar
             android:id="@+id/sidrbar"
             android:layout_width="20dp"
             android:layout_height="fill_parent"
-            android:layout_gravity="right|center" />
+            android:layout_gravity="right|center"/>
+
+        <TextView
+            android:id="@+id/tv_no_friend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/you_have_no_friend_now"
+            android:textColor="@color/my_white"
+            android:textSize="@dimen/common_size"
+            />
     </FrameLayout>
 
 </LinearLayout>

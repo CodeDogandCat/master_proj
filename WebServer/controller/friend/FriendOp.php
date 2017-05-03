@@ -361,5 +361,70 @@ class FriendOp
         return false;//失败
     }
 
+    public function getAllFriend()
+    {
+//        echo "#1" . $this->user1->getId();
+        $datas = array();
+        $sql = 'SELECT * FROM bd_friend WHERE response_status = 3 AND ( bd_user_user_id =? OR  bd_user_user_id1 =? ) ';
+//        $sql = 'SELECT * FROM bd_friend WHERE response_status = 3 AND bd_user_user_id =? ';
+        $arr = array();
+        $arr[0] = $this->user1->getId();
+        $arr[1] = $this->user1->getId();
+        $rows = $this->db->select($sql, $arr);
+
+
+//        echo "$rows size" . count($rows);
+        $datas = $this->convertData($rows);
+//        echo "size" . count($datas);
+
+//        $sql = 'SELECT * FROM bd_friend WHERE response_status = 3 AND bd_user_user_id1 =? ';
+//        $arr = array();
+//        $arr[0] = $this->user->getId();
+//        $rows = $this->db->select($sql, $arr);
+//        $datas = array_merge($datas, $this->convertData($rows));
+
+//        echo "#3";
+        return $datas;
+
+    }
+
+    /**
+     * @param $rows
+     * @return mixed
+     */
+    public function convertData($rows)
+    {
+        $datas = array();
+        foreach ($rows as $value) {
+            $friend_id = -1;
+            if ($value['bd_user_user_id'] != $this->user1->getId()) {
+                $friend_id = $value['bd_user_user_id'];
+            } else {
+                $friend_id = $value['bd_user_user_id1'];
+            }
+//            echo "friend_id" . $friend_id;
+
+            //查找个人信息
+            $sql = 'SELECT * FROM bd_user WHERE user_id =? ';
+            $arr = array();
+            $arr[0] = $friend_id;
+            $tmp = $this->db->select($sql, $arr);
+
+            if (count($tmp) == 1) {//存在且只存在一个这样的用户
+                $family_name = $tmp[0]['user_family_name'];
+                $given_name = $tmp[0]['user_given_name'];
+                $email = $tmp[0]['user_email'];
+                $avatar = $tmp[0]['user_avatar'];
+
+
+                $data = array("familyName" => $family_name, "givenName" => $given_name, "email" => $email, "avatar" => $avatar);
+                //添加
+                array_push($datas, $data);
+            }
+
+
+        }
+        return $datas;
+    }
 
 }

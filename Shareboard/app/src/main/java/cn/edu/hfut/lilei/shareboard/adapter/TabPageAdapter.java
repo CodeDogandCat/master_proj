@@ -8,7 +8,10 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.edu.hfut.lilei.shareboard.fragment.ContactsFragment;
 import cn.edu.hfut.lilei.shareboard.fragment.MeetingFragment;
+
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 
 public class TabPageAdapter extends FragmentPagerAdapter {
 
@@ -52,9 +55,11 @@ public class TabPageAdapter extends FragmentPagerAdapter {
             switch (item) {
                 case 0:
                     ((MeetingFragment) fragment).update();
+                    showLog(" ((MeetingFragment) fragment).update()%%%%%%%%%%%%");
                     break;
                 case 1:
-
+                    ((ContactsFragment) fragment).update();
+                    showLog("  ((ContactsFragment) fragment).update()%%%%%%%%%%%%");
                     break;
                 case 2:
 

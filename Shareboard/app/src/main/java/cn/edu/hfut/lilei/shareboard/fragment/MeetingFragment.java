@@ -22,6 +22,8 @@ import cn.edu.hfut.lilei.shareboard.activity.MessageListActivity;
 import cn.edu.hfut.lilei.shareboard.adapter.MeetingIndexAdapter;
 import cn.edu.hfut.lilei.shareboard.listener.FragmentListener;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
+
 public class MeetingFragment extends Fragment {
 
     private ListView listView;
@@ -74,7 +76,7 @@ public class MeetingFragment extends Fragment {
     }
 
     public void update() {
-
+        showLog("update meeting index fragment");
         mAdapter.notifyDataSetChanged();
     }
 

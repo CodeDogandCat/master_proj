@@ -35,6 +35,19 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
         notifyDataSetChanged();
     }
 
+    public void clear() {
+        list.clear();
+        notifyDataSetChanged();
+    }
+
+    public void remove(int position) {
+
+        if (list.size() > position && position >= 0) {
+            list.remove(position);
+        }
+        notifyDataSetChanged();
+    }
+
     public int getCount() {
         return this.list.size();
     }

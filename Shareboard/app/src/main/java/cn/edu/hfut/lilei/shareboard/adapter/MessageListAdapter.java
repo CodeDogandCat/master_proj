@@ -12,6 +12,10 @@ import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +25,7 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.greendao.entity.Msg;
 import cn.edu.hfut.lilei.shareboard.greendao.gen.MsgDao;
+import cn.edu.hfut.lilei.shareboard.model.Event;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.GreenDaoManager;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
@@ -58,6 +63,8 @@ public class MessageListAdapter extends BaseAdapter {
         msgDao = GreenDaoManager.getInstance()
                 .getSession()
                 .getMsgDao();
+        EventBus.getDefault()
+                .register(this);
     }
 
 
@@ -210,12 +217,18 @@ public class MessageListAdapter extends BaseAdapter {
                                                                    Response response) {
                                                  if (o.getCode() == SUCCESS) {
 
-                                                     showToast(mContext, "请求已发送");
+//                                                     showToast(mContext, "请求已发送");
 
                                                      //更改status 为 1
                                                      msg.setStatus(1);
                                                      msgDao.update(msg);
                                                      notifyDataSetChanged();
+
+                                                     //更新好友列表
+                                                     Event e = new Event();
+                                                     e.flag = 2;
+                                                     EventBus.getDefault()
+                                                             .postSticky(e);
 
                                                      mlodingDialog.cancle();
 
@@ -486,6 +499,11 @@ public class MessageListAdapter extends BaseAdapter {
      */
     public interface Callback {
         public void click(View v);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void updateFriendList(Event e) {
     }
 
 }

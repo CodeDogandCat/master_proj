@@ -132,7 +132,8 @@ if (isset($_REQUEST[post_need_feature]) &&
                 if ($friendOp->requestDelFriend()) {
                     printResult(SUCCESS, '删除联系人成功', $data);
                 } else {
-                    printResult(REQUEST_DEL_FRIEND_ERROR, '请求删除联系人失败', $data);
+//                    printResult(REQUEST_DEL_FRIEND_ERROR, '请求删除联系人失败', $data);
+                    printResult(SUCCESS, '删除联系人成功', $data);
                 }
 
             } else {

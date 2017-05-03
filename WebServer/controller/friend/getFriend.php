@@ -42,11 +42,16 @@ isset($_REQUEST[post_user_email])
      * 获取好友列表
      */
     $friendOp = new FriendOp($user1, null, $_REQUEST[post_message_data]);
-    if (($result = $friendOp->getAllFriend()) != false) {
-        printResult(SUCCESS, '获取联系人列表', $result);
-    } else {
+//    echo "@@@@@@@@@@@@";
+    $result = $friendOp->getAllFriend();
+
+    if (count($result) == 0) {
         printResult(GET_ALL_FRIEND_ERROR, '获取联系人列表失败', $data);
+    } else {
+        $data = $result;
+        printResult(SUCCESS, '获取联系人列表', $data);
     }
+
 
 } else {
     printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', $data);
