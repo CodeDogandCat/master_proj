@@ -20,6 +20,7 @@ import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.JsonEnity.JpushFriendJson;
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.activity.JoinMeetingActivity;
 import cn.edu.hfut.lilei.shareboard.activity.MainActivity;
 import cn.edu.hfut.lilei.shareboard.greendao.entity.Msg;
 import cn.edu.hfut.lilei.shareboard.greendao.gen.MsgDao;
@@ -27,11 +28,14 @@ import cn.edu.hfut.lilei.shareboard.model.Event;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.GreenDaoManager;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
+import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import cn.jpush.android.api.JPushInterface;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_password;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_new_msg_num;
 
 public class MyReceiver extends BroadcastReceiver {
@@ -228,9 +232,50 @@ public class MyReceiver extends BroadcastReceiver {
                             .postSticky(e);
 
                     break;
-                case "invite":
+                case "inviteFriend":
                     //只发到 通知栏,别的不管了
+                    /**
+                     * 通知显示
+                     */
+                    showLog("收到 invite message:" + extra);
+//                    showToast(context, "收到message:" + extra);
+                    //设置通知栏显示内容
+                    mBuilder.setContentTitle("加会邀请")//设置通知栏标题
+                            .setContentText(
+                                    o.getFamilyName() + o.getGivenName() +
+                                            context.getString(R.string
+                                                    .invite_you_to_meeting));
+                    Intent i = new Intent(context, JoinMeetingActivity.class);
+                    Bundle b = new Bundle();
 
+                    String[] tmp_arr = o.getTag()
+                            .split("###");
+                    if (tmp_arr.length == 2) {
+
+                        b.putLong(post_meeting_url, Long.valueOf(tmp_arr[0]));
+
+                        String masterPassword = "L1x#tvh_";
+                        String decryptingCode =
+                                null;
+                        try {
+                            decryptingCode =
+                                    StringUtil.decrypt_security(masterPassword,
+                                            tmp_arr[1]);
+                            b.putString(post_meeting_password, decryptingCode);
+                            i.putExtras(b);
+
+                            PendingIntent pendingIntent5 =
+                                    PendingIntent.getActivity(context, 666, i,
+                                            0);
+                            mBuilder.setContentIntent(pendingIntent5);
+                            mNotificationManager.notify(666, mBuilder.build());
+                        } catch (Exception e2) {
+                            e2.printStackTrace();
+                            showLog("decrypt_security(masterPassword, meeting.getMeeting_password()) error");
+                            break;
+                        }
+
+                    }
 
 
                     break;
@@ -249,21 +294,22 @@ public class MyReceiver extends BroadcastReceiver {
              */
 
 
-        } else
-            if (intent.getAction()
-                    .equals(JPushInterface.ACTION_NOTIFICATION_RECEIVED)) {
-                bundle_startmeeting = intent.getExtras();
-
-            } else
-                if (intent.getAction()
-                        .equals(JPushInterface.ACTION_NOTIFICATION_OPENED)) {
-
-                    intent.putExtras(bundle_startmeeting);
-                    intent.setClass(context, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                    context.startActivity(intent);
-                }
+        }
+//        else
+//            if (intent.getAction()
+//                    .equals(JPushInterface.ACTION_NOTIFICATION_RECEIVED)) {
+//                bundle_startmeeting = intent.getExtras();
+//
+//            } else
+//                if (intent.getAction()
+//                        .equals(JPushInterface.ACTION_NOTIFICATION_OPENED)) {
+//
+//                    intent.putExtras(bundle_startmeeting);
+//                    intent.setClass(context, MainActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//                    context.startActivity(intent);
+//                }
 
 //
 //        EventBus.getDefault()

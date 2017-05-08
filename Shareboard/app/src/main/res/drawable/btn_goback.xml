@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/button_shape.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_goback_no_touch" android:state_pressed="false"/>
+    <item android:drawable="@drawable/bg_goback_touch" android:state_pressed="true"/>
+</selector>

@@ -251,7 +251,8 @@ public class MyAppUtil {
      * 选择邀请方式
      */
     public static void invite(Context context, String title, String description,
-                              List<AppInfo> listAppInfo) {
+                              List<AppInfo> listAppInfo, int type, Long meeting_url, String
+                                      meeting_pwd) {
 
         final String subject =
                 String.format(context.getResources()
@@ -259,12 +260,14 @@ public class MyAppUtil {
         final String content = description;
 
         final InviteChooserDialog.Builder dialog =
-                new InviteChooserDialog.Builder(context);
+                new InviteChooserDialog.Builder(context, type);
 
         dialog.setTitle(context.getString(R.string.choose_invite_type));
         dialog.setSubject(subject);
         dialog.setContent(content);
         dialog.setData(listAppInfo);
+        dialog.setMeetingUrl(meeting_url);
+        dialog.setMeetingPwd(meeting_pwd);
         dialog.show();
 
 
@@ -377,7 +380,7 @@ public class MyAppUtil {
     }
 
 
-    public static String getsaveDirectory(Context context,String name) {
+    public static String getsaveDirectory(Context context, String name) {
 
 
         if (Environment.getExternalStorageState()

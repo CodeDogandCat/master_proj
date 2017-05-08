@@ -18,10 +18,10 @@ import com.lzy.okgo.OkGo;
 
 import java.util.ArrayList;
 
+import cn.edu.hfut.lilei.shareboard.JsonEnity.MeetingJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.MeetingJson;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -33,7 +33,9 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static cn.edu.hfut.lilei.shareboard.R.string.familyName;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.HOST_CHECK_IN;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.MEETING_REQUEST_CODE;
@@ -75,7 +77,11 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
     private TextView myMeeting, arrangeMeeting;
     private LodingDialog.Builder mlodingDialog;
     //数据
-
+    private int year, month, day, a_pm1, hour_24_1, hour_12_1, minite1, a_pm2, hour_24_2, hour_12_2,
+            minite2;
+    private long startMillis, endMillis, eventId = -1, meeting_url;
+    private String title, description, mpassword, mfamilyName, mgivenName;
+    private String[] am_pm = {"上午", "下午"};
     //上下文参数
     private Context mContext;
     private ImageView mBtnBack;
@@ -201,35 +207,55 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                         }
                         String mtheme = (String) SharedPrefUtil.getInstance()
                                 .getData(share_meeting_theme, "空");
-                        if (!mtheme.equals("空")) {
+                        if (mtheme.equals("空")) {
 
-                            String familyName = (String) SharedPrefUtil.getInstance()
+                            mfamilyName = (String) SharedPrefUtil.getInstance()
                                     .getData(share_family_name, "空");
-                            String givenName = (String) SharedPrefUtil.getInstance()
+                            mgivenName = (String) SharedPrefUtil.getInstance()
                                     .getData(share_given_name, "空");
-                            if (familyName.equals("空") || givenName.equals("空")) {
+                            if (mfamilyName.equals("空") || mgivenName.equals("空")) {
                                 mtheme = getString(R.string.no_name_meeting);
                             } else {
-                                mtheme = familyName + givenName + getString(R.string.his_meeting);
+                                mtheme = familyName + mgivenName + getString(R.string.his_meeting);
                             }
                         }
+                        startMillis = DateTimeUtil.millisNow();
+                        endMillis = DateTimeUtil.millisSecondInHours(1);
+                        description = "";
+                        showLog("theme: " + mtheme);
+                        showLog("description: " + description);
+
+                        String encryptingCode;
+                        try {
+                            String masterPassword = "L1x#tvh_";
+                            encryptingCode =
+                                    StringUtil.encrypt_security(masterPassword, valueList.get(2));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            showLog("encrypt_security(masterPassword,valueList.get(2)) error");
+                            return -2;
+                        }
+                        showLog("加密后" + encryptingCode);
 
                         /**
                          * 3.发送会议用户默认设置
                          */
 
+                        final ArrayList<String> finalValueList = valueList;
                         OkGo.post(URL_HOST_MEETING)
                                 .tag(this)
                                 .params(post_need_feature, "add")
                                 .params(post_token, valueList.get(0))
                                 .params(post_user_email, valueList.get(1))
-                                .params(post_meeting_password, StringUtil.getMD5(valueList.get(2)))
+//                                .params(post_meeting_password, StringUtil.getMD5(valueList.get(2)))
+//                                .params(post_meeting_password, valueList.get(2))
+                                .params(post_meeting_password, encryptingCode)
                                 .params(post_meeting_theme, mtheme)
                                 .params(post_meeting_is_drawable, valueList2.get(1))
                                 .params(post_meeting_is_talkable, valueList2.get(0))
                                 .params(post_meeting_is_add_to_calendar, 0)//立即召开会议,不要添加日历提醒
-                                .params(post_meeting_start_time, DateTimeUtil.millisNow())
-                                .params(post_meeting_end_time, DateTimeUtil.millisSecondInHours(1))
+                                .params(post_meeting_start_time, startMillis)
+                                .params(post_meeting_end_time, endMillis)
                                 .params(post_meeting_event_id, -1)//日历事件ID
                                 .params(post_meeting_desc, "")//会议描述
                                 .params(post_is_enter_meeting, true)
@@ -251,12 +277,17 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                                      b.putInt(post_meeting_check_in_type, HOST_CHECK_IN);
                                                      b.putInt(post_meeting_id, o.getData()
                                                              .getMeeting_id());
-                                                     b.putLong(post_meeting_url, o.getData()
-                                                             .getMeeting_url());
                                                      b.putBoolean(post_meeting_is_drawable,
                                                              valueList2.get(1) == 1);
                                                      b.putBoolean(post_meeting_is_talkable,
                                                              valueList2.get(0) == 1);
+
+
+                                                     b.putLong(post_meeting_url, o.getData()
+                                                             .getMeeting_url());
+                                                     b.putString(post_meeting_password,
+                                                             finalValueList.get(2));
+
                                                      intent.putExtras(b);
                                                      startActivityForResult(intent, MEETING_REQUEST_CODE);
                                                      mlodingDialog.cancle();
@@ -314,6 +345,23 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
             }
 
         });
+    }
+
+    public String getDescribe() {
+        return String.format(getResources().getString(
+                R.string.invite_content),
+                mfamilyName + mgivenName,
+                title,
+                DateTimeUtil.getPreString(
+                        startMillis) +
+                        am_pm[a_pm1] +
+                        DateTimeUtil.zeroConvert
+                                (hour_12_1) +
+                        ":" +
+                        DateTimeUtil.addZero(
+                                minite1),
+                String.valueOf(meeting_url),
+                mpassword);
     }
 
     /**

@@ -24,10 +24,24 @@
         android:paddingLeft="10dip"
         >
 
+        <CheckBox
+            android:id="@+id/check_box"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_checkbox"
+            android:button="@null"
+            android:enabled="false"
+            android:focusable="false"
+            />
+
+
         <RelativeLayout
             android:id="@+id/ll_contacts_photo"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/check_box">
 
             <cn.carbs.android.avatarimageview.library.AvatarImageView
                 android:id="@+id/img_contacts_photo"
@@ -65,10 +79,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxWidth="200dp"
-                android:textColor="@color/gray"
                 android:text="2662083658@qq.com"
-                android:textSize="@dimen/super_small_text_size"
-                />
+                android:textColor="@color/gray"
+                android:textSize="@dimen/super_small_text_size"/>
         </LinearLayout>
 
 

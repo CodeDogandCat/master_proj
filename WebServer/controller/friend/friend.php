@@ -30,29 +30,32 @@ if (isset($_REQUEST[post_need_feature]) &&
     }
 
     $feature = $_REQUEST[post_need_feature];
+    $tag = $_REQUEST[post_message_data];
+
     $user1 = new User($_REQUEST[post_user_email]);
-    $user2 = new User($_REQUEST[post_to_user_email]);
     $user1_login = new Login($user1);
     $user1_info = $user1_login->checkUserByEmail();
     if ($user1_info == false) {
         printResult(NOT_EXIST_USER_ERROR, '请重新登录尝试', $data);
     }
-    $user2_login = new Login($user2);
-    $user2_info = $user2_login->checkUserByEmail();
-    if ($user2_info == false) {
-        printResult(NOT_EXIST_USER_ERROR, '不存在该用户', $data);
-    }
-
-    $tag = $_REQUEST[post_message_data];
-
     $user1->setId($user1_info['id']);
     $user1->setFamilyName($user1_info['familyName']);
     $user1->setGivenName($user1_info['givenName']);
     $user1->setAvatar($user1_info['avatar']);
-    $user2->setId($user2_info['id']);
-    $user2->setFamilyName($user2_info['familyName']);
-    $user2->setGivenName($user2_info['givenName']);
-    $user2->setAvatar($user2_info['avatar']);
+
+    $user2 = null;
+    if ($feature != "inviteFriend") {
+        $user2 = new User($_REQUEST[post_to_user_email]);
+        $user2_login = new Login($user2);
+        $user2_info = $user2_login->checkUserByEmail();
+        if ($user2_info == false) {
+            printResult(NOT_EXIST_USER_ERROR, '不存在该用户', $data);
+        }
+        $user2->setId($user2_info['id']);
+        $user2->setFamilyName($user2_info['familyName']);
+        $user2->setGivenName($user2_info['givenName']);
+        $user2->setAvatar($user2_info['avatar']);
+    }
 
     // 回复状态：1：未回复 2：拒绝 3：同意 4.好友关系已经删除
     switch ($feature) {
@@ -139,6 +142,20 @@ if (isset($_REQUEST[post_need_feature]) &&
             } else {
                 printResult(SUCCESS, '移除该联系人成功', $data);
             }
+
+            break;
+        case 'inviteFriend':
+            /**
+             *邀请好友加会
+             */
+            $friendOp = new FriendOp($user1, $user2, $_REQUEST[post_message_data]);
+
+            if ($friendOp->requestInviteFriend($_REQUEST[post_to_user_email])) {
+                printResult(SUCCESS, '邀请联系人加会成功', $data);
+            } else {
+                printResult(INVITE_FRIEND_ERROR, '邀请联系人加会失败', $data);
+            }
+
 
             break;
 

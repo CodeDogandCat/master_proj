@@ -17,13 +17,14 @@ import com.lzy.okgo.OkGo;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.MeetingListJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.MeetingListAdapter;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.MeetingListJson;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
+import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 import cn.edu.hfut.lilei.shareboard.widget.refreshandload.SwipeRefreshLayout;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
@@ -43,6 +44,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_HOST_MEETING;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_in_type;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_id;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_page;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_password;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
@@ -67,7 +69,6 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
     private int totalPage;
     //上下文参数
     private Context mContext;
-
 
 
     @Override
@@ -402,7 +403,20 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
         bundle.putString("tvMeetingTheme", meeting.getMeeting_theme());
         bundle.putString("description", meeting.getMeeting_desc());
         bundle.putLong(post_meeting_url, meeting.getMeeting_url());
-        bundle.putString("password", meeting.getMeeting_password());
+
+        String masterPassword = "L1x#tvh_";
+        String decryptingCode =
+                null;
+        try {
+            decryptingCode =
+                    StringUtil.decrypt_security(masterPassword, meeting.getMeeting_password());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showLog("decrypt_security(masterPassword, meeting.getMeeting_password()) error");
+            finish();
+        }
+        bundle.putString("password", decryptingCode);
+
         bundle.putInt(post_meeting_id, meeting.getMeeting_id());
         bundle.putBoolean("isDrawable", meeting.getMeeting_is_drawable() == 1);
         bundle.putBoolean("isTalkable", meeting.getMeeting_is_talkable() == 1);
@@ -422,6 +436,10 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                 .getMeeting_url();
         final int meeting_id = data.get((Integer) v.getTag())
                 .getMeeting_id();
+        final String pwd = data.get((Integer) v.getTag())
+                .getMeeting_password();
+        final String theme = data.get((Integer) v.getTag())
+                .getMeeting_theme();
         mlodingDialog = loding(mContext, R.string.entering);
 
         new AsyncTask<Void, Void, Integer>() {
@@ -483,7 +501,10 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                                              Bundle b = new Bundle();
                                              b.putInt(post_meeting_check_in_type, HOST_CHECK_IN);
                                              b.putInt(post_meeting_id, meeting_id);
+
                                              b.putLong(post_meeting_url, meeting_url);
+                                             b.putString(post_meeting_password, pwd);
+
                                              intent.putExtras(b);
                                              startActivity(intent);
 

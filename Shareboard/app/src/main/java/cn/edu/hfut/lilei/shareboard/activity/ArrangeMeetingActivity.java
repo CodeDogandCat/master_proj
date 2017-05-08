@@ -26,12 +26,12 @@ import com.lzy.okgo.request.PostRequest;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.MeetingJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.MeetingJson;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -45,6 +45,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
@@ -156,7 +157,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                 finish();
             }
         });
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         //右滑返回
@@ -590,7 +591,18 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                             }
                             mfamilyName = valueList.get(2);
                             mgivenName = valueList.get(3);
-
+                            String encryptingCode;
+                            try {
+                                String masterPassword = "L1x#tvh_";
+                                encryptingCode =
+                                        StringUtil.encrypt_security(masterPassword,
+                                                mpassword);
+                                showLog("encrypt_security(masterPassword,mpassword) error");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return -2;
+                            }
+                            showLog("加密后" + encryptingCode);
                             /**
                              * 3.发送
                              */
@@ -601,14 +613,16 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                                     .params(post_token, valueList.get(0))
                                     .params(post_user_email, valueList.get(1))
                                     .params(post_meeting_password,
-                                            StringUtil.getMD5(mpassword))
+                                            encryptingCode)
+//                                    .params(post_meeting_password,
+//                                            StringUtil.getMD5(mpassword))
                                     .params(post_meeting_theme, title)
                                     .params(post_meeting_is_talkable, is_talkable)
                                     .params(post_meeting_is_drawable, is_drawable)
                                     .params(post_meeting_is_add_to_calendar, is_add_to_calendar)
                                     .params(post_meeting_start_time, startMillis)
                                     .params(post_meeting_end_time, endMillis)
-                                    .params(post_meeting_desc, description);
+                                    .params(post_meeting_desc, "");
 
                             if (feature.equals("edit")) {
                                 tmp.params(post_meeting_id, meeting_id);

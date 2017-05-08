@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.activity.InviteActivity;
 import cn.edu.hfut.lilei.shareboard.adapter.ApplicationInfoAdapter;
 import cn.edu.hfut.lilei.shareboard.model.AppInfo;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
+
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_password;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
 
 
 public class InviteChooserDialog extends Dialog {
@@ -40,10 +45,21 @@ public class InviteChooserDialog extends Dialog {
         private Context mContext;
         private String mTitle;
         private List<AppInfo> mlistAppInfo = null;
-        private int flag = -1;
+        private int flag = -1, type = -1;
         private InviteChooserDialog dialog = null;
-        private String subject, content;
+        private String subject, content, meeting_pwd;
+        private Long meeting_url;
 
+
+        public Builder setMeetingUrl(Long meetingurl) {
+            this.meeting_url = meetingurl;
+            return this;
+        }
+
+        public Builder setMeetingPwd(String pwd) {
+            this.meeting_pwd = pwd;
+            return this;
+        }
 
         public Builder setSubject(String subject) {
             this.subject = subject;
@@ -61,8 +77,9 @@ public class InviteChooserDialog extends Dialog {
         }
 
 
-        public Builder(Context context) {
+        public Builder(Context context, int type) {
             mContext = context;
+            this.type = type;
         }
 
         public Builder setTitle(int resId) {
@@ -139,15 +156,31 @@ public class InviteChooserDialog extends Dialog {
 //                    System.out.println(appLabel + " activityName---" + activityName
 //                            + " pkgName---" + pkgName);
                 }
+
+
+                if (type == 1) {
+                    // 创建一个AppInfo对象，用来 复制到剪贴板
+                    AppInfo info = new AppInfo();
+                    info.setAppLabel("");
+                    info.setPkgName("");
+                    info.setAppName("邀请联系人");
+                    info.setAppIcon(mContext.getResources()
+                            .getDrawable(R.drawable.invite_contact));
+                    info.setIntent(null);
+                    mlistAppInfo.add(info); // 添加至列表中
+                }
+
+
                 // 创建一个AppInfo对象，用来 复制到剪贴板
                 AppInfo appInfo = new AppInfo();
                 appInfo.setAppLabel("");
                 appInfo.setPkgName("");
-                appInfo.setAppName("复制到剪贴板");
+                appInfo.setAppName(mContext.getString(R.string.copy_to_clipboard));
                 appInfo.setAppIcon(mContext.getResources()
                         .getDrawable(R.drawable.copy));
                 appInfo.setIntent(null);
                 mlistAppInfo.add(appInfo); // 添加至列表中
+
             }
 
         }
@@ -179,64 +212,160 @@ public class InviteChooserDialog extends Dialog {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int position,
                                                 long l) {
-                            switch (flag) {
-                                case 0:
-                                    dialog.dismiss();
-                                    MyAppUtil.copy(mContext,
-                                            content);
-                                    break;
-                                case 1:
-                                    switch (position) {
-                                        case 0:
-                                            dialog.dismiss();
-                                            MyAppUtil.sendSMS
-                                                    (mContext, content);
-                                            break;
-                                        case 1:
-                                            dialog.dismiss();
-                                            MyAppUtil.copy(mContext, content);
-                                            break;
-                                    }
-                                    break;
-                                case 3:
-                                    switch (position) {
-                                        case 0:
-                                            dialog.dismiss();
-                                            MyAppUtil
-                                                    .sendMail(mContext, subject, content);
-                                            break;
-                                        case 1:
-                                            dialog.dismiss();
-                                            MyAppUtil.copy(
-                                                    mContext, content);
-                                            break;
+                            if (type == 1) {
+                                switch (flag) {
 
-                                    }
-                                    break;
-                                case 4:
-                                    switch (position) {
-                                        case 0:
-                                            dialog.dismiss();
-                                            MyAppUtil.sendSMS(
-                                                    mContext, content);
-                                            break;
-                                        case 1:
-                                            dialog.dismiss();
-                                            MyAppUtil.sendMail(
-                                                    mContext, subject, content);
-                                            break;
-                                        case 2:
-                                            dialog.dismiss();
-                                            MyAppUtil.copy(
-                                                    mContext, content);
-                                            break;
+                                    case 0:
+                                        switch (position) {
+                                            case 0:
+                                                startInviteActivity();
+                                                dialog.dismiss();
+                                                break;
+                                            case 1:
+                                                dialog.dismiss();
+                                                MyAppUtil.copy(mContext, content);
+                                                break;
+                                        }
 
-                                    }
-                                    break;
+                                    case 1:
+                                        switch (position) {
+                                            case 0:
+                                                dialog.dismiss();
+                                                MyAppUtil.sendSMS
+                                                        (mContext, content);
+                                                break;
+                                            case 1:
+                                                startInviteActivity();
+                                                dialog.dismiss();
+                                                break;
+                                            case 2:
+                                                dialog.dismiss();
+                                                MyAppUtil.copy(mContext, content);
+                                                break;
+                                        }
+                                        break;
+                                    case 3:
+                                        switch (position) {
+                                            case 0:
+                                                dialog.dismiss();
+                                                MyAppUtil
+                                                        .sendMail(mContext, subject, content);
+                                                break;
+                                            case 1:
+                                                startInviteActivity();
+                                                dialog.dismiss();
+                                                break;
+                                            case 2:
+                                                dialog.dismiss();
+                                                MyAppUtil.copy(mContext, content);
+                                                break;
+
+                                        }
+                                        break;
+                                    case 4:
+                                        switch (position) {
+                                            case 0:
+                                                dialog.dismiss();
+                                                MyAppUtil.sendSMS(
+                                                        mContext, content);
+                                                break;
+                                            case 1:
+                                                dialog.dismiss();
+                                                MyAppUtil.sendMail(
+                                                        mContext, subject, content);
+                                                break;
+                                            case 2:
+                                                startInviteActivity();
+                                                dialog.dismiss();
+                                                break;
+                                            case 3:
+                                                dialog.dismiss();
+                                                MyAppUtil.copy(mContext, content);
+                                                break;
+
+                                        }
+                                        break;
+                                }
+                            } else {
+                                switch (flag) {
+
+                                    case 0:
+                                        dialog.dismiss();
+                                        MyAppUtil.copy(mContext,
+                                                content);
+                                        break;
+                                    case 1:
+                                        switch (position) {
+                                            case 0:
+                                                dialog.dismiss();
+                                                MyAppUtil.sendSMS
+                                                        (mContext, content);
+                                                break;
+                                            case 1:
+                                                dialog.dismiss();
+                                                MyAppUtil.copy(mContext, content);
+                                                break;
+                                        }
+                                        break;
+                                    case 3:
+                                        switch (position) {
+                                            case 0:
+                                                dialog.dismiss();
+                                                MyAppUtil
+                                                        .sendMail(mContext, subject, content);
+                                                break;
+                                            case 1:
+                                                dialog.dismiss();
+                                                MyAppUtil.copy(
+                                                        mContext, content);
+                                                break;
+
+                                        }
+                                        break;
+                                    case 4:
+                                        switch (position) {
+                                            case 0:
+                                                dialog.dismiss();
+                                                MyAppUtil.sendSMS(
+                                                        mContext, content);
+                                                break;
+                                            case 1:
+                                                dialog.dismiss();
+                                                MyAppUtil.sendMail(
+                                                        mContext, subject, content);
+                                                break;
+                                            case 2:
+                                                dialog.dismiss();
+                                                MyAppUtil.copy(
+                                                        mContext, content);
+                                                break;
+
+                                        }
+                                        break;
+                                }
+
+
                             }
+
+
                         }
                     });
             return inviteChooserDialog;
+        }
+
+        public void startInviteActivity() {
+            Intent i = new Intent();
+            i.setClass(mContext, InviteActivity.class);
+            Bundle b = new Bundle();
+
+
+            b.putLong(post_meeting_url, meeting_url);
+            b.putString(post_meeting_password, meeting_pwd);
+
+
+            i.putExtras(b);
+            mContext.startActivity(i);
+
         }
 
         public InviteChooserDialog show() {

@@ -54,9 +54,15 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.MemberJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.MemberListJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.MessageListReceiveJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.MessageListSendJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.MemberListAdapter;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
+import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.model.ChatActivityInitInfo;
 import cn.edu.hfut.lilei.shareboard.model.MeetingMemberInfo;
 import cn.edu.hfut.lilei.shareboard.model.MessageFromMeInfo;
@@ -64,12 +70,6 @@ import cn.edu.hfut.lilei.shareboard.model.MessageFromOtherInfo;
 import cn.edu.hfut.lilei.shareboard.model.MessageInfo;
 import cn.edu.hfut.lilei.shareboard.model.MessageSuccessInfo;
 import cn.edu.hfut.lilei.shareboard.model.TalkPermissionChange;
-import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.MemberJson;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.MemberListJson;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.MessageListReceiveJson;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.MessageListSendJson;
 import cn.edu.hfut.lilei.shareboard.service.RecordService;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
@@ -108,6 +108,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_host_e
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_id;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_drawable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_talkable;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_password;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
@@ -165,6 +166,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     private int check_in_type = -1;
     private int meeting_id = -1;
     private long meeting_url = -1L;
+    private String meeting_pwd = "";
     private boolean isDrawing = false;
     private String meeting_host_email, my_email;
     private int shareType = 0;//对主持人有效   0 :没有分享 1:分享图片 2:分享网页
@@ -726,9 +728,44 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
                 startActivityForResult(intent, CHAT_REQUEST_CODE);
                 break;
+            /**
+             * 邀请
+             */
+            case R.id.btn_member_invite:
+                MyAppUtil.invite(mContext, String.format(getResources().getString(R.string
+                                .invite_title), "会议已经开始"), getDescribe(),
+                        null, 1, meeting_url, meeting_pwd);
+                break;
+
+//                Intent intent2 = new Intent(mContext, InviteActivity.class);
+//                Bundle b2 = new Bundle();
+//                b2.putLong(post_meeting_url, meeting_url);
+//                b2.putString(post_meeting_password, meeting_pwd);
+//                intent2.putExtras(b2);
+//
+//                startActivityForResult(intent2, INVITE_REQUEST_CODE);
+//                break;
+
 
         }
 
+    }
+
+    public String getDescribe() {
+
+        ArrayList<String> keyList = new ArrayList<>();
+        ArrayList<String> valueList = new ArrayList<>();
+        keyList.add(share_family_name);
+        keyList.add(share_given_name);
+
+        valueList = SharedPrefUtil.getInstance()
+                .getStringDatas(keyList);
+
+        return String.format(getResources().getString(
+                R.string.invite_content_two),
+                valueList.get(0) + valueList.get(1),
+                String.valueOf(meeting_url),
+                meeting_pwd);
     }
 
 
@@ -1081,6 +1118,8 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 .getInt(post_meeting_check_in_type);
         meeting_url = getIntent().getExtras()
                 .getLong(post_meeting_url);
+        meeting_pwd = getIntent().getExtras()
+                .getString(post_meeting_password);
 
         SharedPrefUtil.getInstance()
                 .saveData(share_meeting_url, meeting_url);
@@ -1409,6 +1448,10 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                              //同步离会消息
                                              syncLeaveMeeting();
                                              //离开当前界面
+                                             Intent intent = new Intent();
+                                             intent.setClass(mContext,
+                                                     MainActivity.class);
+                                             startActivity(intent);
                                              beforeFinish();
                                              finish();
 
@@ -1417,6 +1460,10 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                                              mlodingDialog.cancle();
 //                                             showToast(mContext, o.getMsg());
                                              //离开当前界面
+                                             Intent intent = new Intent();
+                                             intent.setClass(mContext,
+                                                     MainActivity.class);
+                                             startActivity(intent);
                                              beforeFinish();
                                              finish();
                                          }

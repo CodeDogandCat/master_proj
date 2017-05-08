@@ -60,7 +60,8 @@ try {
             ) {
                 $user = new User($_REQUEST[post_user_email]);
 
-                $meeting = new Meeting(null, null, null, null, null, null, null, EncryptUtil::hash($_REQUEST[post_meeting_password], "lilimiao"), null);
+                $meeting = new Meeting(null, null, null, null, null, null, null, $_REQUEST[post_meeting_password], null);
+//                $meeting = new Meeting(null, null, null, null, null, null, null, EncryptUtil::hash($_REQUEST[post_meeting_password], "lilimiao"), null);
                 $meeting->setUrl($_REQUEST[post_meeting_url]);
                 $meetingOp = new MeetingOp($user, $meeting);
 

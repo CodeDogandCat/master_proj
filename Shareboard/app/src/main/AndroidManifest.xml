@@ -135,6 +135,11 @@
             android:windowSoftInputMode="adjustPan"
             />
         <activity
+            android:name=".activity.InviteActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity
             android:name=".activity.FullImageActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:screenOrientation="portrait"

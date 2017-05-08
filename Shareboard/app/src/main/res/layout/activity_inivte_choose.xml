@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:focusable="true"
+              android:focusableInTouchMode="true"
+              android:orientation="vertical"
+
+    >
+
+    <RelativeLayout style="@style/actionbar">
+
+        <ImageView
+            android:id="@+id/img_invite_goback"
+            style="@style/actionbar_goback"/>
+
+        <TextView
+            android:id="@+id/tv_invite_navtitle"
+            style="@style/navbar_title_textview_style"
+            android:text="@string/invite_contact"/>
+
+        <Button
+            android:id="@+id/btn_invite_invite"
+            style="@style/actionbar_button"
+            android:text="@string/invite"
+            android:visibility="gone"/>
+
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/filter_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/et_yellow"
+        android:enabled="false"
+        android:gravity="left|center_vertical"
+        android:hint="@string/already_choosed_contacts"
+        android:lineSpacingExtra="5dp"
+        android:minHeight="40dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:textColor="@color/my_white"
+        android:textSize="@dimen/common_size"/>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="1dp">
+
+
+        <ListView
+            android:id="@+id/lv_contacts_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:divider="@null"
+            android:scrollbars="none"/>
+
+        <TextView
+            android:id="@+id/title_layout_no_friends"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="right|top"
+            android:background="@color/my_deepgray"
+            android:gravity="center_vertical"
+            android:text="没有匹配的联系人"
+            android:textColor="@color/my_yellow"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/title_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="right|top"
+            android:background="@color/my_barblack"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/title_layout_catalog"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/my_barblack"
+                android:paddingBottom="5dip"
+                android:paddingLeft="10dip"
+                android:textColor="@color/my_yellow"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/dialog"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:layout_gravity="center"
+            android:background="@color/my_yellow"
+            android:gravity="center"
+            android:textColor="@color/my_black"
+            android:textSize="@dimen/big_tip_size"
+            android:visibility="invisible"/>
+
+        <cn.edu.hfut.lilei.shareboard.widget.SideBar
+            android:id="@+id/sidrbar"
+            android:layout_width="20dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|center"/>
+
+        <TextView
+            android:id="@+id/tv_no_friend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/you_have_no_friend_now"
+            android:textColor="@color/my_white"
+            android:textSize="@dimen/common_size"
+            />
+    </FrameLayout>
+
+</LinearLayout>

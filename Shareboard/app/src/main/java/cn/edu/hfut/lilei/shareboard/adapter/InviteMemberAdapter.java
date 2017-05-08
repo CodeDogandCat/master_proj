@@ -5,9 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
@@ -18,14 +21,27 @@ import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
 
-public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexer {
+public class InviteMemberAdapter extends BaseAdapter implements SectionIndexer {
     private List<FriendInfo> list = null;
     private Context mContext;
+    private Callback mCallback;
+    private static HashMap<Integer, Boolean> isSelected;
+    private static List<Integer> isSelected_list;
 
-    public SortGroupMemberAdapter(Context mContext, List<FriendInfo> list) {
+    public InviteMemberAdapter(Context mContext, List<FriendInfo> list, Callback callback
+    ) {
         this.mContext = mContext;
         this.list = list;
+        this.mCallback = callback;
+        isSelected = new HashMap<Integer, Boolean>();
+        isSelected_list = new ArrayList<>();
     }
+
+    public interface Callback {
+
+        public void click(int i, boolean isChecked);
+    }
+
 
     /**
      * @param list
@@ -33,6 +49,9 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
     public void updateListView(List<FriendInfo> list) {
         this.list = list;
         notifyDataSetChanged();
+        for (int i = 0; i < list.size(); i++) {
+            isSelected.put(i, false);
+        }
     }
 
     public void clear() {
@@ -67,12 +86,13 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
             //创建 viewholder
             viewHolder = new ViewHolder();
             view = LayoutInflater.from(mContext)
-                    .inflate(R.layout.listitem_group_member, null);
+                    .inflate(R.layout.listitem_group_member_invite, null);
             viewHolder.tvLetter = (TextView) view.findViewById(R.id.tv_contacts_catalog);
             viewHolder.imgPhoto = (AvatarImageView) view.findViewById(R.id.img_contacts_photo);
             viewHolder.tvTitle = (TextView) view.findViewById(R.id.tv_contacts_account);
             viewHolder.tvEmail = (TextView) view.findViewById(R.id.tv_contacts_email);
             viewHolder.tvStatus = (TextView) view.findViewById(R.id.tv_contacts_status);
+            viewHolder.checkBox = (CheckBox) view.findViewById(R.id.check_box);
             view.setTag(viewHolder);
         } else {
             //取出已有的viewholder
@@ -119,17 +139,53 @@ public class SortGroupMemberAdapter extends BaseAdapter implements SectionIndexe
          */
         viewHolder.tvTitle.setText(name);
         viewHolder.tvEmail.setText(mContent.getEmail());
+        viewHolder.checkBox.setChecked(getIsSelected().get(position));
+
+//        //复选框
+//        viewHolder.checkBox.setOnCheckedChangeListener(
+//                new CompoundButton.OnCheckedChangeListener() {
+//                    @Override
+//                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                        isSelected.put(position, b);
+//                        mCallback.click(position, b);
+//                    }
+//                });
 
         return view;
 
     }
 
-    final static class ViewHolder {
-        AvatarImageView imgPhoto;
-        TextView tvLetter;
-        TextView tvTitle;
-        TextView tvEmail;
-        TextView tvStatus;
+    public static List<Integer> getIsSelectedList() {
+        return InviteMemberAdapter.isSelected_list;
+    }
+
+    public static void addToIsSelectedList(Integer position) {
+        if (!InviteMemberAdapter.isSelected_list.contains(position)) {
+            InviteMemberAdapter.isSelected_list.add(position);
+        }
+    }
+
+    public static void removeFromIsSelectedList(Integer position) {
+        if (InviteMemberAdapter.isSelected_list.contains(position)) {
+            InviteMemberAdapter.isSelected_list.remove(position);
+        }
+    }
+
+    public static HashMap<Integer, Boolean> getIsSelected() {
+        return isSelected;
+    }
+
+    public static void setIsSelected(HashMap<Integer, Boolean> isSelected) {
+        InviteMemberAdapter.isSelected = isSelected;
+    }
+
+    public final static class ViewHolder {
+        public AvatarImageView imgPhoto;
+        public TextView tvLetter;
+        public TextView tvTitle;
+        public TextView tvEmail;
+        public TextView tvStatus;
+        public CheckBox checkBox;
     }
 
     /**

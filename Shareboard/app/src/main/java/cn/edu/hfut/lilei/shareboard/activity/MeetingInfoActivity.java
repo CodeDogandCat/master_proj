@@ -22,11 +22,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.model.AppInfo;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
+import cn.edu.hfut.lilei.shareboard.model.AppInfo;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -52,10 +52,13 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_check_
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_id;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_drawable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_is_talkable;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_password;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_meeting_url;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_family_name;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_given_name;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
@@ -121,7 +124,32 @@ public class MeetingInfoActivity extends SwipeBackActivity {
 
         lenght = DateTimeUtil.minuteLength(startMillis, endMillis);
         preStr = getPreString(startMillis);
+        description = getDescribe();
 
+
+    }
+
+    public String getDescribe() {
+
+        String mfamilyName = (String) SharedPrefUtil.getInstance()
+                .getData(share_family_name, "");
+        String mgivenName = (String) SharedPrefUtil.getInstance()
+                .getData(share_given_name, "");
+
+        return String.format(getResources().getString(
+                R.string.invite_content),
+                mfamilyName + mgivenName,
+                title,
+                DateTimeUtil.getPreString(
+                        startMillis) +
+                        am_pm[a_pm1] +
+                        DateTimeUtil.zeroConvert
+                                (hour_12_1) +
+                        ":" +
+                        DateTimeUtil.addZero(
+                                minite1),
+                String.valueOf(meeting_url),
+                mpassword);
     }
 
     /**
@@ -208,7 +236,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                 super.onPostExecute(integer);
                 //延迟弹出邀请方式选择框
                 MyAppUtil.invite(mContext, String.format(getResources().getString(R.string
-                        .invite_title), title), description, mlistAppInfo);
+                        .invite_title), title), description, mlistAppInfo, 0, -1L, "");
             }
         }.execute();
 
@@ -249,7 +277,8 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                     break;
                 case R.id.btn_meeting_info_invite:
                     MyAppUtil.invite(mContext, String.format(getResources().getString(R.string
-                            .invite_title), title), description, mlistAppInfo);
+                                    .invite_title), title), description,
+                            mlistAppInfo, 0, -1L, "");
                     break;
                 case R.id.btn_meeting_info_delete:
                     delete();
@@ -548,9 +577,12 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                              Bundle b = new Bundle();
                                              b.putInt(post_meeting_check_in_type, HOST_CHECK_IN);
                                              b.putInt(post_meeting_id, meeting_id);
-                                             b.putLong(post_meeting_url, meeting_url);
                                              b.putBoolean(post_meeting_is_drawable, isDrawable);
                                              b.putBoolean(post_meeting_is_talkable, isTalkable);
+                                             //
+                                             b.putLong(post_meeting_url, meeting_url);
+                                             b.putString(post_meeting_password, mpassword);
+
                                              intent.putExtras(b);
                                              startActivity(intent);
                                              mlodingDialog.cancle();

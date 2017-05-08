@@ -82,6 +82,7 @@
     <string name="add_invite">添加受邀者</string>
     <string name="invite_title">"白板会议邀请-%1$s"</string>
     <string name="invite_content">"你好!\n\t%1$s 正在邀请你加入白板会议。\n\t主题：%2$s\n\t时间：%3$s GMT+8\n\t会议ID： %4$s \n\t密码：%5$s \n\t加入方式：打开安卓小喵白板客户端，点击进入“加入会议”界面，输入会议ID与密码，即可加入。"</string>
+    <string name="invite_content_two">"你好!\n\t%1$s 正在邀请你加入白板会议,会议已经开始。\n\t会议ID： %2$s \n\t密码：%3$s \n\t加入方式：打开安卓小喵白板客户端，点击进入“加入会议”界面，输入会议ID与密码，即可加入。"</string>
     <string name="choose_invite_type">选择邀请方式</string>
     <string name="alreday_copy_to_sheet">已经复制到剪贴板</string>
     <string name="choose_sms">选择短信客户端</string>
@@ -220,4 +221,9 @@
     <string name="you_have_no_friend_now">还没好友哦,赶快添加吧~</string>
     <string name="no_network">没有联网哦</string>
     <string name="delete">删除</string>
+    <string name="already_choosed_contacts">还没选择任何联系人</string>
+    <string name="invite_contact">邀请联系人</string>
+    <string name="invite_already_sent">邀请已发送</string>
+    <string name="copy_to_clipboard">复制到剪贴板</string>
+    <string name="invite_you_to_meeting">邀请你加入会议</string>
 </resources>

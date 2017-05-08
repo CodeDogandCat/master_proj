@@ -15,6 +15,7 @@
         <item name="colorPrimaryDark">@color/my_deepyellow</item>
         <item name="colorAccent">@color/text_title</item>
     </style>
+
     <style name="MessageListTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowIsTranslucent">false</item>
         <item name="colorPrimary">@color/yellow</item>
@@ -121,10 +122,11 @@
 
     <style name="actionbar_goback">
         <item name="android:layout_width">50dp</item>
-        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_alignParentLeft">true</item>
-        <item name="android:src">@drawable/ic_black_leftarrow</item>
+        <!--<item name="android:src">@drawable/ic_black_leftarrow</item>-->
+        <item name="android:background">@drawable/btn_goback</item>
     </style>
 
     <style name="actionbar_button">

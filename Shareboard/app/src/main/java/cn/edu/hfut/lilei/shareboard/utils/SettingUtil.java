@@ -90,6 +90,8 @@ public class SettingUtil {
     public static final String post_meeting_desc = "300134";//会议描述
     public static final String post_meeting_host_email = "300135";//会议主持人email
     public static final String post_chat_data = "300136";//聊天文件
+    public static final String post_invite_title = "300137";//邀请标题
+    public static final String post_invite_desc = "300138";//邀请描述
 
     //sharepreference name 参数
     public static final String share_user_email = "400101";
@@ -137,6 +139,7 @@ public class SettingUtil {
     public static final int CROP_REQUEST_CODE = 4;//裁剪请求代码
     public static final int CHAT_REQUEST_CODE = 7;//聊天界面请求代码
     public static final int MEETING_REQUEST_CODE = 8;//会议界面请求代码
+    public static final int INVITE_REQUEST_CODE = 13;//邀请界面请求代码
 
     public static final int RECORD_REQUEST_CODE = 101;
 

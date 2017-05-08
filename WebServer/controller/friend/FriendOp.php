@@ -427,4 +427,53 @@ class FriendOp
         return $datas;
     }
 
+    /**
+     * 推送邀请
+     * @param
+     * @return bool
+     */
+    public function requestInviteFriend($parms)
+    {
+//        $tmp = array();
+//        $tmp = explode(" ", $parms);
+//        if (count($tmp) != 2) {
+//            return false;
+//        }
+
+        $data = array();
+        $data['title'] = "邀请联系人加会";
+        $data['content_type'] = 'text';
+        $extras = array('familyName' => $this->user1->getFamilyName(),
+            'givenName' => $this->user1->getGivenName(),
+            'email' => $this->user1->getEmail(),
+            'avatar' => $this->user1->getAvatar(),
+            'tag' => $parms,
+            "feature" => "inviteFriend");
+        $data['extras'] = $extras;
+        $content = $this->user1->getFamilyName() . $this->user1->getGivenName() . "邀请你加入会议";
+        //分解
+        $invite_list = explode("###", $this->msg_data);
+//        echo "beforepush";
+        for ($i = 0; $i < count($invite_list) - 1; $i++) {
+//            echo "email:" . $invite_list[$i] . "\n";
+            //push
+            if (Jpush::pushMsg($invite_list[$i], $content, $data) == false) {
+                return false;
+//                echo "jpush fail";
+            }
+//            else{
+//                echo "jpush ok";
+//            }
+        }
+//        foreach ($invite_list as $value) {
+//            echo "email:" . $value . "\n";
+//            //push
+//            if (Jpush::pushMsg($value, $content, $data) == false) {
+//                echo "jpush false";
+//            }
+//
+//        }
+        return true;
+    }
+
 }

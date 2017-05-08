@@ -14,9 +14,9 @@ import android.widget.LinearLayout;
 
 import com.lzy.okgo.OkGo;
 
+import cn.edu.hfut.lilei.shareboard.JsonEnity.LoginJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.LoginJson;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.JpushUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -194,7 +194,7 @@ public class LoginActivity extends Activity {
                         if (passEncrypted == null) {
                             return -1;
                         }
-//                        showLog("加密后的密码：" + passEncrypted);
+                        showLog("加密后的密码：" + passEncrypted);
                         OkGo.post(URL_LOGIN)
                                 .tag(this)
                                 .params(post_user_email, email)
@@ -247,7 +247,7 @@ public class LoginActivity extends Activity {
                                                      mlodingDialog.cancle();
                                                      //提示所有错误
                                                      showLog(o.getMsg());
-//                                                     showToast(mContext, o.getMsg());
+                                                     showToast(mContext, o.getMsg());
                                                  }
                                              }
 

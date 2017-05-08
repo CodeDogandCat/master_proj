@@ -107,7 +107,8 @@ if (isset($_REQUEST[post_need_feature])) {
                     $_REQUEST[post_meeting_is_add_to_calendar],
                     $_REQUEST[post_meeting_start_time],
                     $_REQUEST[post_meeting_end_time],
-                    EncryptUtil::hash($_REQUEST[post_meeting_password], "lilimiao"),
+                    $_REQUEST[post_meeting_password],
+//                    EncryptUtil::hash($_REQUEST[post_meeting_password], "lilimiao"),
                     1//1 ：未开始并且未到期
                 );
                 $meeting->setEventId($_REQUEST[post_meeting_event_id]);
