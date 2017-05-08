@@ -403,6 +403,8 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
         bundle.putString("tvMeetingTheme", meeting.getMeeting_theme());
         bundle.putString("description", meeting.getMeeting_desc());
         bundle.putLong(post_meeting_url, meeting.getMeeting_url());
+        showLog("################MyMeetingactivity " +
+                meeting.getMeeting_url());
 
         String masterPassword = "L1x#tvh_";
         String decryptingCode =
@@ -436,8 +438,21 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                 .getMeeting_url();
         final int meeting_id = data.get((Integer) v.getTag())
                 .getMeeting_id();
-        final String pwd = data.get((Integer) v.getTag())
-                .getMeeting_password();
+
+        String masterPassword = "L1x#tvh_";
+        String decryptingCode =
+                null;
+        try {
+            decryptingCode =
+                    StringUtil.decrypt_security(masterPassword, data.get((Integer) v.getTag())
+                            .getMeeting_password());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showLog("decrypt_security(masterPassword, meeting.getMeeting_password()) error");
+            finish();
+        }
+        final String pwd = decryptingCode;
+
         final String theme = data.get((Integer) v.getTag())
                 .getMeeting_theme();
         mlodingDialog = loding(mContext, R.string.entering);
@@ -501,7 +516,8 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                                              Bundle b = new Bundle();
                                              b.putInt(post_meeting_check_in_type, HOST_CHECK_IN);
                                              b.putInt(post_meeting_id, meeting_id);
-
+                                             showLog("################MyMeetingactivity " +
+                                                     meeting_url);
                                              b.putLong(post_meeting_url, meeting_url);
                                              b.putString(post_meeting_password, pwd);
 

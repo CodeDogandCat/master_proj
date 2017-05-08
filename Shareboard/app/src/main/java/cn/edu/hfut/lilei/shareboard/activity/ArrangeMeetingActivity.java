@@ -764,6 +764,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                 MeetingInfoActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt(post_meeting_id, meeting_id);
+        showLog("################ArrangeMeetingactivity " + meeting_url);
         bundle.putLong(post_meeting_url,
                 meeting_url);
         bundle.putLong("startMillis", startMillis);
@@ -771,7 +772,9 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
         bundle.putLong("eventId", eventId);
         bundle.putString("tvMeetingTheme", title);
         bundle.putString("description", description);
+
         bundle.putString("password", mpassword);
+
         bundle.putBoolean("isDrawable",
                 mBtnIsDrawable.isChecked());
         bundle.putBoolean("isTalkable",

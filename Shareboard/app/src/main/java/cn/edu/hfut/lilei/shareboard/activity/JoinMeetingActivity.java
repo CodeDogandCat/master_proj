@@ -76,112 +76,114 @@ public class JoinMeetingActivity extends SwipeBackActivity {
         if (i != null) {
             meetingUrl = String.valueOf(i.getExtras()
                     .getLong(post_meeting_url));
+
+            showLog("################joinmeetingactivity " + meetingUrl);
             pwd = i.getExtras()
                     .getString(post_meeting_password);
             joinMeeting(1);
-        }
-
-
-        mBtnBack = (ImageView) findViewById(R.id.img_join_goback);
-        mBtnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
+        } else {
+            mBtnBack = (ImageView) findViewById(R.id.img_join_goback);
+            mBtnBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
             }
-        });
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
-        }
-        SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-        mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
-            @Override
-            public void onScrollStateChange(int state, float scrollPercent) {
+            SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
+            mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+            mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
+                @Override
+                public void onScrollStateChange(int state, float scrollPercent) {
 
-            }
+                }
 
-            @Override
-            public void onEdgeTouch(int edgeFlag) {
-            }
+                @Override
+                public void onEdgeTouch(int edgeFlag) {
+                }
 
-            @Override
-            public void onScrollOverThreshold() {
-            }
-        });
+                @Override
+                public void onScrollOverThreshold() {
+                }
+            });
 
-        mBtnJoinMeeting = (Button) findViewById(R.id.btn_join_meeting);
-        mEtMeetingUrl = (EditText) findViewById(R.id.et_meeting_number);
-        //监听输入字符,格式化输出
+            mBtnJoinMeeting = (Button) findViewById(R.id.btn_join_meeting);
+            mEtMeetingUrl = (EditText) findViewById(R.id.et_meeting_number);
+            //监听输入字符,格式化输出
 
-        mEtMeetingUrl.addTextChangedListener(new TextWatcher() {
-                                                 private int isAdd;
+            mEtMeetingUrl.addTextChangedListener(new TextWatcher() {
+                                                     private int isAdd;
 
-                                                 @Override
-                                                 public void beforeTextChanged(
-                                                         CharSequence s, int start,
-                                                         int count, int after) {
-                                                     if (after == 1) {//增加
-                                                         isAdd = 1;
-                                                         showLog("增加,,,");
-                                                     } else
-                                                         if (after == 12) {
-                                                             isAdd = 2;
-                                                             showLog("复制粘贴,,,");
-                                                         } else {
-                                                             isAdd = 0;
-                                                             showLog("减少,,,");
-                                                         }
-                                                 }
+                                                     @Override
+                                                     public void beforeTextChanged(
+                                                             CharSequence s, int start,
+                                                             int count, int after) {
+                                                         if (after == 1) {//增加
+                                                             isAdd = 1;
+                                                             showLog("增加,,,");
+                                                         } else
+                                                             if (after == 12) {
+                                                                 isAdd = 2;
+                                                                 showLog("复制粘贴,,,");
+                                                             } else {
+                                                                 isAdd = 0;
+                                                                 showLog("减少,,,");
+                                                             }
+                                                     }
 
-                                                 @Override
-                                                 public void onTextChanged(
-                                                         CharSequence s, int start,
-                                                         int before, int count) {
-                                                 }
+                                                     @Override
+                                                     public void onTextChanged(
+                                                             CharSequence s, int start,
+                                                             int before, int count) {
+                                                     }
 
-                                                 @Override
-                                                 public void afterTextChanged(
-                                                         Editable s) {
-                                                     if (isAdd == 1) {
-                                                         if (null != mEtMeetingUrl) {
-                                                             String str = s.toString();
-                                                             if (!str.endsWith(" ")) {
-                                                                 int length = s.length();
-                                                                 if (length == 4 || length == 9) {
-                                                                     String str1 = str + "-";
-                                                                     //手动添加-
-                                                                     mEtMeetingUrl.setText(str1);
-                                                                     mEtMeetingUrl.setSelection(str1.length());//光标移到最右边
+                                                     @Override
+                                                     public void afterTextChanged(
+                                                             Editable s) {
+                                                         if (isAdd == 1) {
+                                                             if (null != mEtMeetingUrl) {
+                                                                 String str = s.toString();
+                                                                 if (!str.endsWith(" ")) {
+                                                                     int length = s.length();
+                                                                     if (length == 4 || length == 9) {
+                                                                         String str1 = str + "-";
+                                                                         //手动添加-
+                                                                         mEtMeetingUrl.setText(str1);
+                                                                         mEtMeetingUrl.setSelection(str1.length());//光标移到最右边
+                                                                     }
                                                                  }
                                                              }
-                                                         }
-                                                     } else
-                                                         if (isAdd == 2) {
-                                                             String str = s.toString();
-                                                             if (str.length() == 12) {
-                                                                 //分成3串数字
-                                                                 String part1 = str.substring(0, 4);
-                                                                 String part2 = str.substring(4, 8);
-                                                                 String part3 = str.substring(8,
-                                                                         12);
-                                                                 String finalStr = part1 + "-" + part2 + "-" + part3;
-                                                                 //手动添加-
-                                                                 mEtMeetingUrl.setText(finalStr);
-                                                                 mEtMeetingUrl.setSelection(finalStr.length());//光标移到最右边
+                                                         } else
+                                                             if (isAdd == 2) {
+                                                                 String str = s.toString();
+                                                                 if (str.length() == 12) {
+                                                                     //分成3串数字
+                                                                     String part1 = str.substring(0, 4);
+                                                                     String part2 = str.substring(4, 8);
+                                                                     String part3 = str.substring(8,
+                                                                             12);
+                                                                     String finalStr = part1 + "-" + part2 + "-" + part3;
+                                                                     //手动添加-
+                                                                     mEtMeetingUrl.setText(finalStr);
+                                                                     mEtMeetingUrl.setSelection(finalStr.length());//光标移到最右边
+                                                                 }
                                                              }
-                                                         }
+                                                     }
                                                  }
-                                             }
 
-        );
-        mEtMeetingPassword = (EditText) findViewById(R.id.et_meeting_password);
-        mBtnJoinMeeting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                joinMeeting(0);
+            );
+            mEtMeetingPassword = (EditText) findViewById(R.id.et_meeting_password);
+            mBtnJoinMeeting.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    joinMeeting(0);
 
-            }
-        });
+                }
+            });
+        }
+
 
     }
 
@@ -198,8 +200,10 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                     .replaceAll("-", "");
         }
 
+        if (type == 0) {
 
-        MyAppUtil.changeBtnDisable(mBtnJoinMeeting);
+            MyAppUtil.changeBtnDisable(mBtnJoinMeeting);
+        }
         new AsyncTask<Void, Void, Integer>() {
 
             @Override
@@ -328,8 +332,10 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                                  finish();
                                              } else {
                                                  mlodingDialog.cancle();
-                                                 MyAppUtil.changeBtnClickable(mBtnJoinMeeting,
-                                                         R.drawable.btn_yellow);
+                                                 if (type == 0) {
+                                                     MyAppUtil.changeBtnClickable(mBtnJoinMeeting,
+                                                             R.drawable.btn_yellow);
+                                                 }
                                              }
                                              showToast(mContext, o.getMsg());
                                          }
@@ -341,8 +347,10 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                                          Exception e) {
                                          super.onError(call, response, e);
                                          mlodingDialog.cancle();
-                                         MyAppUtil.changeBtnClickable(mBtnJoinMeeting,
-                                                 R.drawable.btn_yellow);
+                                         if (type == 0) {
+                                             MyAppUtil.changeBtnClickable(mBtnJoinMeeting,
+                                                     R.drawable.btn_yellow);
+                                         }
 //                                                 showToast(mContext, R.string.system_error);
                                      }
                                  }
@@ -357,7 +365,9 @@ public class JoinMeetingActivity extends SwipeBackActivity {
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
                 mlodingDialog.cancle();
-                MyAppUtil.changeBtnClickable(mBtnJoinMeeting, R.drawable.btn_yellow);
+                if (type == 0) {
+                    MyAppUtil.changeBtnClickable(mBtnJoinMeeting, R.drawable.btn_yellow);
+                }
                 switch (integer) {
                     case NET_DISCONNECT:
                         //弹出对话框，让用户开启网络

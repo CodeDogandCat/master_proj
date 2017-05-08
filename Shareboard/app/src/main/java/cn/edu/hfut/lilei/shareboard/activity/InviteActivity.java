@@ -127,6 +127,7 @@ public class InviteActivity extends SwipeBackActivity implements SectionIndexer,
         if (i != null) {
             meetingurl = i.getExtras()
                     .getLong(post_meeting_url);
+            showLog("################inviteactivity " + meetingurl);
             meeting_pwd = i.getExtras()
                     .getString(post_meeting_password);
         }

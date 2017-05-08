@@ -732,6 +732,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
              * 邀请
              */
             case R.id.btn_member_invite:
+                showLog("################meetingactivity " + meeting_url);
                 MyAppUtil.invite(mContext, String.format(getResources().getString(R.string
                                 .invite_title), "会议已经开始"), getDescribe(),
                         null, 1, meeting_url, meeting_pwd);

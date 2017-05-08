@@ -580,6 +580,8 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                              b.putBoolean(post_meeting_is_drawable, isDrawable);
                                              b.putBoolean(post_meeting_is_talkable, isTalkable);
                                              //
+                                             showLog("################MeetingInfoactivity " +
+                                                     meeting_url);
                                              b.putLong(post_meeting_url, meeting_url);
                                              b.putString(post_meeting_password, mpassword);
 
