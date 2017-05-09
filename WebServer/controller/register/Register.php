@@ -63,11 +63,15 @@ class Register
      * 发送验证码
      * @return bool
      */
-    public function sendVerifyCode()
+    public function sendVerifyCode($type)
     {
         $code = $this->generate_code(6);
         $subject = '验证码--小喵白板';
-        $body = '<h2>请用下面的验证码完成邮箱的验证(2分钟内有效)，之后才能继续完成用户注册。</h2><br><br><h3>' . $code . '</h3>';
+        if ($type == 0) {
+            $body = '<h2>请用下面的验证码完成邮箱的验证(2分钟内有效)，之后才能继续完成用户注册。</h2><br><br><h3>' . $code . '</h3>';
+        } else {
+            $body = '<h2>请用下面的验证码完成邮箱的验证(2分钟内有效)，之后才能继续完成用户重置密码。</h2><br><br><h3>' . $code . '</h3>';
+        }
         if (SmtpUtil::sendMail($this->user->getEmail(), $subject, $body)) {
             return $code;
         }

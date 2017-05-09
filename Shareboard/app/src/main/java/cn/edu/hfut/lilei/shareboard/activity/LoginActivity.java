@@ -35,6 +35,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_LOGIN;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO1;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO2;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_login_password;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_avatar;
@@ -140,6 +141,9 @@ public class LoginActivity extends Activity {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, RegisterActivity.class);
+                Bundle b = new Bundle();
+                b.putInt(post_need_feature, 0);
+                intent.putExtras(b);
                 startActivity(intent);
             }
         });
@@ -147,9 +151,15 @@ public class LoginActivity extends Activity {
         mBtnResetpassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent();
-                intent.setClass(LoginActivity.this, ResetPasswordActivity.class);
+                intent.setClass(LoginActivity.this, RegisterActivity.class);
+                Bundle b = new Bundle();
+                b.putInt(post_need_feature, 1);
+                intent.putExtras(b);
                 startActivity(intent);
+
+
             }
         });
         //登录

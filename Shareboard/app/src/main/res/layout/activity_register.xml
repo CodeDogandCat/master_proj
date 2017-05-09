@@ -16,7 +16,7 @@
             style="@style/actionbar_goback"/>
 
         <TextView
-            android:id="@+id/tv_register_register"
+            android:id="@+id/tv_register_title"
             style="@style/navbar_title_textview_style"
             android:text="@string/register"/>
 

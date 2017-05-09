@@ -12,10 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.request.PostRequest;
 
+import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
 import cn.edu.hfut.lilei.shareboard.utils.CountDownTimerUtils;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
@@ -34,8 +35,10 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_SEND_VERIFY_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_check_verify_code;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
+import static com.lzy.okgo.OkGo.post;
 
 
 public class RegisterActivity extends SwipeBackActivity {
@@ -45,6 +48,8 @@ public class RegisterActivity extends SwipeBackActivity {
     private TextView mTvSendVerifyCode;
     private Button mBtnNextstep;
     private LodingDialog.Builder mlodingDialog;
+    private TextView mTvTitle;
+    private int type = -1;
 
     //上下文参数
     private Context mContext;
@@ -62,6 +67,10 @@ public class RegisterActivity extends SwipeBackActivity {
 
     private void init() {
         mContext = this;
+        type = getIntent().getExtras()
+                .getInt(post_need_feature);
+
+
         mBtnBack = (ImageView) findViewById(R.id.img_register_goback);
         mBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +97,14 @@ public class RegisterActivity extends SwipeBackActivity {
             public void onScrollOverThreshold() {
             }
         });
+
         mEtEmail = (EditText) findViewById(R.id.et_register_email);
+        mTvTitle = (TextView) findViewById(R.id.tv_register_title);
+        if (type == 0) {
+            mTvTitle.setText(R.string.register);
+        } else {
+            mTvTitle.setText(R.string.resetpassword);
+        }
         mTvSendVerifyCode = (TextView) findViewById(R.id.tv_register_send_verify_code);
         mEtSendVerifyCode = (EditText) findViewById(R.id.et_register_verify_code);
         mBtnNextstep = (Button) findViewById(R.id.btn_register_nextstep);
@@ -124,52 +140,60 @@ public class RegisterActivity extends SwipeBackActivity {
                          * 3.检查是否已经注册过,发送验证码
                          */
 
-                        OkGo.post(URL_SEND_VERIFY_CODE)
+                        PostRequest request = OkGo.post(URL_SEND_VERIFY_CODE)
                                 .tag(this)
-                                .params(post_user_email, email)
-                                .execute(new JsonCallback<CommonJson>() {
-                                             @Override
-                                             public void onSuccess(CommonJson o, Call call,
-                                                                   Response response) {
-                                                 if (o.getCode() == SUCCESS) {
+                                .params(post_user_email, email);
 
-                                                     /**
-                                                      * 缓存 email
-                                                      */
+                        if (type == 0) {
+                            request.params(post_need_feature, "register");
+                        } else {
+                            request.params(post_need_feature, "resetPassword");
+                        }
+                        request.execute(new JsonCallback<CommonJson>() {
+                                            @Override
+                                            public void onSuccess(CommonJson o, Call call,
+                                                                  Response response) {
+                                                if (o.getCode() == SUCCESS) {
 
-                                                     SharedPrefUtil.getInstance()
-                                                             .saveData(share_user_email, email);
+                                                    /**
+                                                     * 缓存 email
+                                                     */
 
-                                                     //2分钟后可以重新发送验证码
-                                                     CountDownTimerUtils mCountDownTimerUtils = new
-                                                             CountDownTimerUtils(mContext, mTvSendVerifyCode,
-                                                             mContext.getResources()
-                                                                     .getString(
-                                                                             R.string
-                                                                                     .resend_verify_code_later),
-                                                             120000, 1000);
-                                                     mCountDownTimerUtils.start();
-                                                     mlodingDialog.cancle();
-                                                     //验证码发送成功
-                                                     showToast(mContext, o.getMsg());
+                                                    SharedPrefUtil.getInstance()
+                                                            .saveData(share_user_email, email);
+
+                                                    //2分钟后可以重新发送验证码
+                                                    CountDownTimerUtils mCountDownTimerUtils = new
+                                                            CountDownTimerUtils(mContext, mTvSendVerifyCode,
+                                                            mContext.getResources()
+                                                                    .getString(
+                                                                            R.string
+                                                                                    .resend_verify_code_later),
+                                                            120000, 1000);
+                                                    mCountDownTimerUtils.start();
+                                                    //验证码发送成功,邮箱不可改了,不然可能会有人恶意修改别人的密码
+                                                    mEtEmail.setEnabled(false);
+                                                    mlodingDialog.cancle();
+                                                    //验证码发送成功
+                                                    showToast(mContext, o.getMsg());
 
 
-                                                 } else {
-                                                     //提示所有错误
-                                                     mlodingDialog.cancle();
-//                                                     showToast(mContext, o.getMsg());
-                                                 }
+                                                } else {
+                                                    //提示所有错误
+                                                    mlodingDialog.cancle();
+                                                    showToast(mContext, o.getMsg());
+                                                }
 
-                                             }
+                                            }
 
-                                             @Override
-                                             public void onError(Call call, Response response, Exception e) {
-                                                 super.onError(call, response, e);
-                                                 mlodingDialog.cancle();
+                                            @Override
+                                            public void onError(Call call, Response response, Exception e) {
+                                                super.onError(call, response, e);
+                                                mlodingDialog.cancle();
 //                                                 showToast(mContext, R.string.system_error);
-                                             }
-                                         }
-                                );
+                                            }
+                                        }
+                        );
 
 
                         return -1;
@@ -229,7 +253,7 @@ public class RegisterActivity extends SwipeBackActivity {
                             //验证码格式不对
                             return WRONG_FORMAT_INPUT;
                         }
-                        OkGo.post(URL_SEND_VERIFY_CODE)
+                        post(URL_SEND_VERIFY_CODE)
                                 .tag(this)
                                 .params(post_check_verify_code, verifyCode)
                                 .execute(new JsonCallback<CommonJson>() {
@@ -242,10 +266,24 @@ public class RegisterActivity extends SwipeBackActivity {
                                             /**
                                              * 2.跳转
                                              */
-                                            Intent intent = new Intent();
-                                            intent.setClass(RegisterActivity.this,
-                                                    SetUserInfoActivity.class);
-                                            startActivity(intent);
+                                            if (type == 0) {
+                                                Intent intent = new Intent();
+                                                intent.setClass(RegisterActivity.this,
+                                                        SetUserInfoActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                Intent intent = new Intent();
+                                                intent.setClass(RegisterActivity.this,
+                                                        AlterPasswordActivity.class);
+                                                Bundle b = new Bundle();
+                                                b.putInt(post_need_feature, 1);
+                                                b.putString(post_user_email, mEtEmail.getText()
+                                                        .toString());
+                                                intent.putExtras(b);
+                                                startActivity(intent);
+                                                finish();
+                                            }
 
 
                                         } else {

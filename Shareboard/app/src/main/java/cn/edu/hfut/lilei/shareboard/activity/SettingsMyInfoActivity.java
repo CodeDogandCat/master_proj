@@ -18,6 +18,10 @@ import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -27,6 +31,7 @@ import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
+import cn.edu.hfut.lilei.shareboard.model.ContextEvent;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -81,6 +86,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
 
     //上下文参数
     private Context mContext;
+    private Context MainContext;
     private ImageView mBtnBack;
 
 
@@ -90,6 +96,8 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
         setContentView(R.layout.activity_settings_myinfo);
         showLog("create...");
         shouldCallUpdate = false;
+        EventBus.getDefault()
+                .register(this);
         init();
 
 
@@ -230,6 +238,9 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                     public void onClick(View view) {
                         Intent intent = new Intent();
                         intent.setClass(SettingsMyInfoActivity.this, AlterPasswordActivity.class);
+                        Bundle b = new Bundle();
+                        b.putInt(post_need_feature, 0);
+                        intent.putExtras(b);
                         startActivity(intent);
 
                     }
@@ -256,6 +267,11 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                                                          intent.setClass(SettingsMyInfoActivity.this,
                                                                                  LoginActivity.class);
                                                                          startActivity(intent);
+                                                                         if (MainContext != null) {
+
+                                                                             ((Activity) MainContext).finish();
+                                                                             showLog("@@@@@###########  ((Activity)MainContext) .finish();");
+                                                                         }
                                                                          finish();
                                                                      }
                                                                  }
@@ -288,6 +304,13 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                 .create();
 
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void listenContext(final ContextEvent event) {
+        if (event.from.equals("main") && event.to.equals("settings_my_info")) {
+            MainContext = event.context;
+        }
     }
 
     /**

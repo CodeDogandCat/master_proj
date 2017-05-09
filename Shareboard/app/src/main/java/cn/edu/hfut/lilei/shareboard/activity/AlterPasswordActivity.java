@@ -9,12 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
 
+import cn.edu.hfut.lilei.shareboard.JsonEnity.RegisterJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.RegisterJson;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
@@ -29,6 +31,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NO_TOKEN_FOUND;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_RESET_PASS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_UPDATE_SETTINGS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO1;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.WRONG_FORMAT_INPUT_NO2;
@@ -40,6 +43,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_login_password_new;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_login_password_old;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.reset_password;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.update_password;
@@ -48,15 +52,19 @@ import static cn.edu.hfut.lilei.shareboard.utils.StringUtil.isValidPassword;
 
 public class AlterPasswordActivity extends SwipeBackActivity {
     //控件
-    private Button mBtnSave;
+    private Button mBtnSave, mBtnSave2;
     private SwipeBackLayout mSwipeBackLayout;
     private EditText mEtOldPwd, mEtNewPwd, mEtConfirmPwd;
     private LodingDialog.Builder mlodingDialog;
-    //数据
+    private ImageView mBtnBack;
+    private TextView mTvTitle;
+    private LinearLayout mLlAlterpassOldpass;
 
+    //数据
+    private int type = -1;
     //上下文参数
     private Context mContext;
-    private ImageView mBtnBack;
+    private String resetPassEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +77,14 @@ public class AlterPasswordActivity extends SwipeBackActivity {
 
     private void init() {
         mContext = this;
+        Intent i = getIntent();
+        type = i.getExtras()
+                .getInt(post_need_feature);
+        if (type == 1) {
+            resetPassEmail = i.getExtras()
+                    .getString(post_user_email);
+        }
+
         mBtnBack = (ImageView) findViewById(R.id.img_alterpassword_goback);
         mBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +117,21 @@ public class AlterPasswordActivity extends SwipeBackActivity {
         mEtConfirmPwd = (EditText) findViewById(R.id.et_alterpassword_confirmpassword);
 
         mBtnSave = (Button) findViewById(R.id.btn_alterpassword_save);
+        mBtnSave2 = (Button) findViewById(R.id.btn_alterpassword_save2);
+        mLlAlterpassOldpass = (LinearLayout) findViewById(R.id.ll_alterpass_oldpass);
+
+
+        mTvTitle = (TextView) findViewById(R.id.tv_alterpass_title);
+        if (type == 0) {
+            mTvTitle.setText(R.string.alterpassword);
+            mBtnSave.setVisibility(View.VISIBLE);
+            mBtnSave2.setVisibility(View.GONE);
+        } else {
+            mTvTitle.setText(R.string.resetpassword);
+            mBtnSave.setVisibility(View.GONE);
+            mBtnSave2.setVisibility(View.VISIBLE);
+            mLlAlterpassOldpass.setVisibility(View.GONE);
+        }
         mBtnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,6 +161,7 @@ public class AlterPasswordActivity extends SwipeBackActivity {
                         /**
                          * 2.加载token和email
                          */
+
                         String token = (String) SharedPrefUtil.getInstance()
                                 .getData(share_token, "空");
 
@@ -202,6 +234,146 @@ public class AlterPasswordActivity extends SwipeBackActivity {
 //                                                             LoginActivity.class);
 //                                                     startActivity(intent);
 //                                                     finish();
+
+                                                 } else {
+                                                     //提示所有错误
+                                                     mlodingDialog.cancle();
+//                                                     showToast(mContext, o.getMsg());
+                                                 }
+
+                                             }
+
+                                             @Override
+                                             public void onError(Call call, Response response,
+                                                                 Exception e) {
+                                                 super.onError(call, response, e);
+                                                 mlodingDialog.cancle();
+//                                                 showToast(mContext, R.string.system_error);
+                                             }
+                                         }
+                                );
+
+
+                        return -1;
+
+                    }
+
+                    @Override
+                    protected void onPostExecute(Integer integer) {
+                        super.onPostExecute(integer);
+                        mlodingDialog.cancle();
+                        switch (integer) {
+                            case NET_DISCONNECT:
+                                //弹出对话框，让用户开启网络
+                                NetworkUtil.setNetworkMethod(mContext);
+                                break;
+                            case NO_TOKEN_FOUND:
+                                //没有可用本地token,跳转到登录界面
+                                Intent intent = new Intent();
+                                intent.setClass(AlterPasswordActivity.this,
+                                        LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                                break;
+                            case WRONG_FORMAT_INPUT_NO1:
+                                showToast(mContext, R.string.can_not_recognize_old_pwd);
+                                break;
+                            case WRONG_FORMAT_INPUT_NO2:
+                                showToast(mContext, R.string.can_not_recognize_new_pwd);
+                                break;
+                            case WRONG_FORMAT_INPUT_NO3:
+                                showToast(mContext, R.string.can_not_recognize_confirm_pwd);
+                                break;
+                            case WRONG_FORMAT_INPUT_NO4:
+                                showToast(mContext, R.string.new_pwd_diff_confirm_pwd);
+                                break;
+                            case WRONG_FORMAT_INPUT_NO5:
+                                showToast(mContext, R.string.new_pwd_equal_old_pwd);
+                                break;
+                            case -1:
+                                break;
+                            case -2:
+                                showToast(mContext, R.string.please_relogin);
+                                break;
+                            default:
+//                                    showToast(mContext, R.string.system_error);
+                                break;
+                        }
+                    }
+                }.execute();
+            }
+
+        });
+        mBtnSave2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String newPwd = mEtNewPwd.getText()
+                        .toString()
+                        .trim();
+                final String confirmPwd = mEtConfirmPwd.getText()
+                        .toString()
+                        .trim();
+                mlodingDialog = loding(mContext, R.string.sending);
+
+
+                new AsyncTask<Void, Void, Integer>() {
+
+                    @Override
+                    protected Integer doInBackground(Void... voids) {
+                        /**
+                         * 1.检查网络状态并提醒
+                         */
+                        if (!NetworkUtil.isNetworkConnected(mContext)) {
+                            //网络连接不可用
+                            return NET_DISCONNECT;
+                        }
+                        if (!isValidPassword(newPwd)) {
+
+                            return WRONG_FORMAT_INPUT_NO2;
+                        }
+                        if (!isValidPassword(confirmPwd)) {
+
+                            return WRONG_FORMAT_INPUT_NO3;
+                        }
+                        if (!confirmPwd.equals(newPwd)) {
+
+                            return WRONG_FORMAT_INPUT_NO4;
+                        }
+                        String newPwdErypt = StringUtil.getMD5(newPwd);
+                        if (newPwdErypt == null) {
+                            return -1;
+                        }
+                        /**
+                         * 3.发送密码数据
+                         */
+
+                        OkGo.post(URL_RESET_PASS)
+                                .tag(this)
+                                .params(post_need_feature, reset_password)
+                                .params(post_user_email, resetPassEmail)
+                                .params(post_user_login_password_new, newPwdErypt)
+                                .execute(new JsonCallback<RegisterJson>() {
+                                             @Override
+                                             public void onSuccess(RegisterJson o, Call call,
+                                                                   Response response) {
+                                                 if (o.getCode() == SUCCESS) {
+
+                                                     /**
+                                                      * 清除本地 token
+                                                      */
+
+                                                     SharedPrefUtil.getInstance()
+                                                             .deleteData(share_token);
+                                                     /**
+                                                      * 跳到登录界面
+                                                      */
+                                                     mlodingDialog.cancle();
+                                                     showToast(mContext, o.getMsg());
+//                                                     Intent intent = new Intent();
+//                                                     intent.setClass(AlterPasswordActivity.this,
+//                                                             LoginActivity.class);
+//                                                     startActivity(intent);
+                                                     finish();
 
                                                  } else {
                                                      //提示所有错误

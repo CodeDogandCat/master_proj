@@ -63,6 +63,7 @@ class Update
         Session::set(SESSION_TOKEN, $token, 2592000);//30天过期
         return true;//更新成功
     }
+
     /**
      * 更新 avatar
      * @return bool
@@ -115,6 +116,36 @@ class Update
                 }
 
             }
+
+        }
+
+        return false;
+    }
+
+    public function resetPassword($newPwd)
+    {
+        /**
+         * 1.对收到的2个密码进行加密
+         */
+        $newPwdEncrypted = EncryptUtil::hash($newPwd, $this->user->getEmail());
+
+        /**
+         *2.获取到对应邮箱的密码
+         */
+        $row = $this->getPwdAndRegisterTime();
+        if ($row != false) {
+            $pwd = $row['user_password'];
+            $registerTime = $row['user_register_time'];
+
+            /**
+             * 3.更新数据库中的密码
+             */
+            $token = EncryptUtil::hash($this->user->getEmail() . $newPwdEncrypted . $registerTime, $registerTime);
+            if ($this->updatePwdAndToken($newPwdEncrypted, $token)) {
+                //什么都不返回，让用户重新登陆，那个时候再返回TOKEN
+                return true;
+            }
+
 
         }
 

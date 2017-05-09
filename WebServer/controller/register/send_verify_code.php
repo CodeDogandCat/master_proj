@@ -34,28 +34,51 @@ try {
 
     } else {
         //发送验证码
-        if (isset($_REQUEST[post_user_email])) {
+        if (isset($_REQUEST[post_user_email]) && isset($_REQUEST[post_need_feature])) {
 
             $user = new User($_REQUEST[post_user_email]);
+            $feature = $_REQUEST[post_need_feature];
             $register = new Register($user);
+            switch ($feature) {
+                case "register":
+                    //如果用户已经存在
+                    if ($register->checkIfExists()) {
+                        printResult(USER_EXISTS, '该邮箱已经注册', -1);
 
+                    } else {
+                        //通过邮件发送验证码失败
+                        $code = -1;
+                        if (($code = $register->sendVerifyCode(0)) == false) {
+                            printResult(SEND_VERIFY_CODE_FAILED, '发送验证码失败', -1);
 
-            //如果用户已经存在
-            if ($register->checkIfExists()) {
-                printResult(USER_EXISTS, '该邮箱已经注册', -1);
+                        } else {
+                            Session::set(SESSION_VERIFY_CODE, $code, 180);//180秒 验证码失效
+                            printResult(SUCCESS, '验证码已经发送', $code);
+                        }
 
-            } else {
-                //通过邮件发送验证码失败
-                $code = -1;
-                if (($code = $register->sendVerifyCode()) == false) {
-                    printResult(SEND_VERIFY_CODE_FAILED, '发送验证码失败', -1);
+                    }
+                    break;
+                case "resetPassword":
+                    //如果用户已经存在
+                    if (!$register->checkIfExists()) {
+                        printResult(USER_EXISTS, '该邮箱尚未注册', -1);
 
-                } else {
-                    Session::set(SESSION_VERIFY_CODE, $code, 180);//180秒 验证码失效
-                    printResult(SUCCESS, '验证码已经发送', $code);
-                }
+                    } else {
+                        //通过邮件发送验证码失败
+                        $code = -1;
+                        if (($code = $register->sendVerifyCode(1)) == false) {
+                            printResult(SEND_VERIFY_CODE_FAILED, '发送验证码失败', -1);
 
+                        } else {
+                            Session::set(SESSION_VERIFY_CODE, $code, 180);//180秒 验证码失效
+                            printResult(SUCCESS, '验证码已经发送', $code);
+                        }
+
+                    }
+                    break;
             }
+
+
         } else {
             printResult(NO_PARAMS_RECEIVE, '服务器未收到参数', -1);
         }

@@ -59,6 +59,7 @@ define('post_meeting_event_id', '300133');//日历事件ID
 define('post_meeting_desc', '300134');//会议描述
 define('post_meeting_host_email', '300135');//会议主持人email
 define('post_chat_data', '300136');//聊天文件
+define('reset_password', '300137');//重置登录密码
 
 
 /**

@@ -11,12 +11,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.activity.SettingsAboutActivity;
 import cn.edu.hfut.lilei.shareboard.activity.SettingsMeetingActivity;
 import cn.edu.hfut.lilei.shareboard.activity.SettingsMyInfoActivity;
 import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
+import cn.edu.hfut.lilei.shareboard.model.ContextEvent;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 
@@ -40,10 +45,16 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         shouldCallUpdate = false;
-
+        EventBus.getDefault()
+                .register(this);
         View view = inflater.inflate(R.layout.fragment_settings_index, container, false);
         init(view);
         return view;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void listenContext(final ContextEvent event) {
+
     }
 
     @Override
@@ -99,6 +110,12 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent();
                 i.setClass(view.getContext(), SettingsMyInfoActivity.class);
+                ContextEvent e = new ContextEvent();
+                e.context = getContext();
+                e.from = "main";
+                e.to = "settings_my_info";
+                EventBus.getDefault()
+                        .postSticky(e);
                 startActivity(i);
             }
         });
