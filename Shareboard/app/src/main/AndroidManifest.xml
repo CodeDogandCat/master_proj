@@ -72,6 +72,9 @@
             android:name=".activity.PrivacyStrategyActivity"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".activity.FeedbackActivity"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".activity.JoinMeetingActivity"
             android:screenOrientation="portrait"/>
         <activity

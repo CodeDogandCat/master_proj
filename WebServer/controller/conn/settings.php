@@ -16,6 +16,7 @@ define('SESSION_MEETING_URL', 'meeting_url');
 define('SESSION_USER_AND_MEETING_ID', 'user_and_meeting_id');
 define('SESSION_MEETING_ID', 'meeting_id');
 define('SESSION_HOST_EMAIL', 'meeting_host_email');
+define('ADMIN_EMAIL', '2662083658@qq.com');
 
 /**
  * request name 信息
@@ -60,6 +61,7 @@ define('post_meeting_desc', '300134');//会议描述
 define('post_meeting_host_email', '300135');//会议主持人email
 define('post_chat_data', '300136');//聊天文件
 define('reset_password', '300137');//重置登录密码
+define('feedback', '300138');//用户反馈
 
 
 /**
@@ -105,6 +107,7 @@ define("REQUEST_DEL_FRIEND_ERROR", 4029);//请求删除好友失败
 define("ACCEPT_FRIEND_ERROR", 4030);//同意添加好友失败
 define("GET_ALL_FRIEND_ERROR", 4031);//获取好友列表失败
 define("INVITE_FRIEND_ERROR", 4032);//邀请联系人加会失败
+define("FEEDBACK_ERROR", 4033);//反馈失败
 
 /**
  * 数据库连接信息

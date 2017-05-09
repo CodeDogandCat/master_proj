@@ -35,6 +35,9 @@ public class SettingUtil {
     //重置密码
     public static final String URL_RESET_PASS =
             "http://118.89.102.238/controller/settings/reset_password.php";
+    //反馈
+    public static final String URL_FEEDBACK =
+            "http://118.89.102.238/controller/settings/feedback.php";
     //主持会议(安排)
     public static final String URL_HOST_MEETING =
             "http://118.89.102.238/controller/meeting/host_meeting.php";
@@ -94,6 +97,7 @@ public class SettingUtil {
     public static final String post_meeting_host_email = "300135";//会议主持人email
     public static final String post_chat_data = "300136";//聊天文件
     public static final String reset_password = "300137";//重置登录密码
+    public static final String feedback = "300138";//用户反馈
 
 
     //sharepreference name 参数

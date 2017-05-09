@@ -121,6 +121,9 @@ public class SettingsAboutActivity extends SwipeBackActivity implements View.OnC
             case R.id.ll_about_private:
                 startActivity(new Intent(mContext, PrivacyStrategyActivity.class));
                 break;
+            case R.id.ll_about_feedback:
+                startActivity(new Intent(mContext, FeedbackActivity.class));
+                break;
         }
     }
 

@@ -141,7 +141,8 @@
             android:background="@color/my_barblack"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin">
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="match_parent"

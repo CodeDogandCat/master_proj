@@ -5,6 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/model/User.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/DBPDO.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controller/conn/Session.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/util/EncryptUtil.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/util/SmtpUtil.php';
 
 class Update
 {
@@ -149,6 +150,20 @@ class Update
 
         }
 
+        return false;
+    }
+
+    /**
+     * 发送用户反馈到我的邮箱
+     * @param $content
+     * @return bool
+     */
+    public function feedback($content)
+    {
+        $subject = '用户反馈--' . $this->user->getEmail();
+        if (SmtpUtil::sendMail(ADMIN_EMAIL, $subject, $content)) {
+            return true;
+        }
         return false;
     }
 

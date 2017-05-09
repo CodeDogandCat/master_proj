@@ -227,4 +227,6 @@
     <string name="copy_to_clipboard">复制到剪贴板</string>
     <string name="invite_you_to_meeting">邀请你加入会议</string>
     <string name="privacy">隐私策略</string>
+    <string name="send">发送</string>
+    <string name="content_min_20">内容最少20个字</string>
 </resources>

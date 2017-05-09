@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/my_white"
+              android:clipToPadding="true"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical"
+              tools:context="cn.edu.hfut.lilei.shareboard.activity.SetUserInfoActivity">
+
+    <RelativeLayout style="@style/actionbar">
+
+
+        <ImageView
+            android:id="@+id/img_feedback_goback"
+            style="@style/actionbar_goback"/>
+
+        <TextView
+            android:id="@+id/tv_privacy_setuserinfo"
+            style="@style/navbar_title_textview_style"
+            android:text="@string/feedback"/>
+
+        <Button
+            android:id="@+id/btn_feedback_send"
+            style="@style/actionbar_button"
+            android:text="@string/send"/>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_edit_feedback">
+
+        <EditText
+            android:id="@+id/et_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:gravity="left|top"
+            android:maxLength="150"
+            android:textColor="@color/my_black"
+            />
+
+        <TextView
+            android:id="@+id/tv_feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="100/150字"
+            android:textColor="@color/my_barblack"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>
