@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:clipToPadding="true"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical"
+              tools:context="cn.edu.hfut.lilei.shareboard.activity.SetUserInfoActivity">
+
+    <RelativeLayout style="@style/actionbar">
+
+
+        <ImageView
+            android:id="@+id/img_privacy_goback"
+            style="@style/actionbar_goback"/>
+
+        <TextView
+            android:id="@+id/tv_privacy_setuserinfo"
+            style="@style/navbar_title_textview_style"
+            android:text="@string/privacy"/>
+
+
+    </RelativeLayout>
+
+
+    <WebView
+        android:id="@+id/wv_privacy"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+
+
+</LinearLayout>

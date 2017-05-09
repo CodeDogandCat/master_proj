@@ -1,6 +1,7 @@
 package cn.edu.hfut.lilei.shareboard.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,8 @@ import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
+import static cn.edu.hfut.lilei.shareboard.R.id.ll_about_private;
+
 
 public class SettingsAboutActivity extends SwipeBackActivity implements View.OnClickListener {
     //控件
@@ -20,7 +23,6 @@ public class SettingsAboutActivity extends SwipeBackActivity implements View.OnC
     private TextView mTvVersion, mTvFeedBack, mTvRecommend, mTvPrivate, mTvCurrentVersion;
     private ImageView next1, next2, next3, next4;
     //数据
-    private String mtheme, mpassword;
     //上下文参数
     private Context mContext;
     private ImageView mBtnBack;
@@ -46,7 +48,7 @@ public class SettingsAboutActivity extends SwipeBackActivity implements View.OnC
                 finish();
             }
         });
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         //右滑返回
@@ -69,7 +71,7 @@ public class SettingsAboutActivity extends SwipeBackActivity implements View.OnC
         mLlVersion = (LinearLayout) findViewById(R.id.ll_about_version_update);
         mLlFeedback = (LinearLayout) findViewById(R.id.ll_about_feedback);
         mLlRecommend = (LinearLayout) findViewById(R.id.ll_about_recommend);
-        mLlPrivate = (LinearLayout) findViewById(R.id.ll_about_private);
+        mLlPrivate = (LinearLayout) findViewById(ll_about_private);
 
         mTvVersion = (TextView) findViewById(R.id.tv_about_version);
         mTvCurrentVersion = (TextView) findViewById(R.id.tv_about_current_version);
@@ -116,6 +118,9 @@ public class SettingsAboutActivity extends SwipeBackActivity implements View.OnC
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.ll_about_private:
+                startActivity(new Intent(mContext, PrivacyStrategyActivity.class));
+                break;
         }
     }
 
