@@ -18,6 +18,9 @@ public class SettingUtil {
     //头像
     public static final String URL_AVATAR =
             "http://118.89.102.238/assets/avatar";
+    //软件ftp下载地址
+    public static final String URL_UPGRADE =
+            "http://118.89.102.238/assets/version";
     //聊天中的图片
     public static final String URL_CHAT_IMG =
             "http://118.89.102.238/assets/chat/image";
@@ -38,6 +41,9 @@ public class SettingUtil {
     //反馈
     public static final String URL_FEEDBACK =
             "http://118.89.102.238/controller/settings/feedback.php";
+    //版本更新
+    public static final String URL_VERSION_UPDATE =
+            "http://118.89.102.238/controller/settings/version_update.php";
     //主持会议(安排)
     public static final String URL_HOST_MEETING =
             "http://118.89.102.238/controller/meeting/host_meeting.php";
@@ -50,7 +56,7 @@ public class SettingUtil {
     //进入会议
     public static final String URL_ENTER_MEETING =
             "http://118.89.102.238/controller/meeting/enter_meeting.php";
-    //进入会议
+    //离开会议
     public static final String URL_LEAVE_MEETING =
             "http://118.89.102.238/controller/meeting/leave_meeting.php";
     //开会地址

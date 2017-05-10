@@ -108,6 +108,7 @@ define("ACCEPT_FRIEND_ERROR", 4030);//同意添加好友失败
 define("GET_ALL_FRIEND_ERROR", 4031);//获取好友列表失败
 define("INVITE_FRIEND_ERROR", 4032);//邀请联系人加会失败
 define("FEEDBACK_ERROR", 4033);//反馈失败
+define("UPGRADE_ERROR", 4034);//获取更新信息失败
 
 /**
  * 数据库连接信息

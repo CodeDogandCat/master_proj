@@ -157,6 +157,12 @@
         </activity>
         <!--录屏-->
         <service android:name=".service.RecordService"/>
+        <!--apk下载管理-->
+        <receiver android:name=".broadcast.ApkInstallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+            </intent-filter>
+        </receiver>
 
 
         <!--推送-->

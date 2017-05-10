@@ -188,4 +188,31 @@ class Update
         return true;//更新成功
     }
 
+    /**
+     * 获取版本更新信息
+     * @return mixed
+     */
+    public function getUpgrade()
+    {
+        $sql = 'SELECT *
+                FROM bd_version  
+                ORDER BY version_id DESC LIMIT ' . 0 . ',' . 1;
+
+        $rows = $this->db->select2($sql);
+        if (count($rows) == 1) {//存在最新版本
+
+            $data = array();
+            $data["appname"] = $rows[0]["app_name"];
+            $data["serverVersion"] = $rows[0]["server_version"];
+            $data["serverFlag"] = $rows[0]["server_flag"];
+            $data["lastForce"] = $rows[0]["last_force"];
+            $data["updateurl"] = $rows[0]["update_url"];
+            $data["upgradeinfo"] = $rows[0]["upgrade_info"];
+
+            return $data;
+
+        }
+        return false;//不存在
+    }
+
 }

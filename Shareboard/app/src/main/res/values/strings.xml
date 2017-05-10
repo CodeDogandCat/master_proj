@@ -111,6 +111,7 @@
     <string name="logout_failed">注销失败</string>
     <string name="saving">保存...</string>
     <string name="sending">发送...</string>
+    <string name="get_version_info">获取最新版本信息...</string>
     <string name="checking">核对...</string>
     <string name="arranging">安排...</string>
     <string name="loding">加载...</string>
@@ -130,7 +131,7 @@
     <string name="about_board">关于小喵白板</string>
     <string name="recommend">向他人推荐小喵白板</string>
     <string name="feedback">发送反馈</string>
-    <string name="version_update">版本</string>
+    <string name="version_update">版本更新</string>
     <string name="private_strategy">隐私策略</string>
     <string name="default_meeting_theme">默认会议主题</string>
     <string name="no_name_meeting">未命名的会议</string>
