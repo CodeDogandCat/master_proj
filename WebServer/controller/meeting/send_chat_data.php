@@ -33,7 +33,7 @@ try {
         $ext = "";
         if ($_REQUEST[post_need_feature] == 'image') {
             $ext = 'jpeg';
-        } else if ($_REQUEST[post_need_feature] == 'image') {
+        } else if ($_REQUEST[post_need_feature] == 'voice') {
             $ext = 'amr';
         } else {
             $ext = FileUtil::get_extension(basename($_FILES [post_chat_data] ['name']));
