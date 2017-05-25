@@ -428,7 +428,10 @@ public class ImageUtil {
      */
     public static void compressImage(File oriFile, File targetFile, OutputStream stream,
                                      boolean ifDel) {
-        if (oriFile == null) return;
+        if (oriFile == null){
+            Log.i("shareboard", "源图片为空");
+            return;
+        }
         Log.i("shareboard", "源图片为" + oriFile);
         Log.i("shareboard", "目标地址为" + targetFile);
         try {

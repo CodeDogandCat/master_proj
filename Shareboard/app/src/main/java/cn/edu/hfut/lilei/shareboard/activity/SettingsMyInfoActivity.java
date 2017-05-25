@@ -53,7 +53,6 @@ import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CAMERA_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CROP_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CAMERA;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CROP;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
@@ -83,6 +82,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
     private boolean shouldCallUpdate = false;
     private String baseDir = "";
     private File srcFile, targetFile;
+    private File cropImage = null;
 
     //上下文参数
     private Context mContext;
@@ -101,6 +101,13 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
         init();
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault()
+                .unregister(this);
     }
 
     private void update() {
@@ -263,15 +270,21 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                                                              .deleteData(share_token)) {
 //                                                                         showToast(mContext, R.string.logout_failed);
                                                                      } else {
+//                                                                         if (MainContext != null) {
+//
+//                                                                             ((Activity) MainContext).finish();
+//                                                                             showLog("@@@@@###########  ((Activity)MainContext) .finish();");
+//                                                                         }
+                                                                         if (MainActivity.instance !=
+                                                                                 null) {
+                                                                             MainActivity.instance.finish();
+                                                                             showLog("@@@@@###########  MainActivity.instance.finish();");
+                                                                         }
                                                                          Intent intent = new Intent();
                                                                          intent.setClass(SettingsMyInfoActivity.this,
                                                                                  LoginActivity.class);
                                                                          startActivity(intent);
-                                                                         if (MainContext != null) {
 
-                                                                             ((Activity) MainContext).finish();
-                                                                             showLog("@@@@@###########  ((Activity)MainContext) .finish();");
-                                                                         }
                                                                          finish();
                                                                      }
                                                                  }
@@ -317,29 +330,19 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
      * 构造更改头像弹出窗口
      */
     private void createAlterHeadDialog() {
-        //构造一个目标URI
 
-        String baseDir = "";
-        if (FileUtil.isExternalStorageWritable()) {
-            baseDir = this.getExternalFilesDir("")
-                    .getAbsolutePath() + "/shareboard/";
-        } else {
-            baseDir = this.getFilesDir()
-                    .getAbsolutePath() + "/shareboard/";
-        }
 
-        File file = new File(baseDir,
-                "image");//拍照后保存的路径
+//        File dir = MyAppUtil.getsaveDirectory(this, "image");
+//        cropImage = new File(dir.getAbsolutePath() + "/" + "CROP.jpeg");
+        cropImage = new File(baseDir, "CROP.jpeg");
 
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        File cropImage = new File(file.getAbsolutePath(),
-                IMG_PATH_FOR_CROP);
         try {
             if (cropImage.exists()) {
                 cropImage.delete();
             }
+//            if (!dir.exists()) {
+//                dir.mkdirs();
+//            }
             cropImage.createNewFile();
             cropUri = Uri.fromFile(cropImage);
             new AlterHeadDialog.Builder(SettingsMyInfoActivity.this)
@@ -385,18 +388,14 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                 Log.i(SettingUtil.TAG, "裁剪以后 [ " + data + " ]");
                 mlodingDialog = loding(mContext, R.string.saving);
 
-                final String avatarPath =
-                        ImageUtil.getImageAbsolutePath19(mContext, cropUri);
-
-                srcFile = new File(avatarPath);
-                targetFile = new File(avatarPath.substring(0, avatarPath.lastIndexOf(".")
-                ) + "compressed.jpeg");
-
-                ImageUtil.compressImage(srcFile, targetFile, null, false);
-
-//                final File avatarFile = new File(avatarPath);
-
-                if (targetFile.length() > 1024 * 1024 * 6)// 6M  照片最大限制
+                if (cropImage == null) {
+                    return;
+                }
+                if (!cropImage.exists()) {
+//                    showToast(mContext, "不存在");
+                    return;
+                }
+                if (cropImage.length() > 1024 * 1024 * 6)// 6M  照片最大限制
                 {
                     showToast(mContext, getString(R.string.image_too_large));
                 } else {
@@ -438,7 +437,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                     .params(post_need_feature, update_avatar)
                                     .params(post_user_email, email)
                                     .params(post_token, token)
-                                    .params(post_user_avatar, targetFile)
+                                    .params(post_user_avatar, cropImage)
                                     .execute(new JsonCallback<RegisterJson>() {
                                         @Override
                                         public void onSuccess(RegisterJson o, Call call,
@@ -447,7 +446,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                                 /**
                                                  * 4.更新成功,显示
                                                  */
-                                                targetFile.delete();
+                                                cropImage.delete();
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_avatar, URL_AVATAR + o
                                                                 .getData()
@@ -458,7 +457,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
 
 
                                             } else {
-                                                targetFile.delete();
+                                                cropImage.delete();
                                                 mlodingDialog.cancle();
                                                 //提示所有错误
                                                 showLog(o.getMsg());
@@ -470,7 +469,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                         public void onError(Call call, Response response,
                                                             Exception e) {
                                             super.onError(call, response, e);
-                                            targetFile.delete();
+                                            cropImage.delete();
                                             mlodingDialog.cancle();
 //                                            showToast(mContext, R.string.system_error);
                                         }
@@ -483,7 +482,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                         protected void onPostExecute(Integer integer) {
                             super.onPostExecute(integer);
 
-                            targetFile.delete();
+                            cropImage.delete();
                             mlodingDialog.cancle();
                             switch (integer) {
                                 case NET_DISCONNECT:
@@ -501,17 +500,6 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                     break;
                             }
                         }
-//                try {
-//                    photo = BitmapFactory.decodeStream(this.getContentResolver()
-//                            .openInputStream(cropUri));
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    photo.compress(Bitmap.CompressFormat.JPEG, 50, stream);// (0-100)压缩文件
-//                    mPhoto.setImageBitmap(photo); //把图片显示在ImageView控件上
-
-
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
                     }.execute();
                 }
             default:

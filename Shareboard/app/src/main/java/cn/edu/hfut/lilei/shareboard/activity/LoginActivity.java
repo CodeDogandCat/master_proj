@@ -14,9 +14,14 @@ import android.widget.LinearLayout;
 
 import com.lzy.okgo.OkGo;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import cn.edu.hfut.lilei.shareboard.JsonEnity.LoginJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
+import cn.edu.hfut.lilei.shareboard.model.ContextEvent;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.JpushUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -61,16 +66,31 @@ public class LoginActivity extends Activity {
 
     //上下文参数
     private Context mContext;
+    public static LoginActivity instance = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        EventBus.getDefault()
+                .register(this);
         init();
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault()
+                .unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void listenContext(final ContextEvent event) {
+    }
+
     private void init() {
+        instance = this;
         mContext = this;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
@@ -144,6 +164,12 @@ public class LoginActivity extends Activity {
                 Bundle b = new Bundle();
                 b.putInt(post_need_feature, 0);
                 intent.putExtras(b);
+                ContextEvent e = new ContextEvent();
+                e.context = mContext;
+                e.from = "login";
+                e.to = "set_user_info";
+                EventBus.getDefault()
+                        .postSticky(e);
                 startActivity(intent);
             }
         });

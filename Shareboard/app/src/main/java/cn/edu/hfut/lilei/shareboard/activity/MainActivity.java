@@ -64,6 +64,7 @@ public class MainActivity extends FragmentActivity implements
     private TabPageAdapter tabPageAdapter;
     //上下文参数
     private Context mContext;
+    public static MainActivity instance = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     protected void init() {
+        instance = this;
         mContext = this;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));

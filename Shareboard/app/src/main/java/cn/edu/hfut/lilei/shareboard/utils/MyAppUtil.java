@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
@@ -382,42 +381,39 @@ public class MyAppUtil {
     }
 
 
-    public static String getsaveDirectory(Context context, String name) {
+    public static File getsaveDirectory(Context context, String name) {
 
 
-        if (Environment.getExternalStorageState()
-                .equals(Environment.MEDIA_MOUNTED)) {
-            String rootDir = Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() +
-                    "/DCIM/ShareBoard/";
-
-            File file = new File(rootDir);
-            if (!file.exists()) {
-                if (!file.mkdirs()) {
-                    return null;
-                }
-            }
-
-            return rootDir;
+//        if (Environment.getExternalStorageState()
+//                .equals(Environment.MEDIA_MOUNTED)) {
+//            String rootDir = Environment.getExternalStorageDirectory()
+//                    .getAbsolutePath() +
+//                    "/DCIM/ShareBoard/";
+//
+//            File file = new File(rootDir);
+//            if (!file.exists()) {
+//                if (!file.mkdirs()) {
+//                    return null;
+//                }
+//            }
+//
+//            return rootDir;
+//        } else {
+        String baseDir = "";
+        if (FileUtil.isExternalStorageWritable()) {
+            baseDir = context.getExternalFilesDir("")
+                    .getAbsolutePath() + "/" + name + "/";
         } else {
-            String baseDir = "";
-            if (FileUtil.isExternalStorageWritable()) {
-                baseDir = context.getExternalFilesDir("")
-                        .getAbsolutePath() + "/shareboard/";
-            } else {
-                baseDir = context.getFilesDir()
-                        .getAbsolutePath() + "/shareboard/";
-            }
-
-            File file = new File(baseDir,
-                    name);//拍照后保存的路径
-
-            if (!file.exists()) {
-                file.mkdir();
-            }
-            return file.getAbsolutePath();
+            baseDir = context.getFilesDir()
+                    .getAbsolutePath() + "/" + name + "/";
         }
+        File dir = new File(baseDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        return dir;
     }
+
 
     /**
      * 强制更新

@@ -52,6 +52,13 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault()
+                .unregister(this);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void listenContext(final ContextEvent event) {
 

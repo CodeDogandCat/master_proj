@@ -18,19 +18,22 @@ import android.widget.LinearLayout;
 
 import com.lzy.okgo.OkGo;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 import java.io.IOException;
 
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.RegisterJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.RegisterJson;
+import cn.edu.hfut.lilei.shareboard.model.ContextEvent;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.JpushUtil;
-import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.PermissionsUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
@@ -49,6 +52,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.ALBUM_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CAMERA_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CROP_REQUEST_CODE;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CAMERA;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
@@ -78,16 +82,17 @@ public class SetUserInfoActivity extends SwipeBackActivity {
     private Button mBtnComplete;
     private ImageView mBtnBack;
     private LodingDialog.Builder mlodingDialog;
+    private boolean hasSetAvatar = false;
 
     //数据
     private Uri cropUri;
     private File picture;
-    private String avatarPath = "空";
+    private File cropImage = null;
     private String baseDir = "";
-    private File srcFile, targetFile;
 
     //上下文参数
     private Context mContext;
+    private Context LoginContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +115,13 @@ public class SetUserInfoActivity extends SwipeBackActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
+        if (FileUtil.isExternalStorageWritable()) {
+            baseDir = mContext.getExternalFilesDir("")
+                    .getAbsolutePath();
+        } else {
+            baseDir = mContext.getFilesDir()
+                    .getAbsolutePath();
+        }
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
@@ -126,13 +138,6 @@ public class SetUserInfoActivity extends SwipeBackActivity {
             }
         });
 
-        if (FileUtil.isExternalStorageWritable()) {
-            baseDir = mContext.getExternalFilesDir("")
-                    .getAbsolutePath();
-        } else {
-            baseDir = mContext.getFilesDir()
-                    .getAbsolutePath();
-        }
         mPhoto = (AvatarImageView) this.findViewById(R.id.img_set_user_info_avatar);
         mLlSetAvatar = (LinearLayout) findViewById(R.id.ll_set_user_info_avatar);
         mBtnComplete = (Button) findViewById(R.id.btn_setuserinfo_complete);
@@ -160,231 +165,242 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                         .toString()
                         .trim();
 
-//                final File avatarFile = new File(avatarPath);
 
+                new AsyncTask<Void, Void, Integer>() {
 
-                if (targetFile != null && targetFile.length() > 1024 * 1024 * 6)// 6M  照片最大限制
-                {
-                    showToast(mContext, getString(R.string.image_too_large));
-                } else {
+                    @Override
+                    protected Integer doInBackground(Void... voids) {
+                        /**
+                         * 1.检查网络状态并提醒
+                         */
+                        if (!NetworkUtil.isNetworkConnected(mContext)) {
+                            //网络连接不可用
+                            return NET_DISCONNECT;
+                        }
+                        /**
+                         * 2.检查用户输入格式
+                         */
 
-                    new AsyncTask<Void, Void, Integer>() {
+                        if (!StringUtil.isValidName(familyName)) {
+                            //姓格式不对
+                            return WRONG_FORMAT_INPUT_NO1;
+                        }
 
-                        @Override
-                        protected Integer doInBackground(Void... voids) {
-                            /**
-                             * 1.检查网络状态并提醒
-                             */
-                            if (!NetworkUtil.isNetworkConnected(mContext)) {
-                                //网络连接不可用
-                                return NET_DISCONNECT;
-                            }
-                            /**
-                             * 2.检查用户输入格式
-                             */
-
-                            if (!StringUtil.isValidName(familyName)) {
-                                //姓格式不对
-                                return WRONG_FORMAT_INPUT_NO1;
-                            }
-
-                            if (!StringUtil.isValidName(givenName)) {
-                                //名格式不对
-                                return WRONG_FORMAT_INPUT_NO2;
-                            }
-                            if (!StringUtil.isValidPassword(password)) {
-                                //密码格式不对
-                                return WRONG_FORMAT_INPUT_NO3;
-                            }
-                            /**
-                             * 3.构造参数
-                             */
+                        if (!StringUtil.isValidName(givenName)) {
+                            //名格式不对
+                            return WRONG_FORMAT_INPUT_NO2;
+                        }
+                        if (!StringUtil.isValidPassword(password)) {
+                            //密码格式不对
+                            return WRONG_FORMAT_INPUT_NO3;
+                        }
+                        /**
+                         * 3.构造参数
+                         */
 //                        showLog("加密前的密码：" + password);
-                            String passEncrypted = StringUtil.getMD5(password);
-                            if (passEncrypted == null) {
-                                return -1;
-                            }
+                        String passEncrypted = StringUtil.getMD5(password);
+                        if (passEncrypted == null) {
+                            return -1;
+                        }
 //                        showLog("加密后的密码：" + passEncrypted);
 
-                            String postEmail = (String) SharedPrefUtil.getInstance()
-                                    .getData(share_user_email, "空");
-                            if (postEmail.equals("空")) {
-                                return -2;
-                            }
-                            /**
-                             * 4.上传
-                             */
+                        String postEmail = (String) SharedPrefUtil.getInstance()
+                                .getData(share_user_email, "空");
+                        if (postEmail.equals("空")) {
+                            return -2;
+                        }
+                        /**
+                         * 4.上传
+                         */
 
-                            if (!avatarPath.equals("空")) {
+                        if (hasSetAvatar) {
 
 
-                                OkGo.post(URL_SAVE_USR_INFO)
-                                        .tag(this)
-                                        .isMultipart(true)
-                                        .params(post_user_email, postEmail)
-                                        .params(post_user_family_name, familyName)
-                                        .params(post_user_given_name, givenName)
-                                        .params(post_user_login_password, passEncrypted)
-                                        .params(post_user_avatar, srcFile)
+                            OkGo.post(URL_SAVE_USR_INFO)
+                                    .tag(this)
+                                    .isMultipart(true)
+                                    .params(post_user_email, postEmail)
+                                    .params(post_user_family_name, familyName)
+                                    .params(post_user_given_name, givenName)
+                                    .params(post_user_login_password, passEncrypted)
+                                    .params(post_user_avatar, cropImage)
 //                                        .params(post_user_avatar, targetFile)
-                                        .execute(new JsonCallback<RegisterJson>() {
-                                            @Override
-                                            public void onSuccess(RegisterJson o, Call call,
-                                                                  Response response) {
-                                                if (o.getCode() == SUCCESS) {
-                                                    /**
-                                                     * 5.注册成功,缓存token ,姓,名
-                                                     */
-                                                    targetFile.delete();
-                                                    SharedPrefUtil.getInstance()
-                                                            .saveData(share_token, o.getData()
-                                                                    .getToken());
-                                                    SharedPrefUtil.getInstance()
-                                                            .saveData(share_family_name,
-                                                                    familyName);
-                                                    SharedPrefUtil.getInstance()
-                                                            .saveData(share_given_name, givenName);
-                                                    SharedPrefUtil.getInstance()
-                                                            .saveData(share_avatar, URL_AVATAR + o
-                                                                    .getData()
-                                                                    .getAvatar());
+                                    .execute(new JsonCallback<RegisterJson>() {
+                                        @Override
+                                        public void onSuccess(RegisterJson o, Call call,
+                                                              Response response) {
+                                            if (o.getCode() == SUCCESS) {
+                                                /**
+                                                 * 5.注册成功,缓存token ,姓,名
+                                                 */
+                                                cropImage.delete();
+                                                SharedPrefUtil.getInstance()
+                                                        .saveData(share_token, o.getData()
+                                                                .getToken());
+                                                SharedPrefUtil.getInstance()
+                                                        .saveData(share_family_name,
+                                                                familyName);
+                                                SharedPrefUtil.getInstance()
+                                                        .saveData(share_given_name, givenName);
+                                                SharedPrefUtil.getInstance()
+                                                        .saveData(share_avatar, URL_AVATAR + o
+                                                                .getData()
+                                                                .getAvatar());
 
 
-                                                    //设置推送的别名
-                                                    JpushUtil util = new JpushUtil(mContext);
-                                                    util.setAlias();
+                                                //设置推送的别名
+                                                JpushUtil util = new JpushUtil(mContext);
+                                                util.setAlias();
 
 
-                                                    mlodingDialog.cancle();
-                                                    /**
-                                                     * 6.跳转
-                                                     */
-                                                    Intent intent = new Intent();
-                                                    intent.setClass(SetUserInfoActivity.this,
-                                                            MainActivity.class);
-                                                    startActivity(intent);
-                                                    finish();
-
-
-                                                } else {
-                                                    targetFile.delete();
-                                                    mlodingDialog.cancle();
-                                                    //提示所有错误
-                                                    showLog(o.getMsg());
-//                                                    showToast(mContext, o.getMsg());
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onError(Call call, Response response,
-                                                                Exception e) {
-                                                super.onError(call, response, e);
-                                                targetFile.delete();
                                                 mlodingDialog.cancle();
-//                                                showToast(mContext, R.string.system_error);
-                                            }
-                                        });
-                            } else {
-                                OkGo.post(URL_SAVE_USR_INFO)
-                                        .tag(this)
-                                        .params(post_user_email, postEmail)
-                                        .params(post_user_family_name, familyName)
-                                        .params(post_user_given_name, givenName)
-                                        .params(post_user_login_password, passEncrypted)
-                                        .execute(new JsonCallback<CommonJson>() {
-                                            @Override
-                                            public void onSuccess(CommonJson o, Call call,
-                                                                  Response response) {
-                                                if (o.getCode() == SUCCESS) {
-                                                    /**
-                                                     * 5.注册成功,缓存token ,姓,名
-                                                     */
-                                                    SharedPrefUtil.getInstance()
-                                                            .saveData(share_token, o.getMsg());
-                                                    SharedPrefUtil.getInstance()
-                                                            .saveData(share_family_name,
-                                                                    familyName);
-                                                    SharedPrefUtil.getInstance()
-                                                            .saveData(share_given_name, givenName);
-
-                                                    //设置推送的别名
-                                                    JpushUtil util = new JpushUtil(mContext);
-                                                    util.setAlias();
-
-                                                    mlodingDialog.cancle();
-                                                    /**
-                                                     * 6.跳转
-                                                     */
-                                                    Intent intent = new Intent();
-                                                    intent.setClass(SetUserInfoActivity.this,
-                                                            MainActivity.class);
-                                                    startActivity(intent);
-                                                    finish();
-
-
-                                                } else {
-                                                    mlodingDialog.cancle();
-                                                    //提示所有错误
-                                                    showLog(o.getMsg());
-//                                                    showToast(mContext, o.getMsg());
+                                                /**
+                                                 * 6.跳转
+                                                 */
+//                                                if (LoginContext != null) {
+//                                                    ((Activity) LoginContext).finish();
+//                                                    showLog("@@@@@###########  ((Activity)LoginContext) .finish();");
+//                                                }
+                                                if (LoginActivity.instance != null) {
+                                                    LoginActivity.instance.finish();
+                                                    showLog("@@@@@###########  LoginActivity.instance.finish();");
                                                 }
-                                            }
+                                                Intent intent = new Intent();
+                                                intent.setClass(SetUserInfoActivity.this,
+                                                        MainActivity.class);
+                                                startActivity(intent);
 
-                                            @Override
-                                            public void onError(Call call, Response response,
-                                                                Exception e) {
-                                                super.onError(call, response, e);
+                                                finish();
+
+
+                                            } else {
+                                                cropImage.delete();
                                                 mlodingDialog.cancle();
-//                                                showToast(mContext, R.string.system_error);
+                                                //提示所有错误
+                                                showLog(o.getMsg());
+//                                                    showToast(mContext, o.getMsg());
                                             }
-                                        });
-                            }
+                                        }
 
-                            return -1;
+                                        @Override
+                                        public void onError(Call call, Response response,
+                                                            Exception e) {
+                                            super.onError(call, response, e);
+                                            cropImage.delete();
+                                            mlodingDialog.cancle();
+//                                                showToast(mContext, R.string.system_error);
+                                        }
+                                    });
+                        } else {
+                            OkGo.post(URL_SAVE_USR_INFO)
+                                    .tag(this)
+                                    .params(post_user_email, postEmail)
+                                    .params(post_user_family_name, familyName)
+                                    .params(post_user_given_name, givenName)
+                                    .params(post_user_login_password, passEncrypted)
+                                    .execute(new JsonCallback<CommonJson>() {
+                                        @Override
+                                        public void onSuccess(CommonJson o, Call call,
+                                                              Response response) {
+                                            if (o.getCode() == SUCCESS) {
+                                                /**
+                                                 * 5.注册成功,缓存token ,姓,名
+                                                 */
+                                                SharedPrefUtil.getInstance()
+                                                        .saveData(share_token, o.getMsg());
+                                                SharedPrefUtil.getInstance()
+                                                        .saveData(share_family_name,
+                                                                familyName);
+                                                SharedPrefUtil.getInstance()
+                                                        .saveData(share_given_name, givenName);
 
+                                                //设置推送的别名
+                                                JpushUtil util = new JpushUtil(mContext);
+                                                util.setAlias();
+
+                                                mlodingDialog.cancle();
+                                                /**
+                                                 * 6.跳转
+                                                 */
+                                                if (LoginActivity.instance != null) {
+                                                    LoginActivity.instance.finish();
+                                                    showLog("@@@@@###########  LoginActivity.instance.finish();");
+                                                }
+                                                Intent intent = new Intent();
+                                                intent.setClass(SetUserInfoActivity.this,
+                                                        MainActivity.class);
+                                                startActivity(intent);
+
+                                                finish();
+
+
+                                            } else {
+                                                mlodingDialog.cancle();
+                                                //提示所有错误
+                                                showLog(o.getMsg());
+//                                                    showToast(mContext, o.getMsg());
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Call call, Response response,
+                                                            Exception e) {
+                                            super.onError(call, response, e);
+                                            mlodingDialog.cancle();
+//                                                showToast(mContext, R.string.system_error);
+                                        }
+                                    });
                         }
 
-                        @Override
-                        protected void onPostExecute(Integer integer) {
-                            super.onPostExecute(integer);
-                            if (targetFile != null) {
-                                targetFile.delete();
-                            }
-                            mlodingDialog.cancle();
-                            switch (integer) {
-                                case NET_DISCONNECT:
-                                    //弹出对话框，让用户开启网络
-                                    NetworkUtil.setNetworkMethod(mContext);
-                                    break;
-                                case WRONG_FORMAT_INPUT_NO1:
-                                    //提示姓格式不对
-                                    showToast(mContext, R.string.can_not_recognize_family_name);
-                                    break;
-                                case WRONG_FORMAT_INPUT_NO2:
-                                    //提示名格式不对
-                                    showToast(mContext, R.string.can_not_recognize_given_name);
-                                    break;
-                                case WRONG_FORMAT_INPUT_NO3:
-                                    //提示登录密码格式不对
-                                    showToast(mContext, R.string.can_not_recognize_login_password);
-                                    break;
-                                case -1:
-                                    break;
-                                case -2:
-                                    showToast(mContext, R.string.please_relogin);
-                                    break;
+                        return -1;
 
-                                default:
+                    }
+
+                    @Override
+                    protected void onPostExecute(Integer integer) {
+                        super.onPostExecute(integer);
+                        cropImage.delete();
+                        mlodingDialog.cancle();
+                        switch (integer) {
+                            case NET_DISCONNECT:
+                                //弹出对话框，让用户开启网络
+                                NetworkUtil.setNetworkMethod(mContext);
+                                break;
+                            case WRONG_FORMAT_INPUT_NO1:
+                                //提示姓格式不对
+                                showToast(mContext, R.string.can_not_recognize_family_name);
+                                break;
+                            case WRONG_FORMAT_INPUT_NO2:
+                                //提示名格式不对
+                                showToast(mContext, R.string.can_not_recognize_given_name);
+                                break;
+                            case WRONG_FORMAT_INPUT_NO3:
+                                //提示登录密码格式不对
+                                showToast(mContext, R.string.can_not_recognize_login_password);
+                                break;
+                            case -1:
+                                break;
+                            case -2:
+                                showToast(mContext, R.string.please_relogin);
+                                break;
+
+                            default:
 //                                    showToast(mContext, R.string.system_error);
-                                    break;
-                            }
+                                break;
                         }
-                    }.execute();
-                }
-
+                    }
+                }.execute();
             }
+
         });
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void listenContext(final ContextEvent event) {
+        if (event.from.equals("login") && event.to.equals("set_user_info")) {
+            LoginContext = event.context;
+        }
     }
 
     /**
@@ -420,17 +436,18 @@ public class SetUserInfoActivity extends SwipeBackActivity {
      * 构造更改头像弹出窗口
      */
     private void createAlterHeadDialog() {
-        //构造一个目标URI
 
-
-        File cropImage = new File(MyAppUtil.getsaveDirectory(this, "Image"),
-                System.currentTimeMillis
-                        () + ".jpeg");
+//        File dir = MyAppUtil.getsaveDirectory(this, "image");
+//        cropImage = new File(dir.getAbsolutePath() + "/" + "CROP.jpeg");
+        cropImage = new File(baseDir, "CROP.jpeg");
 
         try {
             if (cropImage.exists()) {
                 cropImage.delete();
             }
+//            if (!dir.exists()) {
+//                dir.mkdirs();
+//            }
             cropImage.createNewFile();
             cropUri = Uri.fromFile(cropImage);
             new AlterHeadDialog.Builder(mContext)
@@ -465,9 +482,8 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                 break;
             case CAMERA_REQUEST_CODE:
                 Log.i(SettingUtil.TAG, "相机, 开始裁剪");
-                picture = new File(MyAppUtil.getsaveDirectory(this, "Image"),
-                        System.currentTimeMillis
-                                () + ".jpeg");
+                picture = new File(baseDir,
+                        IMG_PATH_FOR_CAMERA);//拍照后保存的路径
                 ImageUtil.startCrop(this, Uri.fromFile(picture),
                         cropUri, 200, 200);
                 break;
@@ -475,25 +491,14 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                 Log.i(SettingUtil.TAG, "相册裁剪成功");
                 //小米手机返回为空intent{}，所以不能用这种方法取得，用目标路径的uri取得
                 Log.i(SettingUtil.TAG, "裁剪以后 [ " + data + " ]");
-
-                try {
-
-                    avatarPath = ImageUtil.getImageAbsolutePath19(mContext,
-                            cropUri);
-                    srcFile = new File(avatarPath);
-                    targetFile = new File(avatarPath.substring(0, avatarPath.lastIndexOf(".")
-                    ) + "compressed.jpeg");
-
-                    ImageUtil.compressImage(srcFile, targetFile, null, false);
-
-                    showLog(avatarPath);
-
-                    ImageUtil.loadAvatarNoCache(mContext, Uri.fromFile(targetFile), mPhoto);
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (cropImage.length() == 0) {
+                    hasSetAvatar = false;
+                } else {
+                    hasSetAvatar = true;
+                    ImageUtil.loadAvatarNoCache(mContext, cropUri, mPhoto);
                 }
+
+
                 break;
             default:
                 break;
