@@ -84,8 +84,12 @@
             <cn.edu.hfut.lilei.shareboard.widget.GifTextView
                 android:id="@+id/chat_item_content_text"
                 style="@style/text_subhead_black"
-                android:layout_marginLeft="@dimen/content_horizontal_margin"
-                android:padding="@dimen/content_vertical_margin"/>
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical|left"
+                android:lineSpacingExtra="3dp"/>
 
             <ImageView
                 android:id="@+id/chat_item_voice"

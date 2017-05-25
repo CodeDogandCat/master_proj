@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ChatAdapter;
+import cn.edu.hfut.lilei.shareboard.base.MyApplication;
 import cn.edu.hfut.lilei.shareboard.model.MessageInfo;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
@@ -99,15 +100,25 @@ public class ChatAcceptViewHolder extends BaseViewHolder<MessageInfo> {
                 chatItemVoiceTime.setVisibility(View.GONE);
                 chatItemContentImage.setVisibility(View.GONE);
                 TextPaint paint = chatItemContentText.getPaint();
-                // 计算textview在屏幕上占多宽
-                int len = (int) paint.measureText(chatItemContentText.getText()
+                // 计算最长的一行的字符串长度
+
+                int maxlLen = 0;
+                String[] lens = chatItemContentText.getText()
                         .toString()
-                        .trim());
-                if (len < Utils.dp2px(getContext(), 200)) {
-                    layoutParams.width = len + Utils.dp2px(getContext(), 30);
-                    layoutParams.height = Utils.dp2px(getContext(), 48);
+                        .trim()
+                        .split("\\r?\\n");
+                for (int i = 0; i < lens.length; i++) {
+                    if (lens[i].length() > maxlLen) {
+                        maxlLen = lens[i].length();
+                    }
+                }
+
+                if (maxlLen < MyApplication.screenWidth - Utils.dp2px(getContext(), 80)) {
+                    layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+//                    layoutParams.width = len + Utils.dp2px(getContext(), 20);
+                    layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 } else {
-                    layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                    layoutParams.width = MyApplication.screenWidth - Utils.dp2px(getContext(), 150);
                     layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 }
                 chatItemLayoutContent.setLayoutParams(layoutParams);
