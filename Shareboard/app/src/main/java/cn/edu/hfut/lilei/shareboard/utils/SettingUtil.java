@@ -140,7 +140,11 @@ public class SettingUtil {
     public static final int SHOW_TIME_MIN = 800;//最短跳转时间
     public static final String TAG = "shareboard";//调试TAG
     public static final String PACKAGE_NAME = "cn.edu.hfut.lilei.shareboard";//包名
+
     public static final String INSTALLED = "hasInstalled";//已经安装过
+    public static final String LOCAL_VERSION = "installed_version";//已安装版本
+    public static final String CURRENT_VERSION = "1.0.3";//当前版本号
+
     public static final int COMMON_CHECK_IN = 1;//与会人加会
     public static final int HOST_CHECK_IN = 2;//主持人加会
 //    public static final String SYSTEM_DIR = "/data/data/" + PACKAGE_NAME + " /tvMeetingId";//系统文件夹

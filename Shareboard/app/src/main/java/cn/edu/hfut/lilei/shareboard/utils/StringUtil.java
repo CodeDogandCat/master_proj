@@ -601,6 +601,45 @@ public class StringUtil {
     }
 
 
+    public static int appVersionCompare(String server, String local) {
+        showLog("appVersionCompare" + server + local);
+        String[] server_arr = server.split("\\.");
+        String[] local_arr = local.split("\\.");
+        if (server_arr.length == 3 && local_arr.length == 3) {
+            if (Integer.valueOf(server_arr[0]) > Integer.valueOf(local_arr[0])) {
+                showLog("Integer.valueOf(server_arr[0]) > Integer.valueOf(local_arr[0])");
+                return 1;
+            }
+            if (Integer.valueOf(server_arr[0]) < Integer.valueOf(local_arr[0])) {
+                showLog("Integer.valueOf(server_arr[0]) < Integer.valueOf(local_arr[0])");
+                return -1;
+            }
+            if (Integer.valueOf(server_arr[1]) > Integer.valueOf(local_arr[1])) {
+                showLog("Integer.valueOf(server_arr[1]) > Integer.valueOf(local_arr[1])");
+                return 1;
+            }
+            if (Integer.valueOf(server_arr[1]) < Integer.valueOf(local_arr[1])) {
+                showLog("Integer.valueOf(server_arr[1]) < Integer.valueOf(local_arr[1])");
+                return -1;
+            }
+            if (Integer.valueOf(server_arr[2]) > Integer.valueOf(local_arr[2])) {
+                showLog("Integer.valueOf(server_arr[2]) > Integer.valueOf(local_arr[2])");
+                return 1;
+            }
+            if (Integer.valueOf(server_arr[2]) < Integer.valueOf(local_arr[2])) {
+                showLog("Integer.valueOf(server_arr[2]) < Integer.valueOf(local_arr[2])");
+                return -1;
+            }
+            showLog("===");
+            return 0;
+
+        }
+        showLog("不满足server_arr.length == 3 && local_arr.length == 3");
+
+        return 0;
+    }
+
+
 }
 
 

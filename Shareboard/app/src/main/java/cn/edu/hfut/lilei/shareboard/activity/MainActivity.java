@@ -80,6 +80,7 @@ public class MainActivity extends FragmentActivity implements
     protected void init() {
         instance = this;
         mContext = this;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }

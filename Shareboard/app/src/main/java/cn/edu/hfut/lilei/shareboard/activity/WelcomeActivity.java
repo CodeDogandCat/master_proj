@@ -59,24 +59,6 @@ public class WelcomeActivity extends Activity {
         setContentView(R.layout.activity_welcome);
         shouldCallUpdate = false;
         init();
-//        Intent intent = new Intent();
-//        intent.setClass(WelcomeActivity.this,
-//                MainActivity.class);
-//        startActivity(intent);
-
-
-//        String dataDirectory = Environment.getDataDirectory()
-//                .getAbsolutePath();
-//        showLog("dataDirectory::" + dataDirectory);
-//        String externalStorageDirectory = Environment.getExternalStorageDirectory()
-//                .getAbsolutePath();
-//        showLog("externalStorageDirectory::" + externalStorageDirectory);
-//        String filePath = getFilesDir().getAbsolutePath();
-//        showLog("filePath::" + filePath);
-//        String packageResourcePath = getPackageResourcePath();
-//        showLog("packageResourcePath::" + packageResourcePath);
-//        String cachePath = getCacheDir().getAbsolutePath();
-//        showLog("cachePath::" + cachePath);
     }
 
 

@@ -20,6 +20,7 @@ import cn.edu.hfut.lilei.shareboard.listener.TouchListener;
 import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
+import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
@@ -30,6 +31,7 @@ import static cn.edu.hfut.lilei.shareboard.R.id.ll_about_private;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.LOCAL_VERSION;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_UPGRADE;
@@ -48,6 +50,8 @@ public class SettingsAboutActivity extends SwipeBackActivity implements View.OnC
     private LodingDialog.Builder mlodingDialog;
     private AlertDialog.Builder mDialog;
     //数据
+    private String current_version = "";
+
     //上下文参数
     private Context mContext;
     private ImageView mBtnBack;
@@ -103,6 +107,11 @@ public class SettingsAboutActivity extends SwipeBackActivity implements View.OnC
         mTvFeedBack = (TextView) findViewById(R.id.tv_about_feedback);
         mTvRecommend = (TextView) findViewById(R.id.tv_about_recommend);
         mTvPrivate = (TextView) findViewById(R.id.tv_about_private);
+
+        current_version = (String) SharedPrefUtil.getInstance()
+                .getData(LOCAL_VERSION, "1.0.0");
+        mTvCurrentVersion.setText(current_version);
+
 
         next1 = (ImageView) findViewById(R.id.img_about_next1);
         next2 = (ImageView) findViewById(R.id.img_about_next2);
@@ -202,11 +211,21 @@ public class SettingsAboutActivity extends SwipeBackActivity implements View.OnC
                                      public void onSuccess(UpdateAppJson o, Call call,
                                                            Response response) {
                                          if (o.getCode() == SUCCESS) {
-
+                                             String server_version = o.getData()
+                                                     .getServerVersion();
                                              mlodingDialog.cancle();
-                                             showToast(mContext, o.getMsg() + " 服务器最新版本: " + o
-                                                     .getData()
-                                                     .getServerVersion());
+//                                             showToast(mContext, o.getMsg() + " 服务器最新版本: " + server_version);
+                                             //比较服务器最新版本号和当前已安装版本号
+                                             if (StringUtil.appVersionCompare(server_version,
+                                                     current_version) <= 0) {
+                                                 //提示所有错误
+                                                 mlodingDialog.cancle();
+//                                             showToast(mContext, o.getMsg());
+                                                 showLog("StringUtil.appVersionCompare无更新");
+                                                 MyAppUtil.noneUpdate(mContext);
+                                                 return;
+                                             }
+
 
                                              int isForce = o.data.getLastForce();//是否需要强制更新
                                              String downUrl = URL_UPGRADE + o.data.getUpdateurl();

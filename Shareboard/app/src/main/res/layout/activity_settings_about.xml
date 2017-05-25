@@ -79,7 +79,7 @@
                     android:maxLength="15"
                     android:maxLines="1"
                     android:maxWidth="100dp"
-                    android:text="1.0.2"
+                    android:text="1.0.0"
                     android:textSize="@dimen/super_small_text_size"/>
 
 

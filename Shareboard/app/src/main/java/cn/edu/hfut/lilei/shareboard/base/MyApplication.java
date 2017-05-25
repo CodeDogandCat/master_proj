@@ -17,6 +17,8 @@ import cn.edu.hfut.lilei.shareboard.utils.GreenDaoManager;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.jpush.android.api.JPushInterface;
 
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CURRENT_VERSION;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.LOCAL_VERSION;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_add_to_calendar;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_drawable;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_meeting_is_talkable;
@@ -52,6 +54,8 @@ public class MyApplication extends Application {
                 .saveData(share_meeting_is_talkable, 1);
         SharedPrefUtil.getInstance()
                 .saveData(share_meeting_password, "a_000000");
+        SharedPrefUtil.getInstance()
+                .saveData(LOCAL_VERSION, CURRENT_VERSION);
         SharedPrefUtil.getInstance()
                 .saveData("hasInit", "yes");
     }
