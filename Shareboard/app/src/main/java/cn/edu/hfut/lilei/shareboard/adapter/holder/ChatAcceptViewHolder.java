@@ -79,12 +79,7 @@ public class ChatAcceptViewHolder extends BaseViewHolder<MessageInfo> {
             }
         });
         if (data.getContent() != null) {
-
-
-
             try {
-
-
                 String encryptingCode = new String(Base64.decode(data.getContent()
                         .getBytes(), Base64.NO_WRAP));
 

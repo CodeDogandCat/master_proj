@@ -79,7 +79,7 @@
                 app:arrowLocation="right"
                 app:arrowPosition="10dp"
                 app:arrowWidth="8dp"
-                app:bubbleColor="#F0B24F">
+                app:bubbleColor="#F09DE1">
 
                 <cn.edu.hfut.lilei.shareboard.widget.GifTextView
                     android:id="@+id/chat_item_content_text"

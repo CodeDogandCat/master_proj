@@ -2,7 +2,7 @@ package cn.edu.hfut.lilei.shareboard.utils;
 
 import android.content.Context;
 import android.media.MediaRecorder;
-import android.os.Environment;
+import android.net.Uri;
 import android.os.Handler;
 
 import java.io.File;
@@ -19,27 +19,24 @@ public class AudioRecoderUtils {
 
     private MediaRecorder mMediaRecorder;
     private final String TAG = "fan";
-    public static final int MAX_LENGTH = 1000 * 60 * 10;// 最大录音时长1000*60*10;
+    public static final int MAX_LENGTH = 1000 * 60 * 3;// 最大录音时长1000*60*10;
 
     private OnAudioStatusUpdateListener audioStatusUpdateListener;
 
-    /**
-     * 文件存储默认sdcard/cadyd/record
-     */
-    public AudioRecoderUtils() {
-
-
-        //默认保存路径为/sdcard/record/下
-        this(Environment.getExternalStorageDirectory() + "/shareboard/");
-    }
+//    public AudioRecoderUtils() {
+//
+//
+//        //默认保存路径为/sdcard/record/下
+//        this(Environment.getExternalStorageDirectory() + "/shareboard/");
+//    }
 
     public AudioRecoderUtils(String filePath) {
 
-        File path = new File(filePath);
-        if (!path.exists())
-            path.mkdirs();
-
         this.FolderPath = filePath;
+        File tmp = new File(filePath + "/");
+        if (!tmp.exists()) {
+            tmp.mkdirs();
+        }
     }
 
     private long startTime;
@@ -71,7 +68,13 @@ public class AudioRecoderUtils {
              */
             mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
-            filePath = FolderPath + Utils.getCurrentTime() + ".amr";
+//            filePath = FolderPath + Utils.getCurrentTime() + ".amr";
+            File target = new File(FolderPath, Utils.getCurrentTime() + ".amr");
+            if (target.exists()) {
+                target.delete();
+            }
+            target.createNewFile();
+            filePath = ImageUtil.getImageAbsolutePath19(context, Uri.fromFile(target));
             /* ③准备 */
             mMediaRecorder.setOutputFile(filePath);
             mMediaRecorder.setMaxDuration(MAX_LENGTH);

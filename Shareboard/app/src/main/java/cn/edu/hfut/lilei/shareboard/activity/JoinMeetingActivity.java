@@ -73,7 +73,7 @@ public class JoinMeetingActivity extends SwipeBackActivity {
         mContext = this;
 
         Intent i = getIntent();
-        if (i != null) {
+        if (i != null && i.getExtras() != null) {
             meetingUrl = String.valueOf(i.getExtras()
                     .getLong(post_meeting_url));
 

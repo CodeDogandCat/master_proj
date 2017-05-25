@@ -24,11 +24,11 @@ import java.io.File;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.base.BaseFragment;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.model.MessageInfo;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -61,6 +61,7 @@ public class ChatFunctionFragment extends BaseFragment {
     private Uri imageUri;
     private Context mContext;
     private File srcFile, targetFile;
+    private String baseDir = "";
 
 
     @Nullable
@@ -72,6 +73,14 @@ public class ChatFunctionFragment extends BaseFragment {
             ButterKnife.bind(this, rootView);
         }
         mContext = rootView.getContext();
+
+        if (FileUtil.isExternalStorageWritable()) {
+            baseDir = mContext.getExternalFilesDir("")
+                    .getAbsolutePath();
+        } else {
+            baseDir = mContext.getFilesDir()
+                    .getAbsolutePath();
+        }
         return rootView;
     }
 
@@ -113,25 +122,16 @@ public class ChatFunctionFragment extends BaseFragment {
          * 最后一个参数是文件夹的名称
          */
 
-        String baseDir = "";
-        if (FileUtil.isExternalStorageWritable()) {
-            baseDir = mActivity.getExternalFilesDir("")
-                    .getAbsolutePath() + "/shareboard/";
-        } else {
-            baseDir = mActivity.getFilesDir()
-                    .getAbsolutePath() + "/shareboard/";
-        }
 
-        File file = new File(baseDir,
-                "image");//拍照后保存的路径
+        File dir = new File(baseDir);
 
-        if (!file.exists()) {
-            file.mkdir();
+        if (!dir.exists()) {
+            dir.mkdirs();
         }
         /**
          * 这里将时间作为不同照片的名称
          */
-        output = new File(file, System.currentTimeMillis() + ".jpeg");
+        output = new File(dir, System.currentTimeMillis() + ".jpeg");
 
         /**
          * 如果该文件已经存在，则删除它，否则创建一个
@@ -212,11 +212,13 @@ public class ChatFunctionFragment extends BaseFragment {
         showLog("图片路径" + path);
 
         srcFile = new File(path);
-        targetFile = new File(path.substring(0, path.lastIndexOf(".")
-        ) + "compressed.jpeg");
+//        targetFile = new File(path.substring(0, path.lastIndexOf(".")
+//        ) + "compressed.jpeg");
+        targetFile = new File(baseDir, "compressed.jpeg");
 
-
-        ImageUtil.compressImage(srcFile, targetFile, null, false);
+        if (!ImageUtil.compressImage(srcFile, targetFile, null, false)) {
+            return;
+        }
 
 
         if (targetFile.length() > 1024 * 1024 * 6)// 6M  照片最大限制

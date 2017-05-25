@@ -29,10 +29,10 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
+import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.model.MessageInfo;
-import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
 import cn.edu.hfut.lilei.shareboard.utils.AudioRecoderUtils;
 import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
@@ -281,19 +281,19 @@ public class EmotionInputDetector {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         mVoicePop.showAtLocation(v, Gravity.CENTER, 0, 0);
-                        mVoiceText.setText("松开结束");
-                        mPopVoiceText.setText("手指上滑，取消发送");
+                        mVoiceText.setText(R.string.release_to_stop);
+                        mPopVoiceText.setText(R.string.slide_up_to_cancel);
                         mVoiceText.setTag("1");
                         mAudioRecoderUtils.startRecord(mActivity);
                         break;
                     case MotionEvent.ACTION_MOVE:
                         if (wantToCancle(x, y)) {
-                            mVoiceText.setText("松开结束");
-                            mPopVoiceText.setText("松开手指，取消发送");
+                            mVoiceText.setText(R.string.release_to_stop);
+                            mPopVoiceText.setText(R.string.slide_up_to_cancel);
                             mVoiceText.setTag("2");
                         } else {
-                            mVoiceText.setText("松开结束");
-                            mPopVoiceText.setText("手指上滑，取消发送");
+                            mVoiceText.setText(R.string.release_to_stop);
+                            mPopVoiceText.setText(R.string.slide_up_to_cancel);
                             mVoiceText.setTag("1");
                         }
                         break;
@@ -307,7 +307,7 @@ public class EmotionInputDetector {
                             //结束录音（保存录音文件）
                             mAudioRecoderUtils.stopRecord();
                         }
-                        mVoiceText.setText("按住说话");
+                        mVoiceText.setText(R.string.push_to_speak);
                         mVoiceText.setTag("3");
                         mVoiceText.setVisibility(View.GONE);
                         mEditText.setVisibility(View.VISIBLE);
@@ -351,11 +351,11 @@ public class EmotionInputDetector {
         String baseDir = "";
         if (FileUtil.isExternalStorageWritable()) {
             baseDir = mActivity.getExternalFilesDir("")
-                    .getAbsolutePath() + "/shareboard/voice/";
+                    .getAbsolutePath();
             showLog("isExternalStorageWritable");
         } else {
             baseDir = mActivity.getFilesDir()
-                    .getAbsolutePath() + "/shareboard/voice/";
+                    .getAbsolutePath();
             showLog("isExternalStorage not Writable");
         }
         mAudioRecoderUtils = new AudioRecoderUtils(baseDir);
@@ -377,7 +377,7 @@ public class EmotionInputDetector {
                         mImageView.getDrawable()
                                 .setLevel((int) (3000 + 6000 * db / 100));
                         mTextView.setText(Utils.long2String(time));
-                        if (time >= 1000 * 60 * 30) {
+                        if (time >= 1000 * 60 * 3) {
                             //结束录音（保存录音文件）
                             showToast(mActivity, mActivity.getString(R.string.max_voice_length));
                             mAudioRecoderUtils.stopRecord();

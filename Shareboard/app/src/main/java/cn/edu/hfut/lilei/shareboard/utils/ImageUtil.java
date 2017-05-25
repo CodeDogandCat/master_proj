@@ -426,11 +426,11 @@ public class ImageUtil {
      * @param targetFile 这个和 stream传一个就行
      * @param ifDel      是否需要在压缩完毕后删除原图
      */
-    public static void compressImage(File oriFile, File targetFile, OutputStream stream,
-                                     boolean ifDel) {
-        if (oriFile == null){
+    public static boolean compressImage(File oriFile, File targetFile, OutputStream stream,
+                                        boolean ifDel) {
+        if (oriFile == null) {
             Log.i("shareboard", "源图片为空");
-            return;
+            return false;
         }
         Log.i("shareboard", "源图片为" + oriFile);
         Log.i("shareboard", "目标地址为" + targetFile);
@@ -477,9 +477,11 @@ public class ImageUtil {
             if (stream != null) compressBitmapToStream(bitmap, stream);
             if (ifDel) oriFile.delete();//是否要删除源文件
             System.gc();
+            return true;
         } catch (Exception e) {
             Log.d("shareboard", "" + e.getMessage()
                     .toString());
+            return false;
         }
     }
 
@@ -523,8 +525,9 @@ public class ImageUtil {
 
     public static int compressBitmapToStream(Bitmap image, OutputStream stream) {
         if (image == null || stream == null) {
-            Log.i("shareboard","image == null || stream == null");
-            return 0;}
+            Log.i("shareboard", "image == null || stream == null");
+            return 0;
+        }
         try {
             Bitmap.CompressFormat format = Bitmap.CompressFormat.JPEG;
             int size = getSize(image);
@@ -594,8 +597,6 @@ public class ImageUtil {
                                                     return 100;
                                                 }
     }
-
-
 
 
 }

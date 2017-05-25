@@ -332,17 +332,12 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
     private void createAlterHeadDialog() {
 
 
-//        File dir = MyAppUtil.getsaveDirectory(this, "image");
-//        cropImage = new File(dir.getAbsolutePath() + "/" + "CROP.jpeg");
         cropImage = new File(baseDir, "CROP.jpeg");
 
         try {
             if (cropImage.exists()) {
                 cropImage.delete();
             }
-//            if (!dir.exists()) {
-//                dir.mkdirs();
-//            }
             cropImage.createNewFile();
             cropUri = Uri.fromFile(cropImage);
             new AlterHeadDialog.Builder(SettingsMyInfoActivity.this)

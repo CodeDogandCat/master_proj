@@ -39,8 +39,15 @@ public class ChatAdapter extends RecyclerArrayAdapter<MessageInfo> {
     }
 
     @Override
+    public void OnBindViewHolder(BaseViewHolder holder, int position) {
+        holder.setIsRecyclable(false);
+        super.OnBindViewHolder(holder, position);
+    }
+
+    @Override
     public int getViewType(int position) {
-        return getAllData().get(position).getType();
+        return getAllData().get(position)
+                .getType();
     }
 
     public void addItemClickListener(onItemClickListener onItemClickListener) {

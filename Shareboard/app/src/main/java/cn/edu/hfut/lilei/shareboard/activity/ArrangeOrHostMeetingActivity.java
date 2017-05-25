@@ -289,8 +289,10 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                                              finalValueList.get(2));
 
                                                      intent.putExtras(b);
-                                                     startActivityForResult(intent, MEETING_REQUEST_CODE);
+                                                     startActivity(intent);
+//                                                     startActivityForResult(intent, MEETING_REQUEST_CODE);
                                                      mlodingDialog.cancle();
+                                                     finish();
 
 
                                                  } else {
