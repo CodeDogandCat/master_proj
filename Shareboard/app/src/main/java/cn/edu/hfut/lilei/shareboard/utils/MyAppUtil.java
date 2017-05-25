@@ -13,22 +13,40 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Process;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+
 import java.io.File;
 import java.util.List;
 
+import cn.edu.hfut.lilei.shareboard.JsonEnity.CommonJson;
 import cn.edu.hfut.lilei.shareboard.R;
+import cn.edu.hfut.lilei.shareboard.callback.JsonCallback;
 import cn.edu.hfut.lilei.shareboard.model.AppInfo;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.InviteChooserDialog;
 import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
+import okhttp3.Call;
+import okhttp3.Response;
 
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.TIMEZONE;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_UPLOAD_LOG;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.log;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_log_file;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_need_feature;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.post_user_email;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_token;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 
@@ -471,6 +489,126 @@ public class MyAppUtil {
             }
         })
                 .setNegativeButton("暂不更新", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+
+    /**
+     * 上传错误log
+     */
+    public static void uploadLog(final Context mContext, final String path) {
+
+        new AlertDialog.Builder(mContext).setTitle(R.string.program_error)
+                .setMessage(R.string.whether_upload_file)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        final File logFile = new File(path);
+                        final LodingDialog.Builder mlodingDialog =
+                                loding(mContext, R.string.sending);
+
+                        new AsyncTask<Void, Void, Integer>() {
+
+                            @Override
+                            protected Integer doInBackground(Void... voids) {
+                                /**
+                                 * 1.检查网络状态并提醒
+                                 */
+                                if (!NetworkUtil.isNetworkConnected(mContext)) {
+                                    //网络连接不可用
+                                    return NET_DISCONNECT;
+                                }
+                                String token = (String) SharedPrefUtil.getInstance()
+                                        .getData(share_token, "空");
+
+                                //如果没有token,跳转到登录界面
+                                if (token.equals("空")) {
+                                    return -2;
+                                }
+                                String email = (String) SharedPrefUtil.getInstance()
+                                        .getData(share_user_email, "空");
+
+                                //如果没有email
+                                if (token.equals("空")) {
+                                    return -2;
+                                }
+
+                                /**
+                                 * 3.发送密码数据
+                                 */
+                                OkGo.post(URL_UPLOAD_LOG)
+                                        .tag(this)
+                                        .isMultipart(true)
+                                        .params(post_need_feature, log)
+                                        .params(post_token, token)
+                                        .params(post_user_email, email)
+                                        .params(post_log_file, logFile)
+                                        .execute(new JsonCallback<CommonJson>() {
+                                                     @Override
+                                                     public void onSuccess(CommonJson o, Call call,
+                                                                           Response response) {
+                                                         if (o.getCode() == SUCCESS) {
+
+                                                             mlodingDialog.cancle();
+                                                             showToast(mContext, mContext.getString(
+                                                                     R.string.error_log_upload_success));
+
+                                                         } else {
+                                                             //提示所有错误
+                                                             mlodingDialog.cancle();
+                                                         }
+                                                         // 退出程序
+                                                         Process.killProcess(Process.myPid());
+                                                         System.exit(1);
+
+                                                     }
+
+                                                     @Override
+                                                     public void onError(Call call,
+                                                                         Response response,
+                                                                         Exception e) {
+                                                         super.onError(call, response, e);
+                                                         mlodingDialog.cancle();
+                                                         // 退出程序
+                                                         Process.killProcess(Process.myPid());
+                                                         System.exit(1);
+                                                     }
+                                                 }
+                                        );
+
+
+                                return -1;
+
+                            }
+
+                            @Override
+                            protected void onPostExecute(Integer integer) {
+                                super.onPostExecute(integer);
+                                mlodingDialog.cancle();
+                                switch (integer) {
+                                    case NET_DISCONNECT:
+                                        //弹出对话框，让用户开启网络
+                                        NetworkUtil.setNetworkMethod(mContext);
+                                        break;
+                                    default:
+                                        showLog("%%%%%%%%%%%%%%%%%%%%%%7");
+                                        // 退出程序
+                                        Process.killProcess(Process.myPid());
+                                        System.exit(1);
+                                }
+                            }
+                        }.execute();
+
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

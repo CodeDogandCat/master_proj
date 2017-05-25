@@ -41,6 +41,9 @@ public class SettingUtil {
     //反馈
     public static final String URL_FEEDBACK =
             "http://118.89.102.238/controller/settings/feedback.php";
+    //log上传
+    public static final String URL_UPLOAD_LOG =
+            "http://118.89.102.238/controller/settings/upload_log.php";
     //版本更新
     public static final String URL_VERSION_UPDATE =
             "http://118.89.102.238/controller/settings/version_update.php";
@@ -104,6 +107,8 @@ public class SettingUtil {
     public static final String post_chat_data = "300136";//聊天文件
     public static final String reset_password = "300137";//重置登录密码
     public static final String feedback = "300138";//用户反馈
+    public static final String log = "300139";//用户崩溃log
+    public static final String post_log_file = "300140";//用户崩溃log
 
 
     //sharepreference name 参数

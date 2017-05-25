@@ -7,7 +7,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -28,9 +27,10 @@ import java.util.Map;
 
 import cn.edu.hfut.lilei.shareboard.listener.PermissionListener;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
+
 /**
  * UncaughtException处理类,当程序发生Uncaught异常的时候,有该类来接管程序,并记录发送错误报告.
- *
  */
 public class CrashHandler implements UncaughtExceptionHandler {
 
@@ -50,6 +50,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
     // 用于格式化日期,作为日志文件名的一部分
     private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+
+    private String log_file_path = null;
 
 
     /**
@@ -89,15 +91,27 @@ public class CrashHandler implements UncaughtExceptionHandler {
             // 如果用户没有处理则让系统默认的异常处理器来处理
             mDefaultHandler.uncaughtException(thread, ex);
         } else {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                Log.e(TAG, "error : ", e);
-            }
+            Log.e(TAG, "!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-            // 退出程序
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(1);
+
+            new Thread() {
+                @Override
+                public void run() {
+                    Looper.prepare();
+                    MyAppUtil.uploadLog(mContext, log_file_path);
+                    Looper.loop();
+                }
+            }.start();
+            Log.e(TAG, "***************************");
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException e) {
+//                Log.e(TAG, "error : ", e);
+//            }
+//
+//            // 退出程序
+//            android.os.Process.killProcess(android.os.Process.myPid());
+//            System.exit(1);
         }
     }
 
@@ -112,22 +126,41 @@ public class CrashHandler implements UncaughtExceptionHandler {
             return false;
         }
 
+
+        // 收集设备参数信息
+        collectDeviceInfo(mContext);
+        // 保存日志文件
+        requestSdcardAndSave(ex);
         // 使用 Toast 来显示异常信息
+
         new Thread() {
             @Override
             public void run() {
                 Looper.prepare();
                 Toast.makeText(mContext, "很抱歉，程序出现异常，即将退出。", Toast.LENGTH_LONG)
                         .show();
+
                 Looper.loop();
             }
         }.start();
-
-        // 收集设备参数信息
-        collectDeviceInfo(mContext);
-        // 保存日志文件
-        requestSdcardAndSave(ex);
+//        if (log_file_path == null) {
+//            showToast(mContext, "系统出现错误");
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException e) {
+//                Log.e(TAG, "error : ", e);
+//            }
+//
+//            // 退出程序
+//            android.os.Process.killProcess(android.os.Process.myPid());
+//            System.exit(1);
+//        } else {
+//            MyAppUtil.uploadLog(mContext, log_file_path);
+//
+//        }
         return true;
+
+
     }
 
     /**
@@ -157,6 +190,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             }, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE}, true, tip);
         }
+
     }
 
     /**
@@ -198,7 +232,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
      * @param ex
      * @return 返回文件名称, 便于将文件传送到服务器
      */
-    private String saveCrashInfo2File(Throwable ex) {
+    private boolean saveCrashInfo2File(Throwable ex) {
         StringBuffer sb = new StringBuffer();
         for (Map.Entry<String, String> entry : infos.entrySet()) {
             String key = entry.getKey();
@@ -211,36 +245,53 @@ public class CrashHandler implements UncaughtExceptionHandler {
         ex.printStackTrace(printWriter);
         Throwable cause = ex.getCause();
         while (cause != null) {
+            cause.printStackTrace();
             cause.printStackTrace(printWriter);
             cause = cause.getCause();
+
         }
         printWriter.close();
 
         String result = writer.toString();
         sb.append(result);
+        showLog("@@@@@@@@@@@@@@@@@@@@ready to write log...");
         try {
             long timestamp = System.currentTimeMillis();
             String time = formatter.format(new Date());
             String fileName = "crash-" + time + "-" + timestamp + ".log";
 
-            if (Environment.getExternalStorageState()
-                    .equals(Environment.MEDIA_MOUNTED)) {
-                String path = "/sdcard/crash/";
-                File dir = new File(path);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                FileOutputStream fos = new FileOutputStream(path + fileName);
-                fos.write(sb.toString()
-                        .getBytes());
-                fos.close();
+//            if (Environment.getExternalStorageState()
+//                    .equals(Environment.MEDIA_MOUNTED)) {
+//                String path = "/sdcard/crash/";
+            String baseDir = "";
+            if (FileUtil.isExternalStorageWritable()) {
+                baseDir = mContext.getExternalFilesDir("")
+                        .getAbsolutePath();
+            } else {
+                baseDir = mContext.getFilesDir()
+                        .getAbsolutePath();
             }
 
-            return fileName;
+            File dir = new File(baseDir, fileName);
+            if (dir.exists()) {
+                dir.delete();
+            }
+            dir.createNewFile();
+            FileOutputStream fos = new FileOutputStream(dir);
+            fos.write(sb.toString()
+                    .getBytes());
+            fos.close();
+            log_file_path = dir.getAbsolutePath();
+//            log_file_path = "/sdcard/crash/" + fileName;
+//                return true;
+//            }
+            showLog("@@@@@@@@@@@@@@@@@@@@ already write log...");
+            return false;
         } catch (Exception e) {
             Log.e(TAG, "an error occured while writing file...", e);
+
         }
 
-        return null;
+        return false;
     }
 }

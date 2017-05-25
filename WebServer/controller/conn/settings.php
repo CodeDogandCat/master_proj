@@ -62,6 +62,8 @@ define('post_meeting_host_email', '300135');//会议主持人email
 define('post_chat_data', '300136');//聊天文件
 define('reset_password', '300137');//重置登录密码
 define('feedback', '300138');//用户反馈
+define('log', '300139');//用户崩溃log
+define('post_log_file', '300140');//用户崩溃log
 
 
 /**
@@ -109,6 +111,7 @@ define("GET_ALL_FRIEND_ERROR", 4031);//获取好友列表失败
 define("INVITE_FRIEND_ERROR", 4032);//邀请联系人加会失败
 define("FEEDBACK_ERROR", 4033);//反馈失败
 define("UPGRADE_ERROR", 4034);//获取更新信息失败
+define("UPLOAD_LOG_ERROR", 4035);//上传log失败
 
 /**
  * 数据库连接信息

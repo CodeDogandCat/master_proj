@@ -215,4 +215,19 @@ class Update
         return false;//不存在
     }
 
+    /**
+     * 发送错误报告给管理员
+     * @param $target_path
+     * @return bool
+     */
+    public function sendlog($target_path)
+    {
+        $subject = '用户错误报告--' . $this->user->getEmail();
+        $body = '用户的错误报告在附件中';
+        if (SmtpUtil::sendFileToEmail(ADMIN_EMAIL, $subject, $body, $target_path)) {
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -64,6 +64,9 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        //        全局异常捕获
+//        CrashHandler crashHandler = CrashHandler.getInstance();
+//        crashHandler.init(mContext);
         mInstance = this;
         initScreenSize();
         // 启动 Marvel service
@@ -84,13 +87,6 @@ public class MyApplication extends Application {
 
         //初始化数据库
         GreenDaoManager.getInstance();
-
-        //请求权限
-
-        //全局异常捕获
-//        CrashHandler crashHandler = CrashHandler.getInstance();
-//        crashHandler.init(mContext);
-
 
         //必须调用初始化
         OkGo.init(this);

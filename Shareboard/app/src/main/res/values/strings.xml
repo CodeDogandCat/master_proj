@@ -233,4 +233,7 @@
     <string name="release_to_stop">松开结束</string>
     <string name="slide_up_to_cancel">手指上滑，取消发送</string>
     <string name="push_to_speak">按住说话</string>
+    <string name="program_error">程序出错</string>
+    <string name="whether_upload_file">是否上传错误信息</string>
+    <string name="error_log_upload_success">错误报告上传成功</string>
 </resources>
