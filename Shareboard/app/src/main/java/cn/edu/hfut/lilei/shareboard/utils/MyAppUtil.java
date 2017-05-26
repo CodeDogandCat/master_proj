@@ -14,6 +14,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Process;
 import android.provider.CalendarContract;
@@ -399,37 +400,38 @@ public class MyAppUtil {
     }
 
 
-    public static File getsaveDirectory(Context context, String name) {
+    public static String getsaveDirectory(Context context) {
 
 
-//        if (Environment.getExternalStorageState()
-//                .equals(Environment.MEDIA_MOUNTED)) {
-//            String rootDir = Environment.getExternalStorageDirectory()
-//                    .getAbsolutePath() +
-//                    "/DCIM/ShareBoard/";
-//
-//            File file = new File(rootDir);
-//            if (!file.exists()) {
-//                if (!file.mkdirs()) {
-//                    return null;
-//                }
-//            }
-//
-//            return rootDir;
-//        } else {
-        String baseDir = "";
-        if (FileUtil.isExternalStorageWritable()) {
-            baseDir = context.getExternalFilesDir("")
-                    .getAbsolutePath() + "/" + name + "/";
+        if (Environment.getExternalStorageState()
+                .equals(Environment.MEDIA_MOUNTED)) {
+            String rootDir = Environment.getExternalStorageDirectory()
+                    .getAbsolutePath() +
+                    "/DCIM/ShareBoard/";
+
+            File file = new File(rootDir);
+            if (!file.exists()) {
+                if (!file.mkdirs()) {
+                    return null;
+                }
+            }
+
+            return rootDir;
         } else {
-            baseDir = context.getFilesDir()
-                    .getAbsolutePath() + "/" + name + "/";
+            String baseDir = "";
+            if (FileUtil.isExternalStorageWritable()) {
+                baseDir = context.getExternalFilesDir("")
+                        .getAbsolutePath();
+            } else {
+                baseDir = context.getFilesDir()
+                        .getAbsolutePath();
+            }
+            File dir = new File(baseDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            return baseDir;
         }
-        File dir = new File(baseDir);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        return dir;
     }
 
 

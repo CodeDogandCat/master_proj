@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -81,6 +82,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
     private Uri cropUri;
     private boolean shouldCallUpdate = false;
     private String baseDir = "";
+    private File parentFile = null;
     private File srcFile, targetFile;
     private File cropImage = null;
 
@@ -170,12 +172,22 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
         if (FileUtil.isExternalStorageWritable()) {
-            baseDir = mContext.getExternalFilesDir("")
-                    .getAbsolutePath();
+            baseDir = Environment.getExternalStorageDirectory() + "/image/";
         } else {
             baseDir = mContext.getFilesDir()
                     .getAbsolutePath();
         }
+        parentFile = new File(baseDir);
+        if (!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+//        if (FileUtil.isExternalStorageWritable()) {
+//            baseDir = mContext.getExternalFilesDir("")
+//                    .getAbsolutePath();
+//        } else {
+//            baseDir = mContext.getFilesDir()
+//                    .getAbsolutePath();
+//        }
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
@@ -332,7 +344,8 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
     private void createAlterHeadDialog() {
 
 
-        cropImage = new File(baseDir, "CROP.jpeg");
+//        cropImage = new File(parentFile, System.currentTimeMillis() + ".jpeg");
+        cropImage = new File(parentFile, "crop.jpeg");
 
         try {
             if (cropImage.exists()) {
