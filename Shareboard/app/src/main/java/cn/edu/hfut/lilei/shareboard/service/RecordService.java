@@ -122,7 +122,8 @@ public class RecordService extends Service {
         /**
          * 这里将时间作为不同照片的名称
          */
-        output = new File(MyAppUtil.getsaveDirectory(this, "ScreenRecord"),
+        output = new File(MyAppUtil.getsaveDirectory(this),
+//        output = new File(MyAppUtil.getsaveDirectory(this, "ScreenRecord"),
                 MP4_PATH_FOR_SCREEN_RECORD + "_" +
                         System
                                 .currentTimeMillis

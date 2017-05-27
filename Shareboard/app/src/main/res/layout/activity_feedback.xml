@@ -47,6 +47,8 @@
             android:gravity="left|top"
             android:maxLength="150"
             android:textColor="@color/my_black"
+            android:background="@null"
+            android:textCursorDrawable="@null"
             />
 
         <TextView
@@ -57,7 +59,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
-            android:text="100/150字"
+            android:text="0/150字"
             android:textColor="@color/my_barblack"/>
 
     </RelativeLayout>
