@@ -49,6 +49,7 @@
             android:textColor="@color/my_black"
             android:background="@null"
             android:textCursorDrawable="@null"
+            android:cursorVisible="true"
             />
 
         <TextView
