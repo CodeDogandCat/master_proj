@@ -54,10 +54,25 @@ public class MyApplication extends Application {
                 .saveData(share_meeting_is_talkable, 1);
         SharedPrefUtil.getInstance()
                 .saveData(share_meeting_password, "a_000000");
-        SharedPrefUtil.getInstance()
-                .saveData(LOCAL_VERSION, CURRENT_VERSION);
+
         SharedPrefUtil.getInstance()
                 .saveData("hasInit", "yes");
+    }
+
+    public void initVersionInfo() {
+        SharedPrefUtil.getInstance()
+                .saveData(LOCAL_VERSION, CURRENT_VERSION);
+    }
+
+    public boolean versionCheck() {
+
+        String install_version = (String) SharedPrefUtil.getInstance()
+                .getData(LOCAL_VERSION, "");
+        if(install_version.equals(CURRENT_VERSION)){
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -82,6 +97,9 @@ public class MyApplication extends Application {
                 .getData("hasInit", "空")
                 .equals("空")) {
             initSharePre();
+        }
+        if(!versionCheck()){
+            initVersionInfo();
         }
 
 
