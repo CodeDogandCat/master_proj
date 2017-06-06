@@ -92,7 +92,7 @@ public class ChatFunctionFragment extends BaseFragment {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,},
                             MY_PERMISSIONS_REQUEST_CALL_PHONE2);
 
                 } else {
@@ -102,9 +102,13 @@ public class ChatFunctionFragment extends BaseFragment {
             case R.id.chat_function_photo:
                 if (ContextCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
+                        != PackageManager.PERMISSION_GRANTED ||
+                        ContextCompat.checkSelfPermission(getActivity(),
+                                Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest
+                                    .permission.CAMERA},
                             MY_PERMISSIONS_REQUEST_CALL_PHONE2);
 
                 } else {
@@ -114,6 +118,7 @@ public class ChatFunctionFragment extends BaseFragment {
 
         }
     }
+
 
     /**
      * 拍照

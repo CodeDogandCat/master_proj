@@ -55,7 +55,6 @@
             android:layout_below="@id/chat_item_name"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/chat_item_header"
-            android:scaleType="centerCrop"
             android:visibility="gone"
             app:angle="6dp"
             app:arrowHeight="8dp"

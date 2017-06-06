@@ -23,6 +23,7 @@ import cn.edu.hfut.lilei.shareboard.adapter.ChatAdapter;
 import cn.edu.hfut.lilei.shareboard.base.MyApplication;
 import cn.edu.hfut.lilei.shareboard.model.MessageInfo;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
+import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SettingUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import cn.edu.hfut.lilei.shareboard.utils.Utils;
@@ -137,9 +138,15 @@ public class ChatSendViewHolder extends BaseViewHolder<MessageInfo> {
                 chatItemVoiceTime.setVisibility(View.GONE);
                 chatItemContentText.setVisibility(View.GONE);
                 chatItemContentImage.setVisibility(View.VISIBLE);
-                Glide.with(getContext())
-                        .load(data.getImageUrl())
-                        .into(chatItemContentImage);
+//                Glide.with(getContext())
+//                        .load(data.getImageUrl())
+//                        .into(chatItemContentImage);
+//                Glide.with(getContext())
+//                        .load(data.getImageUrl())
+//                        .into(chatItemContentImage);
+                ImageUtil.loadIntoUseFitWidth(getContext(), data.getImageUrl(),
+                        R.drawable.bg_rectangle_white,
+                        chatItemContentImage);
                 chatItemContentImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
