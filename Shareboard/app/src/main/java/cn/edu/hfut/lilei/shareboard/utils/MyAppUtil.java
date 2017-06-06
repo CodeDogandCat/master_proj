@@ -274,16 +274,16 @@ public class MyAppUtil {
                               List<AppInfo> listAppInfo, int type, String meeting_url, String
                                       meeting_pwd) {
 
-        final String subject =
-                String.format(context.getResources()
-                        .getString(R.string.invite_title), title);
+//        final String subject =
+//                String.format(context.getResources()
+//                        .getString(R.string.invite_title), title);
         final String content = description;
 
         final InviteChooserDialog.Builder dialog =
                 new InviteChooserDialog.Builder(context, type);
 
         dialog.setTitle(context.getString(R.string.choose_invite_type));
-        dialog.setSubject(subject);
+        dialog.setSubject(title);
         dialog.setContent(content);
         dialog.setData(listAppInfo);
         dialog.setMeetingUrl(meeting_url);

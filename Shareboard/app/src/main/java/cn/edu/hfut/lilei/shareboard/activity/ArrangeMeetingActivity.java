@@ -298,6 +298,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
      * 加载页面传递的参数
      */
     public void initFromBundle() {
+        showLog("编辑模式");
         mEtTitle.setText(title);
         mEtPassword.setText(mpassword);
         mBtnAddToCalendar.setCheckedImmediately(addToCalendar);
@@ -307,20 +308,22 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
         //设置 时间参数
         Calendar start = Calendar.getInstance();
         start.setTimeInMillis(startMillis);
+        showLog("kaishishijian" + startMillis);
         year = start.get(Calendar.YEAR);
         month = start.get(Calendar.MONTH);
         day = start.get(Calendar.DAY_OF_MONTH);
         a_pm1 = start.get(Calendar.AM_PM);
         hour_24_1 = start.get(Calendar.HOUR_OF_DAY);
         hour_12_1 = start.get(Calendar.HOUR);
-        minite1 = 0;
+        minite1 = start.get(Calendar.MINUTE);
 
         Calendar end = Calendar.getInstance();
         end.setTimeInMillis(endMillis);
+        showLog("jieshushijian" + endMillis);
         a_pm2 = end.get(Calendar.AM_PM);
         hour_24_2 = end.get(Calendar.HOUR_OF_DAY);
         hour_12_2 = end.get(Calendar.HOUR);
-        minite2 = 0;
+        minite2 = end.get(Calendar.MINUTE);
 
         //更新时间参数 到 界面
         updateDate();
@@ -829,6 +832,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
             mTvMeetingStartTime.setTextColor(getResources().getColor(R.color.my_white));
             mBtnSave.setEnabled(true);
         }
+        showLog("updateStartTime mintue1: " + minite1);
         mTvMeetingStartTime.setText(am_pm[a_pm1] + DateTimeUtil.zeroConvert(hour_12_1) + ":" +
                 DateTimeUtil.addZero(minite1));
     }
@@ -837,6 +841,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
      * 更新会议结束时间
      */
     private void updateEndTime() {
+        showLog("updateEndTime mintue1: " + minite2);
         mTvMeetingEndTime.setText(am_pm[a_pm2] + DateTimeUtil.zeroConvert(hour_12_2) + ":" +
                 DateTimeUtil.addZero(minite2));
     }
