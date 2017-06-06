@@ -2,7 +2,7 @@ package cn.edu.hfut.lilei.shareboard.utils;
 
 import android.content.Context;
 import android.media.MediaRecorder;
-import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 
 import java.io.File;
@@ -18,25 +18,28 @@ public class AudioRecoderUtils {
     private String FolderPath;
 
     private MediaRecorder mMediaRecorder;
-    private final String TAG = "fan";
+    private final String TAG = "audio_record";
     public static final int MAX_LENGTH = 1000 * 60 * 3;// 最大录音时长1000*60*10;
 
     private OnAudioStatusUpdateListener audioStatusUpdateListener;
 
-//    public AudioRecoderUtils() {
-//
-//
-//        //默认保存路径为/sdcard/record/下
-//        this(Environment.getExternalStorageDirectory() + "/shareboard/");
-//    }
+    /**
+     * 文件存储默认sdcard/cadyd/record
+     */
+    public AudioRecoderUtils() {
+
+
+        //默认保存路径为/sdcard/record/下
+        this(Environment.getExternalStorageDirectory() + "/shareboard/");
+    }
 
     public AudioRecoderUtils(String filePath) {
 
+        File path = new File(filePath);
+        if (!path.exists())
+            path.mkdirs();
+
         this.FolderPath = filePath;
-        File tmp = new File(filePath + "/");
-        if (!tmp.exists()) {
-            tmp.mkdirs();
-        }
     }
 
     private long startTime;
@@ -68,13 +71,12 @@ public class AudioRecoderUtils {
              */
             mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
+            File tmp = new File(FolderPath, "voice.amr");
 //            filePath = FolderPath + Utils.getCurrentTime() + ".amr";
-            File target = new File(FolderPath, Utils.getCurrentTime() + ".amr");
-            if (target.exists()) {
-                target.delete();
+            if (tmp.exists()) {
+                tmp.delete();
             }
-            target.createNewFile();
-            filePath = ImageUtil.getImageAbsolutePath19(context, Uri.fromFile(target));
+            filePath = tmp.getAbsolutePath();
             /* ③准备 */
             mMediaRecorder.setOutputFile(filePath);
             mMediaRecorder.setMaxDuration(MAX_LENGTH);

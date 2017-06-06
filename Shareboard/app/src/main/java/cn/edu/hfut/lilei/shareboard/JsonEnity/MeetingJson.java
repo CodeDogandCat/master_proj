@@ -16,7 +16,7 @@ public class MeetingJson {
 
     public class ServerModel {
         public int meeting_id;
-        public Long meeting_url;
+        public String meeting_url;
         public Long event_id;
         public String meeting_theme;
         public int meeting_is_drawable;
@@ -43,11 +43,11 @@ public class MeetingJson {
             this.event_id = event_id;
         }
 
-        public Long getMeeting_url() {
+        public String getMeeting_url() {
             return meeting_url;
         }
 
-        public void setMeeting_url(Long meeting_url) {
+        public void setMeeting_url(String meeting_url) {
             this.meeting_url = meeting_url;
         }
 

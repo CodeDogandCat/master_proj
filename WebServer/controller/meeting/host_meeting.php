@@ -47,7 +47,7 @@ if (isset($_REQUEST[post_need_feature])) {
 
         case 'get':
             $data = array(
-                array("meeting_id" => -1, "meeting_url" => -1,
+                array("meeting_id" => -1, "meeting_url" => "",
                     "meeting_theme" => "", "meeting_is_drawable" => -1,
                     "meeting_is_talkable" => -1, "meeting_is_add_to_calendar" => -1,
                     "meeting_password" => "", "meeting_start_time" => -1,
@@ -77,7 +77,7 @@ if (isset($_REQUEST[post_need_feature])) {
 
         case 'add':
             $data = array(
-                "meeting_id" => -1, "meeting_url" => -1,
+                "meeting_id" => -1, "meeting_url" => "",
                 "meeting_theme" => "", "meeting_is_drawable" => -1,
                 "meeting_is_talkable" => -1, "meeting_is_add_to_calendar" => -1,
                 "meeting_password" => "", "meeting_start_time" => -1,
@@ -118,6 +118,7 @@ if (isset($_REQUEST[post_need_feature])) {
                 if (($result_arr = $meetingOp->addMeeting()) != false) {
                     $data['meeting_id'] = $result_arr[0];
                     $data['meeting_url'] = $result_arr[1];
+//                    echo "addMeDeting ok";
 
                     if (isset($_REQUEST[post_is_enter_meeting])) {
                         if ($_REQUEST[post_is_enter_meeting] == true) {

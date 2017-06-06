@@ -87,7 +87,8 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
     //数据
     private int year, month, day, a_pm1, hour_24_1, hour_12_1, minite1, a_pm2, hour_24_2, hour_12_2,
             minite2;
-    private long startMillis, endMillis, eventId = -1, meeting_url;
+    private long startMillis, endMillis, eventId = -1;
+    private String meeting_url;
     private String title, description, mpassword, mfamilyName, mgivenName;
     private String feature;
     private Boolean isTalkable, isDrawable, addToCalendar;
@@ -279,7 +280,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
                 endMillis = bundle.getLong("endMillis");
                 eventId = bundle.getLong("eventId");
                 title = bundle.getString("tvMeetingTheme");
-                meeting_url = bundle.getLong(post_meeting_url);
+                meeting_url = bundle.getString(post_meeting_url);
                 mpassword = bundle.getString("password");
                 meeting_id = bundle.getInt(post_meeting_id);
                 isDrawable = bundle.getBoolean("isDrawable");
@@ -765,7 +766,7 @@ public class ArrangeMeetingActivity extends SwipeBackActivity implements View.On
         Bundle bundle = new Bundle();
         bundle.putInt(post_meeting_id, meeting_id);
         showLog("################ArrangeMeetingactivity " + meeting_url);
-        bundle.putLong(post_meeting_url,
+        bundle.putString(post_meeting_url,
                 meeting_url);
         bundle.putLong("startMillis", startMillis);
         bundle.putLong("endMillis", endMillis);

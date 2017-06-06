@@ -281,19 +281,19 @@ public class EmotionInputDetector {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         mVoicePop.showAtLocation(v, Gravity.CENTER, 0, 0);
-                        mVoiceText.setText(R.string.release_to_stop);
-                        mPopVoiceText.setText(R.string.slide_up_to_cancel);
+                        mVoiceText.setText("松开结束");
+                        mPopVoiceText.setText("手指上滑，取消发送");
                         mVoiceText.setTag("1");
                         mAudioRecoderUtils.startRecord(mActivity);
                         break;
                     case MotionEvent.ACTION_MOVE:
                         if (wantToCancle(x, y)) {
-                            mVoiceText.setText(R.string.release_to_stop);
-                            mPopVoiceText.setText(R.string.slide_up_to_cancel);
+                            mVoiceText.setText("松开结束");
+                            mPopVoiceText.setText("松开手指，取消发送");
                             mVoiceText.setTag("2");
                         } else {
-                            mVoiceText.setText(R.string.release_to_stop);
-                            mPopVoiceText.setText(R.string.slide_up_to_cancel);
+                            mVoiceText.setText("松开结束");
+                            mPopVoiceText.setText("手指上滑，取消发送");
                             mVoiceText.setTag("1");
                         }
                         break;
@@ -307,7 +307,7 @@ public class EmotionInputDetector {
                             //结束录音（保存录音文件）
                             mAudioRecoderUtils.stopRecord();
                         }
-                        mVoiceText.setText(R.string.push_to_speak);
+                        mVoiceText.setText("按住说话");
                         mVoiceText.setTag("3");
                         mVoiceText.setVisibility(View.GONE);
                         mEditText.setVisibility(View.VISIBLE);
@@ -347,15 +347,16 @@ public class EmotionInputDetector {
                         WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         hideSoftInput();
 
+
         //设置录音保存的路径
         String baseDir = "";
         if (FileUtil.isExternalStorageWritable()) {
             baseDir = mActivity.getExternalFilesDir("")
-                    .getAbsolutePath();
+                    .getAbsolutePath() + "/shareboard/voice/";
             showLog("isExternalStorageWritable");
         } else {
             baseDir = mActivity.getFilesDir()
-                    .getAbsolutePath();
+                    .getAbsolutePath() + "/shareboard/voice/";
             showLog("isExternalStorage not Writable");
         }
         mAudioRecoderUtils = new AudioRecoderUtils(baseDir);
@@ -379,7 +380,8 @@ public class EmotionInputDetector {
                         mTextView.setText(Utils.long2String(time));
                         if (time >= 1000 * 60 * 3) {
                             //结束录音（保存录音文件）
-                            showToast(mActivity, mActivity.getString(R.string.max_voice_length));
+                            showToast(mActivity,
+                                    mActivity.getString(R.string.max_voice_length));
                             mAudioRecoderUtils.stopRecord();
                         }
 
@@ -412,6 +414,7 @@ public class EmotionInputDetector {
      * @param mTextView
      * @param time
      */
+
     public void sendChatVoiceFile(final String path, final TextView mTextView, final long time) {
 
         chatFile = new File(path);
@@ -473,7 +476,9 @@ public class EmotionInputDetector {
                                     /**
                                      * 4.上传成功,显示
                                      */
-                                    chatFile.delete();
+//                                    if (chatFile.exists()) {
+//                                        chatFile.delete();
+//                                    }
                                     mTextView.setText(Utils.long2String(0));
                                     MessageInfo messageInfo = new MessageInfo();
                                     messageInfo.setClient_email(email);
@@ -485,7 +490,9 @@ public class EmotionInputDetector {
 
                                 } else {
                                     //提示所有错误
-                                    chatFile.delete();
+//                                    if (chatFile.exists()) {
+//                                        chatFile.delete();
+//                                    }
                                     showLog(o.getMsg());
                                     showToast(mActivity, mActivity.getResources()
                                             .getString(R
@@ -498,7 +505,9 @@ public class EmotionInputDetector {
                             public void onError(Call call, Response response,
                                                 Exception e) {
                                 super.onError(call, response, e);
-                                chatFile.delete();
+//                                if (chatFile.exists()) {
+//                                    chatFile.delete();
+//                                }
                                 //提示所有错误
                                 showLog("系统错误");
                                 showToast(mActivity, mActivity.getResources()
@@ -512,7 +521,9 @@ public class EmotionInputDetector {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                chatFile.delete();
+//                if (chatFile.exists()) {
+//                    chatFile.delete();
+//                }
                 switch (integer) {
                     case NET_DISCONNECT:
                         //弹出对话框，让用户开启网络

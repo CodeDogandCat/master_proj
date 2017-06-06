@@ -79,7 +79,8 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
     //数据
     private int year, month, day, a_pm1, hour_24_1, hour_12_1, minite1, a_pm2, hour_24_2, hour_12_2,
             minite2;
-    private long startMillis, endMillis, eventId = -1, meeting_url;
+    private long startMillis, endMillis, eventId = -1;
+    private String meeting_url;
     private String title, description, mpassword, mfamilyName, mgivenName;
     private String[] am_pm = {"上午", "下午"};
     //上下文参数
@@ -283,7 +284,9 @@ public class ArrangeOrHostMeetingActivity extends SwipeBackActivity {
                                                              valueList2.get(0) == 1);
 
 
-                                                     b.putLong(post_meeting_url, o.getData()
+                                                     b.putString(post_meeting_url, o.getData()
+                                                             .getMeeting_url());
+                                                     showLog("@@@@@@@@@@@meeting url" + o.getData()
                                                              .getMeeting_url());
                                                      b.putString(post_meeting_password,
                                                              finalValueList.get(2));

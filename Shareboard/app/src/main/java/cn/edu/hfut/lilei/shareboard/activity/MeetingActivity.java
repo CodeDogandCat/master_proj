@@ -165,7 +165,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     };
     private int check_in_type = -1;
     private int meeting_id = -1;
-    private long meeting_url = -1L;
+    private String meeting_url = "";
     private String meeting_pwd = "";
     private boolean isDrawing = false;
     private String meeting_host_email, my_email;
@@ -765,7 +765,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         return String.format(getResources().getString(
                 R.string.invite_content_two),
                 valueList.get(0) + valueList.get(1),
-                String.valueOf(meeting_url),
+                meeting_url,
                 meeting_pwd);
     }
 
@@ -1118,7 +1118,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         check_in_type = getIntent().getExtras()
                 .getInt(post_meeting_check_in_type);
         meeting_url = getIntent().getExtras()
-                .getLong(post_meeting_url);
+                .getString(post_meeting_url);
         meeting_pwd = getIntent().getExtras()
                 .getString(post_meeting_password);
 
@@ -1166,7 +1166,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
         my_email = valueList.get(1);
 
-        if (valueList != null && meeting_url != -1L) {
+        if (valueList != null && !meeting_url.equals("")) {
             String params = "";
             if (check_in_type == HOST_CHECK_IN && meeting_id != -1) {//host
 

@@ -43,7 +43,6 @@
                 style="@style/big_edittext"
                 android:gravity="center"
                 android:hint="@string/please_input_your_meeting_number"
-                android:inputType="number"
                 android:maxLength="14"
                 android:maxLines="1"
                 android:textSize="@dimen/small_text_size"/>

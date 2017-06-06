@@ -419,6 +419,7 @@ public class ImageUtil {
                 true);
     }
 
+
     /**
      * 传入图片路径，根据图片进行压缩，仅压缩大小，不压缩质量
      *
@@ -426,19 +427,16 @@ public class ImageUtil {
      * @param targetFile 这个和 stream传一个就行
      * @param ifDel      是否需要在压缩完毕后删除原图
      */
-    public static boolean compressImage(File oriFile, File targetFile, OutputStream stream,
-                                        boolean ifDel) {
-        if (oriFile == null) {
-            Log.i("shareboard", "源图片为空");
-            return false;
-        }
+    public static void compressImage(File oriFile, File targetFile, OutputStream stream,
+                                     boolean ifDel) {
+        if (oriFile == null) return;
         Log.i("shareboard", "源图片为" + oriFile);
         Log.i("shareboard", "目标地址为" + targetFile);
         try {
             BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inJustDecodeBounds = true; // 不读取像素数组到内存中，仅读取图片的信息，非常重要  
-            BitmapFactory.decodeFile(oriFile.getAbsolutePath(), opts);//读取文件信息，存放到Options对象中  
-            // 从Options中获取图片的分辨率  
+            opts.inJustDecodeBounds = true; // 不读取像素数组到内存中，仅读取图片的信息，非常重要
+            BitmapFactory.decodeFile(oriFile.getAbsolutePath(), opts);//读取文件信息，存放到Options对象中
+            // 从Options中获取图片的分辨率
             int imageHeight = opts.outHeight;
             int imageWidth = opts.outWidth;
             int longEdge = Math.max(imageHeight, imageWidth);//取出宽高中的长边
@@ -448,7 +446,7 @@ public class ImageUtil {
 
             long size = oriFile.length();
             Log.i("shareboard", "f.length 图片大小为" + (size) + " B");
-            //走到这一步的时候，内存里还没有bitmap  
+            //走到这一步的时候，内存里还没有bitmap
             Bitmap bitmap = null;
             if (pixelCount > 4) {//如果超过了4百万像素，那么就首先对大小进行压缩
                 float compressRatio = longEdge / 1280f;
@@ -456,32 +454,30 @@ public class ImageUtil {
                 if (compressRatioInt % 2 != 0 && compressRatioInt != 1)
                     compressRatioInt++;//如果是奇数的话，就给弄成偶数
                 Log.i("shareboard", "长宽压缩比是" + compressRatio + " 偶数化后" + compressRatioInt);
-                //尺寸压缩  
+                //尺寸压缩
                 BitmapFactory.Options options = new BitmapFactory.Options();
-                //目标出来的大小1024*1024 1百万像素，100k左右  
+                //目标出来的大小1024*1024 1百万像素，100k左右
                 options.inSampleSize = Math.round(
                         compressRatioInt);//注意，此处必须是偶数，根据计算好的比例进行压缩,如果长边没有超过1280*1.5，就不去压缩,否则就压缩成原来的一半
-                options.inJustDecodeBounds = false;//在decode file的时候，不仅读取图片的信息，还把像素数组到内存  
+                options.inJustDecodeBounds = false;//在decode file的时候，不仅读取图片的信息，还把像素数组到内存
                 options.inPreferredConfig =
                         Bitmap.Config.RGB_565;//每个像素占四位，即R=5，G=6，B=5，没有透明度，那么一个像素点占5+6+5=16位
-                //现在开始将bitmap放入内存  
+                //现在开始将bitmap放入内存
                 bitmap = BitmapFactory.decodeFile(oriFile.getAbsolutePath(),
                         options);//根据压缩比取出大小已经压缩好的bitmap
-                //此处会打印出存入内存的bitmap大小  
+                //此处会打印出存入内存的bitmap大小
             } else {//如果是长图或者长边短于1920的图，那么只进行质量压缩
-                // 现在开始将bitmap放入内存  
+                // 现在开始将bitmap放入内存
                 bitmap = BitmapFactory.decodeFile(oriFile.getAbsolutePath());
-                //此处会打印出bitmap在内存中占得大小  
+                //此处会打印出bitmap在内存中占得大小
             }
             if (targetFile != null) compressMethodAndSave(bitmap, targetFile);
             if (stream != null) compressBitmapToStream(bitmap, stream);
             if (ifDel) oriFile.delete();//是否要删除源文件
             System.gc();
-            return true;
         } catch (Exception e) {
             Log.d("shareboard", "" + e.getMessage()
                     .toString());
-            return false;
         }
     }
 
@@ -493,7 +489,7 @@ public class ImageUtil {
      */
     private static int getSize(Bitmap image) {
         int size = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {    //API 19  
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {    //API 19
             size = image.getAllocationByteCount();
         } else
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {//API 12
@@ -524,23 +520,19 @@ public class ImageUtil {
     }
 
     public static int compressBitmapToStream(Bitmap image, OutputStream stream) {
-        if (image == null || stream == null) {
-            Log.i("shareboard", "image == null || stream == null");
-            return 0;
-        }
+        if (image == null || stream == null) return 0;
         try {
             Bitmap.CompressFormat format = Bitmap.CompressFormat.JPEG;
             int size = getSize(image);
             Log.i("shareboard",
                     "存入内寸的bitmap大小是" + (size >> 10) + " KB 宽度是" + image.getWidth() + " 高度是" +
                             image.getHeight());
-            int quality = getQuality(size);//根据图像的大小得到合适的有损压缩质量  
+            int quality = getQuality(size);//根据图像的大小得到合适的有损压缩质量
             Log.i("shareboard", "目前适用的有损压缩率是" + quality);
             long startTime = System.currentTimeMillis();
             image.compress(format, quality, stream);//压缩文件并且输出
-            stream.close();
             if (image != null) {
-                image.recycle();//此处把bitmap从内存中移除  
+                image.recycle();//此处把bitmap从内存中移除
                 image = null;
             }
             Log.i("shareboard", "压缩图片并且存储的耗时" + (System.currentTimeMillis() - startTime));
@@ -597,6 +589,8 @@ public class ImageUtil {
                                                     return 100;
                                                 }
     }
+
+
 
 
 }

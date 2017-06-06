@@ -53,6 +53,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.ALBUM_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CAMERA_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CROP_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CAMERA;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CROP;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
@@ -233,7 +234,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                 /**
                                                  * 5.注册成功,缓存token ,姓,名
                                                  */
-                                                cropImage.delete();
+//                                                cropImage.delete();
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_token, o.getData()
                                                                 .getToken());
@@ -274,7 +275,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
 
 
                                             } else {
-                                                cropImage.delete();
+//                                                cropImage.delete();
                                                 mlodingDialog.cancle();
                                                 //提示所有错误
                                                 showLog(o.getMsg());
@@ -286,7 +287,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                         public void onError(Call call, Response response,
                                                             Exception e) {
                                             super.onError(call, response, e);
-                                            cropImage.delete();
+//                                            cropImage.delete();
                                             mlodingDialog.cancle();
 //                                                showToast(mContext, R.string.system_error);
                                         }
@@ -359,7 +360,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                     @Override
                     protected void onPostExecute(Integer integer) {
                         super.onPostExecute(integer);
-                        cropImage.delete();
+//                        cropImage.delete();
                         mlodingDialog.cancle();
                         switch (integer) {
                             case NET_DISCONNECT:
@@ -439,15 +440,27 @@ public class SetUserInfoActivity extends SwipeBackActivity {
 
 //        File dir = MyAppUtil.getsaveDirectory(this, "image");
 //        cropImage = new File(dir.getAbsolutePath() + "/" + "CROP.jpeg");
-        cropImage = new File(baseDir, "CROP.jpeg");
+        String baseDir = "";
+        if (FileUtil.isExternalStorageWritable()) {
+            baseDir = this.getExternalFilesDir("")
+                    .getAbsolutePath() + "/shareboard/";
+        } else {
+            baseDir = this.getFilesDir()
+                    .getAbsolutePath() + "/shareboard/";
+        }
 
+        File file = new File(baseDir,
+                "image");//拍照后保存的路径
+
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        cropImage = new File(file.getAbsolutePath(),
+                IMG_PATH_FOR_CROP);
         try {
             if (cropImage.exists()) {
                 cropImage.delete();
             }
-//            if (!dir.exists()) {
-//                dir.mkdirs();
-//            }
             cropImage.createNewFile();
             cropUri = Uri.fromFile(cropImage);
             new AlterHeadDialog.Builder(mContext)
@@ -456,6 +469,23 @@ public class SetUserInfoActivity extends SwipeBackActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+//        cropImage = new File(baseDir, "CROP.jpeg");
+//
+//        try {
+//            if (cropImage.exists()) {
+//                cropImage.delete();
+//            }
+////            if (!dir.exists()) {
+////                dir.mkdirs();
+////            }
+//            cropImage.createNewFile();
+//            cropUri = Uri.fromFile(cropImage);
+//            new AlterHeadDialog.Builder(mContext)
+//                    .setTitle(getString(R.string.choose_head))
+//                    .show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
@@ -493,8 +523,10 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                 Log.i(SettingUtil.TAG, "裁剪以后 [ " + data + " ]");
                 if (cropImage.length() == 0) {
                     hasSetAvatar = false;
+                    showLog("@@@@@@@@@@@@@@cropImage.length() == 0");
                 } else {
                     hasSetAvatar = true;
+                    showLog("@@@@@@@@@@@@@@cropImage.length() != 0");
                     ImageUtil.loadAvatarNoCache(mContext, cropUri, mPhoto);
                 }
 

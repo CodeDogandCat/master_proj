@@ -39,7 +39,7 @@ class MeetingOp
                 VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
 
             $arr = array();
-            $arr[0] = Particle::generateParticle();
+            $arr[0] = Particle::generate_id_hex();
             $arr[1] = $this->meeting->getTheme();
             $arr[2] = $user_id;
             $arr[3] = $this->meeting->getIsDrawable();

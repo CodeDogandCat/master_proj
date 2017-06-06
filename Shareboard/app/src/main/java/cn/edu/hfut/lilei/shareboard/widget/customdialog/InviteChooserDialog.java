@@ -48,10 +48,10 @@ public class InviteChooserDialog extends Dialog {
         private int flag = -1, type = -1;
         private InviteChooserDialog dialog = null;
         private String subject, content, meeting_pwd;
-        private Long meeting_url;
+        private String meeting_url;
 
 
-        public Builder setMeetingUrl(Long meetingurl) {
+        public Builder setMeetingUrl(String meetingurl) {
             this.meeting_url = meetingurl;
             return this;
         }
@@ -359,7 +359,7 @@ public class InviteChooserDialog extends Dialog {
             Bundle b = new Bundle();
 
 
-            b.putLong(post_meeting_url, meeting_url);
+            b.putString(post_meeting_url, meeting_url);
             b.putString(post_meeting_password, meeting_pwd);
 
 

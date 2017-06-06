@@ -57,8 +57,8 @@ public class ChatFunctionFragment extends BaseFragment {
     private static final int REQUEST_CODE_PICK_IMAGE = 3;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 6;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE2 = 7;
-    private File output;
-    private Uri imageUri;
+    private File output, cropImage;
+    private Uri imageUri, cropUri;
     private Context mContext;
     private File srcFile, targetFile;
     private String baseDir = "";
@@ -74,13 +74,13 @@ public class ChatFunctionFragment extends BaseFragment {
         }
         mContext = rootView.getContext();
 
-        if (FileUtil.isExternalStorageWritable()) {
-            baseDir = mContext.getExternalFilesDir("")
-                    .getAbsolutePath();
-        } else {
-            baseDir = mContext.getFilesDir()
-                    .getAbsolutePath();
-        }
+//        if (FileUtil.isExternalStorageWritable()) {
+//            baseDir = mContext.getExternalFilesDir("")
+//                    .getAbsolutePath();
+//        } else {
+//            baseDir = mContext.getFilesDir()
+//                    .getAbsolutePath();
+//        }
         return rootView;
     }
 
@@ -96,7 +96,7 @@ public class ChatFunctionFragment extends BaseFragment {
                             MY_PERMISSIONS_REQUEST_CALL_PHONE2);
 
                 } else {
-                    takePhoto();
+                    choosePhoto();
                 }
                 break;
             case R.id.chat_function_photo:
@@ -108,9 +108,10 @@ public class ChatFunctionFragment extends BaseFragment {
                             MY_PERMISSIONS_REQUEST_CALL_PHONE2);
 
                 } else {
-                    choosePhoto();
+                    takePhoto();
                 }
                 break;
+
         }
     }
 
@@ -122,16 +123,25 @@ public class ChatFunctionFragment extends BaseFragment {
          * 最后一个参数是文件夹的名称
          */
 
+        String baseDir = "";
+        if (FileUtil.isExternalStorageWritable()) {
+            baseDir = mActivity.getExternalFilesDir("")
+                    .getAbsolutePath() + "/shareboard/";
+        } else {
+            baseDir = mActivity.getFilesDir()
+                    .getAbsolutePath() + "/shareboard/";
+        }
 
-        File dir = new File(baseDir);
+        File file = new File(baseDir,
+                "image");//拍照后保存的路径
 
-        if (!dir.exists()) {
-            dir.mkdirs();
+        if (!file.exists()) {
+            file.mkdir();
         }
         /**
          * 这里将时间作为不同照片的名称
          */
-        output = new File(dir, System.currentTimeMillis() + ".jpeg");
+        output = new File(file, System.currentTimeMillis() + ".jpeg");
 
         /**
          * 如果该文件已经存在，则删除它，否则创建一个
@@ -152,6 +162,7 @@ public class ChatFunctionFragment extends BaseFragment {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(intent, CROP_PHOTO);
 
+
     }
 
     /**
@@ -161,7 +172,7 @@ public class ChatFunctionFragment extends BaseFragment {
         /**
          * 打开选择图片的界面
          */
-        Intent intent = new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setType("image/*");//相片类型
         startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
 
@@ -212,13 +223,11 @@ public class ChatFunctionFragment extends BaseFragment {
         showLog("图片路径" + path);
 
         srcFile = new File(path);
-//        targetFile = new File(path.substring(0, path.lastIndexOf(".")
-//        ) + "compressed.jpeg");
-        targetFile = new File(baseDir, "compressed.jpeg");
+        targetFile = new File(path.substring(0, path.lastIndexOf(".")
+        ) + "compressed.jpeg");
 
-        if (!ImageUtil.compressImage(srcFile, targetFile, null, false)) {
-            return;
-        }
+
+        ImageUtil.compressImage(srcFile, targetFile, null, false);
 
 
         if (targetFile.length() > 1024 * 1024 * 6)// 6M  照片最大限制
@@ -280,7 +289,7 @@ public class ChatFunctionFragment extends BaseFragment {
                                         /**
                                          * 4.上传成功,显示
                                          */
-                                        targetFile.delete();
+//                                        targetFile.delete();
                                         MessageInfo messageInfo = new MessageInfo();
                                         messageInfo.setImageUrl(URL_CHAT_IMG + o.getMsg());
                                         messageInfo.setClient_email(email);
@@ -290,7 +299,7 @@ public class ChatFunctionFragment extends BaseFragment {
 
                                     } else {
                                         //提示所有错误
-                                        targetFile.delete();
+//                                        targetFile.delete();
                                         showLog(o.getMsg());
                                         showToast(mContext,
                                                 getString(R.string.send_error));
@@ -301,10 +310,10 @@ public class ChatFunctionFragment extends BaseFragment {
                                 public void onError(Call call, Response response,
                                                     Exception e) {
                                     super.onError(call, response, e);
-                                    targetFile.delete();
+//                                    targetFile.delete();
                                     //提示所有错误
                                     showLog("系统错误");
-                                    showToast(mContext, getString(R.string.send_error));
+//                                    showToast(mContext, getString(R.string.send_error));
                                 }
                             });
 
@@ -314,7 +323,7 @@ public class ChatFunctionFragment extends BaseFragment {
                 @Override
                 protected void onPostExecute(Integer integer) {
                     super.onPostExecute(integer);
-                    targetFile.delete();
+//                    targetFile.delete();
                     switch (integer) {
                         case NET_DISCONNECT:
                             //弹出对话框，让用户开启网络

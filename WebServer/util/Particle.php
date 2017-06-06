@@ -61,6 +61,20 @@ class Particle
         */
         return bindec(substr(decbin($particle), 0, 41)) - self::max41bit + self::EPOCH;
     }
+
+    //http://luokr.com/p/16
+    public static function generate_id_hex()
+    {
+        static $i = 0;
+        $i OR $i = mt_rand(1, 0x7FFF);
+
+        return sprintf("%08x%04x",
+            /* 4-byte value representing the seconds since the Unix epoch. */
+            time() & 0xFFFFFFFF,
+            /* 3-byte counter, starting with a random value. */
+            $i = $i > 0xFFFE ? 1 : $i + 1
+        );
+    }
 }
 
 

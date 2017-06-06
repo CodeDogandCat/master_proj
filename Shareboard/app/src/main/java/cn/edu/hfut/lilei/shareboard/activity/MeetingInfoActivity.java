@@ -73,7 +73,8 @@ public class MeetingInfoActivity extends SwipeBackActivity {
     //数据
     private int year, month, day, a_pm1, hour_12_1, minite1, meeting_id;
     private int queryAppInfoflag = -1;
-    private long mEventID = -1, startMillis, endMillis, lenght, meeting_url;
+    private long mEventID = -1, startMillis, endMillis, lenght;
+    private String meeting_url = "";
     private String title, description, mpassword, mid;
     private Boolean isTalkable, isDrawable, addToCalendar;
     private String preStr = "";
@@ -106,7 +107,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
         mEventID = bundle.getLong("eventId");
         title = bundle.getString("tvMeetingTheme");
         description = bundle.getString("description");
-        meeting_url = bundle.getLong(post_meeting_url);
+        meeting_url = bundle.getString(post_meeting_url);
         mpassword = bundle.getString("password");
         meeting_id = bundle.getInt(post_meeting_id);
         isDrawable = bundle.getBoolean("isDrawable");
@@ -236,7 +237,8 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                 super.onPostExecute(integer);
                 //延迟弹出邀请方式选择框
                 MyAppUtil.invite(mContext, String.format(getResources().getString(R.string
-                        .invite_title), title), description, mlistAppInfo, 0, -1L, "");
+                                .invite_title), title), description,
+                        mlistAppInfo, 0, meeting_url, mpassword);
             }
         }.execute();
 
@@ -278,7 +280,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                 case R.id.btn_meeting_info_invite:
                     MyAppUtil.invite(mContext, String.format(getResources().getString(R.string
                                     .invite_title), title), description,
-                            mlistAppInfo, 0, -1L, "");
+                            mlistAppInfo, 0, meeting_url, mpassword);
                     break;
                 case R.id.btn_meeting_info_delete:
                     delete();
@@ -357,7 +359,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
         bundle.putString(post_need_feature, "edit");
         bundle.putInt(post_meeting_id, meeting_id);
         bundle.putInt(post_meeting_id, meeting_id);
-        bundle.putLong(post_meeting_url,
+        bundle.putString(post_meeting_url,
                 meeting_url);
         bundle.putLong("startMillis", startMillis);
         bundle.putLong("endMillis", endMillis);
@@ -582,7 +584,7 @@ public class MeetingInfoActivity extends SwipeBackActivity {
                                              //
                                              showLog("################MeetingInfoactivity " +
                                                      meeting_url);
-                                             b.putLong(post_meeting_url, meeting_url);
+                                             b.putString(post_meeting_url, meeting_url);
                                              b.putString(post_meeting_password, mpassword);
 
                                              intent.putExtras(b);

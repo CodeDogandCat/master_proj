@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -54,6 +53,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CAMERA_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.CROP_REQUEST_CODE;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CAMERA;
+import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.IMG_PATH_FOR_CROP;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.SUCCESS;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.URL_AVATAR;
@@ -171,23 +171,23 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.my_deepyellow));
         }
-        if (FileUtil.isExternalStorageWritable()) {
-            baseDir = Environment.getExternalStorageDirectory() + "/image/";
-        } else {
-            baseDir = mContext.getFilesDir()
-                    .getAbsolutePath();
-        }
-        parentFile = new File(baseDir);
-        if (!parentFile.exists()) {
-            parentFile.mkdirs();
-        }
 //        if (FileUtil.isExternalStorageWritable()) {
-//            baseDir = mContext.getExternalFilesDir("")
-//                    .getAbsolutePath();
+//            baseDir = Environment.getExternalStorageDirectory() + "/image/";
 //        } else {
 //            baseDir = mContext.getFilesDir()
 //                    .getAbsolutePath();
 //        }
+//        parentFile = new File(baseDir);
+//        if (!parentFile.exists()) {
+//            parentFile.mkdirs();
+//        }
+        if (FileUtil.isExternalStorageWritable()) {
+            baseDir = mContext.getExternalFilesDir("")
+                    .getAbsolutePath();
+        } else {
+            baseDir = mContext.getFilesDir()
+                    .getAbsolutePath();
+        }
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
@@ -345,8 +345,37 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
 
 
 //        cropImage = new File(parentFile, System.currentTimeMillis() + ".jpeg");
-        cropImage = new File(parentFile, "crop.jpeg");
+//        cropImage = new File(parentFile, "crop.jpeg");
+//
+//        try {
+//            if (cropImage.exists()) {
+//                cropImage.delete();
+//            }
+//            cropImage.createNewFile();
+//            cropUri = Uri.fromFile(cropImage);
+//            new AlterHeadDialog.Builder(SettingsMyInfoActivity.this)
+//                    .setTitle(getString(R.string.alter_head))
+//                    .show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        String baseDir = "";
+        if (FileUtil.isExternalStorageWritable()) {
+            baseDir = this.getExternalFilesDir("")
+                    .getAbsolutePath() + "/shareboard/";
+        } else {
+            baseDir = this.getFilesDir()
+                    .getAbsolutePath() + "/shareboard/";
+        }
 
+        File file = new File(baseDir,
+                "image");//拍照后保存的路径
+
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        cropImage = new File(file.getAbsolutePath(),
+                IMG_PATH_FOR_CROP);
         try {
             if (cropImage.exists()) {
                 cropImage.delete();
@@ -396,14 +425,20 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                 Log.i(SettingUtil.TAG, "裁剪以后 [ " + data + " ]");
                 mlodingDialog = loding(mContext, R.string.saving);
 
-                if (cropImage == null) {
-                    return;
-                }
-                if (!cropImage.exists()) {
-//                    showToast(mContext, "不存在");
-                    return;
-                }
-                if (cropImage.length() > 1024 * 1024 * 6)// 6M  照片最大限制
+//                if (cropImage == null) {
+//                    return;
+//                }
+//                if (!cropImage.exists()) {
+////                    showToast(mContext, "不存在");
+//                    return;
+//                }
+                final String avatarPath =
+                        ImageUtil.getImageAbsolutePath19(mContext, cropUri);
+
+                srcFile = new File(avatarPath);
+
+//                final File avatarFile = new File(avatarPath);
+                if (srcFile.length() > 1024 * 1024 * 6)// 6M  照片最大限制
                 {
                     showToast(mContext, getString(R.string.image_too_large));
                 } else {
@@ -445,7 +480,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                     .params(post_need_feature, update_avatar)
                                     .params(post_user_email, email)
                                     .params(post_token, token)
-                                    .params(post_user_avatar, cropImage)
+                                    .params(post_user_avatar, srcFile)
                                     .execute(new JsonCallback<RegisterJson>() {
                                         @Override
                                         public void onSuccess(RegisterJson o, Call call,
@@ -454,7 +489,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                                 /**
                                                  * 4.更新成功,显示
                                                  */
-                                                cropImage.delete();
+//                                                srcFile.delete();
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_avatar, URL_AVATAR + o
                                                                 .getData()
@@ -465,7 +500,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
 
 
                                             } else {
-                                                cropImage.delete();
+//                                                srcFile.delete();
                                                 mlodingDialog.cancle();
                                                 //提示所有错误
                                                 showLog(o.getMsg());
@@ -477,7 +512,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                                         public void onError(Call call, Response response,
                                                             Exception e) {
                                             super.onError(call, response, e);
-                                            cropImage.delete();
+//                                            srcFile.delete();
                                             mlodingDialog.cancle();
 //                                            showToast(mContext, R.string.system_error);
                                         }
@@ -490,7 +525,7 @@ public class SettingsMyInfoActivity extends SwipeBackActivity {
                         protected void onPostExecute(Integer integer) {
                             super.onPostExecute(integer);
 
-                            cropImage.delete();
+//                            srcFile.delete();
                             mlodingDialog.cancle();
                             switch (integer) {
                                 case NET_DISCONNECT:

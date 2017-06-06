@@ -271,7 +271,7 @@ public class MyAppUtil {
      * 选择邀请方式
      */
     public static void invite(Context context, String title, String description,
-                              List<AppInfo> listAppInfo, int type, Long meeting_url, String
+                              List<AppInfo> listAppInfo, int type, String meeting_url, String
                                       meeting_pwd) {
 
         final String subject =

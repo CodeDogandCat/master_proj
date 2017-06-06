@@ -402,7 +402,7 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
         bundle.putLong("eventId", meeting.getEvent_id());
         bundle.putString("tvMeetingTheme", meeting.getMeeting_theme());
         bundle.putString("description", meeting.getMeeting_desc());
-        bundle.putLong(post_meeting_url, meeting.getMeeting_url());
+        bundle.putString(post_meeting_url, meeting.getMeeting_url());
         showLog("################MyMeetingactivity " +
                 meeting.getMeeting_url());
 
@@ -434,7 +434,7 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
         /**
          * 进入会议
          */
-        final long meeting_url = data.get((Integer) v.getTag())
+        final String meeting_url = data.get((Integer) v.getTag())
                 .getMeeting_url();
         final int meeting_id = data.get((Integer) v.getTag())
                 .getMeeting_id();
@@ -518,7 +518,7 @@ public class MyMeetingActivity extends SwipeBackActivity implements SwipeRefresh
                                              b.putInt(post_meeting_id, meeting_id);
                                              showLog("################MyMeetingactivity " +
                                                      meeting_url);
-                                             b.putLong(post_meeting_url, meeting_url);
+                                             b.putString(post_meeting_url, meeting_url);
                                              b.putString(post_meeting_password, pwd);
 
                                              intent.putExtras(b);
