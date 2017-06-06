@@ -28,7 +28,8 @@ try {
         //密码加密
         $user->setPassword(EncryptUtil::hash($_REQUEST[post_user_login_password], $_REQUEST[post_user_email]));
         //token构造
-        $user->setToken(EncryptUtil::hash($user->getEmail() . $user->getPassword() . $user->getRegisterTime(), $user->getRegisterTime()));
+//        $user->setToken(EncryptUtil::hash($user->getEmail() . $user->getPassword() . $user->getRegisterTime(), $user->getRegisterTime()));
+        $user->setToken(EncryptUtil::hash($user->getEmail() . $user->getPassword() . $user->getRegisterTime(), (new DateTime())->format('Y-m-d H:i:s')));
         $register = new Register($user);
         $avatarFileName = '';
         if (isset($_FILES[post_user_avatar])) {

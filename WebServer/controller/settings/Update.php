@@ -25,20 +25,23 @@ class Update
 
     /**
      * 获取密码和注册时间
-     * @return bool
+     * @return mixed
      */
     public function getPwdAndRegisterTime()
     {
 
         $sql = 'SELECT user_password,user_register_time FROM bd_user WHERE user_email =?';
         $arr = array();
+//        echo "email" . $this->user->getEmail();
         $arr[0] = $this->user->getEmail();
         $rows = $this->db->select($sql, $arr);
-
+//        echo "count " . count($rows);
         if (count($rows) == 1) {//存在且只存在一个这样的用户
+//            echo "return " . $rows[0];
             return $rows[0];
 
         }
+
         return false;//不存在
     }
 
@@ -57,7 +60,7 @@ class Update
         $arr[1] = $token;
         $arr[2] = $this->user->getEmail();
         if ($this->db->update($sql, $arr) == false) {
-
+//            echo "更新失败";
             return false;//更新失败
         }
         //把token放到session中
@@ -110,7 +113,8 @@ class Update
              */
             if ($oldPwdEncrypted == $pwd) {
                 //同->更新
-                $token = EncryptUtil::hash($this->user->getEmail() . $newPwdEncrypted . $registerTime, $registerTime);
+//                $token = EncryptUtil::hash($this->user->getEmail() . $newPwdEncrypted . $registerTime, $registerTime);
+                $token = EncryptUtil::hash($this->user->getEmail() . $newPwdEncrypted . $registerTime,(new DateTime())->format('Y-m-d H:i:s'));
                 if ($this->updatePwdAndToken($newPwdEncrypted, $token)) {
                     //什么都不返回，让用户重新登陆，那个时候再返回TOKEN
                     return true;
@@ -134,14 +138,17 @@ class Update
          *2.获取到对应邮箱的密码
          */
         $row = $this->getPwdAndRegisterTime();
+
         if ($row != false) {
             $pwd = $row['user_password'];
             $registerTime = $row['user_register_time'];
-
+//            echo "pwd" . $pwd;
+//            echo "time" . $registerTime;
             /**
              * 3.更新数据库中的密码
              */
-            $token = EncryptUtil::hash($this->user->getEmail() . $newPwdEncrypted . $registerTime, $registerTime);
+            $token = EncryptUtil::hash($this->user->getEmail() . $newPwdEncrypted . $registerTime, (new DateTime())->format('Y-m-d H:i:s'));
+//            echo "token" . $token;
             if ($this->updatePwdAndToken($newPwdEncrypted, $token)) {
                 //什么都不返回，让用户重新登陆，那个时候再返回TOKEN
                 return true;
@@ -149,6 +156,7 @@ class Update
 
 
         }
+//        echo "@@@@@";
 
         return false;
     }
