@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Shareboard</string>
+    <string name="app_name">小喵白板</string>
     <string name="email">邮箱</string>
     <string name="password">密码(12位)</string>
     <string name="login">登录</string>

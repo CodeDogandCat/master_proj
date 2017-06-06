@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.lzy.okgo.OkGo;
 
@@ -72,15 +73,19 @@ public class JoinMeetingActivity extends SwipeBackActivity {
     private void init() {
         mContext = this;
 
+
         Intent i = getIntent();
         if (i != null && i.getExtras() != null) {
-            meetingUrl = String.valueOf(i.getExtras()
-                    .getLong(post_meeting_url));
+            LinearLayout root = (LinearLayout) findViewById(R.id.rootView);
+            root.setVisibility(View.INVISIBLE);
+            meetingUrl = i.getExtras()
+                    .getString(post_meeting_url);
 
             showLog("################joinmeetingactivity " + meetingUrl);
             pwd = i.getExtras()
                     .getString(post_meeting_password);
             joinMeeting(1);
+
         } else {
             mBtnBack = (ImageView) findViewById(R.id.img_join_goback);
             mBtnBack.setOnClickListener(new View.OnClickListener() {
@@ -313,8 +318,8 @@ public class JoinMeetingActivity extends SwipeBackActivity {
                                              b.putBoolean(post_meeting_is_drawable, isDrawable);
                                              b.putBoolean(post_meeting_is_talkable, isTalkable);
                                              //
-                                             b.putLong(post_meeting_url, Long.parseLong
-                                                     (meetingUrl));
+                                             b.putString(post_meeting_url,
+                                                     meetingUrl);
                                              b.putString(post_meeting_password, pwd);
 
                                              intent.putExtras(b);

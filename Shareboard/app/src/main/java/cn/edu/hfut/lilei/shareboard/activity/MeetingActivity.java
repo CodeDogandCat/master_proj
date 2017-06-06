@@ -1131,7 +1131,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 .getBoolean(post_meeting_is_talkable);
 
         //设置会议号
-        String tmp = String.valueOf(meeting_url);
+        String tmp = meeting_url;
         String mid = "";
         if (tmp.length() == 12) {
 

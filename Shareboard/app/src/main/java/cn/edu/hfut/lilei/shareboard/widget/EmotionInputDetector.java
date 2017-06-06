@@ -449,9 +449,9 @@ public class EmotionInputDetector {
                 if (token.equals("空")) {
                     return -2;
                 }
-                long meeting_url = (long) SharedPrefUtil.getInstance()
-                        .getData(share_meeting_url, -1L);
-                if (meeting_url == -1) {
+                String meeting_url = (String) SharedPrefUtil.getInstance()
+                        .getData(share_meeting_url, "");
+                if (meeting_url.equals("")) {
                     return -2;
                 }
                 final String meeting_url_str = String.valueOf(meeting_url);

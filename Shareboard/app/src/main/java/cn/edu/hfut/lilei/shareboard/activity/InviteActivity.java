@@ -105,7 +105,7 @@ public class InviteActivity extends SwipeBackActivity implements SectionIndexer,
     private TextView tvNoFriendAlert;
     private LinkedHashMap<String, FriendInfo> selected_map = new LinkedHashMap<>();
     private String meeting_pwd;
-    private Long meetingurl;
+    private String meetingurl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +126,7 @@ public class InviteActivity extends SwipeBackActivity implements SectionIndexer,
         Intent i = getIntent();
         if (i != null) {
             meetingurl = i.getExtras()
-                    .getLong(post_meeting_url);
+                    .getString(post_meeting_url);
             showLog("################inviteactivity " + meetingurl);
             meeting_pwd = i.getExtras()
                     .getString(post_meeting_password);
@@ -217,8 +217,8 @@ public class InviteActivity extends SwipeBackActivity implements SectionIndexer,
                             .getEmail())) {
                         selected_map.put(SourceDateList.get(i)
                                 .getEmail(), SourceDateList.get(i));
-                        showToast(mContext, "选中" + SourceDateList.get(i)
-                                .getName());
+//                        showToast(mContext, "选中" + SourceDateList.get(i)
+//                                .getName());
                     }
                 } else {
                     if (selected_map.containsKey(SourceDateList.get(i)
@@ -226,8 +226,8 @@ public class InviteActivity extends SwipeBackActivity implements SectionIndexer,
                         //删除
                         selected_map.remove(SourceDateList.get(i)
                                 .getEmail());
-                        showToast(mContext, "取消选中" + SourceDateList.get(i)
-                                .getName());
+//                        showToast(mContext, "取消选中" + SourceDateList.get(i)
+//                                .getName());
                     }
                 }
                 mTvSelected.setText("");

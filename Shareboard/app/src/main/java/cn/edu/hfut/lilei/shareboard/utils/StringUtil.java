@@ -350,9 +350,9 @@ public class StringUtil {
         if (isEmpty(str) || (length(str) != 12)) {
             return false;
         }
-        if (!isNumeric(str)) {
-            return false;
-        }
+//        if (!isNumeric(str)) {
+//            return false;
+//        }
         return true;
     }
 

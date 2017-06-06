@@ -104,7 +104,8 @@ public class MyReceiver extends BroadcastReceiver {
 
                     Intent requestAddFriend_intent = new Intent(context, MainActivity.class);
                     PendingIntent pendingIntent =
-                            PendingIntent.getActivity(context, 111, requestAddFriend_intent,  FLAG_UPDATE_CURRENT);
+                            PendingIntent.getActivity(context, 111, requestAddFriend_intent,
+                                    FLAG_UPDATE_CURRENT);
                     mBuilder.setContentIntent(pendingIntent);
 
                     mNotificationManager.notify(111, mBuilder.build());
@@ -131,7 +132,8 @@ public class MyReceiver extends BroadcastReceiver {
 
                     Intent requestAddFriend_intent4 = new Intent(context, MainActivity.class);
                     PendingIntent pendingIntent4 =
-                            PendingIntent.getActivity(context, 222, requestAddFriend_intent4,  FLAG_UPDATE_CURRENT);
+                            PendingIntent.getActivity(context, 222, requestAddFriend_intent4,
+                                    FLAG_UPDATE_CURRENT);
                     mBuilder.setContentIntent(pendingIntent4);
 
                     mNotificationManager.notify(222, mBuilder.build());
@@ -176,7 +178,8 @@ public class MyReceiver extends BroadcastReceiver {
 
                     Intent requestAddFriend_intent2 = new Intent(context, MainActivity.class);
                     PendingIntent pendingIntent2 =
-                            PendingIntent.getActivity(context, 333, requestAddFriend_intent2, FLAG_UPDATE_CURRENT);
+                            PendingIntent.getActivity(context, 333, requestAddFriend_intent2,
+                                    FLAG_UPDATE_CURRENT);
                     mBuilder.setContentIntent(pendingIntent2);
 
                     mNotificationManager.notify(333, mBuilder.build());
@@ -223,7 +226,8 @@ public class MyReceiver extends BroadcastReceiver {
 
                     Intent requestAddFriend_intent3 = new Intent(context, MainActivity.class);
                     PendingIntent pendingIntent3 =
-                            PendingIntent.getActivity(context, 444, requestAddFriend_intent3, FLAG_UPDATE_CURRENT);
+                            PendingIntent.getActivity(context, 444, requestAddFriend_intent3,
+                                    FLAG_UPDATE_CURRENT);
                     mBuilder.setContentIntent(pendingIntent3);
 
                     mNotificationManager.notify(444, mBuilder.build());
@@ -253,8 +257,8 @@ public class MyReceiver extends BroadcastReceiver {
                             .split("###");
                     if (tmp_arr.length == 2) {
 
-                        b.putLong(post_meeting_url, Long.valueOf(tmp_arr[0]));
-                        showLog("接收到的邀请 url " + tmp_arr[0]);
+                        b.putString(post_meeting_url, tmp_arr[0]);
+                        showLog("#################接收到的邀请 url " + tmp_arr[0]);
 
                         String masterPassword = "L1x#tvh_";
                         String decryptingCode =
