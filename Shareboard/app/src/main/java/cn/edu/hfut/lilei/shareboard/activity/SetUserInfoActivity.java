@@ -205,7 +205,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                         }
 //                        showLog("加密后的密码：" + passEncrypted);
 
-                        String postEmail = (String) SharedPrefUtil.getInstance()
+                        final String postEmail = (String) SharedPrefUtil.getInstance()
                                 .getData(share_user_email, "空");
                         if (postEmail.equals("空")) {
                             return -2;
@@ -238,6 +238,8 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_token, o.getData()
                                                                 .getToken());
+                                                SharedPrefUtil.getInstance()
+                                                        .saveData(share_user_email, postEmail);
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_family_name,
                                                                 familyName);
@@ -312,6 +314,8 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_family_name,
                                                                 familyName);
+                                                SharedPrefUtil.getInstance()
+                                                        .saveData(share_user_email, postEmail);
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_given_name, givenName);
 
