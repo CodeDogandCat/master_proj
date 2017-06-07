@@ -175,6 +175,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
     private List<MeetingMemberInfo> memberInfoList = new ArrayList<>();
     private boolean isTalkable, isDrawable;
     private boolean isRecording = false;
+    private boolean isForeground = true;
 
 
     //上下文参数
@@ -211,12 +212,14 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         super.onResume();
         //常亮锁
         mWakeLock.acquire();
+        isForeground = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mWakeLock.release();
+        isForeground = false;
     }
 
 
@@ -383,6 +386,11 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 // 发布到 chat页面
                 EventBus.getDefault()
                         .post(msg);
+                //如果会议界面在前台，提示xxx发来新消息
+                if (isForeground) {
+                    showToast(mContext, msg.getFamilyName() + msg.getGivenyName() + " 发来消息");
+                }
+
 
             }
         });

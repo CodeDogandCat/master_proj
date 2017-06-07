@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/full_lay"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:fitsSystemWindows="true">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/full_lay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true">
+
+    <TextView
+        android:id="@+id/tv_image_size"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/activity_horizontal_margin26"
+        android:gravity="right|bottom"
+        android:text=""
+        android:textSize="@dimen/nav_title_size"
+        android:textStyle="bold"/>
 
     <ImageView
         android:id="@+id/full_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/tv_image_size"
+        android:layout_alignParentTop="true"
+
+
         />
-</LinearLayout>
+
+
+</RelativeLayout>

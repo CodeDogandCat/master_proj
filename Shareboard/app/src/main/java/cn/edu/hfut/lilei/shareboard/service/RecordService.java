@@ -7,8 +7,10 @@ import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.MediaRecorder;
 import android.media.projection.MediaProjection;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Environment;
 import android.os.HandlerThread;
 import android.os.IBinder;
 
@@ -16,10 +18,8 @@ import java.io.File;
 import java.io.IOException;
 
 import cn.edu.hfut.lilei.shareboard.R;
-import cn.edu.hfut.lilei.shareboard.utils.MyAppUtil;
 
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
-import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.MP4_PATH_FOR_SCREEN_RECORD;
 
 
 public class RecordService extends Service {
@@ -96,6 +96,9 @@ public class RecordService extends Service {
         } else {
             showToast(this, getString(R.string.record_fail));
         }
+        // 最后通知图库更新
+        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                Uri.fromFile(new File(output.getAbsolutePath()))));
         running = false;
         mediaRecorder.stop();
         mediaRecorder.reset();
@@ -119,15 +122,26 @@ public class RecordService extends Service {
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
 
+
+        File file =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                        .getAbsoluteFile();//注意小米手机必须这样获得public绝对路径
+        String fileName = "小喵白板";
+        File appDir = new File(file, fileName);
+        if (!appDir.exists()) {
+            appDir.mkdirs();
+        }
+        fileName = System.currentTimeMillis() + ".mp4";
+        output = new File(appDir, fileName);
         /**
          * 这里将时间作为不同照片的名称
          */
-        output = new File(MyAppUtil.getsaveDirectory(this),
-//        output = new File(MyAppUtil.getsaveDirectory(this, "ScreenRecord"),
-                MP4_PATH_FOR_SCREEN_RECORD + "_" +
-                        System
-                                .currentTimeMillis
-                                        () + ".mp4");
+//        output = new File(MyAppUtil.getsaveDirectory(this),
+////        output = new File(MyAppUtil.getsaveDirectory(this, "ScreenRecord"),
+//                MP4_PATH_FOR_SCREEN_RECORD + "_" +
+//                        System
+//                                .currentTimeMillis
+//                                        () + ".mp4");
 
         /**
          * 如果该文件夹已经存在，则删除它，否则创建一个

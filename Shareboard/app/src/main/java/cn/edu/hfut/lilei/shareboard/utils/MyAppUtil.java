@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.Process;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
@@ -407,7 +408,7 @@ public class MyAppUtil {
                 .equals(Environment.MEDIA_MOUNTED)) {
             String rootDir = Environment.getExternalStorageDirectory()
                     .getAbsolutePath() +
-                    "/DCIM/ShareBoard/";
+                    "/DCIM/小喵白板/";
 
             File file = new File(rootDir);
             if (!file.exists()) {
@@ -677,5 +678,24 @@ public class MyAppUtil {
     }
 
 
+    /**
+     * 判断某个界面是否在前台
+     *
+     * @param context   Context
+     * @param className 界面的类名
+     * @return 是否在前台显示
+     */
+    public static boolean isForeground(Context context, String className) {
+        if (context == null || TextUtils.isEmpty(className))
+            return false;
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
+        if (list != null && list.size() > 0) {
+            ComponentName cpn = list.get(0).topActivity;
+            if (className.equals(cpn.getClassName()))
+                return true;
+        }
+        return false;
+    }
 }
 
