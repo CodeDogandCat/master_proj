@@ -18,6 +18,7 @@
     <!--获取网络状态的权限-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+    <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
     <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
@@ -80,7 +81,6 @@
         <activity
             android:name=".activity.MeetingActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/MeetingTheme"
             android:windowSoftInputMode="stateHidden|adjustResize"
@@ -150,7 +150,6 @@
         <activity
             android:name=".activity.ChatActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustResize">

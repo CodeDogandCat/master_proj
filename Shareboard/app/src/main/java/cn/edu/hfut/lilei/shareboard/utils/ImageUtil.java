@@ -493,7 +493,7 @@ public class ImageUtil {
      * @param image
      * @return
      */
-    private static int getSize(Bitmap image) {
+    public static int getSize(Bitmap image) {
         int size = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {    //API 19
             size = image.getAllocationByteCount();
@@ -615,6 +615,8 @@ public class ImageUtil {
                                                    Target<GlideDrawable> target,
                                                    boolean isFromMemoryCache,
                                                    boolean isFirstResource) {
+
+
                         if (imageView == null) {
                             return false;
                         }
@@ -634,8 +636,11 @@ public class ImageUtil {
                 })
                 .placeholder(errorImageId)
                 .error(errorImageId)
+                .crossFade(200)
                 .into(imageView);
     }
+
+
 
 
 }
