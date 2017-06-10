@@ -727,14 +727,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
              * 聊天
              */
             case R.id.btn_member_chat:
-                Intent intent = new Intent(mContext, ChatActivity.class);
-                Bundle b = new Bundle();
-                b.putString(post_user_email, my_email);
-                b.putBoolean(post_meeting_is_talkable, isTalkable);
-                b.putInt(post_meeting_check_in_type, check_in_type);
-                intent.putExtras(b);
-
-                startActivityForResult(intent, CHAT_REQUEST_CODE);
+                goChat();
                 break;
             /**
              * 邀请
@@ -758,6 +751,18 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
         }
 
+    }
+
+    public void goChat() {
+        Intent intent = new Intent(mContext, ChatActivity.class);
+        Bundle b = new Bundle();
+        b.putString(post_user_email, my_email);
+        b.putBoolean(post_meeting_is_talkable, isTalkable);
+        b.putInt(post_meeting_check_in_type, check_in_type);
+        intent.putExtras(b);
+
+        startActivityForResult(intent, CHAT_REQUEST_CODE);
+        return;
     }
 
     public String getDescribe() {
@@ -2415,14 +2420,16 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
         final TextView tv_enter = (TextView) view.findViewById(R.id.tv_enter);
         final TextView tv_line = (TextView) view.findViewById(R.id.tv_line);
         final TextView tv_record = (TextView) view.findViewById(R.id.tv_record);
+        final TextView tv_line2 = (TextView) view.findViewById(R.id.tv_line2);
+        final TextView tv_go_chat = (TextView) view.findViewById(R.id.tv_go_chat);
 
         switch (type) {
             case 0:
                 tv_enter.setVisibility(View.VISIBLE);
                 tv_line.setVisibility(View.GONE);
                 tv_record.setVisibility(View.GONE);
-
-                setPopWindow(view);
+                tv_line2.setVisibility(View.GONE);
+                tv_go_chat.setVisibility(View.GONE);
 
                 tv_enter.setText(R.string.enter_board);
                 tv_enter.setOnClickListener(new View.OnClickListener() {
@@ -2495,7 +2502,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
                     }
                 });
-
+                setPopWindow(view);
 
                 break;
             case 1:
@@ -2526,7 +2533,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 }
 
 
-                setPopWindow(view);
+
                 tv_enter.setText(R.string.quit_board);
                 tv_enter.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -2541,7 +2548,22 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
                     }
                 });
+                tv_line2.setVisibility(View.VISIBLE);
+                tv_go_chat.setVisibility(View.VISIBLE);
+                tv_go_chat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
+//                        showToast(mContext, "点击了" + tv_go_chat.getText()
+//                                .toString());
+                        goChat();
+                        mRotate(fab);
+                        mMenuPop.dismiss();
+                        mMenuPop = null;
+
+                    }
+                });
+                setPopWindow(view);
 
                 break;
             case 2:
@@ -2550,7 +2572,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                     tv_line.setVisibility(View.GONE);
                     tv_record.setVisibility(View.VISIBLE);
 
-                    setPopWindow(view);
+
 
                     tv_record.setText(R.string.stop_record_screen);
 
@@ -2589,7 +2611,23 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
 
                         }
                     });
+                    tv_line2.setVisibility(View.VISIBLE);
+                    tv_go_chat.setVisibility(View.VISIBLE);
+                    tv_go_chat.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+//                        showToast(mContext, "点击了" + tv_go_chat.getText()
+//                                .toString());
+                            goChat();
+                            mRotate(fab);
+                            mMenuPop.dismiss();
+                            mMenuPop = null;
+
+                        }
+                    });
                 }
+                setPopWindow(view);
 
 
                 break;

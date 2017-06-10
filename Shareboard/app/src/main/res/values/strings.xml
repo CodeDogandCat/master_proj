@@ -237,4 +237,5 @@
     <string name="program_error">程序出错</string>
     <string name="whether_upload_file">是否上传错误信息</string>
     <string name="error_log_upload_success">错误报告上传成功</string>
+    <string name="chat">去聊天</string>
 </resources>
