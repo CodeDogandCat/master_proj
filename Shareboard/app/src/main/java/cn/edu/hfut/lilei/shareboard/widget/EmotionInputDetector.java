@@ -40,9 +40,11 @@ import cn.edu.hfut.lilei.shareboard.utils.PopupWindowFactory;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
 import cn.edu.hfut.lilei.shareboard.utils.StringUtil;
 import cn.edu.hfut.lilei.shareboard.utils.Utils;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
@@ -80,6 +82,7 @@ public class EmotionInputDetector {
     private TextView mPopVoiceText;
     private static String email;
     private File chatFile;
+    private LodingDialog.Builder mlodingDialog;
 
 
     private EmotionInputDetector() {
@@ -423,6 +426,7 @@ public class EmotionInputDetector {
         showLog("录音" + chatFile.isFile());
         showLog("录音" + chatFile.exists());
         showLog("录音" + chatFile.length());
+        mlodingDialog = loding(mActivity, R.string.sending);
 
         new AsyncTask<Void, Void, Integer>() {
 
@@ -486,6 +490,7 @@ public class EmotionInputDetector {
                                     messageInfo.setVoiceTime(time);
                                     EventBus.getDefault()
                                             .post(messageInfo);
+                                    mlodingDialog.cancle();
 
 
                                 } else {
@@ -494,6 +499,7 @@ public class EmotionInputDetector {
 //                                        chatFile.delete();
 //                                    }
                                     showLog(o.getMsg());
+                                    mlodingDialog.cancle();
                                     showToast(mActivity, mActivity.getResources()
                                             .getString(R
                                                     .string
@@ -510,6 +516,7 @@ public class EmotionInputDetector {
 //                                }
                                 //提示所有错误
                                 showLog("系统错误");
+                                mlodingDialog.cancle();
                                 showToast(mActivity, mActivity.getResources()
                                         .getString(R.string.send_error));
                             }
@@ -524,6 +531,7 @@ public class EmotionInputDetector {
 //                if (chatFile.exists()) {
 //                    chatFile.delete();
 //                }
+                mlodingDialog.cancle();
                 switch (integer) {
                     case NET_DISCONNECT:
                         //弹出对话框，让用户开启网络

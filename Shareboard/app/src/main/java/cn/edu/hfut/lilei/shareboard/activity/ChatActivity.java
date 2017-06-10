@@ -34,14 +34,14 @@ import butterknife.ButterKnife;
 import cn.edu.hfut.lilei.shareboard.R;
 import cn.edu.hfut.lilei.shareboard.adapter.ChatAdapter;
 import cn.edu.hfut.lilei.shareboard.adapter.CommonFragmentPagerAdapter;
+import cn.edu.hfut.lilei.shareboard.fragment.ChatEmotionFragment;
+import cn.edu.hfut.lilei.shareboard.fragment.ChatFunctionFragment;
 import cn.edu.hfut.lilei.shareboard.model.ChatActivityInitInfo;
 import cn.edu.hfut.lilei.shareboard.model.FullImageInfo;
 import cn.edu.hfut.lilei.shareboard.model.MessageFromOtherInfo;
 import cn.edu.hfut.lilei.shareboard.model.MessageInfo;
 import cn.edu.hfut.lilei.shareboard.model.MessageSuccessInfo;
 import cn.edu.hfut.lilei.shareboard.model.TalkPermissionChange;
-import cn.edu.hfut.lilei.shareboard.fragment.ChatEmotionFragment;
-import cn.edu.hfut.lilei.shareboard.fragment.ChatFunctionFragment;
 import cn.edu.hfut.lilei.shareboard.utils.DateTimeUtil;
 import cn.edu.hfut.lilei.shareboard.utils.GlobalOnItemClickManagerUtils;
 import cn.edu.hfut.lilei.shareboard.utils.MediaManager;
@@ -85,6 +85,8 @@ public class ChatActivity extends AppCompatActivity {
     @Bind(R.id.reply_bar)
     LinearLayout replyBar;
 
+    public static ChatActivity instance = null;
+
     private EmotionInputDetector mDetector;
     private ArrayList<Fragment> fragments;
     private ChatEmotionFragment chatEmotionFragment;
@@ -114,6 +116,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        instance = this;
         ButterKnife.bind(this);
         EventBus.getDefault()
                 .register(this);

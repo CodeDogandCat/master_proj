@@ -240,6 +240,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                                 .getToken());
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_user_email, postEmail);
+                                                showLog("保存邮箱到本地" + postEmail);
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_family_name,
                                                                 familyName);
@@ -316,6 +317,7 @@ public class SetUserInfoActivity extends SwipeBackActivity {
                                                                 familyName);
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_user_email, postEmail);
+                                                showLog("保存邮箱到本地" + postEmail);
                                                 SharedPrefUtil.getInstance()
                                                         .saveData(share_given_name, givenName);
 

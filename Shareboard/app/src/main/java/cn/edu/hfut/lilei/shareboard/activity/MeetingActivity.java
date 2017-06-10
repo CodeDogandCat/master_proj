@@ -125,6 +125,7 @@ import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.share_user_email;
 
 
 public class MeetingActivity extends AppCompatActivity implements ShareChooseDialog.Builder.IShareWebPage, UrlInputDialog.Builder.IUrlInput, View.OnClickListener, MemberListAdapter.Callback, AdapterView.OnItemClickListener {
+    public static MeetingActivity instance = null;
     /**
      * meeting 页面的变量
      */
@@ -201,6 +202,7 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_meeting);
+        instance = this;
         init();
         initMeeting();
 
@@ -1715,6 +1717,14 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                               }
                               //增加新的
                               memberInfoList.add(member);
+                              showToast(mContext,
+                                      member.getClient_family_name() + member.getClient_given_name() + "进入会议");
+                              if (mTvMemberTitle != null) {
+                                  mTvMemberTitle.setText(
+                                          String.format(getResources().getString(R.string.current_members),
+                                                  memberInfoList.size() + ""));
+                              }
+
                               showLog(memberInfoList.toString());
                               showLog("增加一个 参与者2");
 
@@ -1835,7 +1845,13 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                     memberListAdapter.addAll(memberInfoList);
                     memberListAdapter.notifyDataSetChanged();
                 }
+
                 showToast(mContext, name + "离开了会议");
+                if (mTvMemberTitle != null) {
+                    mTvMemberTitle.setText(
+                            String.format(getResources().getString(R.string.current_members),
+                                    memberInfoList.size() + ""));
+                }
                 showLog(memberInfoList.toString());
 
             }
@@ -1854,6 +1870,11 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
             @Override
             public void run() {
                 leaveForHostLeave = true;
+                if (ChatActivity.instance !=
+                        null) {
+                    ChatActivity.instance.finish();
+                    showLog("@@@@@###########  ChatActivity.instance.finish();");
+                }
                 //弹出框提示 主持人离会,退出
                 new CommonAlertDialog.Builder(mContext)
                         .setTitle(getString(R.string.host_left_meeting_end))
@@ -2157,6 +2178,11 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                               showToast(mContext, getString(R.string.you_kick_out));
                               //关闭页面
                               beforeFinish();
+                              if (ChatActivity.instance !=
+                                      null) {
+                                  ChatActivity.instance.finish();
+                                  showLog("@@@@@###########  ChatActivity.instance.finish();");
+                              }
                               finish();
                           }
 
@@ -2533,7 +2559,6 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                 }
 
 
-
                 tv_enter.setText(R.string.quit_board);
                 tv_enter.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -2571,7 +2596,6 @@ public class MeetingActivity extends AppCompatActivity implements ShareChooseDia
                     tv_enter.setVisibility(View.GONE);
                     tv_line.setVisibility(View.GONE);
                     tv_record.setVisibility(View.VISIBLE);
-
 
 
                     tv_record.setText(R.string.stop_record_screen);

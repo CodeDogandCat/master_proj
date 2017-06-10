@@ -33,9 +33,11 @@ import cn.edu.hfut.lilei.shareboard.utils.FileUtil;
 import cn.edu.hfut.lilei.shareboard.utils.ImageUtil;
 import cn.edu.hfut.lilei.shareboard.utils.NetworkUtil;
 import cn.edu.hfut.lilei.shareboard.utils.SharedPrefUtil;
+import cn.edu.hfut.lilei.shareboard.widget.customdialog.LodingDialog;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.loding;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showLog;
 import static cn.edu.hfut.lilei.shareboard.utils.MyAppUtil.showToast;
 import static cn.edu.hfut.lilei.shareboard.utils.SettingUtil.NET_DISCONNECT;
@@ -62,6 +64,7 @@ public class ChatFunctionFragment extends BaseFragment {
     private Context mContext;
     private File srcFile, targetFile;
     private String baseDir = "";
+    private LodingDialog.Builder mlodingDialog;
 
 
     @Nullable
@@ -240,7 +243,7 @@ public class ChatFunctionFragment extends BaseFragment {
             showToast(mContext, getString(R.string.image_too_large));
         } else {
 
-
+            mlodingDialog = loding(mContext, R.string.sending);
             new AsyncTask<Void, Void, Integer>() {
 
                 @Override
@@ -300,12 +303,14 @@ public class ChatFunctionFragment extends BaseFragment {
                                         messageInfo.setClient_email(email);
                                         EventBus.getDefault()
                                                 .post(messageInfo);
+                                        mlodingDialog.cancle();
 
 
                                     } else {
                                         //提示所有错误
 //                                        targetFile.delete();
                                         showLog(o.getMsg());
+                                        mlodingDialog.cancle();
                                         showToast(mContext,
                                                 getString(R.string.send_error));
                                     }
@@ -317,6 +322,7 @@ public class ChatFunctionFragment extends BaseFragment {
                                     super.onError(call, response, e);
 //                                    targetFile.delete();
                                     //提示所有错误
+                                    mlodingDialog.cancle();
                                     showLog("系统错误");
 //                                    showToast(mContext, getString(R.string.send_error));
                                 }
@@ -329,6 +335,7 @@ public class ChatFunctionFragment extends BaseFragment {
                 protected void onPostExecute(Integer integer) {
                     super.onPostExecute(integer);
 //                    targetFile.delete();
+                    mlodingDialog.cancle();
                     switch (integer) {
                         case NET_DISCONNECT:
                             //弹出对话框，让用户开启网络
