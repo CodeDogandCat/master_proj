@@ -49,25 +49,10 @@
     })
     ({
         1: [function(require, module, exports) {
-            /**
- * Copyright 2013-2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @providesModule shallowEqual
- * @typechecks
- * 
- */
+
             'use strict';
             var hasOwnProperty = Object.prototype.hasOwnProperty;
-            /**
- * Performs equality by iterating through keys on an object and returning false
- * when any key has values which are not strictly equal between the arguments.
- * Returns true when the values of all keys are strictly equal.
- */
+
             function shallowEqual(objA, objB) {
                 if (objA === objB) {
                     return true;
@@ -99,42 +84,10 @@
             "react/lib/ReactComponentWithPureRenderMixin": 3
         }],
         3: [function(require, module, exports) {
-            /**
- * Copyright 2013-2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @providesModule ReactComponentWithPureRenderMixin
- */
+
             'use strict';
             var shallowCompare = require('./shallowCompare');
-            /**
- * If your React component's render function is "pure", e.g. it will render the
- * same result given the same props and state, provide this Mixin for a
- * considerable performance boost.
- *
- * Most React components have pure render functions.
- *
- * Example:
- *
- *   var ReactComponentWithPureRenderMixin =
- *     require('ReactComponentWithPureRenderMixin');
- *   React.createClass({
- *     mixins: [ReactComponentWithPureRenderMixin],
- *
- *     render: function() {
- *       return <div className={this.props.className}>foo</div>;
- *     }
- *   });
- *
- * Note: This only checks shallow equality for props and state. If these contain
- * complex data structures this mixin may have false-negatives for deeper
- * differences. Only mixin to components which have simple props and state, or
- * use `forceUpdate()` when you know deep data structures have changed.
- */
+           
             var ReactComponentWithPureRenderMixin = {
                 shouldComponentUpdate: function(nextProps, nextState) {
                     return shallowCompare(this, nextProps, nextState);
@@ -146,22 +99,10 @@
             "./shallowCompare": 4
         }],
         4: [function(require, module, exports) {
-            /**
- * Copyright 2013-2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
-* @providesModule shallowCompare
-*/
+          
             'use strict';
             var shallowEqual = require('fbjs/lib/shallowEqual');
-            /**
- * Does a shallow comparison for props and state.
- * See ReactComponentWithPureRenderMixin
- */
+  
             function shallowCompare(instance, nextProps, nextState) {
                 return !shallowEqual(instance.props, nextProps) || !shallowEqual(instance.state, nextState);
             }
@@ -1795,43 +1736,7 @@
         }],
         11: [function(require, module, exports) {
             "use strict";
-            /**
-  This library rewrites the Canvas2D "measureText" function
-  so that it returns a more complete metrics object.
-  This library is licensed under the MIT (Expat) license,
-  the text for which is included below.
-
-** -----------------------------------------------------------------------------
-
-  CHANGELOG:
-
-    2012-01-21 - Whitespace handling added by Joe Turner
-                 (https://github.com/oampo)
-
-    2015-06-08 - Various hacks added by Steve Johnson
-
-** -----------------------------------------------------------------------------
-
-  Copyright (C) 2011 by Mike "Pomax" Kamermans
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in
-  all copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-  THE SOFTWARE.
-**/
+    
             (function() {
                 var NAME = "FontMetrics Library";
                 var VERSION = "1-2012.0121.1300";
