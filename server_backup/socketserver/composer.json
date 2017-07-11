@@ -1,0 +1,9 @@
+{
+    "name"  : "ShareBoard",
+    "type"  : "project",
+    "keywords": ["board"],
+    "require": {
+        "workerman/gateway-worker" : ">=3.0.0",
+		"workerman/gatewayclient"  : "3.0.0"
+    }
+}
