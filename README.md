@@ -1,6 +1,6 @@
 # graduationproject
 ## 功能结构
-
+![](https://github.com/CodeDogandCat/master_proj/blob/dev/chart/%E5%8A%9F%E8%83%BD%E7%BB%93%E6%9E%84%E5%9B%BE.png)
 ## 关键技术
 1. WebSocket：
 HTML5中的一个新协议，HTTP是被动的，WebSocket是主动的，客户端通过一次请求与服务器端建立持久连接后，服务器便可以主动向客户端推送消息。用于白板和群聊的通信。
